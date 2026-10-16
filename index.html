@@ -415,7 +415,7 @@ const emptyData=()=>({tasks:[],habits:[],logs:[],monthlyGoals:[],weeklyGoals:[],
 const getUsers=()=>{try{return JSON.parse(localStorage.getItem(STORAGE_USERS)||'{}');}catch{return{};}};
 const saveUsers=u=>localStorage.setItem(STORAGE_USERS,JSON.stringify(u));
 const hashPassword=async p=>{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(p));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');};
-const loadData=email=>{try{const d=JSON.parse(localStorage.getItem(DATA_PREFIX+email)||'null');return {...emptyData(),...(d||{})};}catch{return emptyData();}};
+const loadData=email=>{try{const d=JSON.parse(localStorage.getItem(DATA_PREFIX+email)||'null');const dd={...emptyData(),...(d||{})};dd.monthlyGoals=(dd.monthlyGoals||[]).map(g=>({...g,id:String(g.id)}));dd.weeklyGoals=(dd.weeklyGoals||[]).map(g=>({...g,id:String(g.id),monthlyGoalId:g.monthlyGoalId?String(g.monthlyGoalId):null}));dd.weeklyTasks=(dd.weeklyTasks||[]).map(t=>({...t,id:String(t.id),weeklyGoalId:t.weeklyGoalId?String(t.weeklyGoalId):null}));return dd;}catch{return emptyData();}};
 const saveData=()=>{if(!session)return;localStorage.setItem(DATA_PREFIX+session.email,JSON.stringify(data));};
 
 let session=null,data=emptyData();
