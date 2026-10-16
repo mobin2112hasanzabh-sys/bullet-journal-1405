@@ -9,8 +9,7 @@
 <style>
 :root{--cream:#f7f1e7;--cream2:#eee3d2;--cream3:#e5d8bf;--brown:#76543a;--dark:#4b3526;--olive:#78845b;--olive2:#e5ead9;--text:#30271f;--muted:#766c61;--line:#ddd0be;--white:#fffdf9;--paper:#faf5ea;--red:#b95042;--redbg:#fbe9e5;--green:#456b3f;--greenbg:#e5f2e2;--gold:#b58e42;--goldbg:#faf1dd;--blue:#5b7a99;--bluebg:#e7eff5;--shadow:0 4px 18px rgba(75,53,38,.07);--shadow2:0 12px 40px rgba(75,53,38,.12);--radius:18px;--dot:rgba(118,84,58,.10)}
 [data-theme="dark"]{--cream:#2a241d;--cream2:#332b22;--cream3:#3d3328;--brown:#c4a684;--dark:#e8d9c0;--olive:#9caf7a;--olive2:#3a4232;--text:#f0e5d0;--muted:#a89b85;--line:#4a3f31;--white:#38302a;--paper:#2f2823;--red:#d97767;--redbg:#4a2a24;--green:#a4c47a;--greenbg:#2e3d28;--gold:#d9b866;--goldbg:#453a20;--blue:#8bb0d0;--bluebg:#2a3a48;--shadow:0 4px 18px rgba(0,0,0,.3);--shadow2:0 12px 40px rgba(0,0,0,.45);--dot:rgba(232,217,192,.06)}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
 body{background:var(--cream);color:var(--text);font-family:Vazirmatn,Tahoma,sans-serif;line-height:1.75;min-height:100vh;position:relative;transition:background .4s,color .4s;background-image:radial-gradient(circle at 20% 0%,var(--cream2) 0%,transparent 60%),radial-gradient(circle at 80% 100%,var(--cream3) 0%,transparent 60%)}
 body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:22px 22px;opacity:.7}
 button,input,select,textarea{font:inherit;font-family:inherit}
@@ -25,8 +24,7 @@ button.small{padding:5px 9px;font-size:12px;border-radius:9px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:14px}
 .logo{width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,var(--dark),var(--brown));color:var(--cream);display:grid;place-items:center;font-size:24px;box-shadow:var(--shadow2)}
-.brand h1{font-size:21px;font-weight:800}
-.brand p{color:var(--muted);font-size:12px}
+.brand h1{font-size:21px;font-weight:800}.brand p{color:var(--muted);font-size:12px}
 .top-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .pill{display:inline-block;background:var(--olive2);color:var(--olive);border-radius:999px;padding:5px 12px;font-size:12px;font-weight:600}
 .panel{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-bottom:18px}
@@ -35,7 +33,6 @@ button.small{padding:5px 9px;font-size:12px;border-radius:9px}
 .muted{color:var(--muted);font-size:13px}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .stat{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:16px;position:relative;overflow:hidden;transition:transform .2s}
 .stat:hover{transform:translateY(-2px);box-shadow:var(--shadow2)}
 .stat .label{font-size:12px;color:var(--muted);font-weight:600}
@@ -49,7 +46,6 @@ button.small{padding:5px 9px;font-size:12px;border-radius:9px}
 .subnav button.active{background:var(--olive);color:white}
 .formgrid{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:10px;align-items:end}
 .formgrid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:end}
-.formgrid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;align-items:end}
 .field{display:flex;flex-direction:column;gap:6px}
 .field label{font-size:12px;color:var(--muted);font-weight:700}
 input,select,textarea{background:var(--paper);color:var(--text);border:1px solid var(--line);border-radius:11px;padding:10px 12px;width:100%;transition:.2s}
@@ -77,14 +73,8 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .sectionhead{display:flex;justify-content:space-between;align-items:start;gap:14px;flex-wrap:wrap;margin-bottom:16px}
 .progress{height:8px;border-radius:99px;background:var(--cream2);overflow:hidden;margin-top:8px}
 .progress span{height:100%;display:block;background:linear-gradient(90deg,var(--olive),var(--gold));width:0;transition:width .5s}
-.money-pos{color:var(--green);font-weight:700}
-.money-neg{color:var(--red);font-weight:700}
-.chart{display:flex;gap:6px;align-items:flex-end;height:140px;padding:8px}
-.chart .bar{flex:1;background:linear-gradient(180deg,var(--olive),var(--brown));border-radius:8px 8px 3px 3px;min-height:6px;display:flex;align-items:flex-end;justify-content:center;color:white;font-size:10px;padding-bottom:4px;transition:.3s}
+.money-pos{color:var(--green);font-weight:700}.money-neg{color:var(--red);font-weight:700}
 .svg-chart{width:100%;height:auto;display:block}
-.heatmap{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,1fr);gap:3px}
-.heatmap .cell{width:14px;height:14px;border-radius:3px;background:var(--cream2);cursor:pointer}
-.heatmap .cell.l1{background:#d5e0bf}.heatmap .cell.l2{background:#a8bf82}.heatmap .cell.l3{background:#7d9c58}.heatmap .cell.l4{background:var(--olive)}
 .donut-wrap{display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap}
 .legend{display:flex;flex-direction:column;gap:8px;font-size:13px}
 .legend div{display:flex;align-items:center;gap:8px}
@@ -93,15 +83,11 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .today-hero::before{content:"✦";position:absolute;top:-20px;right:20px;font-size:120px;color:var(--gold);opacity:.08}
 .today-hero h2{font-size:26px;color:var(--dark);margin-bottom:6px}
 .today-hero .date-big{font-size:32px;font-weight:800;color:var(--brown);margin:12px 0}
-.bullet-symbols{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted);justify-content:center;margin-top:12px;padding:10px;background:var(--cream2);border-radius:11px}
-.bullet-symbols span{display:flex;align-items:center;gap:5px}
-.bsym{font-size:16px;color:var(--brown);font-weight:800}
-.daily-notes-area{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px;min-height:120px;font-family:Vazirmatn;line-height:2;background-image:linear-gradient(transparent 31px,var(--dot) 32px);background-size:100% 32px;width:100%}
+.daily-notes-area{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px;min-height:100px;font-family:Vazirmatn;line-height:2;background-image:linear-gradient(transparent 31px,var(--dot) 32px);background-size:100% 32px;width:100%}
 .checklist{display:flex;flex-direction:column;gap:8px}
 .checklist-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--paper);border:1px solid var(--line);border-radius:12px;cursor:pointer;transition:.15s}
 .checklist-item:hover{background:var(--white);transform:translateX(-2px)}
-.checklist-item.checked{opacity:.6}
-.checklist-item.checked .check-title{text-decoration:line-through}
+.checklist-item.checked{opacity:.6}.checklist-item.checked .check-title{text-decoration:line-through}
 .check-box{width:22px;height:22px;border:2px solid var(--brown);border-radius:6px;display:grid;place-items:center;flex-shrink:0;font-size:14px;color:transparent;font-weight:800;transition:.2s}
 .checklist-item.checked .check-box{background:var(--olive);border-color:var(--olive);color:white}
 .check-title{font-weight:600;flex:1;min-width:0;overflow-wrap:anywhere}
@@ -117,25 +103,20 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 [data-theme="dark"] .theme-toggle{background:var(--brown)}
 .user-badge{display:flex;align-items:center;gap:8px;background:var(--cream2);padding:6px 12px;border-radius:99px;font-size:12px;font-weight:600}
 .user-badge .avatar{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--olive),var(--brown));color:white;display:grid;place-items:center;font-size:11px;font-weight:800}
-
-/* ===== کارت اهداف ===== */
 .goal-card{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:18px;position:relative;transition:.2s;overflow:hidden}
 .goal-card:hover{transform:translateY(-3px);box-shadow:var(--shadow2)}
 .goal-card::before{content:"";position:absolute;top:0;right:0;left:0;height:4px;background:linear-gradient(90deg,var(--olive),var(--gold))}
 .goal-card.priority-urgent::before{background:linear-gradient(90deg,var(--red),#e08878)}
 .goal-card.priority-important::before{background:linear-gradient(90deg,var(--gold),#d4b976)}
-.goal-card.priority-low::before{background:linear-gradient(90deg,var(--muted),#a89b85)}
-.goal-card.done{opacity:.7}
+.goal-card.done{opacity:.65}
 .goal-card.done .goal-title{text-decoration:line-through}
 .goal-header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
 .goal-title{font-weight:800;font-size:15px;color:var(--dark);line-height:1.5;overflow-wrap:anywhere}
 .goal-desc{font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.6}
-.goal-progress-row{display:flex;align-items:center;gap:10px;margin-top:12px}
-.goal-ring{width:60px;height:60px;flex-shrink:0}
-.goal-meta{display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:10px;align-items:center}
+.goal-progress-row{display:flex;align-items:center;gap:12px;margin-top:12px}
+.goal-ring{width:66px;height:66px;flex-shrink:0}
+.goal-meta{display:flex;gap:8px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:10px;align-items:center}
 .goal-actions{display:flex;gap:6px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
-
-/* ===== نمای هفتگی ===== */
 .week-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
 .week-nav{display:flex;gap:6px;align-items:center}
 .week-nav button{padding:8px 12px;background:var(--cream2);color:var(--text);border:1px solid var(--line);border-radius:10px;font-size:13px;font-weight:600}
@@ -158,54 +139,40 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .wt-tag{display:inline-block;font-size:9px;padding:1px 6px;border-radius:6px;background:var(--olive2);color:var(--olive);margin-top:4px;font-weight:600}
 .week-day-empty{font-size:11px;color:var(--muted);text-align:center;padding:20px 0;font-style:italic}
 .week-day-add{background:transparent;border:1px dashed var(--line);color:var(--muted);padding:6px;font-size:11px;border-radius:8px;font-weight:500;margin-top:auto}
-
-/* ===== کارت هدف هفتگی ===== */
 .wg-row{display:grid;grid-template-columns:1fr 60px;gap:10px;align-items:center}
-.wg-info{min-width:0}
-.wg-title{font-weight:700;font-size:14px;color:var(--dark);overflow-wrap:anywhere}
+.wg-info{min-width:0}.wg-title{font-weight:700;font-size:14px;color:var(--dark);overflow-wrap:anywhere}
 .wg-parent{font-size:11px;color:var(--muted);margin-top:4px;display:inline-flex;align-items:center;gap:4px;background:var(--cream2);padding:2px 8px;border-radius:8px}
 .wg-progress{height:6px;border-radius:99px;background:var(--cream2);overflow:hidden;margin-top:8px}
 .wg-progress span{height:100%;display:block;background:linear-gradient(90deg,var(--olive),var(--gold));transition:width .5s}
 .wg-tasks-count{font-size:11px;color:var(--muted);margin-top:6px}
-
-@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.week-columns{grid-template-columns:repeat(4,1fr)}.grid3{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:780px){.wrap{padding:14px}.formgrid{grid-template-columns:1fr 1fr}.formgrid2,.formgrid3{grid-template-columns:1fr}.item{flex-direction:column;align-items:flex-start}.item-actions{width:100%}.item-actions button{flex:1}.today-hero .date-big{font-size:24px}.week-columns{grid-template-columns:repeat(2,1fr)}.nav button{flex:1;padding:7px 8px;font-size:12px}}
-@media(max-width:420px){.grid{grid-template-columns:1fr 1fr;gap:10px}.stat{padding:12px}.stat .number{font-size:20px}.formgrid{grid-template-columns:1fr}}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.week-columns{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:780px){.wrap{padding:14px}.formgrid{grid-template-columns:1fr 1fr}.formgrid2{grid-template-columns:1fr}.item{flex-direction:column;align-items:flex-start}.item-actions{width:100%}.week-columns{grid-template-columns:repeat(2,1fr)}.nav button{flex:1;padding:7px 8px;font-size:12px}}
+@media(max-width:420px){.grid{grid-template-columns:1fr 1fr;gap:10px}.formgrid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
-    <div class="brand">
-      <div class="logo">✦</div>
-      <div><h1>بولت ژورنال من</h1><p>نسخهٔ زنده · ۱۴۰۵</p></div>
-    </div>
+    <div class="brand"><div class="logo">✦</div><div><h1>بولت ژورنال من</h1><p>نسخهٔ زنده · ۱۴۰۵</p></div></div>
     <div class="top-actions">
-      <div class="user-badge hidden" id="userBadge">
-        <div class="avatar" id="userAvatar"></div>
-        <span id="userName"></span>
-      </div>
-      <div class="theme-toggle" id="themeToggle" title="حالت شب"></div>
+      <div class="user-badge hidden" id="userBadge"><div class="avatar" id="userAvatar"></div><span id="userName"></span></div>
+      <div class="theme-toggle" id="themeToggle"></div>
       <button id="logoutBtn" class="secondary small hidden">خروج</button>
     </div>
   </header>
 
-  <!-- ═══════ ورود ═══════ -->
   <section id="authPanel" class="panel authbox hidden">
     <h2>ورود یا ساخت حساب</h2>
-    <p class="muted">ایمیل و رمز عبورت رو وارد کن. اگر تازه‌وارد هستی، حساب خودکار ساخته می‌شه.</p>
+    <p class="muted">ایمیل و رمزت رو وارد کن. اگر تازه‌وارد هستی، حساب خودکار ساخته می‌شه.</p>
     <form id="authForm" class="auth-form">
-      <div class="field"><label for="email">ایمیل</label><input id="email" type="email" required placeholder="name@example.com" autocomplete="email"></div>
-      <div class="field"><label for="password">رمز عبور</label><input id="password" type="password" required minlength="4" placeholder="حداقل ۴ نویسه" autocomplete="current-password"></div>
+      <div class="field"><label>ایمیل</label><input id="email" type="email" required placeholder="name@example.com"></div>
+      <div class="field"><label>رمز عبور</label><input id="password" type="password" required minlength="4" placeholder="حداقل ۴ نویسه"></div>
       <button id="authSubmit" type="submit">ورود / ثبت‌نام</button>
     </form>
     <div id="authMessage" class="notice hidden"></div>
-    <div class="notice" style="font-size:11px;font-weight:400;background:var(--cream2);color:var(--muted)">
-      💡 اطلاعات شما فقط روی همین دستگاه ذخیره می‌شود. برای انتقال به دستگاه دیگر از «خروجی JSON» استفاده کنید.
-    </div>
+    <div class="notice" style="font-size:11px;font-weight:400;background:var(--cream2);color:var(--muted)">💡 اطلاعات روی همین دستگاه ذخیره می‌شه. برای انتقال، از «خروجی JSON» استفاده کن.</div>
   </section>
 
-  <!-- ═══════ اپ اصلی ═══════ -->
   <main id="appPanel" class="hidden">
     <div id="globalMessage" class="notice hidden"></div>
     <nav class="nav">
@@ -223,142 +190,66 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
       <button data-tab="settings">⚙️ تنظیمات</button>
     </nav>
 
-    <!-- ═══════ امروز ═══════ -->
     <section id="tab-today" class="tab">
-      <div class="today-hero">
-        <h2>سلام، امروز چه خبر؟ 🌿</h2>
-        <div class="date-big" id="todayBigDate"></div>
-        <div class="bullet-symbols">
-          <span><span class="bsym">•</span> وظیفه</span>
-          <span><span class="bsym">×</span> انجام شد</span>
-          <span><span class="bsym">›</span> منتقل</span>
-          <span><span class="bsym">‹</span> زمان‌بندی</span>
-        </div>
-      </div>
+      <div class="today-hero"><h2>سلام، امروز چه خبر؟ 🌿</h2><div class="date-big" id="todayBigDate"></div></div>
       <div class="grid2">
-        <div class="panel">
-          <div class="sectionhead" style="margin-bottom:12px">
-            <h3>✓ وظایف امروز</h3>
-            <button class="ghost small" id="quickAddTask">+ سریع</button>
-          </div>
-          <div id="todayTasks" class="checklist"></div>
-        </div>
-        <div class="panel">
-          <div class="sectionhead" style="margin-bottom:12px">
-            <h3>🔥 عادت‌های امروز</h3>
-            <span class="pill" id="habitTodayCount">—</span>
-          </div>
-          <div id="todayHabits" class="checklist"></div>
-        </div>
+        <div class="panel"><div class="sectionhead" style="margin-bottom:12px"><h3>✓ وظایف امروز</h3><button class="ghost small" id="quickAddTask">+ سریع</button></div><div id="todayTasks" class="checklist"></div></div>
+        <div class="panel"><div class="sectionhead" style="margin-bottom:12px"><h3>🔥 عادت‌های امروز</h3><span class="pill" id="habitTodayCount">—</span></div><div id="todayHabits" class="checklist"></div></div>
       </div>
-      <div class="panel">
-        <h3>💭 یادداشت‌های امروز</h3>
-        <div class="grid2" style="gap:12px">
-          <div><label class="muted" style="font-size:12px;font-weight:700">🌅 صبح</label><textarea id="morningNote" class="daily-notes-area" rows="4"></textarea></div>
-          <div><label class="muted" style="font-size:12px;font-weight:700">🌙 شب</label><textarea id="eveningNote" class="daily-notes-area" rows="4"></textarea></div>
-        </div>
-        <div class="grid2" style="gap:12px;margin-top:12px">
-          <div class="field"><label>✨ بهترین اتفاق</label><input id="highlightToday"></div>
-          <div class="field"><label>🙏 شکرگزاری</label><input id="gratitudeToday"></div>
-        </div>
+      <div class="panel"><h3>💭 یادداشت‌های امروز</h3>
+        <div class="grid2" style="gap:12px"><div><label class="muted" style="font-size:12px;font-weight:700">🌅 صبح</label><textarea id="morningNote" class="daily-notes-area" rows="3"></textarea></div><div><label class="muted" style="font-size:12px;font-weight:700">🌙 شب</label><textarea id="eveningNote" class="daily-notes-area" rows="3"></textarea></div></div>
+        <div class="grid2" style="gap:12px;margin-top:12px"><div class="field"><label>✨ بهترین اتفاق</label><input id="highlightToday"></div><div class="field"><label>🙏 شکرگزاری</label><input id="gratitudeToday"></div></div>
         <div style="margin-top:14px;text-align:center"><button id="saveDailyBtn">💾 ذخیره</button></div>
       </div>
       <div class="panel"><h3>📊 نگاهی به امروز</h3><div class="grid" id="todayStats"></div></div>
     </section>
 
-    <!-- ═══════ داشبورد ═══════ -->
     <section id="tab-dashboard" class="tab hidden">
       <div class="sectionhead"><div><h2>داشبورد</h2></div><span id="todayLabel" class="pill"></span></div>
       <div class="grid" id="dashboardStats"></div>
-      <div class="grid2" style="margin-top:20px">
-        <div class="panel"><h3>📈 خلق‌وخو (۳۰ روز)</h3><div id="moodLineChart"></div></div>
-        <div class="panel"><h3>💰 توزیع هزینه‌ها</h3><div id="expenseDonut"></div></div>
-      </div>
-      <div class="grid2">
-        <div class="panel"><h3>📊 گزارش ماهانه مالی</h3><div id="monthlyFinance"></div></div>
-        <div class="panel"><h3>🔥 نقشهٔ حرارتی عادت‌ها</h3><div id="habitHeatmap"></div></div>
-      </div>
+      <div class="grid2" style="margin-top:20px"><div class="panel"><h3>📈 خلق‌وخو (۳۰ روز)</h3><div id="moodLineChart"></div></div><div class="panel"><h3>💰 توزیع هزینه‌ها</h3><div id="expenseDonut"></div></div></div>
+      <div class="grid2"><div class="panel"><h3>📊 گزارش ماهانه مالی</h3><div id="monthlyFinance"></div></div><div class="panel"><h3>🔥 نقشهٔ حرارتی</h3><div id="habitHeatmap"></div></div></div>
     </section>
 
-    <!-- ═══════ برنامه‌ریزی زنده ═══════ -->
     <section id="tab-planner" class="tab hidden">
       <div class="subnav">
         <button class="active" data-sub="monthly">🎯 اهداف ماهانه</button>
         <button data-sub="weekly-goals">🗓️ اهداف هفتگی</button>
         <button data-sub="weekly-tasks">📋 کارهای هفتگی</button>
-        <button data-sub="future">🔮 Future Log</button>
       </div>
-
-      <!-- اهداف ماهانه -->
       <div id="sub-monthly" class="subtab">
-        <div class="sectionhead">
-          <div>
-            <h2>🎯 اهداف ماهانه</h2>
-            <p class="muted" id="monthlySubtitle"></p>
-          </div>
-          <span class="pill" id="monthlyProgressPill">—</span>
-        </div>
-        <div class="panel" style="box-shadow:none">
-          <h3>افزودن هدف ماهانه</h3>
+        <div class="sectionhead"><div><h2>🎯 اهداف ماهانه</h2><p class="muted" id="monthlySubtitle"></p></div><span class="pill" id="monthlyProgressPill">—</span></div>
+        <div class="panel" style="box-shadow:none"><h3>افزودن هدف ماهانه</h3>
           <form id="monthlyGoalForm" class="formgrid">
-            <div class="field"><label>عنوان هدف</label><input id="mgTitle" required maxlength="180" placeholder="مثلاً: تکمیل پروژهٔ سایت"></div>
+            <div class="field"><label>عنوان</label><input id="mgTitle" required maxlength="180"></div>
             <div class="field"><label>اولویت</label><select id="mgPriority"><option value="urgent_important">فوری و مهم</option><option value="important">مهم</option><option value="normal" selected>عادی</option><option value="low">کم‌اهمیت</option></select></div>
             <div class="field"><label>موعد</label><input id="mgDue" type="date"></div>
             <button type="submit">افزودن</button>
           </form>
-          <div class="field" style="margin-top:10px"><label>توضیحات (اختیاری)</label><textarea id="mgDesc" rows="2" placeholder="چند خط دربارهٔ این هدف..."></textarea></div>
+          <div class="field" style="margin-top:10px"><label>توضیحات (اختیاری)</label><textarea id="mgDesc" rows="2"></textarea></div>
         </div>
         <div id="monthlyGoalsList" class="grid2"></div>
       </div>
-
-      <!-- اهداف هفتگی -->
       <div id="sub-weekly-goals" class="subtab hidden">
-        <div class="sectionhead">
-          <div>
-            <h2>🗓️ اهداف هفتگی</h2>
-            <p class="muted">هر هدف هفتگی می‌تونه به یک هدف ماهانه وصل باشه تا پیشرفتش خودکار محاسبه بشه.</p>
-          </div>
-        </div>
-        <div class="panel" style="box-shadow:none">
-          <h3>افزودن هدف هفتگی</h3>
+        <div class="sectionhead"><div><h2>🗓️ اهداف هفتگی</h2><p class="muted">هر هدف هفتگی به یک هدف ماهانه وصل می‌شه و پیشرفتش خودکار محاسبه می‌شه.</p></div></div>
+        <div class="panel" style="box-shadow:none"><h3>افزودن</h3>
           <form id="weeklyGoalForm" class="formgrid">
-            <div class="field"><label>عنوان</label><input id="wgTitle" required maxlength="180" placeholder="مثلاً: تکمیل صفحهٔ اصلی"></div>
-            <div class="field"><label>هدف ماهانه (اختیاری)</label><select id="wgParent"><option value="">— بدون والد —</option></select></div>
+            <div class="field"><label>عنوان</label><input id="wgTitle" required maxlength="180"></div>
+            <div class="field"><label>هدف ماهانه</label><select id="wgParent"><option value="">— بدون والد —</option></select></div>
             <div class="field"><label>پایان هفته</label><input id="wgDue" type="date"></div>
             <button type="submit">افزودن</button>
           </form>
         </div>
-        <div class="panel" style="box-shadow:none">
-          <div class="sectionhead" style="margin-bottom:10px"><h3>فیلتر</h3></div>
-          <div class="subnav" style="margin:0">
-            <button class="active" data-wgfilter="current">این هفته</button>
-            <button data-wgfilter="next">هفته آینده</button>
-            <button data-wgfilter="all">همه</button>
-            <button data-wgfilter="done">تکمیل‌شده</button>
-          </div>
-        </div>
+        <div class="panel" style="box-shadow:none"><div class="subnav" style="margin:0"><button class="active" data-wgfilter="current">این هفته</button><button data-wgfilter="next">هفته بعد</button><button data-wgfilter="all">همه</button><button data-wgfilter="done">تکمیل</button></div></div>
         <div id="weeklyGoalsList" class="list"></div>
       </div>
-
-      <!-- کارهای هفتگی -->
       <div id="sub-weekly-tasks" class="subtab hidden">
-        <div class="sectionhead">
-          <div>
-            <h2>📋 کارهای هفتگی</h2>
-            <p class="muted">کارها رو به روزهای هفته اختصاص بده و با تیک زدن، پیشرفت خودکار محاسبه می‌شه.</p>
-          </div>
-          <span class="pill" id="weeklyTasksProgress">—</span>
-        </div>
+        <div class="sectionhead"><div><h2>📋 کارهای هفتگی</h2></div><span class="pill" id="weeklyTasksProgress">—</span></div>
         <div class="week-toolbar">
-          <div class="week-nav">
-            <button id="wtPrev">‹ هفتهٔ قبل</button>
-            <span class="week-range" id="wtWeekRange"></span>
-            <button id="wtNext">هفتهٔ بعد ›</button>
-          </div>
+          <div class="week-nav"><button id="wtPrev">‹ هفتهٔ قبل</button><span class="week-range" id="wtWeekRange"></span><button id="wtNext">هفتهٔ بعد ›</button></div>
           <button id="wtToday" class="secondary">📅 این هفته</button>
         </div>
-        <div class="panel" style="box-shadow:none">
-          <h3>افزودن کار</h3>
+        <div class="panel" style="box-shadow:none"><h3>افزودن</h3>
           <form id="weeklyTaskForm" class="formgrid">
             <div class="field"><label>عنوان</label><input id="wtTitle" required maxlength="180"></div>
             <div class="field"><label>روز</label><select id="wtDay"><option>شنبه</option><option>یکشنبه</option><option>دوشنبه</option><option>سه‌شنبه</option><option>چهارشنبه</option><option>پنجشنبه</option><option>جمعه</option></select></div>
@@ -368,26 +259,10 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
         </div>
         <div class="week-columns" id="weekColumns"></div>
       </div>
-
-      <!-- Future Log -->
-      <div id="sub-future" class="subtab hidden">
-        <div class="sectionhead"><div><h2>🔮 Future Log</h2><p class="muted">ایده‌ها و اهداف بلندمدت</p></div></div>
-        <div class="panel" style="box-shadow:none">
-          <form id="futureForm" class="formgrid">
-            <div class="field"><label>عنوان</label><input id="futTitle" required maxlength="200"></div>
-            <div class="field"><label>دسته</label><input id="futCat" maxlength="80"></div>
-            <div class="field"><label>موعد</label><input id="futDue" type="date"></div>
-            <div class="field"><label>اولویت</label><select id="futPri"><option value="urgent_important">فوری و مهم</option><option value="important">مهم</option><option value="normal" selected>عادی</option><option value="low">کم‌اهمیت</option></select></div>
-            <button type="submit">افزودن</button>
-          </form>
-        </div>
-        <div id="futureList" class="list"></div>
-      </div>
     </section>
 
-    <!-- ═══════ وظایف ═══════ -->
     <section id="tab-tasks" class="tab hidden">
-      <div class="sectionhead"><div><h2>✓ وظایف روزانه</h2><p class="muted">وظایف کوتاه‌مدت روزانه</p></div></div>
+      <div class="sectionhead"><div><h2>✓ وظایف روزانه</h2></div></div>
       <form id="taskForm" class="formgrid">
         <div class="field"><label>عنوان</label><input id="taskTitle" required maxlength="180"></div>
         <div class="field"><label>اولویت</label><select id="taskPriority"><option value="urgent_important">فوری و مهم</option><option value="important">مهم</option><option value="normal" selected>عادی</option><option value="low">کم‌اهمیت</option></select></div>
@@ -395,25 +270,17 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
         <div class="field"><label>دسته</label><select id="taskCategory"><option>شخصی</option><option>دانشگاه</option><option>وردپرس</option><option>فارکس</option><option>ورزش</option><option>مالی</option><option>سایر</option></select></div>
         <button type="submit">افزودن</button>
       </form>
-      <div class="sectionhead" style="margin-top:14px;margin-bottom:0">
-        <div class="field" style="max-width:220px"><label>نمایش</label><select id="taskFilter"><option value="all">همه</option><option value="today">امروز</option><option value="open">فقط باز</option><option value="done">انجام‌شده</option><option value="late">عقب‌افتاده</option></select></div>
-        <div class="field" style="max-width:220px"><label>جستجو</label><input id="taskSearch"></div>
-      </div>
+      <div class="sectionhead" style="margin-top:14px;margin-bottom:0"><div class="field" style="max-width:220px"><label>نمایش</label><select id="taskFilter"><option value="all">همه</option><option value="today">امروز</option><option value="open">فقط باز</option><option value="done">انجام‌شده</option><option value="late">عقب‌افتاده</option></select></div><div class="field" style="max-width:220px"><label>جستجو</label><input id="taskSearch"></div></div>
       <div id="taskList" class="list"></div>
     </section>
 
-    <!-- ═══════ عادت‌ها ═══════ -->
     <section id="tab-habits" class="tab hidden">
       <div class="sectionhead"><div><h2>🔥 ردیاب عادت‌ها</h2></div></div>
-      <form id="habitForm" class="formgrid2">
-        <div class="field"><label>نام عادت</label><input id="habitName" required maxlength="120"></div>
-        <button type="submit">افزودن</button>
-      </form>
+      <form id="habitForm" class="formgrid2"><div class="field"><label>نام عادت</label><input id="habitName" required maxlength="120"></div><button type="submit">افزودن</button></form>
       <div id="habitList" class="grid2" style="margin-top:16px"></div>
       <div class="panel" style="margin-top:20px"><h3>🔥 نقشهٔ حرارتی (۱۲ هفته)</h3><div id="habitHeatmapTab"></div></div>
     </section>
 
-    <!-- ═══════ مالی ═══════ -->
     <section id="tab-finance" class="tab hidden">
       <div class="sectionhead"><div><h2>💰 مالی</h2></div></div>
       <form id="financeForm" class="formgrid">
@@ -427,7 +294,6 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
       <div id="financeList" class="list"></div>
     </section>
 
-    <!-- ═══════ خلق‌وخو ═══════ -->
     <section id="tab-mood" class="tab hidden">
       <div class="sectionhead"><div><h2>😊 خلق‌وخو</h2></div></div>
       <form id="moodForm" class="formgrid">
@@ -441,7 +307,6 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
       <div id="moodList" class="list"></div>
     </section>
 
-    <!-- ═══════ دانشگاه ═══════ -->
     <section id="tab-uni" class="tab hidden">
       <div class="sectionhead"><div><h2>🎓 دانشگاه</h2></div></div>
       <form id="uniForm" class="formgrid">
@@ -454,7 +319,6 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
       <div id="uniList" class="list"></div>
     </section>
 
-    <!-- ═══════ فارکس ═══════ -->
     <section id="tab-forex" class="tab hidden">
       <div class="sectionhead"><div><h2>📈 فارکس</h2></div></div>
       <form id="forexForm" class="formgrid">
@@ -469,7 +333,6 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
       <div id="forexList" class="list"></div>
     </section>
 
-    <!-- ═══════ یادگیری ═══════ -->
     <section id="tab-skills" class="tab hidden">
       <div class="sectionhead"><div><h2>📚 یادگیری</h2></div></div>
       <form id="skillForm" class="formgrid">
@@ -482,9 +345,8 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
       <div id="skillList" class="list"></div>
     </section>
 
-    <!-- ═══════ مرور ═══════ -->
     <section id="tab-review" class="tab hidden">
-      <div class="sectionhead"><div><h2>📝 مرور و ارزیابی</h2></div></div>
+      <div class="sectionhead"><div><h2>📝 مرور</h2></div></div>
       <form id="reviewForm" class="formgrid">
         <div class="field"><label>نوع</label><select id="revType"><option>روزانه</option><option>هفتگی</option><option>ماهانه</option></select></div>
         <div class="field"><label>دوره</label><input id="revPeriod"></div>
@@ -496,28 +358,19 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
       <div id="reviewList" class="list"></div>
     </section>
 
-    <!-- ═══════ تنظیمات ═══════ -->
     <section id="tab-settings" class="tab hidden">
       <h2>⚙️ تنظیمات</h2>
       <p class="muted">اطلاعات شما روی همین مرورگر ذخیره می‌شود.</p>
-      <div class="notice">💡 برای انتقال به دستگاه دیگر یا پشتیبان‌گیری، از «خروجی JSON» استفاده کنید.</div>
-      <div class="panel" style="box-shadow:none">
-        <h3>💾 پشتیبان‌گیری</h3>
+      <div class="notice">💡 برای انتقال به دستگاه دیگر، از «خروجی JSON» استفاده کن.</div>
+      <div class="panel" style="box-shadow:none"><h3>💾 پشتیبان‌گیری</h3>
         <div style="display:flex;gap:10px;flex-wrap:wrap">
           <button id="exportBtn">⬇️ خروجی JSON</button>
           <button id="importBtn" class="secondary">⬆️ بازیابی</button>
           <input type="file" id="importFile" accept=".json" class="hidden">
         </div>
       </div>
-      <div class="panel" style="box-shadow:none">
-        <h3>🗑️ پاک‌سازی</h3>
-        <button id="clearDataBtn" class="danger">پاک کردن همهٔ داده‌ها</button>
-      </div>
-      <div class="panel" style="box-shadow:none">
-        <h3>👤 حساب کاربری</h3>
-        <p class="muted">ایمیل: <b id="settingsEmail"></b></p>
-        <p class="muted">تاریخ عضویت: <b id="settingsCreated"></b></p>
-      </div>
+      <div class="panel" style="box-shadow:none"><h3>🗑️ پاک‌سازی</h3><button id="clearDataBtn" class="danger">پاک کردن همهٔ داده‌ها</button></div>
+      <div class="panel" style="box-shadow:none"><h3>👤 حساب</h3><p class="muted">ایمیل: <b id="settingsEmail"></b></p><p class="muted">عضویت: <b id="settingsCreated"></b></p></div>
     </section>
   </main>
   <div class="footer">بولت ژورنال شخصی ۱۴۰۵ · نسخهٔ زنده</div>
@@ -540,11 +393,10 @@ const todayFaLong=()=>new Intl.DateTimeFormat('fa-IR-u-ca-persian',{weekday:'lon
 const show=(id,y=true)=>$(id).classList.toggle('hidden',!y);
 const msg=(id,t,type='')=>{const el=$(id);el.textContent=t;el.className='notice'+(type?' '+type:'');el.classList.remove('hidden');setTimeout(()=>el.classList.add('hidden'),4000);};
 const labels={priority:{urgent_important:'فوری و مهم',important:'مهم',normal:'عادی',low:'کم‌اهمیت'},taskStatus:{planned:'برنامه‌ریزی‌شده',in_progress:'در حال انجام',done:'انجام شد',cancelled:'لغو شد'}};
-const nid=()=>Date.now()+Math.floor(Math.random()*1000);
+const nid=()=>Date.now()+Math.floor(Math.random()*100000);
 
-// ═══════════ ذخیره ═══════════
-const STORAGE_USERS='bj_users_v2', STORAGE_SESSION='bj_session_v2', DATA_PREFIX='bj_data_v2_';
-const emptyData=()=>({tasks:[],habits:[],logs:[],monthlyGoals:[],weeklyGoals:[],weeklyTasks:[],future:[],finance:[],mood:[],uni:[],forex:[],skills:[],review:[],daily:[],pomodoro:[]});
+const STORAGE_USERS='bj_users_v3', STORAGE_SESSION='bj_session_v3', DATA_PREFIX='bj_data_v3_';
+const emptyData=()=>({tasks:[],habits:[],logs:[],monthlyGoals:[],weeklyGoals:[],weeklyTasks:[],finance:[],mood:[],uni:[],forex:[],skills:[],review:[],daily:[],pomodoro:[]});
 const getUsers=()=>{try{return JSON.parse(localStorage.getItem(STORAGE_USERS)||'{}');}catch{return{};}};
 const saveUsers=u=>localStorage.setItem(STORAGE_USERS,JSON.stringify(u));
 const hashPassword=async p=>{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(p));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');};
@@ -552,7 +404,7 @@ const loadData=email=>{try{const d=JSON.parse(localStorage.getItem(DATA_PREFIX+e
 const saveData=()=>{if(!session)return;localStorage.setItem(DATA_PREFIX+session.email,JSON.stringify(data));};
 
 let session=null,data=emptyData();
-let weeklyOffset=0; // offset هفته برای نمایش
+let weeklyOffset=0;
 
 // ═══════════ تم ═══════════
 const initTheme=()=>document.documentElement.setAttribute('data-theme',localStorage.getItem('bj_theme')||'light');
@@ -607,7 +459,7 @@ function startApp(){
   $('settingsEmail').textContent=session.email;
   const u=getUsers()[session.email];
   $('settingsCreated').textContent=toFaDate(u?.createdAt)||'—';
-  ['moodDate','finDate','fxDate','uniDue','skillEnd','futDue','mgDue','wgDue'].forEach(id=>{if($(id))$(id).value=dateISO();});
+  ['moodDate','finDate','fxDate','uniDue','skillEnd','mgDue','wgDue'].forEach(id=>{if($(id))$(id).value=dateISO();});
   switchPanel('app');
   renderAll();
 }
@@ -615,7 +467,7 @@ function startApp(){
 // ═══════════ ابزار هفته ═══════════
 function getWeekStart(offset=0){
   const now=new Date();
-  const dow=now.getDay(); // 0=یکشنبه
+  const dow=now.getDay();
   const fromSat=(dow+1)%7;
   const start=new Date(now);
   start.setDate(now.getDate()-fromSat+offset*7);
@@ -630,6 +482,18 @@ function getWeekDays(offset=0){
 }
 const weekDayNames=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
 
+// ═══════════ محاسبه پیشرفت ═══════════
+function weeklyGoalProgress(wgId){
+  const tasks=data.weeklyTasks.filter(t=>t.weeklyGoalId===wgId);
+  if(!tasks.length)return 0;
+  return Math.round(tasks.filter(t=>t.done).length/tasks.length*100);
+}
+function monthlyGoalProgress(mgId){
+  const children=data.weeklyGoals.filter(g=>g.monthlyGoalId===mgId);
+  if(!children.length)return 0;
+  return Math.round(children.reduce((a,g)=>a+weeklyGoalProgress(g.id),0)/children.length);
+}
+
 // ═══════════ رندر همه ═══════════
 function renderAll(){
   $('todayBigDate').textContent=todayFaLong();
@@ -639,7 +503,6 @@ function renderAll(){
   renderMonthlyGoals();
   renderWeeklyGoals();
   renderWeeklyTasks();
-  renderFuture();
   renderTasks();
   renderHabits();
   renderFinance();
@@ -651,7 +514,6 @@ function renderAll(){
   refreshSelectors();
 }
 
-// ═══════════ پر کردن select ها ═══════════
 function refreshSelectors(){
   const mg=$('wgParent');
   if(mg){
@@ -667,18 +529,6 @@ function refreshSelectors(){
   }
 }
 
-// ═══════════ محاسبه پیشرفت ═══════════
-function weeklyGoalProgress(wgId){
-  const tasks=data.weeklyTasks.filter(t=>t.weeklyGoalId===wgId);
-  if(!tasks.length)return 0;
-  return Math.round(tasks.filter(t=>t.done).length/tasks.length*100);
-}
-function monthlyGoalProgress(mgId){
-  const children=data.weeklyGoals.filter(g=>g.monthlyGoalId===mgId);
-  if(!children.length)return 0;
-  return Math.round(children.reduce((a,g)=>a+weeklyGoalProgress(g.id),0)/children.length);
-}
-
 // ═══════════ داشبورد ═══════════
 function renderDashboard(){
   const doneTasks=data.tasks.filter(t=>t.status==='done').length;
@@ -689,7 +539,7 @@ function renderDashboard(){
   const saving=data.finance.filter(f=>f.type==='پس‌انداز').reduce((a,f)=>a+Number(f.amount||0),0);
   const habitDone=data.logs.filter(l=>l.date===dateISO()&&l.status==='done').length;
   $('dashboardStats').innerHTML=`
-    <div class="stat"><span class="icon">✓</span><div class="label">وظایف روزانه</div><div class="number">${fa(data.tasks.length)}</div></div>
+    <div class="stat"><span class="icon">✓</span><div class="label">کل وظایف</div><div class="number">${fa(data.tasks.length)}</div></div>
     <div class="stat"><span class="icon">✅</span><div class="label">انجام‌شده</div><div class="number">${fa(doneTasks)}</div></div>
     <div class="stat"><span class="icon">🔥</span><div class="label">عادت امروز</div><div class="number">${fa(habitDone)}</div></div>
     <div class="stat"><span class="icon">🎯</span><div class="label">اهداف ماهانه فعال</div><div class="number">${fa(activeMg)}</div></div>
@@ -742,12 +592,12 @@ function renderMonthlyGoals(){
   const doneCount=data.monthlyGoals.filter(g=>g.done).length;
   $('monthlyProgressPill').textContent=total?`${fa(doneCount)} از ${fa(total)} تکمیل`:'—';
   const el=$('monthlyGoalsList');
-  if(!data.monthlyGoals.length){el.innerHTML='<p class="muted" style="grid-column:1/-1;text-align:center;padding:20px">هنوز هدف ماهانه‌ای نداری. از فرم بالا اضافه کن.</p>';return;}
+  if(!data.monthlyGoals.length){el.innerHTML='<p class="muted" style="grid-column:1/-1;text-align:center;padding:20px">هنوز هدف ماهانه‌ای نداری.</p>';return;}
   el.innerHTML=data.monthlyGoals.map(g=>{
     const p=monthlyGoalProgress(g.id);
     const childCount=data.weeklyGoals.filter(w=>w.monthlyGoalId===g.id).length;
     const daysLeft=g.due_date?Math.ceil((new Date(g.due_date)-new Date())/86400000):null;
-    const priorityClass=g.priority==='urgent_important'?'priority-urgent':g.priority==='important'?'priority-important':g.priority==='low'?'priority-low':'';
+    const priorityClass=g.priority==='urgent_important'?'priority-urgent':g.priority==='important'?'priority-important':'';
     const r=45,c=2*Math.PI*r,off=c*(1-p/100);
     return `<div class="goal-card ${priorityClass} ${g.done?'done':''}">
       <div class="goal-header">
@@ -789,7 +639,6 @@ function renderWeeklyGoals(){
   if(filter==='current')arr=arr.filter(g=>{if(!g.due_date)return true;const d=new Date(g.due_date);return d>=weekStart&&d<=weekEnd;});
   if(filter==='next')arr=arr.filter(g=>{if(!g.due_date)return false;const d=new Date(g.due_date);return d>=nextWeekStart&&d<=nextWeekEnd;});
   if(filter==='done')arr=arr.filter(g=>g.done);
-  if(filter==='all')arr=arr;
   const el=$('weeklyGoalsList');
   if(!arr.length){el.innerHTML='<p class="muted" style="text-align:center;padding:20px">هدفی برای نمایش نیست.</p>';return;}
   el.innerHTML=arr.map(g=>{
@@ -806,9 +655,7 @@ function renderWeeklyGoals(){
             <div class="wg-progress"><span style="width:${p}%"></span></div>
             <div class="wg-tasks-count">${fa(doneCount)} از ${fa(taskCount)} کار انجام شده · ${fa(p)}٪</div>
           </div>
-          <div style="text-align:center">
-            <div style="font-size:20px;font-weight:800;color:var(--olive)">${fa(p)}٪</div>
-          </div>
+          <div style="text-align:center"><div style="font-size:20px;font-weight:800;color:var(--olive)">${fa(p)}٪</div></div>
         </div>
         ${g.due_date?`<div class="item-meta"><span>${toFaDate(g.due_date)}</span></div>`:''}
       </div>
@@ -825,23 +672,15 @@ function renderWeeklyTasks(){
   const days=getWeekDays(weeklyOffset);
   const range=`${toFaDate(dateISO(days[0]))} — ${toFaDate(dateISO(days[6]))}`;
   $('wtWeekRange').textContent=range;
-  // آمار هفته
-  const weekTasks=data.weeklyTasks.filter(t=>{
-    const d=new Date(t.date);
-    return d>=days[0]&&d<=days[6];
-  });
+  const weekTasks=data.weeklyTasks.filter(t=>{const d=new Date(t.date);return d>=days[0]&&d<=days[6];});
   const doneCount=weekTasks.filter(t=>t.done).length;
   $('weeklyTasksProgress').textContent=weekTasks.length?`${fa(doneCount)} / ${fa(weekTasks.length)} انجام‌شده`:'—';
-  // ستون‌ها
   $('weekColumns').innerHTML=days.map((d,i)=>{
     const iso=dateISO(d);
     const isToday=iso===dateISO();
     const dayTasks=data.weeklyTasks.filter(t=>t.date===iso);
     return `<div class="week-day ${isToday?'today':''}">
-      <div class="week-day-header">
-        <span class="name">${weekDayNames[i]}</span>
-        <span class="date">${toFaDate(iso)}</span>
-      </div>
+      <div class="week-day-header"><span class="name">${weekDayNames[i]}</span><span class="date">${toFaDate(iso)}</span></div>
       ${dayTasks.length?dayTasks.map(t=>{
         const goal=data.weeklyGoals.find(g=>g.id===t.weeklyGoalId);
         return `<div class="week-task ${t.done?'done':''}" data-toggle-wt="${t.id}">
@@ -856,13 +695,6 @@ function renderWeeklyTasks(){
       <button class="week-day-add" data-add-wt-day="${iso}">+ افزودن</button>
     </div>`;
   }).join('');
-}
-
-// ═══════════ Future Log ═══════════
-function renderFuture(){
-  $('futureList').innerHTML=data.future.length?data.future.map(f=>`<article class="item"><div class="item-main"><div class="item-title">${safe(f.title)}</div>
-    <div class="item-meta">${f.category?`<span>${safe(f.category)}</span>`:''}${f.due_date?`<span>${toFaDate(f.due_date)}</span>`:''}<span class="status">${labels.priority[f.priority]||''}</span></div></div>
-    <div class="item-actions"><button class="danger small" data-del="future" data-id="${f.id}">×</button></div></article>`).join(''):'<p class="muted">—</p>';
 }
 
 // ═══════════ وظایف روزانه ═══════════
@@ -902,11 +734,12 @@ function calcStreak(hid){
   return s;
 }
 function renderHabits(){
+  const sl={done:'انجام شد',not_done:'انجام نشد',rest:'استراحت'};
   $('habitList').innerHTML=data.habits.length?data.habits.map(h=>{
     const log=data.logs.find(l=>l.habit_id===h.id&&l.date===dateISO());const s=log?.status||'';
     const streak=calcStreak(h.id);
-    const sl={done:'انجام شد',not_done:'انجام نشد',rest:'استراحت'};
-    return `<article class="habit" style="background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span style="font-weight:700">${safe(h.name)} ${streak>0?`<span class="status gold">🔥 ${fa(streak)}</span>`:''}</span>
+    return `<article class="habit" style="background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+      <span style="font-weight:700">${safe(h.name)} ${streak>0?`<span class="status gold">🔥 ${fa(streak)}</span>`:''}</span>
       <select data-habit-status="${h.id}" style="width:auto"><option value="" ${!s?'selected':''}>ثبت نشده</option>${Object.entries(sl).map(([v,l])=>`<option value="${v}" ${s===v?'selected':''}>${l}</option>`).join('')}</select>
       <button class="danger small" data-del="habits" data-id="${h.id}">×</button></article>`;
   }).join(''):'<p class="muted">هنوز عادتی اضافه نشده.</p>';
@@ -943,8 +776,7 @@ function renderMonthlyFinance(){
     const sav=data.finance.filter(f=>f.month===m&&f.type==='پس‌انداز').reduce((a,f)=>a+Number(f.amount||0),0);
     return `<tr><td style="padding:10px;border-bottom:1px solid var(--line)">${m}</td><td style="padding:10px;border-bottom:1px solid var(--line)" class="money-pos">${fa(inc)}</td><td style="padding:10px;border-bottom:1px solid var(--line)" class="money-neg">${fa(exp)}</td><td style="padding:10px;border-bottom:1px solid var(--line)">${fa(sav)}</td></tr>`;
   }).join('');
-  const el=$('monthlyFinance');
-  if(el)el.innerHTML=`<table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr style="background:var(--cream2)"><th style="padding:10px;text-align:right">ماه</th><th style="padding:10px;text-align:right">درآمد</th><th style="padding:10px;text-align:right">هزینه</th><th style="padding:10px;text-align:right">پس‌انداز</th></tr></thead><tbody>${rows}</tbody></table>`;
+  $('monthlyFinance').innerHTML=`<table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr style="background:var(--cream2)"><th style="padding:10px;text-align:right">ماه</th><th style="padding:10px;text-align:right">درآمد</th><th style="padding:10px;text-align:right">هزینه</th><th style="padding:10px;text-align:right">پس‌انداز</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 function renderExpenseDonut(){
   const cats={};
@@ -967,7 +799,6 @@ function renderMood(){
     <div class="item-actions"><button class="danger small" data-del="mood" data-id="${m.id}">×</button></div></article>`).join(''):'<p class="muted">هنوز ثبت نشده.</p>';
 }
 function renderMoodLine(){
-  const el=$('moodLineChart');if(!el)return;
   const days=[];for(let i=29;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(dateISO(d));}
   const e=days.map(d=>data.mood.find(m=>m.date===d)?.energy||null);
   const s=days.map(d=>data.mood.find(m=>m.date===d)?.stress||null);
@@ -975,7 +806,7 @@ function renderMoodLine(){
   const x=i=>p+(i/(days.length-1))*(w-2*p);
   const y=v=>h-p-(v/5)*(h-2*p);
   const line=arr=>{let path='';let st=false;arr.forEach((v,i)=>{if(v==null){st=false;return;}if(!st){path+=`M${x(i)},${y(v)} `;st=true;}else path+=`L${x(i)},${y(v)} `;});return path;};
-  el.innerHTML=`<svg class="svg-chart" viewBox="0 0 ${w} ${h}">
+  $('moodLineChart').innerHTML=`<svg class="svg-chart" viewBox="0 0 ${w} ${h}">
     ${[1,2,3,4,5].map(v=>`<line x1="${p}" y1="${y(v)}" x2="${w-p}" y2="${y(v)}" stroke="var(--line)" stroke-dasharray="2,4"/>`).join('')}
     <path d="${line(e)}" fill="none" stroke="var(--olive)" stroke-width="3" stroke-linecap="round"/>
     <path d="${line(s)}" fill="none" stroke="var(--red)" stroke-width="3" stroke-linecap="round" stroke-dasharray="4,4"/>
@@ -1017,8 +848,7 @@ function flash(t){const el=$('globalMessage');el.textContent=t;el.className='not
 $('monthlyGoalForm').addEventListener('submit',e=>{
   e.preventDefault();
   const t=$('mgTitle').value.trim();if(!t)return;
-  const g={id:nid(),title:t,description:$('mgDesc').value.trim(),priority:$('mgPriority').value,due_date:$('mgDue').value||null,done:false,created:new Date().toISOString()};
-  data.monthlyGoals.push(g);
+  data.monthlyGoals.push({id:nid(),title:t,description:$('mgDesc').value.trim(),priority:$('mgPriority').value,due_date:$('mgDue').value||null,done:false,created:new Date().toISOString()});
   $('monthlyGoalForm').reset();$('mgDesc').value='';$('mgPriority').value='normal';$('mgDue').value=dateISO();
   save();flash('هدف ماهانه ذخیره شد');
 });
@@ -1035,8 +865,7 @@ $('monthlyGoalsList').addEventListener('click',e=>{
 $('weeklyGoalForm').addEventListener('submit',e=>{
   e.preventDefault();
   const t=$('wgTitle').value.trim();if(!t)return;
-  const g={id:nid(),title:t,monthlyGoalId:$('wgParent').value||null,due_date:$('wgDue').value||null,done:false,created:new Date().toISOString()};
-  data.weeklyGoals.push(g);
+  data.weeklyGoals.push({id:nid(),title:t,monthlyGoalId:$('wgParent').value||null,due_date:$('wgDue').value||null,done:false,created:new Date().toISOString()});
   $('weeklyGoalForm').reset();$('wgDue').value=dateISO();
   save();flash('هدف هفتگی ذخیره شد');
 });
@@ -1085,21 +914,10 @@ $('weekColumns').addEventListener('click',e=>{
   if(add){
     const title=prompt('عنوان کار جدید:');
     if(!title)return;
-    const dayIdx=weekDayNames[new Date(add).getDay()===6?0:(new Date(add).getDay()+1)%7]||'';
     data.weeklyTasks.push({id:nid(),title,date:add,dayName:'',weeklyGoalId:null,done:false,created:new Date().toISOString()});
     save();
   }
 });
-
-// ═══════════ CRUD: Future Log ═══════════
-$('futureForm').addEventListener('submit',e=>{
-  e.preventDefault();
-  const t=$('futTitle').value.trim();if(!t)return;
-  data.future.push({id:nid(),title:t,category:$('futCat').value,due_date:$('futDue').value||null,priority:$('futPri').value});
-  $('futureForm').reset();$('futDue').value=dateISO();
-  save();flash('ذخیره شد');
-});
-$('futureList').addEventListener('click',e=>{if(e.target.dataset.del==='future'&&confirm('حذف شود؟')){data.future=data.future.filter(x=>x.id!=e.target.dataset.id);save();}});
 
 // ═══════════ CRUD: وظایف روزانه ═══════════
 $('taskForm').addEventListener('submit',e=>{e.preventDefault();const t=$('taskTitle').value.trim();if(!t)return;data.tasks.push({id:nid(),title:t,priority:$('taskPriority').value,status:'planned',due_date:$('taskDue').value||null,category:$('taskCategory').value,created:new Date().toISOString()});$('taskForm').reset();$('taskPriority').value='normal';$('taskCategory').value='شخصی';save();flash('ذخیره شد');});
@@ -1207,3 +1025,6 @@ if(savedSession&&getUsers()[savedSession]){
   switchPanel('auth');
 }
 })();
+</script>
+</body>
+</html>
