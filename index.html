@@ -154,6 +154,11 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .wg-progress{height:6px;border-radius:99px;background:var(--cream2);overflow:hidden;margin-top:8px}
 .wg-progress span{height:100%;display:block;background:linear-gradient(90deg,var(--olive),var(--gold));transition:width .5s}
 .wg-stats{font-size:11px;color:var(--muted);margin-top:6px;display:flex;gap:10px;flex-wrap:wrap}
+.notebook-card{transition:.2s}
+.notebook-card:hover{box-shadow:var(--shadow2)}
+.notebook-section{background:var(--paper);border-radius:10px;padding:10px 12px;border:1px solid var(--line)}
+.notebook-label{font-size:11px;color:var(--muted);font-weight:700;margin-bottom:4px}
+.notebook-text{font-size:13px;line-height:1.8;white-space:pre-wrap;word-break:break-word;color:var(--text)}
 
 @media(max-width:1000px){.formgrid-goal{grid-template-columns:1fr 1fr 1fr}.formgrid-goal>button{grid-column:1/-1}}
 @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.week-columns{grid-template-columns:repeat(4,1fr)}}
@@ -187,6 +192,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
     <div id="globalMessage" class="notice hidden"></div>
     <nav class="nav">
       <button class="active" data-tab="today">📓 امروز</button>
+      <button data-tab="notebook">📖 دفترچه</button>
       <button data-tab="dashboard">📊 داشبورد</button>
       <button data-tab="planner">🎯 برنامه‌ریزی زنده</button>
       <button data-tab="tasks">✓ وظایف</button>
@@ -220,7 +226,19 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
       </div>
       <div class="panel"><h3>📊 نگاهی به امروز</h3><div class="grid" id="todayStats"></div></div>
     </section>
-
+<section id="tab-notebook" class="tab hidden">
+  <div class="sectionhead">
+    <div><h2>📖 دفترچه</h2><p class="muted">همهٔ یادداشت‌های روزانه‌ات، به ترتیب تاریخ</p></div>
+    <span class="pill" id="notebookCount">—</span>
+  </div>
+  <div class="panel" style="box-shadow:none">
+    <div class="formgrid2">
+      <div class="field"><label>🔍 جستجو</label><input id="notebookSearch" placeholder="مثلاً: کتاب، ورزش، خرید..."></div>
+      <div class="field"><label>📅 فیلتر زمانی</label><select id="notebookFilter"><option value="all">همه</option><option value="7">۷ روز اخیر</option><option value="30">۳۰ روز اخیر</option><option value="this_month">این ماه</option></select></div>
+    </div>
+  </div>
+  <div id="notebookList"></div>
+</section>
     <section id="tab-dashboard" class="tab hidden">
       <div class="sectionhead"><div><h2>داشبورد</h2></div><span id="todayLabel" class="pill"></span></div>
       <div class="grid" id="dashboardStats"></div>
@@ -545,6 +563,7 @@ function renderAll(){
   refreshSelectors();  // ← قبل از همه، selectها پر بشن
   renderDashboard();
   renderToday();
+  renderNotebook();
   renderMonthlyGoals();
   renderWeeklyGoals();
   renderWeeklyTasks();
@@ -922,7 +941,62 @@ function renderMoodLine(){
   </svg>`;
 }
 
-// ═══════════ بقیه رندرها ═══════════
+// ═══════════ دفترچه ═══════════
+function renderNotebook(){
+  const el=$('notebookList');
+  if(!el)return;
+  const search=($('notebookSearch')?.value||'').trim().toLowerCase();
+  const filter=$('notebookFilter')?.value||'all';
+  let arr=[...data.daily].sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+
+  if(filter==='7'){
+    const cutoff=new Date();cutoff.setDate(cutoff.getDate()-7);
+    arr=arr.filter(n=>new Date(n.date)>=cutoff);
+  }
+  if(filter==='30'){
+    const cutoff=new Date();cutoff.setDate(cutoff.getDate()-30);
+    arr=arr.filter(n=>new Date(n.date)>=cutoff);
+  }
+  if(filter==='this_month'){
+    const first=new Date();first.setDate(1);
+    arr=arr.filter(n=>new Date(n.date)>=first);
+  }
+  if(search){
+    arr=arr.filter(n=>
+      String(n.morning||'').toLowerCase().includes(search)||
+      String(n.evening||'').toLowerCase().includes(search)||
+      String(n.highlight||'').toLowerCase().includes(search)||
+      String(n.gratitude||'').toLowerCase().includes(search)
+    );
+  }
+
+  const total=data.daily.length;
+  $('notebookCount').textContent=total?`${fa(arr.length)} از ${fa(total)}`:'—';
+
+  if(!arr.length){
+    el.innerHTML='<p class="muted" style="text-align:center;padding:30px">یادداشتی برای نمایش نیست. از تب «📓 امروز» شروع کن.</p>';
+    return;
+  }
+
+  el.innerHTML=arr.map(n=>{
+    const isToday=n.date===dateISO();
+    return `<div class="panel notebook-card" data-notebook-date="${n.date}">
+      <div class="sectionhead" style="margin-bottom:10px">
+        <div><h3 style="margin:0">📅 ${toFaDate(n.date)} ${isToday?'<span class="status gold" style="font-size:10px">امروز</span>':''}</h3></div>
+        <div style="display:flex;gap:6px">
+          <button class="ghost small" data-edit-notebook="${n.date}">✏️ ویرایش</button>
+          <button class="danger small" data-del-notebook="${n.date}">×</button>
+        </div>
+      </div>
+      <div class="grid2" style="gap:10px">
+        ${n.morning?`<div class="notebook-section"><div class="notebook-label">🌅 صبح</div><div class="notebook-text">${safe(n.morning)}</div></div>`:''}
+        ${n.evening?`<div class="notebook-section"><div class="notebook-label">🌙 شب</div><div class="notebook-text">${safe(n.evening)}</div></div>`:''}
+      </div>
+      ${n.highlight?`<div class="notebook-section" style="margin-top:10px"><div class="notebook-label">✨ بهترین اتفاق</div><div class="notebook-text">${safe(n.highlight)}</div></div>`:''}
+      ${n.gratitude?`<div class="notebook-section" style="margin-top:10px"><div class="notebook-label">🙏 شکرگزاری</div><div class="notebook-text">${safe(n.gratitude)}</div></div>`:''}
+    </div>`;
+  }).join('');
+}
 function renderUni(){
   $('uniList').innerHTML=data.uni.length?data.uni.map(u=>`<article class="item"><div class="item-main"><div class="item-title">${safe(u.course)}${u.title?' — '+safe(u.title):''}</div>
     <div class="item-meta"><span class="status">${safe(u.type||'')}</span>${u.due_date?`<span>موعد: ${toFaDate(u.due_date)}</span>`:''}</div></div>
@@ -1211,7 +1285,51 @@ $('skillList').addEventListener('click',e=>{if(e.target.dataset.del==='skills'&&
 $('reviewForm').addEventListener('submit',e=>{e.preventDefault();data.review.push({id:nid(),type:$('revType').value,period:$('revPeriod').value,score:Number($('revScore').value||0),successes:$('revSucc').value,challenges:$('revChal').value});$('reviewForm').reset();save();flash('ذخیره شد');});
 $('reviewList').addEventListener('click',e=>{if(e.target.dataset.del==='review'&&confirm('حذف شود؟')){data.review=data.review.filter(x=>String(x.id)!==String(e.target.dataset.id));save();}});
 
-// ═══════════ ناوبری ═══════════
+// ═══════════ رویدادهای دفترچه ═══════════
+document.addEventListener('input',e=>{
+  if(e.target.id==='notebookSearch')renderNotebook();
+});
+document.addEventListener('change',e=>{
+  if(e.target.id==='notebookFilter')renderNotebook();
+});
+document.addEventListener('click',e=>{
+  const del=e.target.dataset.delNotebook;
+  if(del&&confirm('این یادداشت حذف شود؟')){
+    data.daily=data.daily.filter(d=>d.date!==del);
+    save();return;
+  }
+  const edit=e.target.dataset.editNotebook;
+  if(edit){
+    const card=document.querySelector(`[data-notebook-date="${edit}"]`);
+    const note=data.daily.find(d=>d.date===edit);
+    if(!card||!note)return;
+    card.innerHTML=`<div class="sectionhead" style="margin-bottom:10px">
+        <h3 style="margin:0">✏️ ویرایش یادداشت ${toFaDate(edit)}</h3></div>
+      <div class="grid2" style="gap:10px">
+        <div class="field"><label>🌅 صبح</label><textarea class="daily-notes-area" rows="3" data-edit-field="morning">${safe(note.morning||'')}</textarea></div>
+        <div class="field"><label>🌙 شب</label><textarea class="daily-notes-area" rows="3" data-edit-field="evening">${safe(note.evening||'')}</textarea></div>
+      </div>
+      <div class="grid2" style="gap:10px;margin-top:10px">
+        <div class="field"><label>✨ بهترین اتفاق</label><input data-edit-field="highlight" value="${safe(note.highlight||'')}"></div>
+        <div class="field"><label>🙏 شکرگزاری</label><input data-edit-field="gratitude" value="${safe(note.gratitude||'')}"></div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <button data-save-notebook="${edit}">💾 ذخیره</button>
+        <button class="secondary" data-cancel-notebook="1">لغو</button>
+      </div>`;
+    return;
+  }
+  const sv=e.target.dataset.saveNotebook;
+  if(sv){
+    const card=document.querySelector(`[data-notebook-date="${sv}"]`);
+    const note=data.daily.find(d=>d.date===sv);
+    if(!card||!note)return;
+    card.querySelectorAll('[data-edit-field]').forEach(f=>{note[f.dataset.editField]=f.value;});
+    saveData();renderNotebook();flash('ویرایش ذخیره شد');
+    return;
+  }
+  if(e.target.dataset.cancelNotebook){renderNotebook();return;}
+});
 document.querySelectorAll('.nav button[data-tab]').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('.nav button[data-tab]').forEach(x=>x.classList.toggle('active',x===b));
   document.querySelectorAll('.tab').forEach(s=>s.classList.toggle('hidden',s.id!=='tab-'+b.dataset.tab));
