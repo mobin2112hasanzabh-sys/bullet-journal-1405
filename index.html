@@ -408,7 +408,7 @@ const todayFaLong=()=>new Intl.DateTimeFormat('fa-IR-u-ca-persian',{weekday:'lon
 const show=(id,y=true)=>$(id).classList.toggle('hidden',!y);
 const msg=(id,t,type='')=>{const el=$(id);el.textContent=t;el.className='notice'+(type?' '+type:'');el.classList.remove('hidden');setTimeout(()=>el.classList.add('hidden'),4000);};
 const labels={priority:{urgent_important:'فوری و مهم',important:'مهم',normal:'عادی',low:'کم‌اهمیت'},taskStatus:{planned:'برنامه‌ریزی‌شده',in_progress:'در حال انجام',done:'انجام شد',cancelled:'لغو شد'}};
-const nid=()=>Date.now()+Math.floor(Math.random()*100000);
+const nid=()=>'id_'+Date.now()+'_'+Math.floor(Math.random()*100000);
 
 const STORAGE_USERS='bj_users_v4', STORAGE_SESSION='bj_session_v4', DATA_PREFIX='bj_data_v4_';
 const emptyData=()=>({tasks:[],habits:[],logs:[],monthlyGoals:[],weeklyGoals:[],weeklyTasks:[],finance:[],mood:[],uni:[],forex:[],skills:[],review:[],daily:[],pomodoro:[]});
