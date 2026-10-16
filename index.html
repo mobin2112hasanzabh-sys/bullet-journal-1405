@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#4b3526">
+<title>بولت ژورنال من | ۱۴۰۵</title>
+<style>
+:root{--cream:#f7f1e7;--cream2:#eee3d2;--brown:#76543a;--dark:#4b3526;--olive:#78845b;--olive2:#e5ead9;--text:#30271f;--muted:#766c61;--line:#ddd0be;--white:#fffdf9;--red:#b95042;--redbg:#fbe9e5;--green:#456b3f;--greenbg:#e5f2e2;--gold:#b58e42;--goldbg:#faf1dd;--shadow:0 8px 28px rgba(75,53,38,.08)}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--text);font-family:Tahoma,"Segoe UI",sans-serif;line-height:1.7}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:10px 15px;background:var(--olive);color:white;font-weight:700}button:hover{filter:brightness(.96)}button.secondary{background:var(--cream2);color:var(--dark);border:1px solid var(--line)}button.danger{background:var(--red)}button.small{padding:5px 9px;font-size:12px;border-radius:9px}.wrap{max-width:1200px;margin:auto;padding:18px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}.brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border-radius:16px;background:var(--dark);color:var(--cream);display:grid;place-items:center;font-size:23px}.brand h1{font-size:20px;margin:0}.brand p{margin:0;color:var(--muted);font-size:12px}.top-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.pill{display:inline-block;background:var(--olive2);color:#465337;border-radius:999px;padding:4px 9px;font-size:12px}.panel{background:var(--white);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}.panel h2,.panel h3{margin-top:0}.muted{color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.stat{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:15px}.stat .label{font-size:12px;color:var(--muted)}.stat .number{font-size:26px;font-weight:800;color:var(--dark)}.nav{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 18px}.nav button{background:transparent;color:var(--dark);border:1px solid var(--line);padding:8px 12px;font-size:13px}.nav button.active{background:var(--dark);color:#fff;border-color:var(--dark)}.formgrid{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:9px;align-items:end}.formgrid2{display:grid;grid-template-columns:1fr 1fr;gap:9px;align-items:end}.field{display:flex;flex-direction:column;gap:5px}.field label{font-size:12px;color:var(--muted);font-weight:700}.field input,.field select,.field textarea,input,select,textarea{background:#fffefa;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px;min-width:0;width:100%}.field input:focus,.field select:focus,.field textarea:focus{outline:2px solid #cbd4b8;border-color:var(--olive)}.list{display:flex;flex-direction:column;gap:9px;margin-top:14px}.item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px;border:1px solid var(--line);border-radius:14px;background:#fff}.item-main{min-width:0;flex:1}.item-title{font-weight:700;overflow-wrap:anywhere}.item-meta{font-size:12px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}.item-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.item select{padding:6px;max-width:150px;width:auto}.done .item-title{text-decoration:line-through;color:var(--muted)}.status{font-size:11px;border-radius:999px;background:var(--cream2);padding:3px 8px;color:var(--dark)}.status.done{background:var(--greenbg);color:var(--green)}.status.late{background:var(--redbg);color:var(--red)}.status.gold{background:var(--goldbg);color:var(--gold)}.hidden{display:none!important}.notice{border-radius:12px;padding:11px 13px;background:var(--olive2);color:#40502f;font-size:13px;margin:10px 0}.notice.error{background:var(--redbg);color:#8a3027}.notice.warn{background:#fff1d5;color:#805a14}.authbox{max-width:480px;margin:5vh auto}.authbox h2{margin-bottom:5px}.toggleline{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px}.habitgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.habit{border:1px solid var(--line);border-radius:14px;padding:13px;background:#fff;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.habit span{font-weight:700}.progress{height:8px;border-radius:99px;background:var(--cream2);overflow:hidden;margin-top:6px}.progress span{height:100%;display:block;background:var(--olive);width:0}.sectionhead{display:flex;justify-content:space-between;align-items:start;gap:12px;flex-wrap:wrap;margin-bottom:14px}.footer{text-align:center;color:var(--muted);font-size:11px;padding:15px}.auth-form{display:grid;gap:12px}.full{width:100%}.checkrow{display:flex;align-items:center;gap:8px;font-size:13px}.checkrow input{width:auto;min-width:auto}.chart{display:flex;gap:6px;align-items:flex-end;height:120px;padding:8px;background:var(--cream2);border-radius:12px}.chart .bar{flex:1;background:var(--olive);border-radius:6px 6px 0 0;min-height:4px;position:relative;display:flex;align-items:flex-end;justify-content:center;color:white;font-size:10px;padding-bottom:4px;transition:.3s}.chart .bar:hover{filter:brightness(.9)}.subnav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}.subnav button{background:var(--cream2);color:var(--dark);padding:6px 12px;font-size:13px}.subnav button.active{background:var(--olive);color:white}.money-pos{color:var(--green);font-weight:700}.money-neg{color:var(--red);font-weight:700}@media(max-width:780px){.wrap{padding:12px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.grid3{grid-template-columns:repeat(2,minmax(0,1fr))}.formgrid{grid-template-columns:1fr 1fr}.formgrid2{grid-template-columns:1fr}.formgrid .wide{grid-column:1/-1}.top{align-items:flex-start}.brand h1{font-size:17px}.panel{padding:15px}.habitgrid{grid-template-columns:1fr}.item{align-items:flex-start;flex-direction:column}.item-actions{width:100%}.item-actions button{flex:1}.stat .number{font-size:22px}}@media(max-width:420px){.grid,.grid3{gap:8px;grid-template-columns:1fr 1fr}.stat{padding:10px}.formgrid{grid-template-columns:1fr}.formgrid .wide{grid-column:auto}.nav button{flex:1;padding:6px 5px;font-size:12px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><div class="logo">✦</div><div><h1>بولت ژورنال من</h1><p>نسخهٔ کامل · ۱۴۰۵</p></div></div>
+    <div class="top-actions"><span class="pill" id="syncPill">آماده</span><button id="logoutBtn" class="secondary hidden">خروج</button></div>
+  </header>
+
+  <section id="configPanel" class="panel hidden">
+    <h2>اتصال به پایگاه داده</h2>
+    <p class="muted">آدرس پروژه از قبل وارد شده است. کلید عمومی Publishable را از Supabase بردار.</p>
+    <form id="configForm" class="auth-form">
+      <div class="field"><label for="projectUrl">آدرس پروژهٔ Supabase</label><input id="projectUrl" type="url" required value="https://xalgapmmzrbhznzvpouk.supabase.co"></div>
+      <div class="field"><label for="publishableKey">کلید عمومی</label><input id="publishableKey" type="password" required autocomplete="off"></div>
+      <label class="checkrow"><input id="showKey" type="checkbox"> نمایش کلید</label>
+      <button type="submit">ذخیره و اتصال</button>
+    </form>
+    <div id="configMessage" class="notice hidden"></div>
+  </section>
+
+  <section id="authPanel" class="panel authbox hidden">
+    <h2 id="authTitle">ورود به بولت ژورنال</h2><p class="muted">با حساب شخصی وارد شو تا اطلاعاتت ذخیره شود.</p>
+    <form id="authForm" class="auth-form">
+      <div class="field"><label for="email">ایمیل</label><input id="email" type="email" required autocomplete="email"></div>
+      <div class="field"><label for="password">رمز عبور</label><input id="password" type="password" required minlength="6" autocomplete="current-password"></div>
+      <button id="authSubmit" type="submit">ورود</button>
+    </form>
+    <div class="toggleline"><button id="switchAuth" class="secondary" type="button">ساخت حساب جدید</button></div>
+    <div id="authMessage" class="notice hidden"></div>
+  </section>
+
+  <main id="appPanel" class="hidden">
+    <div id="globalMessage" class="notice hidden"></div>
+    <nav class="nav" id="mainNav" aria-label="بخش‌ها">
+      <button class="active" data-tab="dashboard">📊 داشبورد</button>
+      <button data-tab="tasks">✓ وظایف</button>
+      <button data-tab="habits">🔥 عادت‌ها</button>
+      <button data-tab="goals">🎯 اهداف</button>
+      <button data-tab="finance">💰 مالی</button>
+      <button data-tab="mood">😊 خلق‌وخو</button>
+      <button data-tab="uni">🎓 دانشگاه</button>
+      <button data-tab="forex">📈 فارکس</button>
+      <button data-tab="skills">📚 یادگیری</button>
+      <button data-tab="timelog">⏱️ ثبت زمان</button>
+      <button data-tab="planner">📅 برنامه‌ریزی</button>
+      <button data-tab="review">📝 مرور</button>
+      <button data-tab="collections">🗂️ موضوعات</button>
+      <button data-tab="settings">⚙️ تنظیمات</button>
+    </nav>
+
+    <!-- ═══════════ داشبورد ═══════════ -->
+    <section id="tab-dashboard" class="tab">
+      <div class="sectionhead"><div><h2>سلام 🌿</h2><p class="muted">خلاصه‌ای از وضعیت سه‌ماهه‌ات</p></div><span id="todayLabel" class="pill"></span></div>
+      <div class="grid">
+        <div class="stat"><div class="label">کل وظایف</div><div id="statTasks" class="number">۰</div></div>
+        <div class="stat"><div class="label">انجام‌شده</div><div id="statDone" class="number">۰</div></div>
+        <div class="stat"><div class="label">عادت‌های فعال</div><div id="statHabits" class="number">۰</div></div>
+        <div class="stat"><div class="label">اهداف جاری</div><div id="statGoals" class="number">۰</div></div>
+        <div class="stat"><div class="label">درآمد (تومان)</div><div id="statIncome" class="number">۰</div></div>
+        <div class="stat"><div class="label">هزینه (تومان)</div><div id="statExpense" class="number">۰</div></div>
+        <div class="stat"><div class="label">پس‌انداز</div><div id="statSaving" class="number">۰</div></div>
+        <div class="stat"><div class="label">میانگین پیشرفت اهداف</div><div id="statGoalAvg" class="number">۰٪</div></div>
+      </div>
+      <div class="panel" style="margin-top:16px;box-shadow:none">
+        <h3>نمودار هفتهٔ اخیر (عادت‌های انجام‌شده)</h3>
+        <div class="chart" id="habitChart"></div>
+      </div>
+      <div class="panel" style="box-shadow:none">
+        <h3>گزارش ماهانهٔ مالی</h3>
+        <div id="monthlyFinance"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════ وظایف ═══════════ -->
+    <section id="tab-tasks" class="tab hidden">
+      <div class="sectionhead"><div><h2>وظایف من</h2></div></div>
+      <form id="taskForm" class="formgrid">
+        <div class="field wide"><label>عنوان</label><input id="taskTitle" required maxlength="180" placeholder="مثلاً مرور درس ریاضی"></div>
+        <div class="field"><label>اولویت</label><select id="taskPriority"><option value="urgent_important">فوری و مهم</option><option value="important">مهم</option><option value="normal" selected>عادی</option><option value="low">کم‌اهمیت</option></select></div>
+        <div class="field"><label>سررسید</label><input id="taskDue" type="date"></div>
+        <div class="field"><label>دسته</label><select id="taskCategory"><option>شخصی</option><option>دانشگاه</option><option>وردپرس</option><option>فارکس</option><option>ورزش</option><option>مالی</option><option>سایر</option></select></div>
+        <button type="submit">افزودن</button>
+      </form>
+      <div class="field" style="max-width:260px;margin-top:13px"><label>نمایش</label><select id="taskFilter"><option value="all">همه</option><option value="open">فقط باز</option><option value="done">انجام‌شده</option></select></div>
+      <div id="taskList" class="list"></div>
+    </section>
+
+    <!-- ═══════════ عادت‌ها ═══════════ -->
+    <section id="tab-habits" class="tab hidden">
+      <div class="sectionhead"><div><h2>ردیاب عادت‌ها</h2></div><span id="habitDate" class="pill"></span></div>
+      <form id="habitForm" class="formgrid2">
+        <div class="field"><label>نام عادت جدید</label><input id="habitName" required maxlength="120" placeholder="مثلاً مطالعهٔ روزانه"></div>
+        <button type="submit">افزودن عادت</button>
+      </form>
+      <div id="habitList" class="habitgrid" style="margin-top:15px"></div>
+      <h3 style="margin-top:24px">نمای ۷ روز اخیر</h3>
+      <div id="habitWeekView"></div>
+    </section>
+
+    <!-- ═══════════ اهداف ═══════════ -->
+    <section id="tab-goals" class="tab hidden">
+      <div class="sectionhead"><div><h2>اهداف و پروژه‌ها</h2></div></div>
+      <form id="goalForm" class="formgrid">
+        <div class="field wide"><label>عنوان هدف</label><input id="goalTitle" required maxlength="180"></div>
+        <div class="field"><label>موعد</label><input id="goalDue" type="date"></div>
+        <div class="field"><label>اولویت</label><select id="goalPriority"><option value="urgent_important">فوری و مهم</option><option value="important">مهم</option><option value="normal" selected>عادی</option><option value="low">کم‌اهمیت</option></select></div>
+        <button type="submit">افزودن</button>
+      </form>
+      <div id="goalList" class="list"></div>
+    </section>
+
+    <!-- ═══════════ مالی ═══════════ -->
+    <section id="tab-finance" class="tab hidden">
+      <div class="sectionhead"><div><h2>مدیریت مالی</h2><p class="muted">مبلغ‌ها را مثبت وارد کن؛ نوع مشخص می‌کند درآمد/هزینه/پس‌انداز است.</p></div></div>
+      <form id="financeForm" class="formgrid">
+        <div class="field"><label>تاریخ</label><input id="finDate" type="date" required></div>
+        <div class="field"><label>نوع</label><select id="finType"><option>درآمد</option><option>هزینه</option><option>پس‌انداز</option><option>بدهی</option><option>طلب</option></select></div>
+        <div class="field"><label>دسته</label><select id="finCategory"><option>خوراک</option><option>رفت‌وآمد</option><option>دانشگاه</option><option>خرید</option><option>سلامت</option><option>تفریح</option><option>ابزار</option><option>درآمد</option><option>پس‌انداز</option><option>سایر</option></select></div>
+        <div class="field"><label>شرح</label><input id="finDesc" maxlength="200"></div>
+        <div class="field"><label>مبلغ (تومان)</label><input id="finAmount" type="number" min="0" step="1000" required></div>
+        <div class="field"><label>روش پرداخت</label><select id="finPay"><option>نقدی</option><option>کارت</option><option>انتقال</option><option>آنلاین</option></select></div>
+        <button type="submit">افزودن</button>
+      </form>
+      <div id="financeList" class="list"></div>
+      <h3 style="margin-top:20px">گزارش ماهانه</h3>
+      <div id="financeReport"></div>
+    </section>
+
+    <!-- ═══════════ خلق‌وخو ═══════════ -->
+    <section id="tab-mood" class="tab hidden">
+      <div class="sectionhead"><div><h2>خلق‌وخو و انرژی</h2><p class="muted">روزی یک بار ثبت کن.</p></div></div>
+      <form id="moodForm" class="formgrid">
+        <div class="field"><label>تاریخ</label><input id="moodDate" type="date" required></div>
+        <div class="field"><label>حال</label><select id="moodMood"><option>😄 عالی</option><option>🙂 خوب</option><option>😐 معمولی</option><option>😔 پایین</option><option>😣 سخت</option></select></div>
+        <div class="field"><label>انرژی (۱-۵)</label><input id="moodEnergy" type="number" min="1" max="5"></div>
+        <div class="field"><label>خواب (۱-۵)</label><input id="moodSleep" type="number" min="1" max="5"></div>
+        <div class="field"><label>استرس (۱-۵)</label><input id="moodStress" type="number" min="1" max="5"></div>
+        <div class="field"><label>ساعت خواب</label><input id="moodHours" type="number" min="0" max="24" step="0.5"></div>
+        <button type="submit">ثبت</button>
+      </form>
+      <div id="moodList" class="list"></div>
+    </section>
+
+    <!-- ═══════════ دانشگاه ═══════════ -->
+    <section id="tab-uni" class="tab hidden">
+      <div class="sectionhead"><div><h2>مدیریت دانشگاه</h2></div></div>
+      <form id="uniForm" class="formgrid">
+        <div class="field"><label>نام درس</label><input id="uniCourse" required maxlength="120"></div>
+        <div class="field"><label>نوع</label><select id="uniType"><option>درس</option><option>تکلیف</option><option>امتحان</option><option>پروژه</option></select></div>
+        <div class="field"><label>عنوان</label><input id="uniTitle" maxlength="200"></div>
+        <div class="field"><label>موعد</label><input id="uniDue" type="date"></div>
+        <div class="field"><label>وضعیت</label><select id="uniStatus"><option value="planned">برنامه‌ریزی‌شده</option><option value="in_progress">در حال انجام</option><option value="completed">تکمیل‌شده</option></select></div>
+        <div class="field"><label>نمره</label><input id="uniGrade" type="number" min="0" max="20" step="0.25"></div>
+        <button type="submit">افزودن</button>
+      </form>
+      <div id="uniList" class="list"></div>
+    </section>
+
+    <!-- ═══════════ فارکس ═══════════ -->
+    <section id="tab-forex" class="tab hidden">
+      <div class="sectionhead"><div><h2>دفتر معاملاتی فارکس</h2><p class="muted">فقط برای ثبت و تحلیل — سیگنال نیست.</p></div></div>
+      <form id="forexForm" class="formgrid">
+        <div class="field"><label>تاریخ</label><input id="fxDate" type="date"></div>
+        <div class="field"><label>نماد</label><input id="fxSymbol" placeholder="EUR/USD"></div>
+        <div class="field"><label>جهت</label><select id="fxDir"><option>خرید</option><option>فروش</option></select></div>
+        <div class="field"><label>قیمت ورود</label><input id="fxEntry" type="number" step="0.00001"></div>
+        <div class="field"><label>قیمت خروج</label><input id="fxExit" type="number" step="0.00001"></div>
+        <div class="field"><label>ریسک (مبلغ)</label><input id="fxRisk" type="number"></div>
+        <div class="field"><label>نتیجه (مبلغ)</label><input id="fxResult" type="number"></div>
+        <button type="submit">افزودن</button>
+      </form>
+      <div id="forexList" class="list"></div>
+    </section>
+
+    <!-- ═══════════ یادگیری ═══════════ -->
+    <section id="tab-skills" class="tab hidden">
+      <div class="sectionhead"><div><h2>مسیر یادگیری مهارت‌ها</h2></div></div>
+      <form id="skillForm" class="formgrid">
+        <div class="field"><label>مهارت</label><input id="skillName" required maxlength="120"></div>
+        <div class="field"><label>مرحله</label><input id="skillStage" placeholder="مرحله ۱"></div>
+        <div class="field"><label>منبع</label><input id="skillSource" maxlength="200"></div>
+        <div class="field"><label>موعد پایان</label><input id="skillEnd" type="date"></div>
+        <div class="field"><label>ساعت مطالعه</label><input id="skillHours" type="number" min="0" step="0.5"></div>
+        <button type="submit">افزودن</button>
+      </form>
+      <div id="skillList" class="list"></div>
+    </section>
+
+    <!-- ═══════════ ثبت زمان ═══════════ -->
+    <section id="tab-timelog" class="tab hidden">
+      <div class="sectionhead"><div><h2>ثبت زمان (برنامه در برابر واقعی)</h2></div></div>
+      <form id="timeForm" class="formgrid">
+        <div class="field"><label>تاریخ</label><input id="timeDate" type="date" required></div>
+        <div class="field"><label>دسته</label><select id="timeCat"><option>دانشگاه</option><option>وردپرس</option><option>فارکس</option><option>ورزش</option><option>تفریح</option><option>سایر</option></select></div>
+        <div class="field"><label>فعالیت</label><input id="timeAct" maxlength="200"></div>
+        <div class="field"><label>برنامه (ساعت)</label><input id="timePlan" type="number" min="0" step="0.25"></div>
+        <div class="field"><label>واقعی (ساعت)</label><input id="timeReal" type="number" min="0" step="0.25"></div>
+        <button type="submit">افزودن</button>
+      </form>
+      <div id="timeList" class="list"></div>
+    </section>
+
+    <!-- ═══════════ برنامه‌ریزی ═══════════ -->
+    <section id="tab-planner" class="tab hidden">
+      <div class="sectionhead"><div><h2>برنامه‌ریزی</h2></div></div>
+      <div class="subnav" id="plannerSub">
+        <button class="active" data-sub="future">Future Log</button>
+        <button data-sub="monthly">ماهانه</button>
+        <button data-sub="weekly">هفتگی</button>
+      </div>
+      <div id="sub-future" class="subtab">
+        <form id="futureForm" class="formgrid2">
+          <div class="field"><label>عنوان</label><input id="futTitle" required maxlength="200"></div>
+          <div class="field"><label>دسته</label><input id="futCat" maxlength="80"></div>
+          <div class="field"><label>موعد</label><input id="futDue" type="date"></div>
+          <div class="field"><label>اولویت</label><select id="futPri"><option value="urgent_important">فوری و مهم</option><option value="important">مهم</option><option value="normal" selected>عادی</option><option value="low">کم‌اهمیت</option></select></div>
+          <button type="submit" style="grid-column:1/-1">افزودن</button>
+        </form>
+        <div id="futureList" class="list"></div>
+      </div>
+      <div id="sub-monthly" class="subtab hidden">
+        <form id="monthForm" class="formgrid">
+          <div class="field"><label>ماه</label><input id="monMonth" placeholder="آبان"></div>
+          <div class="field"><label>تمرکز ماه</label><input id="monFocus" maxlength="120"></div>
+          <div class="field"><label>هدف</label><input id="monGoal" required maxlength="200"></div>
+          <div class="field"><label>موعد</label><input id="monDue" type="date"></div>
+          <button type="submit">افزودن</button>
+        </form>
+        <div id="monthList" class="list"></div>
+      </div>
+      <div id="sub-weekly" class="subtab hidden">
+        <form id="weekForm" class="formgrid">
+          <div class="field"><label>هفته از</label><input id="weekFrom" type="date"></div>
+          <div class="field"><label>روز</label><select id="weekDay"><option>شنبه</option><option>یکشنبه</option><option>دوشنبه</option><option>سه‌شنبه</option><option>چهارشنبه</option><option>پنجشنبه</option><option>جمعه</option></select></div>
+          <div class="field"><label>ساعت شروع</label><input id="weekStart" type="time"></div>
+          <div class="field"><label>ساعت پایان</label><input id="weekEnd" type="time"></div>
+          <div class="field"><label>کار</label><input id="weekTask" required maxlength="200"></div>
+          <div class="field"><label>دسته</label><input id="weekCat" maxlength="80"></div>
+          <button type="submit">افزودن</button>
+        </form>
+        <div id="weekList" class="list"></div>
+      </div>
+    </section>
+
+    <!-- ═══════════ مرور ═══════════ -->
+    <section id="tab-review" class="tab hidden">
+      <div class="sectionhead"><div><h2>مرور و ارزیابی</h2></div></div>
+      <form id="reviewForm" class="formgrid">
+        <div class="field"><label>نوع</label><select id="revType"><option>روزانه</option><option>هفتگی</option><option>ماهانه</option></select></div>
+        <div class="field"><label>دوره</label><input id="revPeriod" placeholder="آبان"></div>
+        <div class="field"><label>امتیاز ۱-۱۰</label><input id="revScore" type="number" min="1" max="10"></div>
+        <div class="field"><label>موفقیت‌ها</label><input id="revSucc" maxlength="200"></div>
+        <div class="field"><label>چالش‌ها</label><input id="revChal" maxlength="200"></div>
+        <div class="field"><label>درس آموخته</label><input id="revLesson" maxlength="200"></div>
+        <div class="field"><label>اقدام اصلاحی</label><input id="revAction" maxlength="200"></div>
+        <button type="submit">افزودن</button>
+      </form>
+      <div id="reviewList" class="list"></div>
+    </section>
+
+    <!-- ═══════════ موضوعات ═══════════ -->
+    <section id="tab-collections" class="tab hidden">
+      <div class="sectionhead"><div><h2>صفحه‌های موضوعی</h2></div></div>
+      <form id="colForm" class="formgrid2">
+        <div class="field"><label>نام موضوع</label><input id="colName" required maxlength="120"></div>
+        <div class="field"><label>نوع</label><input id="colType" maxlength="80"></div>
+        <div class="field"><label>هدف</label><input id="colPurpose" maxlength="200"></div>
+        <div class="field"><label>محتوا / یادداشت</label><textarea id="colContent" rows="2"></textarea></div>
+        <button type="submit" style="grid-column:1/-1">افزودن</button>
+      </form>
+      <div id="colList" class="list"></div>
+    </section>
+
+    <!-- ═══════════ تنظیمات ═══════════ -->
+    <section id="tab-settings" class="tab hidden">
+      <h2>تنظیمات</h2>
+      <p class="muted">آدرس پروژه و کلید عمومی در همین مرورگر ذخیره شده‌اند.</p>
+      <div class="notice">هرگز کلید Secret یا service_role را وارد نکن.</div>
+      <div class="toggleline">
+        <button id="editConfig" class="secondary">تغییر اتصال</button>
+        <button id="exportBtn">⬇️ خروجی JSON</button>
+        <button id="refreshBtn">🔄 بازخوانی</button>
+        <button id="logoutBtn2" class="danger">خروج</button>
+      </div>
+      <p class="muted" style="margin-top:16px">نسخهٔ کامل با پشتیبانی از همهٔ بخش‌های اکسل.</p>
+    </section>
+  </main>
+  <div class="footer">بولت ژورنال شخصی ۱۴۰۵ · پالت کرم، قهوه‌ای و زیتونی</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(() => {
+  const DEFAULT_URL='https://xalgapmmzrbhznzvpouk.supabase.co';
+  const $=id=>document.getElementById(id);
+  const safe=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const fa=n=>new Intl.NumberFormat('fa-IR').format(n||0);
+  const dateISO=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
+  const todayFa=()=>new Intl.DateTimeFormat('fa-IR-u-ca-persian',{weekday:'long',year:'numeric',month:'long',day:'numeric'}).format(new Date());
+  const toFaDate=s=>{if(!s)return'';try{const d=new Date(s);return new Intl.DateTimeFormat('fa-IR-u-ca-persian',{year:'numeric',month:'2-digit',day:'2-digit'}).format(d);}catch{return s;}};
+  const show=(id,yes=true)=>$(id).classList.toggle('hidden',!yes);
+  const msg=(id,text,type='')=>{const el=$(id);el.textContent=text;el.className='notice'+(type?' '+type:'');el.classList.remove('hidden');};
+  const hideMsg=id=>show(id,false);
+  const labels={
+    priority:{urgent_important:'فوری و مهم',important:'مهم',normal:'عادی',low:'کم‌اهمیت'},
+    taskStatus:{planned:'برنامه‌ریزی‌شده',in_progress:'در حال انجام',done:'انجام شد',migrated:'انتقال',cancelled:'لغو شد'},
+    goalStatus:{planned:'برنامه‌ریزی‌شده',in_progress:'در حال انجام',completed:'تکمیل‌شده',cancelled:'لغو شده'},
+    habitStatus:{done:'انجام شد',not_done:'انجام نشد',rest:'استراحت'}
+  };
+  let client=null,session=null,authMode='login';
+  const data={tasks:[],habits:[],logs:[],goals:[],finance:[],mood:[],uni:[],forex:[],skills:[],time:[],future:[],monthly:[],weekly:[],review:[],collections:[]};
+  const configure=()=>{try{return JSON.parse(localStorage.getItem('bj_supabase_config')||'null');}catch{return null;}};
+  function switchPanel(w){show('configPanel',w==='config');show('authPanel',w==='auth');show('appPanel',w==='app');show('logoutBtn',w==='app');}
+  function resetConnectionForm(){const c=configure();$('projectUrl').value=c?.url||DEFAULT_URL;$('publishableKey').value=c?.key||'';}
+
+  async function init(){
+    $('todayLabel').textContent=todayFa();$('habitDate').textContent=todayFa();
+    ['moodDate','finDate','timeDate','uniDue','fxDate','skillEnd','futDue','monDue','weekFrom'].forEach(id=>{if($(id))$(id).value=dateISO();});
+    resetConnectionForm();
+    const c=configure();
+    if(!window.supabase||!window.supabase.createClient){switchPanel('config');msg('configMessage','کتابخانهٔ اتصال بارگذاری نشد.','error');return;}
+    if(!c?.url||!c?.key){switchPanel('config');return;}
+    try{
+      client=window.supabase.createClient(c.url,c.key);
+      const {data:d,error}=await client.auth.getSession();if(error)throw error;
+      session=d.session;
+      if(session){switchPanel('app');await loadAll();}else{switchPanel('auth');}
+      client.auth.onAuthStateChange((_e,s)=>{session=s;if(s){switchPanel('app');setTimeout(loadAll,0);}else{switchPanel('auth');}});
+    }catch(e){switchPanel('config');msg('configMessage','اتصال برقرار نشد: '+(e.message||''),'error');}
+  }
+
+  $('showKey').addEventListener('change',e=>$('publishableKey').type=e.target.checked?'text':'password');
+  $('configForm').addEventListener('submit',async e=>{
+    e.preventDefault();hideMsg('configMessage');
+    const url=$('projectUrl').value.trim().replace(/\/$/,'');const key=$('publishableKey').value.trim();
+    if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url)){msg('configMessage','آدرس باید مانند https://xxxx.supabase.co باشد.','error');return;}
+    if(!key){msg('configMessage','کلید عمومی را وارد کن.','error');return;}
+    localStorage.setItem('bj_supabase_config',JSON.stringify({url,key}));await init();
+  });
+
+  $('switchAuth').addEventListener('click',()=>{authMode=authMode==='login'?'signup':'login';$('authTitle').textContent=authMode==='login'?'ورود به بولت ژورنال':'ساخت حساب بولت ژورنال';$('authSubmit').textContent=authMode==='login'?'ورود':'ساخت حساب';$('switchAuth').textContent=authMode==='login'?'ساخت حساب جدید':'بازگشت به ورود';$('password').autocomplete=authMode==='login'?'current-password':'new-password';hideMsg('authMessage');});
+
+  $('authForm').addEventListener('submit',async e=>{
+    e.preventDefault();hideMsg('authMessage');$('authSubmit').disabled=true;
+    try{
+      const email=$('email').value.trim(),password=$('password').value;
+      let r;
+      if(authMode==='signup')r=await client.auth.signUp({email,password,options:{emailRedirectTo:location.href.split('#')[0]}});
+      else r=await client.auth.signInWithPassword({email,password});
+      if(r.error)throw r.error;
+      if(authMode==='signup'&&!r.data.session)msg('authMessage','حساب ساخته شد. اگر تأیید ایمیل فعال است، ایمیلت را چک کن.');
+      else if(r.data.session){session=r.data.session;switchPanel('app');await loadAll();}
+    }catch(err){msg('authMessage',err.message||'ورود انجام نشد.','error');}
+    finally{$('authSubmit').disabled=false;}
+  });
+
+  async function loadAll(){
+    if(!session||!client)return;$('syncPill').textContent='در حال همگام‌سازی...';
+    try{
+      const q=[
+        client.from('tasks').select('*').order('created_at',{ascending:false}),
+        client.from('habits').select('*').order('created_at',{ascending:true}),
+        client.from('habit_logs').select('*').order('log_date',{ascending:false}).limit(500),
+        client.from('goals').select('*').order('created_at',{ascending:false}),
+        client.from('finance').select('*').order('entry_date',{ascending:false}).limit(300),
+        client.from('mood').select('*').order('entry_date',{ascending:false}).limit(100),
+        client.from('uni').select('*').order('created_at',{ascending:false}).limit(200),
+        client.from('forex').select('*').order('entry_date',{ascending:false}).limit(200),
+        client.from('skills').select('*').order('created_at',{ascending:false}),
+        client.from('time_log').select('*').order('entry_date',{ascending:false}).limit(200),
+        client.from('future_log').select('*').order('due_date',{ascending:true}).limit(200),
+        client.from('monthly_plan').select('*').order('created_at',{ascending:false}),
+        client.from('weekly_plan').select('*').order('week_from',{ascending:true}).limit(200),
+        client.from('review').select('*').order('created_at',{ascending:false}),
+        client.from('collections').select('*').order('created_at',{ascending:false})
+      ];
+      const rs=await Promise.all(q);
+      for(const r of rs)if(r.error)throw r.error;
+      [data.tasks,data.habits,data.logs,data.goals,data.finance,data.mood,data.uni,data.forex,data.skills,data.time,data.future,data.monthly,data.weekly,data.review,data.collections]=rs.map(r=>r.data||[]);
+      renderAll();hideMsg('globalMessage');$('syncPill').textContent='همگام ✓';
+      setTimeout(()=>$('syncPill').textContent='آماده',2000);
+    }catch(e){msg('globalMessage','دریافت اطلاعات ناموفق: '+(e.message||''),'error');$('syncPill').textContent='خطا';}
+  }
+
+  function renderAll(){
+    // Dashboard
+    const doneTasks=data.tasks.filter(t=>t.status==='done').length;
+    const goalsActive=data.goals.filter(g=>!['completed','cancelled'].includes(g.status)).length;
+    const goalAvg=data.goals.length?Math.round(data.goals.reduce((a,g)=>a+(g.progress||0),0)/data.goals.length):0;
+    const income=data.finance.filter(f=>f.entry_type==='درآمد').reduce((a,f)=>a+Number(f.amount||0),0);
+    const expense=data.finance.filter(f=>f.entry_type==='هزینه').reduce((a,f)=>a+Number(f.amount||0),0);
+    const saving=data.finance.filter(f=>f.entry_type==='پس‌انداز').reduce((a,f)=>a+Number(f.amount||0),0);
+    $('statTasks').textContent=fa(data.tasks.length);$('statDone').textContent=fa(doneTasks);
+    $('statHabits').textContent=fa(data.habits.length);$('statGoals').textContent=fa(goalsActive);
+    $('statIncome').textContent=fa(income);$('statExpense').textContent=fa(expense);
+    $('statSaving').textContent=fa(saving);$('statGoalAvg').textContent=fa(goalAvg)+'٪';
+    renderHabitChart();
+    renderMonthlyFinance();
+    renderTasks();renderHabits();renderHabitWeek();renderGoals();
+    renderFinance();renderMood();renderUni();renderForex();renderSkills();
+    renderTime();renderFuture();renderMonthly();renderWeekly();renderReview();renderCollections();
+  }
+
+  function renderHabitChart(){
+    const days=[];const counts=[];
+    for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const iso=d.toISOString().slice(0,10);days.push(new Intl.DateTimeFormat('fa-IR',{weekday:'short'}).format(d));counts.push(data.logs.filter(l=>l.log_date===iso&&l.status==='done').length);}
+    const max=Math.max(...counts,1);
+    $('habitChart').innerHTML=counts.map((c,i)=>`<div class="bar" style="height:${Math.max(6,(c/max)*100)}%" title="${days[i]}: ${fa(c)}">${c?fa(c):''}</div>`).join('');
+  }
+
+  function renderMonthlyFinance(){
+    const months=['آبان','آذر','دی'];
+    const rows=months.map(m=>{
+      const inc=data.finance.filter(f=>f.entry_month===m&&f.entry_type==='درآمد').reduce((a,f)=>a+Number(f.amount||0),0);
+      const exp=data.finance.filter(f=>f.entry_month===m&&f.entry_type==='هزینه').reduce((a,f)=>a+Number(f.amount||0),0);
+      const sav=data.finance.filter(f=>f.entry_month===m&&f.entry_type==='پس‌انداز').reduce((a,f)=>a+Number(f.amount||0),0);
+      return `<tr><td>${m}</td><td class="money-pos">${fa(inc)}</td><td class="money-neg">${fa(exp)}</td><td>${fa(sav)}</td></tr>`;
+    }).join('');
+    $('monthlyFinance').innerHTML=`<table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr style="background:var(--cream2)"><th style="padding:8px">ماه</th><th style="padding:8px">درآمد</th><th style="padding:8px">هزینه</th><th style="padding:8px">پس‌انداز</th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+
+  // ═══════════ وظایف ═══════════
+  function renderTasks(){
+    const f=$('taskFilter').value;let arr=data.tasks;
+    if(f==='open')arr=arr.filter(t=>!['done','cancelled'].includes(t.status));
+    if(f==='done')arr=arr.filter(t=>t.status==='done');
+    $('taskList').innerHTML=arr.length?arr.map(t=>{
+      const late=t.due_date&&t.due_date<dateISO()&&!['done','cancelled'].includes(t.status);
+      return `<article class="item ${t.status==='done'?'done':''}"><div class="item-main"><div class="item-title">${safe(t.title)}</div><div class="item-meta"><span>${safe(t.category||'')}</span><span class="status ${t.status==='done'?'done':''} ${late?'late':''}">${safe(labels.taskStatus[t.status]||t.status)}</span><span>${safe(labels.priority[t.priority]||t.priority)}</span>${t.due_date?`<span>${toFaDate(t.due_date)}</span>`:''}</div></div><div class="item-actions"><select data-task-status="${t.id}">${Object.entries(labels.taskStatus).map(([v,l])=>`<option value="${v}" ${v===t.status?'selected':''}>${l}</option>`).join('')}</select><button class="danger small" data-delete-task="${t.id}">حذف</button></div></article>`;
+    }).join(''):'<p class="muted">هنوز وظیفه‌ای ثبت نشده.</p>';
+  }
+
+  // ═══════════ عادت‌ها ═══════════
+  function renderHabits(){
+    $('habitList').innerHTML=data.habits.length?data.habits.map(h=>{
+      const log=data.logs.find(l=>l.habit_id===h.id&&l.log_date===dateISO());const s=log?.status||'';
+      const streak=calcStreak(h.id);
+      return `<article class="habit"><span>${safe(h.name)} ${streak>0?`<span class="status gold">🔥 ${fa(streak)}</span>`:''}</span><select data-habit-status="${h.id}"><option value="" ${!s?'selected':''}>ثبت نشده</option>${Object.entries(labels.habitStatus).map(([v,l])=>`<option value="${v}" ${s===v?'selected':''}>${l}</option>`).join('')}</select><button class="danger small" data-delete-habit="${h.id}">×</button></article>`;
+    }).join(''):'<p class="muted">هنوز عادتی اضافه نشده.</p>';
+  }
+  function calcStreak(hid){
+    let s=0;const d=new Date();
+    for(let i=0;i<365;i++){const iso=d.toISOString().slice(0,10);const log=data.logs.find(l=>l.habit_id===hid&&l.log_date===iso);if(log?.status==='done'){s++;d.setDate(d.getDate()-1);}else if(i===0){d.setDate(d.getDate()-1);continue;}else break;}
+    return s;
+  }
+  function renderHabitWeek(){
+    if(!data.habits.length){$('habitWeekView').innerHTML='<p class="muted">—</p>';return;}
+    const days=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push({d,iso:d.toISOString().slice(0,10),label:new Intl.DateTimeFormat('fa-IR',{weekday:'short',day:'numeric'}).format(d)});}
+    const rows=data.habits.map(h=>`<tr><td style="padding:6px;text-align:right">${safe(h.name)}</td>${days.map(day=>{const log=data.logs.find(l=>l.habit_id===h.id&&l.log_date===day.iso);const s=log?.status||'';const bg=s==='done'?'var(--greenbg)':s==='not_done'?'var(--redbg)':s==='rest'?'var(--goldbg)':'transparent';const sym=s==='done'?'✓':s==='not_done'?'×':s==='rest'?'—':'';return `<td style="padding:6px;text-align:center;background:${bg};border-radius:6px">${sym}</td>`;}).join('')}</tr>`).join('');
+    $('habitWeekView').innerHTML=`<div style="overflow-x:auto"><table style="width:100%;border-collapse:separate;border-spacing:4px;font-size:12px"><thead><tr><th></th>${days.map(d=>`<th style="font-size:11px;color:var(--muted)">${d.label}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>`;
+  }
+
+  // ═══════════ اهداف ═══════════
+  function renderGoals(){
+    $('goalList').innerHTML=data.goals.length?data.goals.map(g=>`<article class="item"><div class="item-main"><div class="item-title">${safe(g.title)}</div><div class="item-meta"><span class="status">${safe(labels.goalStatus[g.status]||g.status)}</span><span>${safe(labels.priority[g.priority]||'')}</span>${g.due_date?`<span>${toFaDate(g.due_date)}</span>`:''}</div><div class="progress"><span style="width:${Math.min(100,g.progress||0)}%"></span></div><input type="range" min="0" max="100" step="5" value="${g.progress||0}" data-goal-progress="${g.id}" style="width:100%;margin-top:6px"></div><div class="item-actions"><span class="status">${fa(g.progress||0)}٪</span><button class="danger small" data-delete-goal="${g.id}">×</button></div></article>`).join(''):'<p class="muted">هنوز هدفی ثبت نشده.</p>';
+  }
+
+  // ═══════════ مالی ═══════════
+  function renderFinance(){
+    $('financeList').innerHTML=data.finance.slice(0,30).length?data.finance.slice(0,30).map(f=>{
+      const cls=f.entry_type==='درآمد'?'money-pos':f.entry_type==='هزینه'?'money-neg':'';
+      return `<article class="item"><div class="item-main"><div class="item-title">${safe(f.description||f.category||'—')}</div><div class="item-meta"><span>${toFaDate(f.entry_date)}</span><span class="status">${safe(f.entry_type)}</span><span>${safe(f.category||'')}</span><span class="${cls}">${fa(f.amount)} تومان</span></div></div><div class="item-actions"><button class="danger small" data-delete-finance="${f.id}">×</button></div></article>`;
+    }).join(''):'<p class="muted">هنوز تراکنشی نیست.</p>';
+  }
+
+  // ═══════════ خلق‌وخو ═══════════
+  function renderMood(){
+    $('moodList').innerHTML=data.mood.length?data.mood.slice(0,30).map(m=>`<article class="item"><div class="item-main"><div class="item-title">${toFaDate(m.entry_date)} — ${safe(m.mood||'')}</div><div class="item-meta"><span>انرژی: ${fa(m.energy)}</span><span>خواب: ${fa(m.sleep_quality)}</span><span>استرس: ${fa(m.stress)}</span>${m.sleep_hours?`<span>${m.sleep_hours} ساعت</span>`:''}</div></div><div class="item-actions"><button class="danger small" data-delete-mood="${m.id}">×</button></div></article>`).join(''):'<p class="muted">هنوز ثبت نشده.</p>';
+  }
+
+  // ═══════════ دانشگاه ═══════════
+  function renderUni(){
+    $('uniList').innerHTML=data.uni.length?data.uni.map(u=>`<article class="item"><div class="item-main"><div class="item-title">${safe(u.course)}${u.title?' — '+safe(u.title):''}</div><div class="item-meta"><span class="status">${safe(u.item_type||'')}</span><span class="status">${safe(labels.taskStatus[u.status]||u.status||'')}</span>${u.due_date?`<span>موعد: ${toFaDate(u.due_date)}</span>`:''}${u.grade?`<span>نمره: ${u.grade}</span>`:''}</div></div><div class="item-actions"><button class="danger small" data-delete-uni="${u.id}">×</button></div></article>`).join(''):'<p class="muted">هنوز موردی ثبت نشده.</p>';
+  }
+
+  // ═══════════ فارکس ═══════════
+  function renderForex(){
+    $('forexList').innerHTML=data.forex.length?data.forex.map(f=>{
+      const r=f.risk_amount&&f.result_amount?(f.result_amount/f.risk_amount).toFixed(2):'—';
+      const cls=f.result_amount>0?'money-pos':f.result_amount<0?'money-neg':'';
+      return `<article class="item"><div class="item-main"><div class="item-title">${safe(f.symbol)} — ${safe(f.direction)}</div><div class="item-meta"><span>${toFaDate(f.entry_date)}</span><span>ورود: ${f.entry_price||'—'}</span><span>خروج: ${f.exit_price||'—'}</span><span class="${cls}">نتیجه: ${fa(f.result_amount)}</span><span>R: ${r}</span></div></div><div class="item-actions"><button class="danger small" data-delete-forex="${f.id}">×</button></div></article>`;
+    }).join(''):'<p class="muted">هنوز معامله‌ای ثبت نشده.</p>';
+  }
+
+  // ═══════════ یادگیری ═══════════
+  function renderSkills(){
+    $('skillList').innerHTML=data.skills.length?data.skills.map(s=>`<article class="item"><div class="item-main"><div class="item-title">${safe(s.skill)}${s.stage?' — '+safe(s.stage):''}</div><div class="item-meta"><span class="status">${safe(labels.goalStatus[s.status]||s.status||'')}</span>${s.source?`<span>${safe(s.source)}</span>`:''}${s.hours?`<span>${s.hours} ساعت</span>`:''}${s.end_date?`<span>تا ${toFaDate(s.end_date)}</span>`:''}</div><div class="progress"><span style="width:${Math.min(100,s.progress||0)}%"></span></div></div><div class="item-actions"><span class="status">${fa(s.progress||0)}٪</span><button class="danger small" data-delete-skill="${s.id}">×</button></div></article>`).join(''):'<p class="muted">هنوز مهارتی ثبت نشده.</p>';
+  }
+
+  // ═══════════ ثبت زمان ═══════════
+  function renderTime(){
+    $('timeList').innerHTML=data.time.length?data.time.slice(0,30).map(t=>{
+      const diff=(t.actual_hours||0)-(t.planned_hours||0);
+      const cls=diff>0?'money-pos':diff<0?'money-neg':'';
+      return `<article class="item"><div class="item-main"><div class="item-title">${safe(t.activity||t.category||'—')}</div><div class="item-meta"><span>${toFaDate(t.entry_date)}</span><span class="status">${safe(t.category||'')}</span><span>برنامه: ${t.planned_hours||0}</span><span>واقعی: ${t.actual_hours||0}</span><span class="${cls}">اختلاف: ${diff>0?'+':''}${diff}</span></div></div><div class="item-actions"><button class="danger small" data-delete-time="${t.id}">×</button></div></article>`;
+    }).join(''):'<p class="muted">هنوز ثبتی نیست.</p>';
+  }
+
+  // ═══════════ برنامه‌ریزی ═══════════
+  function renderFuture(){
+    $('futureList').innerHTML=data.future.length?data.future.map(f=>`<article class="item"><div class="item-main"><div class="item-title">${safe(f.title)}</div><div class="item-meta"><span class="status">${safe(labels.taskStatus[f.status]||f.status||'')}</span><span>${safe(labels.priority[f.priority]||'')}</span>${f.category?`<span>${safe(f.category)}</span>`:''}${f.due_date?`<span>${toFaDate(f.due_date)}</span>`:''}</div></div><div class="item-actions"><button class="danger small" data-delete-future="${f.id}">×</button></div></article>`).join(''):'<p class="muted">—</p>';
+  }
+  function renderMonthly(){
+    $('monthList').innerHTML=data.monthly.length?data.monthly.map(m=>`<article class="item"><div class="item-main"><div class="item-title">${safe(m.goal)}</div><div class="item-meta"><span class="status">${safe(m.entry_month||'')}</span>${m.focus?`<span>${safe(m.focus)}</span>`:''}${m.due_date?`<span>${toFaDate(m.due_date)}</span>`:''}</div><div class="progress"><span style="width:${Math.min(100,m.progress||0)}%"></span></div></div><div class="item-actions"><button class="danger small" data-delete-monthly="${m.id}">×</button></div></article>`).join(''):'<p class="muted">—</p>';
+  }
+  function renderWeekly(){
+    $('weekList').innerHTML=data.weekly.length?data.weekly.map(w=>`<article class="item"><div class="item-main"><div class="item-title">${safe(w.task)}</div><div class="item-meta"><span class="status">${safe(w.day_of_week||'')}</span>${w.start_time?`<span>${w.start_time}${w.end_time?'–'+w.end_time:''}</span>`:''}<span class="status">${safe(labels.taskStatus[w.status]||w.status||'')}</span></div></div><div class="item-actions"><button class="danger small" data-delete-weekly="${w.id}">×</button></div></article>`).join(''):'<p class="muted">—</p>';
+  }
+
+  // ═══════════ مرور ═══════════
+  function renderReview(){
+    $('reviewList').innerHTML=data.review.length?data.review.map(r=>`<article class="item"><div class="item-main"><div class="item-title">${safe(r.review_type||'')}${r.period?' — '+safe(r.period):''}</div><div class="item-meta">${r.score?`<span class="status">امتیاز: ${fa(r.score)}/۱۰</span>`:''}${r.successes?`<span>✓ ${safe(r.successes)}</span>`:''}${r.challenges?`<span>⚠ ${safe(r.challenges)}</span>`:''}</div></div><div class="item-actions"><button class="danger small" data-delete-review="${r.id}">×</button></div></article>`).join(''):'<p class="muted">—</p>';
+  }
+
+  // ═══════════ موضوعات ═══════════
+  function renderCollections(){
+    $('colList').innerHTML=data.collections.length?data.collections.map(c=>`<article class="item"><div class="item-main"><div class="item-title">${safe(c.name)}</div><div class="item-meta">${c.type?`<span class="status">${safe(c.type)}</span>`:''}${c.purpose?`<span>${safe(c.purpose)}</span>`:''}</div>${c.content?`<div class="muted" style="margin-top:6px">${safe(c.content)}</div>`:''}</div><div class="item-actions"><button class="danger small" data-delete-collection="${c.id}">×</button></div></article>`).join(''):'<p class="muted">—</p>';
+  }
+
+  // ═══════════ عملیات ═══════════
+  async function perform(fn,ok){hideMsg('globalMessage');try{await fn();if(ok)msg('globalMessage',ok);$('syncPill').textContent='✓';setTimeout(()=>$('syncPill').textContent='آماده',1500);}catch(e){msg('globalMessage',e.message||'خطا','error');}}
+  const uid=()=>session.user.id;
+
+  $('taskForm').addEventListener('submit',async e=>{e.preventDefault();const title=$('taskTitle').value.trim();if(!title)return;await perform(async()=>{const {error}=await client.from('tasks').insert({user_id:uid(),title,priority:$('taskPriority').value,status:'planned',due_date:$('taskDue').value||null,category:$('taskCategory').value});if(error)throw error;$('taskForm').reset();$('taskPriority').value='normal';$('taskCategory').value='شخصی';await loadAll();},'ذخیره شد');});
+  $('taskFilter').addEventListener('change',renderTasks);
+  $('taskList').addEventListener('change',async e=>{const id=e.target.dataset.taskStatus;if(!id)return;const s=e.target.value;await perform(async()=>{const {error}=await client.from('tasks').update({status:s,completed_at:s==='done'?new Date().toISOString():null}).eq('id',id);if(error)throw error;await loadAll();},'به‌روز شد');});
+  $('taskList').addEventListener('click',async e=>{const id=e.target.dataset.deleteTask;if(!id||!confirm('حذف شود؟'))return;await perform(async()=>{const {error}=await client.from('tasks').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
+
+  $('habitForm').addEventListener('submit',async e=>{e.preventDefault();const name=$('habitName').value.trim();if(!name)return;await perform(async()=>{const {error}=await client.from('habits').insert({user_id:uid(),name,frequency:'daily'});if(error)throw error;$('habitForm').reset();await loadAll();},'ذخیره شد');});
+  $('habitList').addEventListener('change',async e=>{const id=e.target.dataset.habitStatus;if(!id)return;const s=e.target.value;await perform(async()=>{if(!s){const {error}=await client.from('habit_logs').delete().eq('habit_id',id).eq('log_date',dateISO());if(error)throw error;}else{const {error}=await client.from('habit_logs').upsert({user_id:uid(),habit_id:id,log_date:dateISO(),status:s},{onConflict:'habit_id,log_date'});if(error)throw error;}await loadAll();},'ذخیره شد');});
+  $('habitList').addEventListener('click',async e=>{const id=e.target.dataset.deleteHabit;if(!id||!confirm('حذف شود؟'))return;await perform(async()=>{const {error}=await client.from('habits').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
+
+  $('goalForm').addEventListener('submit',async e=>{e.preventDefault();const title=$('goalTitle').value.trim();if(!title)return;await perform(async()=>{const {error}=await client.from('goals').insert({user_id:uid(),title,priority:$('goalPriority').value,status:'planned',progress:0,due_date:$('goalDue').value||null});if(error)throw error;$('goalForm').reset();$('goalPriority').value='normal';await loadAll();},'ذخیره شد');});
+  $('goalList').addEventListener('change',async e=>{const id=e.target.dataset.goalProgress;if(!id)return;const p=Number(e.target.value);await perform(async()=>{const {error}=await client.from('goals').update({progress:p,status:p===100?'completed':'in_progress'}).eq('id',id);if(error)throw error;await loadAll();},'ذخیره شد');});
+  $('goalList').addEventListener('click',async e=>{const id=e.target.dataset.deleteGoal;if(!id||!confirm('حذف شود؟'))return;await perform(async()=>{const {error}=await client.from('goals').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
+
+  $('financeForm').addEventListener('submit',async e=>{e.preventDefault();await perform(async()=>{const d=$('finDate').value;const month=toFaMonth(d);const {error}=await client.from('finance').insert({user_id:uid(),entry_date:d,entry_month:month,entry_type:$('finType').value,category:$('finCategory').value,description:$('finDesc').value,amount:Number($('finAmount').value||0),payment_method:$('finPay').value});if(error)throw error;$('financeForm').reset();$('finDate').value=dateISO();await loadAll();},'ذخیره شد');});
+  $('financeList').addEventListener('click',async e=>{const id=e.target.dataset.deleteFinance;if(!id||!confirm('حذف شود؟'))return;await perform(async()=>{const {error}=await client.from('finance').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
+
+  $('moodForm').addEventListener('submit',async e=>{e.preventDefault();await perform(async()=>{const {error}=await client.from('mood').upsert({user_id:uid(),entry_date:$('moodDate').value,mood:$('moodMood').value,energy:Number($('moodEnergy').value||0),sleep_quality:Number($('moodSleep').value||0),stress:Number($('moodStress').value||0),sleep_hours:Number($('moodHours').value||0)},{onConflict:'entry_date'});if(error)throw error;await loadAll();},'ذخیره شد');});
+  $('moodList').addEventListener('click',async e=>{const id=e.target.dataset.deleteMood;if(!id||!confirm('حذف شود؟'))return;await perform(async()=>{const {error}=await client.from('mood').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
+
+  $('uniForm').addEventListener('submit',async e=>{e.preventDefault();const course=$('uniCourse').value.trim();if(!course)return;await perform(async()=>{const {error}=await client.from('uni').insert({user_id:uid(),course,item_type:$('uniType').value,title:$('uniTitle').value,due_date:$('uniDue').value||null,status:$('uniStatus').value,grade:Number($('uniGrade').value||0)});if(error)throw error;$('uniForm').reset();$('uniDue').value=dateISO();await loadAll();},'ذخیره شد');});
+  $('uniList').addEventListener('click',async e=>{const id=e.target.dataset.deleteUni;if(!id||!confirm('حذف شود؟'))return;await perform(async()=>{const {error}=await client.from('uni').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
+
+  $('forexForm').addEventListener('submit',async e=>{e.preventDefault();await perform(async()=>{const {error}=await client.from('forex').insert({user_id:uid(),entry_date:$('fxDate').value||null,symbol:$('fxSymbol').value,direction:$('fxDir').value,entry_price:Number($('fxEntry').value||0),exit_price:Number($('fxExit').value||0),risk_amount:Number($('fxRisk').value||0),result_amount:Number($('fxResult').value||0)});if(error)throw error;$('forexForm').reset();$('fxDate').value=dateISO();await loadAll();},'ذخیره شد');});
+  $('forexList').addEventListener('click',async e=>{const id=e.target.dataset.deleteForex;if(!id||!confirm('حذف شود؟'))return;await perform(async()=>{const {error}=await client.from('forex').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
+
+  $('skillForm').addEventListener('submit',async e=>{e.preventDefault();const skill=$('skillName').value.trim();if(!skill)return;await perform(async()=>{const {error}=await client.from('skills').insert({user_id:uid(),skill,stage:$('skillStage').value,source:$('skillSource').value,end_date:$('skillEnd').value||null,hours:Number($('skillHours').value||0),status:'planned',progress:0});if(error)throw error;$('skillForm').reset();$('skillEnd').value=dateISO();await loadAll();},'ذخیره شد');});
+  $('skillList').addEventListener('click',async e=>{const id=e.target.dataset.deleteSkill;if(!id||!confirm('حذف شود؟'))return;await perform(async()=>{const {error}=await client.from('skills').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
+
+  $('timeForm').addEventListener('submit',async e=>{e.preventDefault();await perform(async()=>{const {error}=await client.from('time_log').insert({user_id:uid(),entry_date:$('timeDate').value,category:$('timeCat').value,activity:$('timeAct').value,planned_hours:Number($('timePlan').value||0),actual_hours:Number($('timeReal').value||0)});if(error)throw error;$('timeForm').reset();$('timeDate').value=dateISO();await loadAll();},'ذخیره شد');});
+  $('timeList').addEventListener('click',async e=>{const id=e.target.dataset.deleteTime;if(!id||!confirm('حذف شود؟'))return;await perform(async()=>{const {error}=await client.from('time_log').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
+
+  $('futureForm').addEventListener('submit',async e=>{e.preventDefault();const title=$('futTitle').value.trim();if(!title)return;await perform(async()=>{const {error}=await client.from('future_log').insert({user_id:uid(),title,category:$('futCat').value,due_date:$('futDue').value||null,priority:$('futPri').value,status:'planned'});if(error)throw error;$('futureForm').reset();$('futDue').value=dateISO();await loadAll();},'ذخیره شد');});
+  $('futureList').addEventListener('click',async e=>{const id=e.target.dataset.deleteFuture;if(!id||!confirm('حذف شود؟'))return;await perform(async()=>{const {error}=await client.from('future_log').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
+
+  $('monthForm').addEventListener('submit',async e=>{e.preventDefault();const goal=$('monGoal').value.trim();if(!goal)return;await perform(async()=>{const {error}=await client.from('monthly_plan').insert({user_id:uid(),entry_month:$('monMonth').value,focus:$('monFocus').value,goal,due_date:$('monDue').value||null,status:'planned',progress:0});if(error)throw error;$('monthForm').reset();$('monDue').value=dateISO();await loadAll();},'ذخیره شد');});
+  $('monthList').addEventListener('click',async e=>{const id=e.target.dataset.deleteMonthly;if(!id||!confirm('حذف شود؟'))return;await perform(async()=>{const {error}=await client.from('monthly_plan').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
+
+  $('weekForm').addEventListener('submit',async e=>{e.preventDefault();const task=$('weekTask').value.trim();if(!task)return;await perform(async()=>{const {error}=await client.from('weekly_plan').insert({user_id:uid(),week_from:$('weekFrom').value||null,day_of_week:$('weekDay').value,start_time:$('weekStart').value,end_time:$('weekEnd').value,task,category:$('weekCat').value,status:'planned'});if(error)throw error;$('weekForm').reset();$('weekFrom').value=dateISO();await loadAll();},'ذخیره شد');});
+  $('weekList').addEventListener('click',async e=>{const id=e.target.dataset.deleteWeekly;if(!id||!confirm('حذف شود؟'))return;await perform(async()=>{const {error}=await client.from('weekly_plan').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
+
+  $('reviewForm').addEventListener('submit',async e=>{e.preventDefault();await perform(async()=>{const {error}=await client.from('review').insert({user_id:uid(),review_type:$('revType').value,period:$('revPeriod').value,score:Number($('revScore').value||0),successes:$('revSucc').value,challenges:$('revChal').value,lesson:$('revLesson').value,action:$('revAction').value});if(error)throw error;$('reviewForm').reset();await loadAll();},'ذخیره شد');});
+  $('reviewList').addEventListener('click',async e=>{const id=e.target.dataset.deleteReview;if(!id||!confirm('حذف شود؟'))return;await perform(async()=>{const {error}=await client.from('review').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
+
+  $('colForm').addEventListener('submit',async e=>{e.preventDefault();const name=$('colName').value.trim();if(!name)return;await perform(async()=>{const {error}=await client.from('collections').insert({user_id:uid(),name,type:$('colType').value,purpose:$('colPurpose').value,content:$('colContent').value,status:'active'});if(error)throw error;$('colForm').reset();await loadAll();},'ذخیره شد');});
+  $('colList').addEventListener('click',async e=>{const id=e.target.dataset.deleteCollection;if(!id||!confirm('حذف شود؟'))return;await perform(async()=>{const {error}=await client.from('collections').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
+
+  // ═══════════ ناوبری ═══════════
+  function goTab(t){document.querySelectorAll('.nav button[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));document.querySelectorAll('.tab').forEach(s=>s.classList.toggle('hidden',s.id!=='tab-'+t));window.scrollTo({top:0,behavior:'smooth'});}
+  document.querySelectorAll('.nav button[data-tab]').forEach(b=>b.addEventListener('click',()=>goTab(b.dataset.tab)));
+  document.querySelectorAll('#plannerSub button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#plannerSub button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.subtab').forEach(s=>s.classList.add('hidden'));$('sub-'+b.dataset.sub).classList.remove('hidden');}));
+
+  $('editConfig').addEventListener('click',()=>{resetConnectionForm();switchPanel('config');});
+  $('refreshBtn').addEventListener('click',loadAll);
+  $('exportBtn').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='bullet-journal-'+dateISO()+'.json';a.click();URL.revokeObjectURL(url);});
+  async function logout(){if(client)await client.auth.signOut();session=null;switchPanel('auth');}
+  $('logoutBtn').addEventListener('click',logout);$('logoutBtn2').addEventListener('click',logout);
+
+  function toFaMonth(iso){try{const d=new Date(iso);const parts=new Intl.DateTimeFormat('fa-IR-u-ca-persian',{month:'long'}).format(d);return parts;}catch{return'';}}
+
+  init();
+})();
+</script>
+</body>
+</html>
