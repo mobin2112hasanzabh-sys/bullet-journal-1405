@@ -58,7 +58,6 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .item-title{font-weight:700;overflow-wrap:anywhere;color:var(--dark)}
 .item-meta{font-size:12px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap;margin-top:5px;align-items:center}
 .item-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.item select{padding:6px 10px;max-width:150px;width:auto}
 .status{font-size:11px;border-radius:999px;background:var(--cream2);padding:3px 10px;color:var(--text);font-weight:600;white-space:nowrap}
 .status.done{background:var(--greenbg);color:var(--green)}
 .status.late{background:var(--redbg);color:var(--red)}
@@ -104,7 +103,6 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .user-badge{display:flex;align-items:center;gap:8px;background:var(--cream2);padding:6px 12px;border-radius:99px;font-size:12px;font-weight:600}
 .user-badge .avatar{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--olive),var(--brown));color:white;display:grid;place-items:center;font-size:11px;font-weight:800}
 
-/* ===== کارت هدف ماهانه ===== */
 .goal-card{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:18px;position:relative;transition:.2s;overflow:hidden}
 .goal-card:hover{transform:translateY(-3px);box-shadow:var(--shadow2)}
 .goal-card::before{content:"";position:absolute;top:0;right:0;left:0;height:4px;background:linear-gradient(90deg,var(--olive),var(--gold))}
@@ -117,42 +115,42 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .goal-desc{font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.6}
 .goal-progress-row{display:flex;align-items:center;gap:12px;margin-top:12px}
 .goal-ring{width:70px;height:70px;flex-shrink:0}
-.goal-stat-big{font-size:22px;font-weight:800;color:var(--dark);line-height:1.2}
-.goal-stat-lbl{font-size:11px;color:var(--muted);font-weight:600}
+.goal-stat-big{font-size:20px;font-weight:800;color:var(--dark);line-height:1.3}
+.goal-stat-lbl{font-size:11px;color:var(--muted);font-weight:600;margin-top:4px}
 .goal-meta{display:flex;gap:8px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:10px;align-items:center}
 .goal-actions{display:flex;gap:6px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);flex-wrap:wrap}
 
-/* ===== هفته ===== */
 .week-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
 .week-nav{display:flex;gap:6px;align-items:center}
 .week-nav button{padding:8px 12px;background:var(--cream2);color:var(--text);border:1px solid var(--line);border-radius:10px;font-size:13px;font-weight:600}
 .week-range{font-weight:700;font-size:14px;color:var(--dark);padding:0 12px;min-width:180px;text-align:center}
 .week-columns{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:16px}
-.week-day{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px;min-height:280px;display:flex;flex-direction:column;gap:8px}
+.week-day{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:10px;min-height:260px;display:flex;flex-direction:column;gap:8px}
 .week-day.today{border-color:var(--olive);background:linear-gradient(180deg,var(--white),var(--olive2));box-shadow:0 0 0 2px rgba(120,132,91,.2)}
-.week-day-header{text-align:center;padding-bottom:10px;border-bottom:2px solid var(--line);margin-bottom:4px}
-.week-day-header .name{font-weight:800;font-size:13px;color:var(--dark);display:block}
+.week-day-header{text-align:center;padding-bottom:8px;border-bottom:2px solid var(--line);margin-bottom:4px}
+.week-day-header .name{font-weight:800;font-size:12px;color:var(--dark);display:block}
 .week-day-header .date{font-size:10px;color:var(--muted);display:block;margin-top:2px}
 .week-day-header .day-total{font-size:10px;color:var(--olive);display:block;margin-top:4px;font-weight:700}
 .week-day.today .week-day-header .name{color:var(--olive)}
 .week-day.today .week-day-header{border-bottom-color:var(--olive)}
-.week-task{font-size:12px;padding:8px 10px;background:var(--white);border:1px solid var(--line);border-radius:10px;word-break:break-word;line-height:1.5;display:flex;gap:6px;flex-direction:column;transition:.15s}
+.week-task{font-size:11px;padding:8px;background:var(--white);border:1px solid var(--line);border-radius:10px;line-height:1.5;display:flex;gap:6px;flex-direction:column;transition:.15s}
 .week-task:hover{border-color:var(--olive)}
 .week-task.done{background:var(--greenbg);border-color:var(--green)}
 .wt-top{display:flex;gap:6px;align-items:flex-start}
+.wt-check{width:16px;height:16px;border:2px solid var(--line);border-radius:4px;flex-shrink:0;display:grid;place-items:center;font-size:10px;color:transparent;font-weight:800;margin-top:2px;cursor:pointer}
+.wt-check.checked{background:var(--olive);border-color:var(--olive);color:white}
 .wt-body{flex:1;min-width:0}
-.wt-title{font-weight:600}
+.wt-title{font-weight:600;font-size:11px}
 .wt-tag{display:inline-block;font-size:9px;padding:1px 6px;border-radius:6px;background:var(--olive2);color:var(--olive);margin-top:4px;font-weight:600}
 .wt-input-row{display:flex;align-items:center;gap:6px;margin-top:6px}
-.wt-input{flex:1;padding:4px 8px;font-size:11px;border-radius:8px;background:var(--paper);border:1px solid var(--line);text-align:center;font-weight:700}
+.wt-input{flex:1;padding:4px 8px;font-size:12px;border-radius:8px;background:var(--paper);border:1px solid var(--line);text-align:center;font-weight:700;width:100%}
 .wt-unit{font-size:10px;color:var(--muted);font-weight:600}
-.week-day-empty{font-size:11px;color:var(--muted);text-align:center;padding:20px 0;font-style:italic}
-.week-day-add{background:transparent;border:1px dashed var(--line);color:var(--muted);padding:6px;font-size:11px;border-radius:8px;font-weight:500;margin-top:auto}
+.week-day-empty{font-size:11px;color:var(--muted);text-align:center;padding:16px 0;font-style:italic}
+.week-day-add{background:transparent;border:1px dashed var(--line);color:var(--muted);padding:5px;font-size:11px;border-radius:8px;font-weight:500;margin-top:auto}
 
-/* ===== ردیف هدف هفتگی ===== */
-.wg-row{display:grid;grid-template-columns:1fr 70px;gap:12px;align-items:center}
+.wg-row{display:grid;grid-template-columns:1fr 60px;gap:10px;align-items:center}
 .wg-info{min-width:0}.wg-title{font-weight:700;font-size:14px;color:var(--dark);overflow-wrap:anywhere}
-.wg-parent{font-size:11px;color:var(--muted);margin-top:4px;display:inline-flex;align-items:center;gap:4px;background:var(--cream2);padding:2px 8px;border-radius:8px}
+.wg-parent{font-size:11px;color:var(--olive);margin-top:4px;display:inline-flex;align-items:center;gap:4px;background:var(--olive2);padding:3px 10px;border-radius:8px;font-weight:600}
 .wg-progress{height:6px;border-radius:99px;background:var(--cream2);overflow:hidden;margin-top:8px}
 .wg-progress span{height:100%;display:block;background:linear-gradient(90deg,var(--olive),var(--gold));transition:width .5s}
 .wg-stats{font-size:11px;color:var(--muted);margin-top:6px;display:flex;gap:10px;flex-wrap:wrap}
@@ -176,14 +174,13 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 
   <section id="authPanel" class="panel authbox hidden">
     <h2>ورود یا ساخت حساب</h2>
-    <p class="muted">ایمیل و رمزت رو وارد کن. اگر تازه‌وارد هستی، حساب خودکار ساخته می‌شه.</p>
+    <p class="muted">ایمیل و رمزت رو وارد کن.</p>
     <form id="authForm" class="auth-form">
       <div class="field"><label>ایمیل</label><input id="email" type="email" required placeholder="name@example.com"></div>
       <div class="field"><label>رمز عبور</label><input id="password" type="password" required minlength="4" placeholder="حداقل ۴ نویسه"></div>
       <button id="authSubmit" type="submit">ورود / ثبت‌نام</button>
     </form>
     <div id="authMessage" class="notice hidden"></div>
-    <div class="notice" style="font-size:11px;font-weight:400;background:var(--cream2);color:var(--muted)">💡 اطلاعات روی همین دستگاه ذخیره می‌شه.</div>
   </section>
 
   <main id="appPanel" class="hidden">
@@ -249,9 +246,9 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
         <div class="sectionhead"><div><h2>🗓️ اهداف هفتگی</h2><p class="muted">هر هدف هفتگی به یک هدف ماهانه وصل می‌شه.</p></div></div>
         <div class="panel" style="box-shadow:none"><h3>افزودن</h3>
           <form id="weeklyGoalForm" class="formgrid">
-            <div class="field"><label>عنوان</label><input id="wgTitle" required maxlength="180" placeholder="مثلاً هفتهٔ اول: مرور لغات"></div>
-            <div class="field"><label>هدف ماهانه</label><select id="wgParent"><option value="">— بدون والد —</option></select></div>
-            <div class="field"><label>هدف این هفته</label><input id="wgTarget" type="number" min="0" step="0.5" required placeholder="۴"></div>
+            <div class="field"><label>عنوان</label><input id="wgTitle" required maxlength="180" placeholder="مثلاً هفتهٔ اول"></div>
+            <div class="field"><label>هدف ماهانه</label><select id="wgParent" required><option value="">— انتخاب کن —</option></select></div>
+            <div class="field"><label>هدف این هفته</label><input id="wgTarget" type="number" min="0.1" step="0.5" required placeholder="۴"></div>
             <div class="field"><label>پایان هفته</label><input id="wgDue" type="date"></div>
             <button type="submit">افزودن</button>
           </form>
@@ -269,7 +266,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
           <form id="weeklyTaskForm" class="formgrid">
             <div class="field"><label>عنوان</label><input id="wtTitle" required maxlength="180" placeholder="مثلاً ۱۰ لغت جدید"></div>
             <div class="field"><label>روز</label><select id="wtDay"><option>شنبه</option><option>یکشنبه</option><option>دوشنبه</option><option>سه‌شنبه</option><option>چهارشنبه</option><option>پنجشنبه</option><option>جمعه</option></select></div>
-            <div class="field"><label>هدف هفتگی</label><select id="wtGoal"><option value="">— بدون والد —</option></select></div>
+            <div class="field"><label>هدف هفتگی</label><select id="wtGoal" required><option value="">— انتخاب کن —</option></select></div>
             <button type="submit">افزودن</button>
           </form>
         </div>
@@ -386,6 +383,10 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
       </div>
       <div class="panel" style="box-shadow:none"><h3>🗑️ پاک‌سازی</h3><button id="clearDataBtn" class="danger">پاک کردن همهٔ داده‌ها</button></div>
       <div class="panel" style="box-shadow:none"><h3>👤 حساب</h3><p class="muted">ایمیل: <b id="settingsEmail"></b></p><p class="muted">عضویت: <b id="settingsCreated"></b></p></div>
+      <div class="panel" style="box-shadow:none"><h3>🔍 دیباگ (برای بررسی مشکل)</h3>
+        <button id="debugBtn" class="secondary">نمایش داده‌های داخلی</button>
+        <pre id="debugOutput" style="margin-top:12px;padding:12px;background:var(--paper);border-radius:10px;font-size:11px;direction:ltr;text-align:left;overflow:auto;max-height:400px;border:1px solid var(--line);font-family:monospace"></pre>
+      </div>
     </section>
   </main>
   <div class="footer">بولت ژورنال شخصی ۱۴۰۵ · نسخهٔ زنده</div>
@@ -399,32 +400,46 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 
 <script>
 (()=>{
+'use strict';
+
+// ═══════════ ابزارها ═══════════
 const $=id=>document.getElementById(id);
 const safe=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fa=n=>{const x=Number(n)||0;return new Intl.NumberFormat('fa-IR',{maximumFractionDigits:2}).format(x);};
 const dateISO=(d=new Date())=>{const x=new Date(d);return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`;};
 const toFaDate=s=>{if(!s)return'';try{return new Intl.DateTimeFormat('fa-IR-u-ca-persian',{year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(s));}catch{return s;}};
 const todayFaLong=()=>new Intl.DateTimeFormat('fa-IR-u-ca-persian',{weekday:'long',year:'numeric',month:'long',day:'numeric'}).format(new Date());
-const show=(id,y=true)=>$(id).classList.toggle('hidden',!y);
-const msg=(id,t,type='')=>{const el=$(id);el.textContent=t;el.className='notice'+(type?' '+type:'');el.classList.remove('hidden');setTimeout(()=>el.classList.add('hidden'),4000);};
+const show=(id,y=true)=>{const el=$(id);if(el)el.classList.toggle('hidden',!y);};
+const msg=(id,t,type='')=>{const el=$(id);if(!el)return;el.textContent=t;el.className='notice'+(type?' '+type:'');el.classList.remove('hidden');setTimeout(()=>el.classList.add('hidden'),4000);};
 const labels={priority:{urgent_important:'فوری و مهم',important:'مهم',normal:'عادی',low:'کم‌اهمیت'},taskStatus:{planned:'برنامه‌ریزی‌شده',in_progress:'در حال انجام',done:'انجام شد',cancelled:'لغو شد'}};
-const nid=()=>'id_'+Date.now()+'_'+Math.floor(Math.random()*100000);
 
-const STORAGE_USERS='bj_users_v4', STORAGE_SESSION='bj_session_v4', DATA_PREFIX='bj_data_v4_';
+// ✅ همهٔ IDها رشته‌ای ساخته می‌شن
+const nid=()=>'g'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+
+// ═══════════ ذخیره‌سازی ═══════════
+const STORAGE_USERS='bj_users_v5', STORAGE_SESSION='bj_session_v5', DATA_PREFIX='bj_data_v5_';
 const emptyData=()=>({tasks:[],habits:[],logs:[],monthlyGoals:[],weeklyGoals:[],weeklyTasks:[],finance:[],mood:[],uni:[],forex:[],skills:[],review:[],daily:[],pomodoro:[]});
 const getUsers=()=>{try{return JSON.parse(localStorage.getItem(STORAGE_USERS)||'{}');}catch{return{};}};
 const saveUsers=u=>localStorage.setItem(STORAGE_USERS,JSON.stringify(u));
 const hashPassword=async p=>{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(p));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');};
-const loadData=email=>{try{const d=JSON.parse(localStorage.getItem(DATA_PREFIX+email)||'null');const dd={...emptyData(),...(d||{})};dd.monthlyGoals=(dd.monthlyGoals||[]).map(g=>({...g,id:String(g.id)}));dd.weeklyGoals=(dd.weeklyGoals||[]).map(g=>({...g,id:String(g.id),monthlyGoalId:g.monthlyGoalId?String(g.monthlyGoalId):null}));dd.weeklyTasks=(dd.weeklyTasks||[]).map(t=>({...t,id:String(t.id),weeklyGoalId:t.weeklyGoalId?String(t.weeklyGoalId):null}));return dd;}catch{return emptyData();}};
+const loadData=email=>{try{const d=JSON.parse(localStorage.getItem(DATA_PREFIX+email)||'null');return {...emptyData(),...(d||{})};}catch{return emptyData();}};
 const saveData=()=>{if(!session)return;localStorage.setItem(DATA_PREFIX+session.email,JSON.stringify(data));};
 
-let session=null,data=emptyData();
+let session=null;
+let data=emptyData();
 let weeklyOffset=0;
 
+// ═══════════ تم ═══════════
 const initTheme=()=>document.documentElement.setAttribute('data-theme',localStorage.getItem('bj_theme')||'light');
 $('themeToggle').addEventListener('click',()=>{const c=document.documentElement.getAttribute('data-theme');const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('bj_theme',n);});
 
-function switchPanel(w){show('authPanel',w==='auth');show('appPanel',w==='app');show('logoutBtn',w==='app');show('userBadge',w==='app');}
+// ═══════════ ورود ═══════════
+function switchPanel(w){
+  show('authPanel',w==='auth');
+  show('appPanel',w==='app');
+  show('logoutBtn',w==='app');
+  show('userBadge',w==='app');
+}
 
 $('authForm').addEventListener('submit',async e=>{
   e.preventDefault();
@@ -477,6 +492,7 @@ function startApp(){
   renderAll();
 }
 
+// ═══════════ هفته ═══════════
 function getWeekStart(offset=0){
   const now=new Date();
   const dow=now.getDay();
@@ -494,35 +510,32 @@ function getWeekDays(offset=0){
 }
 const weekDayNames=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
 
-// ═══════════ محاسبه پیشرفت ═══════════
-// پیشرفت هفتگی = مجموع value های کارهای این هدف ÷ هدف این هفته × ۱۰۰
-function weeklyGoalProgress(wgId){
-  const wg=data.weeklyGoals.find(g=>g.id===wgId);
-  if(!wg||!wg.target||wg.target<=0)return 0;
-  const tasks=data.weeklyTasks.filter(t=>t.weeklyGoalId===wgId);
-  const sum=tasks.reduce((a,t)=>a+(Number(t.value)||0),0);
-  return Math.min(100,Math.round(sum/wg.target*100));
-}
+// ═══════════ محاسبه پیشرفت (با String تضمینی) ═══════════
 function weeklyGoalSum(wgId){
-  return data.weeklyTasks.filter(t=>t.weeklyGoalId===wgId).reduce((a,t)=>a+(Number(t.value)||0),0);
+  const sId=String(wgId);
+  return data.weeklyTasks.filter(t=>String(t.weeklyGoalId)===sId).reduce((a,t)=>a+(Number(t.value)||0),0);
 }
-// پیشرفت ماهانه = مجموع value همهٔ کارهای زیرمجموعه ÷ هدف ماهانه × ۱۰۰
-function monthlyGoalProgress(mgId){
-  const mg=data.monthlyGoals.find(g=>g.id===mgId);
-  if(!mg||!mg.target||mg.target<=0)return 0;
-  const childIds=data.weeklyGoals.filter(w=>w.monthlyGoalId===mgId).map(w=>w.id);
-  const tasks=data.weeklyTasks.filter(t=>childIds.includes(t.weeklyGoalId));
-  const sum=tasks.reduce((a,t)=>a+(Number(t.value)||0),0);
-  return Math.min(100,Math.round(sum/mg.target*100));
+function weeklyGoalProgress(wgId){
+  const wg=data.weeklyGoals.find(g=>String(g.id)===String(wgId));
+  if(!wg||!wg.target||wg.target<=0)return 0;
+  return Math.min(100,Math.round(weeklyGoalSum(wgId)/wg.target*100));
 }
 function monthlyGoalSum(mgId){
-  const childIds=data.weeklyGoals.filter(w=>w.monthlyGoalId===mgId).map(w=>w.id);
-  return data.weeklyTasks.filter(t=>childIds.includes(t.weeklyGoalId)).reduce((a,t)=>a+(Number(t.value)||0),0);
+  const sId=String(mgId);
+  const childIds=data.weeklyGoals.filter(w=>String(w.monthlyGoalId)===sId).map(w=>String(w.id));
+  return data.weeklyTasks.filter(t=>childIds.includes(String(t.weeklyGoalId))).reduce((a,t)=>a+(Number(t.value)||0),0);
+}
+function monthlyGoalProgress(mgId){
+  const mg=data.monthlyGoals.find(g=>String(g.id)===String(mgId));
+  if(!mg||!mg.target||mg.target<=0)return 0;
+  return Math.min(100,Math.round(monthlyGoalSum(mgId)/mg.target*100));
 }
 
+// ═══════════ رندر همه ═══════════
 function renderAll(){
   $('todayBigDate').textContent=todayFaLong();
   $('todayLabel').textContent=todayFaLong();
+  refreshSelectors();  // ← قبل از همه، selectها پر بشن
   renderDashboard();
   renderToday();
   renderMonthlyGoals();
@@ -536,21 +549,29 @@ function renderAll(){
   renderForex();
   renderSkills();
   renderReview();
-  refreshSelectors();
 }
 
+// ═══════════ پر کردن select ها ═══════════
 function refreshSelectors(){
-  const mg=$('wgParent');
-  if(mg){
-    const cur=mg.value;
-    mg.innerHTML='<option value="">— بدون والد —</option>'+data.monthlyGoals.filter(g=>!g.done).map(g=>`<option value="${g.id}">${safe(g.title)}</option>`).join('');
-    mg.value=cur;
+  // والد اهداف هفتگی = اهداف ماهانه
+  const mgSel=$('wgParent');
+  if(mgSel){
+    const cur=mgSel.value;
+    const opts=data.monthlyGoals.filter(g=>!g.done);
+    mgSel.innerHTML='<option value="">— انتخاب کن —</option>'+opts.map(g=>`<option value="${g.id}">${safe(g.title)}</option>`).join('');
+    if(cur && opts.some(g=>String(g.id)===String(cur))) mgSel.value=cur;
   }
-  const wg=$('wtGoal');
-  if(wg){
-    const cur=wg.value;
-    wg.innerHTML='<option value="">— بدون والد —</option>'+data.weeklyGoals.filter(g=>!g.done).map(g=>`<option value="${g.id}">${safe(g.title)}</option>`).join('');
-    wg.value=cur;
+  // والد کارهای هفتگی = اهداف هفتگی
+  const wgSel=$('wtGoal');
+  if(wgSel){
+    const cur=wgSel.value;
+    const opts=data.weeklyGoals.filter(g=>!g.done);
+    wgSel.innerHTML='<option value="">— انتخاب کن —</option>'+opts.map(g=>{
+      const parent=data.monthlyGoals.find(m=>String(m.id)===String(g.monthlyGoalId));
+      const label=parent?`${g.title} (${parent.title})`:g.title;
+      return `<option value="${g.id}">${safe(label)}</option>`;
+    }).join('');
+    if(cur && opts.some(g=>String(g.id)===String(cur))) wgSel.value=cur;
   }
 }
 
@@ -586,7 +607,7 @@ function renderToday(){
       <div class="check-title">${safe(t.title)}</div>
       ${t.priority==='urgent_important'?'<span class="status late">فوری</span>':''}</div>`;
   }).join(''):'<p class="muted">هنوز وظیفه‌ای برای امروز نیست.</p>';
-  const habitToday=data.habits.map(h=>({h,s:data.logs.find(l=>l.habit_id===h.id&&l.date===today)?.status||''}));
+  const habitToday=data.habits.map(h=>({h,s:data.logs.find(l=>String(l.habit_id)===String(h.id)&&l.date===today)?.status||''}));
   const doneH=habitToday.filter(x=>x.s==='done').length;
   $('habitTodayCount').textContent=`${fa(doneH)} / ${fa(habitToday.length)}`;
   $('todayHabits').innerHTML=habitToday.length?habitToday.map(({h,s})=>{
@@ -621,7 +642,7 @@ function renderMonthlyGoals(){
   el.innerHTML=data.monthlyGoals.map(g=>{
     const p=monthlyGoalProgress(g.id);
     const sum=monthlyGoalSum(g.id);
-    const childCount=data.weeklyGoals.filter(w=>w.monthlyGoalId===g.id).length;
+    const childCount=data.weeklyGoals.filter(w=>String(w.monthlyGoalId)===String(g.id)).length;
     const daysLeft=g.due_date?Math.ceil((new Date(g.due_date)-new Date())/86400000):null;
     const priorityClass=g.priority==='urgent_important'?'priority-urgent':g.priority==='important'?'priority-important':'';
     const r=45,c=2*Math.PI*r,off=c*(1-p/100);
@@ -649,7 +670,7 @@ function renderMonthlyGoals(){
         ${daysLeft!==null?`<span class="${daysLeft<0?'status late':daysLeft<7?'status gold':'status blue'}">${daysLeft<0?`${fa(-daysLeft)} روز گذشت`:`${fa(daysLeft)} روز مانده`}</span>`:''}
       </div>
       <div class="goal-actions">
-        <button class="ghost small" data-toggle-mg="${g.id}">${g.done?'برگردان':'علامت تکمیل'}</button>
+        <button class="ghost small" data-toggle-mg="${g.id}">${g.done?'برگردان':'تکمیل'}</button>
         <button class="ghost small" data-add-wg-for="${g.id}">+ هدف هفتگی</button>
       </div>
     </div>`;
@@ -672,15 +693,15 @@ function renderWeeklyGoals(){
   el.innerHTML=arr.map(g=>{
     const p=weeklyGoalProgress(g.id);
     const sum=weeklyGoalSum(g.id);
-    const parent=data.monthlyGoals.find(m=>m.id===g.monthlyGoalId);
+    const parent=data.monthlyGoals.find(m=>String(m.id)===String(g.monthlyGoalId));
     const unit=parent?.unit||'';
-    const taskCount=data.weeklyTasks.filter(t=>t.weeklyGoalId===g.id).length;
+    const taskCount=data.weeklyTasks.filter(t=>String(t.weeklyGoalId)===String(g.id)).length;
     return `<article class="item ${g.done?'done':''}">
       <div class="item-main">
         <div class="wg-row">
           <div class="wg-info">
             <div class="wg-title">${g.done?'✓ ':''}${safe(g.title)}</div>
-            ${parent?`<span class="wg-parent">🎯 ${safe(parent.title)}</span>`:''}
+            ${parent?`<span class="wg-parent">🎯 ${safe(parent.title)}</span>`:'<span class="status late">بدون والد</span>'}
             <div class="wg-progress"><span style="width:${p}%"></span></div>
             <div class="wg-stats"><span>📊 ${fa(sum)} از ${fa(g.target)} ${safe(unit)}</span><span>📋 ${fa(taskCount)} کار</span><span>✨ ${fa(p)}٪</span></div>
           </div>
@@ -716,20 +737,20 @@ function renderWeeklyTasks(){
         ${daySum>0?`<span class="day-total">📊 ${fa(daySum)}</span>`:''}
       </div>
       ${dayTasks.length?dayTasks.map(t=>{
-        const goal=data.weeklyGoals.find(g=>g.id===t.weeklyGoalId);
-        const parent=goal?data.monthlyGoals.find(m=>m.id===goal.monthlyGoalId):null;
+        const goal=data.weeklyGoals.find(g=>String(g.id)===String(t.weeklyGoalId));
+        const parent=goal?data.monthlyGoals.find(m=>String(m.id)===String(goal.monthlyGoalId)):null;
         const unit=parent?.unit||'';
         return `<div class="week-task ${t.done?'done':''}">
           <div class="wt-top">
-            <div class="wt-check" data-toggle-wt="${t.id}" style="width:16px;height:16px;border:2px solid var(--line);border-radius:4px;flex-shrink:0;display:grid;place-items:center;font-size:10px;color:${t.done?'white':'transparent'};font-weight:800;margin-top:2px;cursor:pointer;${t.done?'background:var(--olive);border-color:var(--olive);':''}">✓</div>
+            <div class="wt-check ${t.done?'checked':''}" data-toggle-wt="${t.id}">✓</div>
             <div class="wt-body">
               <div class="wt-title">${safe(t.title)}</div>
-              ${goal?`<div class="wt-tag">🎯 ${safe(goal.title.substring(0,22))}</div>`:''}
+              ${goal?`<div class="wt-tag">🎯 ${safe(goal.title.substring(0,20))}</div>`:'<div class="wt-tag" style="background:var(--redbg);color:var(--red)">⚠ بدون هدف</div>'}
             </div>
             <button class="ghost small" data-del-wt="${t.id}" style="padding:2px 6px;font-size:10px">×</button>
           </div>
           <div class="wt-input-row">
-            <input type="number" class="wt-input" min="0" step="0.25" value="${t.value||''}" placeholder="—" data-value-wt="${t.id}">
+            <input type="number" class="wt-input" min="0" step="0.25" value="${t.value||''}" placeholder="0" data-value-wt="${t.id}">
             <span class="wt-unit">${safe(unit)}</span>
           </div>
         </div>`;
@@ -768,7 +789,7 @@ function calcStreak(hid){
   let s=0;const d=new Date();
   for(let i=0;i<365;i++){
     const iso=dateISO(d);
-    const log=data.logs.find(l=>l.habit_id===hid&&l.date===iso);
+    const log=data.logs.find(l=>String(l.habit_id)===String(hid)&&l.date===iso);
     if(log?.status==='done'){s++;d.setDate(d.getDate()-1);}
     else if(i===0){d.setDate(d.getDate()-1);}
     else break;
@@ -778,14 +799,14 @@ function calcStreak(hid){
 function renderHabits(){
   const sl={done:'انجام شد',not_done:'انجام نشد',rest:'استراحت'};
   $('habitList').innerHTML=data.habits.length?data.habits.map(h=>{
-    const log=data.logs.find(l=>l.habit_id===h.id&&l.date===dateISO());const s=log?.status||'';
+    const log=data.logs.find(l=>String(l.habit_id)===String(h.id)&&l.date===dateISO());const s=log?.status||'';
     const streak=calcStreak(h.id);
     return `<article class="habit" style="background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
       <span style="font-weight:700">${safe(h.name)} ${streak>0?`<span class="status gold">🔥 ${fa(streak)}</span>`:''}</span>
       <select data-habit-status="${h.id}" style="width:auto"><option value="" ${!s?'selected':''}>ثبت نشده</option>${Object.entries(sl).map(([v,l])=>`<option value="${v}" ${s===v?'selected':''}>${l}</option>`).join('')}</select>
       <button class="danger small" data-del="habits" data-id="${h.id}">×</button></article>`;
   }).join(''):'<p class="muted">هنوز عادتی اضافه نشده.</p>';
-  renderHabitHeatmapTab();
+  renderHabitHeatmap();
 }
 function renderHabitHeatmap(){
   const weeks=12;const cells=[];
@@ -796,7 +817,7 @@ function renderHabitHeatmap(){
     if(c>=Math.ceil(tot*0.75))lvl='l4';else if(c>=Math.ceil(tot*0.5))lvl='l3';else if(c>=Math.ceil(tot*0.25))lvl='l2';else if(c>0)lvl='l1';
     cells.push(`<div class="cell ${lvl}" title="${toFaDate(iso)}: ${fa(c)}"></div>`);
   }
-  const html=`<div style="overflow-x:auto"><div class="heatmap" style="grid-template-rows:repeat(7,1fr)">${cells.join('')}</div></div>`;
+  const html=`<div style="overflow-x:auto"><div class="heatmap" style="display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,1fr);gap:3px">${cells.join('')}</div></div>`;
   if($('habitHeatmap'))$('habitHeatmap').innerHTML=html;
   if($('habitHeatmapTab'))$('habitHeatmapTab').innerHTML=html;
 }
@@ -857,7 +878,7 @@ function renderMoodLine(){
   </svg>`;
 }
 
-// ═══════════ دانشگاه، فارکس، مهارت، مرور ═══════════
+// ═══════════ بقیه رندرها ═══════════
 function renderUni(){
   $('uniList').innerHTML=data.uni.length?data.uni.map(u=>`<article class="item"><div class="item-main"><div class="item-title">${safe(u.course)}${u.title?' — '+safe(u.title):''}</div>
     <div class="item-meta"><span class="status">${safe(u.type||'')}</span>${u.due_date?`<span>موعد: ${toFaDate(u.due_date)}</span>`:''}</div></div>
@@ -901,7 +922,7 @@ $('monthlyGoalForm').addEventListener('submit',e=>{
     done:false,created:new Date().toISOString()
   });
   $('monthlyGoalForm').reset();$('mgDesc').value='';$('mgPriority').value='normal';$('mgDue').value=dateISO();
-  save();flash('هدف ماهانه ذخیره شد');
+  save();flash('هدف ماهانه ذخیره شد ✓');
 });
 $('monthlyGoalsList').addEventListener('click',e=>{
   const addWgFor=e.target.dataset.addWgFor;
@@ -910,56 +931,62 @@ $('monthlyGoalsList').addEventListener('click',e=>{
     document.querySelectorAll('.subtab').forEach(s=>s.classList.add('hidden'));
     $('sub-weekly-goals').classList.remove('hidden');
     refreshSelectors();
-    $('wgParent').value=addWgFor;
+    $('wgParent').value=String(addWgFor);
     window.scrollTo({top:0,behavior:'smooth'});
     setTimeout(()=>{if($('wgTitle'))$('wgTitle').focus();},300);
     return;
   }
-  const del=e.target.dataset.delMg;if(del&&confirm('حذف شود؟ همراه اهداف هفتگی و کارهای زیرمجموعه‌اش؟')){
-    const childIds=data.weeklyGoals.filter(w=>w.monthlyGoalId==del).map(w=>w.id);
-    data.monthlyGoals=data.monthlyGoals.filter(g=>g.id!=del);
-    data.weeklyGoals=data.weeklyGoals.filter(w=>w.monthlyGoalId!=del);
-    data.weeklyTasks=data.weeklyTasks.filter(t=>!childIds.includes(t.weeklyGoalId));
+  const del=e.target.dataset.delMg;
+  if(del&&confirm('حذف شود؟ همراه اهداف هفتگی و کارهای زیرمجموعه‌اش؟')){
+    const sDel=String(del);
+    const childIds=data.weeklyGoals.filter(w=>String(w.monthlyGoalId)===sDel).map(w=>String(w.id));
+    data.monthlyGoals=data.monthlyGoals.filter(g=>String(g.id)!==sDel);
+    data.weeklyGoals=data.weeklyGoals.filter(w=>String(w.monthlyGoalId)!==sDel);
+    data.weeklyTasks=data.weeklyTasks.filter(t=>!childIds.includes(String(t.weeklyGoalId)));
     save();return;
   }
-  const tg=e.target.dataset.toggleMg;if(tg){const g=data.monthlyGoals.find(x=>x.id==tg);if(g){g.done=!g.done;save();}}
+  const tg=e.target.dataset.toggleMg;if(tg){const g=data.monthlyGoals.find(x=>String(x.id)===String(tg));if(g){g.done=!g.done;save();}}
 });
 
 // ═══════════ CRUD: اهداف هفتگی ═══════════
 $('weeklyGoalForm').addEventListener('submit',e=>{
   e.preventDefault();
   const t=$('wgTitle').value.trim();if(!t)return;
-  const parent=$('wgParent').value||null;
+  const parent=$('wgParent').value;
   const target=Number($('wgTarget').value);
+  if(!parent){flash('لطفاً یه هدف ماهانه انتخاب کن');return;}
   if(!target||target<=0){flash('هدف این هفته باید بزرگ‌تر از صفر باشه');return;}
-  if(!parent){flash('لطفاً یه هدف ماهانه انتخاب کن تا پیشرفت زنجیره‌ای کار کنه');return;}
   data.weeklyGoals.push({
     id:nid(),title:t,
-    monthlyGoalId:parent,
+    monthlyGoalId:String(parent),
     target,
     due_date:$('wgDue').value||null,
     done:false,created:new Date().toISOString()
   });
   $('weeklyGoalForm').reset();$('wgDue').value=dateISO();
-  save();flash('هدف هفتگی ذخیره شد');
+  save();flash('هدف هفتگی ذخیره شد ✓');
 });
 document.querySelectorAll('[data-wgfilter]').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('[data-wgfilter]').forEach(x=>x.classList.toggle('active',x===b));
   renderWeeklyGoals();
 }));
 $('weeklyGoalsList').addEventListener('click',e=>{
-  const del=e.target.dataset.delWg;if(del&&confirm('حذف شود؟')){
-    data.weeklyGoals=data.weeklyGoals.filter(g=>g.id!=del);
-    data.weeklyTasks.forEach(t=>{if(t.weeklyGoalId==del)t.weeklyGoalId=null;});
+  const del=e.target.dataset.delWg;
+  if(del&&confirm('حذف شود؟')){
+    const sDel=String(del);
+    data.weeklyGoals=data.weeklyGoals.filter(g=>String(g.id)!==sDel);
+    data.weeklyTasks.forEach(t=>{if(String(t.weeklyGoalId)===sDel)t.weeklyGoalId=null;});
     save();return;
   }
-  const tg=e.target.dataset.toggleWg;if(tg){const g=data.weeklyGoals.find(x=>x.id==tg);if(g){g.done=!g.done;save();}}
+  const tg=e.target.dataset.toggleWg;if(tg){const g=data.weeklyGoals.find(x=>String(x.id)===String(tg));if(g){g.done=!g.done;save();}}
 });
 
 // ═══════════ CRUD: کارهای هفتگی ═══════════
 $('weeklyTaskForm').addEventListener('submit',e=>{
   e.preventDefault();
   const t=$('wtTitle').value.trim();if(!t)return;
+  const parent=$('wtGoal').value;
+  if(!parent){flash('لطفاً یه هدف هفتگی انتخاب کن');return;}
   const dayName=$('wtDay').value;
   const days=getWeekDays(weeklyOffset);
   const dayIdx=weekDayNames.indexOf(dayName);
@@ -968,33 +995,31 @@ $('weeklyTaskForm').addEventListener('submit',e=>{
     id:nid(),title:t,
     date:dateISO(dayDate),
     dayName,
-    weeklyGoalId:$('wtGoal').value||null,
+    weeklyGoalId:String(parent),
     value:'',
     done:false,created:new Date().toISOString()
   });
   $('weeklyTaskForm').reset();
-  save();flash('کار افزوده شد');
+  save();flash('کار افزوده شد ✓');
 });
 $('wtPrev').addEventListener('click',()=>{weeklyOffset--;renderWeeklyTasks();});
 $('wtNext').addEventListener('click',()=>{weeklyOffset++;renderWeeklyTasks();});
 $('wtToday').addEventListener('click',()=>{weeklyOffset=0;renderWeeklyTasks();});
 
-// ضبط مقدار با Enter یا blur
+// ذخیرهٔ مقدار وقتی کاربر تایپ می‌کنه یا از input خارج می‌شه
 document.addEventListener('input',e=>{
   const id=e.target.dataset.valueWt;
   if(!id)return;
-  const t=data.weeklyTasks.find(x=>x.id==id);
+  const t=data.weeklyTasks.find(x=>String(x.id)===String(id));
   if(!t)return;
   const v=e.target.value;
   t.value=v===''?'':Number(v);
   saveData();
-  // رفرش فقط بخش پیشرفت بدون رندر کامل
-  refreshProgressOnly();
 });
 document.addEventListener('change',e=>{
   const id=e.target.dataset.valueWt;
   if(!id)return;
-  const t=data.weeklyTasks.find(x=>x.id==id);
+  const t=data.weeklyTasks.find(x=>String(x.id)===String(id));
   if(!t)return;
   const v=e.target.value;
   t.value=v===''?'':Number(v);
@@ -1002,42 +1027,38 @@ document.addEventListener('change',e=>{
   renderWeeklyGoals();
   renderMonthlyGoals();
   renderDashboard();
-  const days=getWeekDays(weeklyOffset);
-  const weekTasks=data.weeklyTasks.filter(x=>{const d=new Date(x.date);return d>=days[0]&&d<=days[6];});
-  const doneCount=weekTasks.filter(x=>x.done).length;
-  $('weeklyTasksProgress').textContent=weekTasks.length?`${fa(doneCount)} / ${fa(weekTasks.length)} انجام‌شده`:'—';
-});
-
-function refreshProgressOnly(){
-  // به‌روزرسانی هدر ستون‌ها
+  // به‌روزرسانی هدر ستون
   const days=getWeekDays(weeklyOffset);
   days.forEach((d,i)=>{
     const iso=dateISO(d);
-    const dayTasks=data.weeklyTasks.filter(t=>t.date===iso);
-    const sum=dayTasks.reduce((a,t)=>a+(Number(t.value)||0),0);
-    const header=document.querySelectorAll('.week-day')[i]?.querySelector('.day-total');
-    if(header){
-      header.textContent=sum>0?`📊 ${fa(sum)}`:'';
-    } else if(sum>0){
-      const el=document.querySelectorAll('.week-day')[i]?.querySelector('.week-day-header');
-      if(el)el.insertAdjacentHTML('beforeend',`<span class="day-total">📊 ${fa(sum)}</span>`);
+    const sum=data.weeklyTasks.filter(t=>t.date===iso).reduce((a,t)=>a+(Number(t.value)||0),0);
+    const dayEl=document.querySelectorAll('.week-day')[i];
+    if(dayEl){
+      let head=dayEl.querySelector('.day-total');
+      if(sum>0){
+        if(!head){
+          const header=dayEl.querySelector('.week-day-header');
+          if(header)header.insertAdjacentHTML('beforeend',`<span class="day-total">📊 ${fa(sum)}</span>`);
+        } else {
+          head.textContent=`📊 ${fa(sum)}`;
+        }
+      } else if(head){
+        head.remove();
+      }
     }
   });
-  // پیشرفت هفته و ماه (بدون رندر کامل جدول)
-  renderWeeklyGoals();
-  renderMonthlyGoals();
-}
+});
 
 $('weekColumns').addEventListener('click',e=>{
   const tg=e.target.dataset.toggleWt;
   if(tg){
-    const t=data.weeklyTasks.find(x=>x.id==tg);
+    const t=data.weeklyTasks.find(x=>String(x.id)===String(tg));
     if(t){t.done=!t.done;save();}
     return;
   }
   const del=e.target.dataset.delWt;
   if(del&&confirm('حذف شود؟')){
-    data.weeklyTasks=data.weeklyTasks.filter(t=>t.id!=del);
+    data.weeklyTasks=data.weeklyTasks.filter(t=>String(t.id)!==String(del));
     save();return;
   }
   const add=e.target.dataset.addWtDay;
@@ -1057,32 +1078,30 @@ $('weekColumns').addEventListener('click',e=>{
   }
 });
 
-// ═══════════ CRUD: وظایف روزانه ═══════════
+// ═══════════ CRUD: بقیه بخش‌ها ═══════════
 $('taskForm').addEventListener('submit',e=>{e.preventDefault();const t=$('taskTitle').value.trim();if(!t)return;data.tasks.push({id:nid(),title:t,priority:$('taskPriority').value,status:'planned',due_date:$('taskDue').value||null,category:$('taskCategory').value,created:new Date().toISOString()});$('taskForm').reset();$('taskPriority').value='normal';$('taskCategory').value='شخصی';save();flash('ذخیره شد');});
 $('taskFilter').addEventListener('change',renderTasks);
 $('taskSearch').addEventListener('input',renderTasks);
-$('taskList').addEventListener('change',e=>{const id=e.target.dataset.taskStatus;if(!id)return;const t=data.tasks.find(x=>x.id==id);if(t){t.status=e.target.value;save();}});
+$('taskList').addEventListener('change',e=>{const id=e.target.dataset.taskStatus;if(!id)return;const t=data.tasks.find(x=>String(x.id)===String(id));if(t){t.status=e.target.value;save();}});
 $('taskList').addEventListener('click',e=>{
-  const bj=e.target.dataset.bjTask;if(bj){const t=data.tasks.find(x=>x.id==bj);if(t){t.status=t.status==='done'?'planned':'done';save();}return;}
-  const del=e.target.dataset.del;if(del==='tasks'&&confirm('حذف شود؟')){data.tasks=data.tasks.filter(x=>x.id!=e.target.dataset.id);save();}
+  const bj=e.target.dataset.bjTask;if(bj){const t=data.tasks.find(x=>String(x.id)===String(bj));if(t){t.status=t.status==='done'?'planned':'done';save();}return;}
+  const del=e.target.dataset.del;if(del==='tasks'&&confirm('حذف شود؟')){data.tasks=data.tasks.filter(x=>String(x.id)!==String(e.target.dataset.id));save();}
 });
 $('quickAddTask').addEventListener('click',()=>{const t=prompt('عنوان وظیفهٔ امروز:');if(!t)return;data.tasks.push({id:nid(),title:t,priority:'normal',status:'planned',due_date:dateISO(),category:'شخصی',created:new Date().toISOString()});save();});
 
-// ═══════════ CRUD: عادت‌ها ═══════════
 $('habitForm').addEventListener('submit',e=>{e.preventDefault();const n=$('habitName').value.trim();if(!n)return;data.habits.push({id:nid(),name:n,created:new Date().toISOString()});$('habitForm').reset();save();flash('ذخیره شد');});
 $('habitList').addEventListener('change',e=>{const id=e.target.dataset.habitStatus;if(!id)return;const s=e.target.value;const today=dateISO();
-  const idx=data.logs.findIndex(l=>l.habit_id==id&&l.date===today);
+  const idx=data.logs.findIndex(l=>String(l.habit_id)===String(id)&&l.date===today);
   if(!s){if(idx>=0)data.logs.splice(idx,1);}
-  else if(idx>=0){data.logs[idx].status=s;}else{data.logs.push({id:nid(),habit_id:id,date:today,status:s});}
+  else if(idx>=0){data.logs[idx].status=s;}else{data.logs.push({id:nid(),habit_id:String(id),date:today,status:s});}
   save();});
-$('habitList').addEventListener('click',e=>{if(e.target.dataset.del==='habits'&&confirm('حذف شود؟')){const id=e.target.dataset.id;data.habits=data.habits.filter(h=>h.id!=id);data.logs=data.logs.filter(l=>l.habit_id!=id);save();}});
+$('habitList').addEventListener('click',e=>{if(e.target.dataset.del==='habits'&&confirm('حذف شود؟')){const id=e.target.dataset.id;data.habits=data.habits.filter(h=>String(h.id)!==String(id));data.logs=data.logs.filter(l=>String(l.habit_id)!==String(id));save();}});
 
-// ═══════════ امروز ═══════════
-$('todayTasks').addEventListener('click',e=>{const el=e.target.closest('[data-toggle-task]');if(!el)return;const id=el.dataset.toggleTask;const t=data.tasks.find(x=>x.id==id);if(t){t.status=t.status==='done'?'planned':'done';save();}});
+$('todayTasks').addEventListener('click',e=>{const el=e.target.closest('[data-toggle-task]');if(!el)return;const id=el.dataset.toggleTask;const t=data.tasks.find(x=>String(x.id)===String(id));if(t){t.status=t.status==='done'?'planned':'done';save();}});
 $('todayHabits').addEventListener('click',e=>{const el=e.target.closest('[data-toggle-habit]');if(!el)return;const id=el.dataset.toggleHabit;const today=dateISO();
-  const log=data.logs.find(l=>l.habit_id==id&&l.date===today);
+  const log=data.logs.find(l=>String(l.habit_id)===String(id)&&l.date===today);
   if(log){log.status=log.status==='done'?'not_done':'done';}
-  else{data.logs.push({id:nid(),habit_id:id,date:today,status:'done'});}
+  else{data.logs.push({id:nid(),habit_id:String(id),date:today,status:'done'});}
   save();});
 $('saveDailyBtn').addEventListener('click',()=>{const today=dateISO();
   const idx=data.daily.findIndex(d=>d.date===today);
@@ -1090,29 +1109,26 @@ $('saveDailyBtn').addEventListener('click',()=>{const today=dateISO();
   if(idx>=0)data.daily[idx]=entry;else data.daily.push(entry);
   save();flash('ذخیره شد');});
 
-// ═══════════ CRUD: مالی ═══════════
 $('financeForm').addEventListener('submit',e=>{e.preventDefault();const d=$('finDate').value;const month=new Intl.DateTimeFormat('fa-IR-u-ca-persian',{month:'long'}).format(new Date(d));
   data.finance.push({id:nid(),date:d,month,type:$('finType').value,category:$('finCategory').value,description:$('finDesc').value,amount:Number($('finAmount').value||0)});
   $('financeForm').reset();$('finDate').value=dateISO();save();flash('ذخیره شد');});
-$('financeList').addEventListener('click',e=>{if(e.target.dataset.del==='finance'&&confirm('حذف شود؟')){data.finance=data.finance.filter(x=>x.id!=e.target.dataset.id);save();}});
+$('financeList').addEventListener('click',e=>{if(e.target.dataset.del==='finance'&&confirm('حذف شود؟')){data.finance=data.finance.filter(x=>String(x.id)!==String(e.target.dataset.id));save();}});
 
-// ═══════════ CRUD: خلق‌وخو ═══════════
 $('moodForm').addEventListener('submit',e=>{e.preventDefault();const d=$('moodDate').value;
   const idx=data.mood.findIndex(m=>m.date===d);
   const entry={id:nid(),date:d,mood:$('moodMood').value,energy:Number($('moodEnergy').value||0),sleep:Number($('moodSleep').value||0),stress:Number($('moodStress').value||0)};
   if(idx>=0){entry.id=data.mood[idx].id;data.mood[idx]=entry;}else data.mood.push(entry);
   save();flash('ذخیره شد');});
-$('moodList').addEventListener('click',e=>{if(e.target.dataset.del==='mood'&&confirm('حذف شود؟')){data.mood=data.mood.filter(x=>x.id!=e.target.dataset.id);save();}});
+$('moodList').addEventListener('click',e=>{if(e.target.dataset.del==='mood'&&confirm('حذف شود؟')){data.mood=data.mood.filter(x=>String(x.id)!==String(e.target.dataset.id));save();}});
 
-// ═══════════ CRUD: دانشگاه، فارکس، مهارت، مرور ═══════════
 $('uniForm').addEventListener('submit',e=>{e.preventDefault();data.uni.push({id:nid(),course:$('uniCourse').value.trim(),type:$('uniType').value,title:$('uniTitle').value,due_date:$('uniDue').value||null});$('uniForm').reset();$('uniDue').value=dateISO();save();flash('ذخیره شد');});
-$('uniList').addEventListener('click',e=>{if(e.target.dataset.del==='uni'&&confirm('حذف شود؟')){data.uni=data.uni.filter(x=>x.id!=e.target.dataset.id);save();}});
+$('uniList').addEventListener('click',e=>{if(e.target.dataset.del==='uni'&&confirm('حذف شود؟')){data.uni=data.uni.filter(x=>String(x.id)!==String(e.target.dataset.id));save();}});
 $('forexForm').addEventListener('submit',e=>{e.preventDefault();data.forex.push({id:nid(),date:$('fxDate').value||null,symbol:$('fxSymbol').value,direction:$('fxDir').value,entry:Number($('fxEntry').value||0),exit:Number($('fxExit').value||0),result:Number($('fxResult').value||0)});$('forexForm').reset();$('fxDate').value=dateISO();save();flash('ذخیره شد');});
-$('forexList').addEventListener('click',e=>{if(e.target.dataset.del==='forex'&&confirm('حذف شود؟')){data.forex=data.forex.filter(x=>x.id!=e.target.dataset.id);save();}});
+$('forexList').addEventListener('click',e=>{if(e.target.dataset.del==='forex'&&confirm('حذف شود؟')){data.forex=data.forex.filter(x=>String(x.id)!==String(e.target.dataset.id));save();}});
 $('skillForm').addEventListener('submit',e=>{e.preventDefault();data.skills.push({id:nid(),skill:$('skillName').value.trim(),stage:$('skillStage').value,source:$('skillSource').value,end_date:$('skillEnd').value||null});$('skillForm').reset();$('skillEnd').value=dateISO();save();flash('ذخیره شد');});
-$('skillList').addEventListener('click',e=>{if(e.target.dataset.del==='skills'&&confirm('حذف شود؟')){data.skills=data.skills.filter(x=>x.id!=e.target.dataset.id);save();}});
+$('skillList').addEventListener('click',e=>{if(e.target.dataset.del==='skills'&&confirm('حذف شود؟')){data.skills=data.skills.filter(x=>String(x.id)!==String(e.target.dataset.id));save();}});
 $('reviewForm').addEventListener('submit',e=>{e.preventDefault();data.review.push({id:nid(),type:$('revType').value,period:$('revPeriod').value,score:Number($('revScore').value||0),successes:$('revSucc').value,challenges:$('revChal').value});$('reviewForm').reset();save();flash('ذخیره شد');});
-$('reviewList').addEventListener('click',e=>{if(e.target.dataset.del==='review'&&confirm('حذف شود؟')){data.review=data.review.filter(x=>x.id!=e.target.dataset.id);save();}});
+$('reviewList').addEventListener('click',e=>{if(e.target.dataset.del==='review'&&confirm('حذف شود؟')){data.review=data.review.filter(x=>String(x.id)!==String(e.target.dataset.id));save();}});
 
 // ═══════════ ناوبری ═══════════
 document.querySelectorAll('.nav button[data-tab]').forEach(b=>b.addEventListener('click',()=>{
@@ -1124,6 +1140,7 @@ document.querySelectorAll('#tab-planner .subnav button[data-sub]').forEach(b=>b.
   document.querySelectorAll('#tab-planner .subnav button[data-sub]').forEach(x=>x.classList.toggle('active',x===b));
   document.querySelectorAll('.subtab').forEach(s=>s.classList.add('hidden'));
   const sub=$('sub-'+b.dataset.sub);if(sub)sub.classList.remove('hidden');
+  if(b.dataset.sub==='weekly-goals'||b.dataset.sub==='weekly-tasks')refreshSelectors();
 }));
 
 // ═══════════ خروجی/ورودی ═══════════
@@ -1139,6 +1156,24 @@ $('importFile').addEventListener('change',e=>{
   reader.onload=ev=>{try{const imported=JSON.parse(ev.target.result);if(confirm('داده‌های فعلی با فایل جدید جایگزین شود؟')){data={...emptyData(),...imported};save();flash('بازیابی شد');}}catch(err){flash('فایل نامعتبر است');}};
   reader.readAsText(file);});
 $('clearDataBtn').addEventListener('click',()=>{if(confirm('همهٔ داده‌های شما پاک شود؟ این کار قابل بازگشت نیست!')){data=emptyData();save();flash('پاک شد');}});
+
+// ═══════════ دیباگ ═══════════
+$('debugBtn').addEventListener('click',()=>{
+  const out=$('debugOutput');
+  const info={
+    session:session,
+    counts:{
+      monthlyGoals:data.monthlyGoals.length,
+      weeklyGoals:data.weeklyGoals.length,
+      weeklyTasks:data.weeklyTasks.length
+    },
+    monthlyGoals:data.monthlyGoals.map(g=>({id:g.id,idType:typeof g.id,title:g.title,unit:g.unit,target:g.target})),
+    weeklyGoals:data.weeklyGoals.map(g=>({id:g.id,idType:typeof g.id,title:g.title,parent:g.monthlyGoalId,parentType:typeof g.monthlyGoalId,target:g.target})),
+    weeklyTasks:data.weeklyTasks.map(t=>({id:t.id,title:t.title,goalId:t.weeklyGoalId,goalIdType:typeof t.weeklyGoalId,value:t.value}))
+  };
+  out.textContent=JSON.stringify(info,null,2);
+  out.classList.remove('hidden');
+});
 
 // ═══════════ پومودورو ═══════════
 let pInt=null,pRem=25*60,pRun=false;
