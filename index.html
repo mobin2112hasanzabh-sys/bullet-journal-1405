@@ -5,63 +5,36 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#4b3526">
 <title>بولت ژورنال من | ۱۴۰۵</title>
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
 <style>
-:root{
-  --cream:#f7f1e7;--cream2:#eee3d2;--cream3:#e5d8bf;--brown:#76543a;--dark:#4b3526;
-  --olive:#78845b;--olive2:#e5ead9;--text:#30271f;--muted:#766c61;--line:#ddd0be;
-  --white:#fffdf9;--paper:#faf5ea;--red:#b95042;--redbg:#fbe9e5;--green:#456b3f;
-  --greenbg:#e5f2e2;--gold:#b58e42;--goldbg:#faf1dd;--blue:#5b7a99;
-  --shadow:0 4px 18px rgba(75,53,38,.07);--shadow2:0 12px 40px rgba(75,53,38,.12);
-  --radius:18px;--dot:rgba(118,84,58,.10);
-}
-[data-theme="dark"]{
-  --cream:#2a241d;--cream2:#332b22;--cream3:#3d3328;--brown:#c4a684;--dark:#e8d9c0;
-  --olive:#9caf7a;--olive2:#3a4232;--text:#f0e5d0;--muted:#a89b85;--line:#4a3f31;
-  --white:#38302a;--paper:#2f2823;--red:#d97767;--redbg:#4a2a24;--green:#a4c47a;
-  --greenbg:#2e3d28;--gold:#d9b866;--goldbg:#453a20;--blue:#8bb0d0;
-  --shadow:0 4px 18px rgba(0,0,0,.3);--shadow2:0 12px 40px rgba(0,0,0,.45);--dot:rgba(232,217,192,.06);
-}
+:root{--cream:#f7f1e7;--cream2:#eee3d2;--cream3:#e5d8bf;--brown:#76543a;--dark:#4b3526;--olive:#78845b;--olive2:#e5ead9;--text:#30271f;--muted:#766c61;--line:#ddd0be;--white:#fffdf9;--paper:#faf5ea;--red:#b95042;--redbg:#fbe9e5;--green:#456b3f;--greenbg:#e5f2e2;--gold:#b58e42;--goldbg:#faf1dd;--blue:#5b7a99;--shadow:0 4px 18px rgba(75,53,38,.07);--shadow2:0 12px 40px rgba(75,53,38,.12);--radius:18px;--dot:rgba(118,84,58,.10)}
+[data-theme="dark"]{--cream:#2a241d;--cream2:#332b22;--cream3:#3d3328;--brown:#c4a684;--dark:#e8d9c0;--olive:#9caf7a;--olive2:#3a4232;--text:#f0e5d0;--muted:#a89b85;--line:#4a3f31;--white:#38302a;--paper:#2f2823;--red:#d97767;--redbg:#4a2a24;--green:#a4c47a;--greenbg:#2e3d28;--gold:#d9b866;--goldbg:#453a20;--blue:#8bb0d0;--shadow:0 4px 18px rgba(0,0,0,.3);--shadow2:0 12px 40px rgba(0,0,0,.45);--dot:rgba(232,217,192,.06)}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{
-  background:var(--cream);color:var(--text);font-family:Vazirmatn,Tahoma,"Segoe UI",sans-serif;
-  line-height:1.75;min-height:100vh;position:relative;transition:background .4s,color .4s;
-  background-image:radial-gradient(circle at 20% 0%,var(--cream2) 0%,transparent 60%),
-                   radial-gradient(circle at 80% 100%,var(--cream3) 0%,transparent 60%);
-}
-body::before{
-  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
-  background-image:radial-gradient(var(--dot) 1px,transparent 1px);
-  background-size:22px 22px;opacity:.7;
-}
+body{background:var(--cream);color:var(--text);font-family:Vazirmatn,Tahoma,sans-serif;line-height:1.75;min-height:100vh;position:relative;transition:background .4s,color .4s;background-image:radial-gradient(circle at 20% 0%,var(--cream2) 0%,transparent 60%),radial-gradient(circle at 80% 100%,var(--cream3) 0%,transparent 60%)}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:22px 22px;opacity:.7}
 button,input,select,textarea{font:inherit;font-family:inherit}
 button{cursor:pointer;border:0;border-radius:12px;padding:10px 15px;background:var(--olive);color:white;font-weight:700;transition:transform .15s,filter .15s}
 button:hover{filter:brightness(.95);transform:translateY(-1px)}
-button:active{transform:translateY(0)}
 button.secondary{background:var(--cream2);color:var(--text);border:1px solid var(--line)}
 button.danger{background:var(--red)}
 button.ghost{background:transparent;color:var(--muted);border:1px dashed var(--line);font-weight:500}
 button.small{padding:5px 9px;font-size:12px;border-radius:9px}
-button.icon{padding:8px;width:38px;height:38px;display:inline-grid;place-items:center;border-radius:50%}
 .wrap{max-width:1240px;margin:0 auto;padding:22px;position:relative;z-index:1}
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:14px}
 .logo{width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,var(--dark),var(--brown));color:var(--cream);display:grid;place-items:center;font-size:24px;box-shadow:var(--shadow2)}
-.brand h1{font-size:21px;margin:0;font-weight:800}
-.brand p{margin:0;color:var(--muted);font-size:12px}
+.brand h1{font-size:21px;font-weight:800}
+.brand p{color:var(--muted);font-size:12px}
 .top-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .pill{display:inline-block;background:var(--olive2);color:var(--olive);border-radius:999px;padding:5px 12px;font-size:12px;font-weight:600}
-.panel{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-bottom:18px;transition:background .4s,border-color .4s}
-.panel h2,.panel h3{margin-top:0;color:var(--dark)}
-.panel h2{font-size:20px;margin-bottom:8px}
-.panel h3{font-size:16px;margin-bottom:12px}
+.panel{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-bottom:18px}
+.panel h2{font-size:20px;margin-bottom:8px;color:var(--dark)}
+.panel h3{font-size:16px;margin-bottom:12px;color:var(--dark)}
 .muted{color:var(--muted);font-size:13px}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.stat{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:16px;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.stat{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:16px;position:relative;overflow:hidden;transition:transform .2s}
 .stat:hover{transform:translateY(-2px);box-shadow:var(--shadow2)}
 .stat .label{font-size:12px;color:var(--muted);font-weight:600}
 .stat .number{font-size:26px;font-weight:800;color:var(--dark);margin-top:4px}
@@ -71,20 +44,19 @@ button.icon{padding:8px;width:38px;height:38px;display:inline-grid;place-items:c
 .nav button.active{background:var(--dark);color:var(--cream)}
 .formgrid{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:10px;align-items:end}
 .formgrid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:end}
-.formgrid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;align-items:end}
 .field{display:flex;flex-direction:column;gap:6px}
 .field label{font-size:12px;color:var(--muted);font-weight:700}
-.field input,.field select,.field textarea,input,select,textarea{background:var(--paper);color:var(--text);border:1px solid var(--line);border-radius:11px;padding:10px 12px;min-width:0;width:100%;transition:border-color .2s,background .2s}
-.field input:focus,.field select:focus,.field textarea:focus,input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-color:var(--olive);background:var(--white)}
+input,select,textarea{background:var(--paper);color:var(--text);border:1px solid var(--line);border-radius:11px;padding:10px 12px;width:100%;transition:.2s}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-color:var(--olive);background:var(--white)}
 .list{display:flex;flex-direction:column;gap:10px;margin-top:16px}
-.item{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--paper);transition:transform .15s,box-shadow .15s;position:relative}
+.item{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--paper);transition:.15s}
 .item:hover{transform:translateX(-2px);box-shadow:var(--shadow)}
 .item-main{min-width:0;flex:1}
 .item-title{font-weight:700;overflow-wrap:anywhere;color:var(--dark)}
 .item-meta{font-size:12px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap;margin-top:5px;align-items:center}
 .item-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .item select{padding:6px 10px;max-width:150px;width:auto}
-.done .item-title{text-decoration:line-through;color:var(--muted);text-decoration-thickness:2px}
+.done .item-title{text-decoration:line-through;color:var(--muted)}
 .status{font-size:11px;border-radius:999px;background:var(--cream2);padding:3px 10px;color:var(--text);font-weight:600;white-space:nowrap}
 .status.done{background:var(--greenbg);color:var(--green)}
 .status.late{background:var(--redbg);color:var(--red)}
@@ -93,125 +65,65 @@ button.icon{padding:8px;width:38px;height:38px;display:inline-grid;place-items:c
 .hidden{display:none!important}
 .notice{border-radius:12px;padding:12px 14px;background:var(--olive2);color:var(--olive);font-size:13px;margin:12px 0;font-weight:600}
 .notice.error{background:var(--redbg);color:var(--red)}
-.notice.warn{background:var(--goldbg);color:var(--gold)}
 .authbox{max-width:480px;margin:6vh auto}
 .auth-form{display:grid;gap:14px}
 .toggleline{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px}
-.checkrow{display:flex;align-items:center;gap:8px;font-size:13px}
-.checkrow input{width:auto;min-width:auto}
 .footer{text-align:center;color:var(--muted);font-size:11px;padding:20px;opacity:.7}
 .sectionhead{display:flex;justify-content:space-between;align-items:start;gap:14px;flex-wrap:wrap;margin-bottom:16px}
-.subnav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
-.subnav button{background:var(--cream2);color:var(--text);padding:7px 14px;font-size:13px}
-.subnav button.active{background:var(--olive);color:white}
 .progress{height:8px;border-radius:99px;background:var(--cream2);overflow:hidden;margin-top:8px}
 .progress span{height:100%;display:block;background:linear-gradient(90deg,var(--olive),var(--gold));width:0;transition:width .5s}
-.habit{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--paper);flex-wrap:wrap;transition:transform .15s}
-.habit:hover{transform:scale(1.01)}
-.habitgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.habit{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--paper);flex-wrap:wrap}
+.habitgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .money-pos{color:var(--green);font-weight:700}
 .money-neg{color:var(--red);font-weight:700}
-
-/* ═══════ نمودارها ═══════ */
-.chart-wrap{background:var(--paper);border-radius:14px;padding:18px;border:1px solid var(--line)}
-.chart{display:flex;gap:6px;align-items:flex-end;height:140px;padding:8px;background:transparent;border-radius:12px}
-.chart .bar{flex:1;background:linear-gradient(180deg,var(--olive),var(--brown));border-radius:8px 8px 3px 3px;min-height:6px;position:relative;display:flex;align-items:flex-end;justify-content:center;color:white;font-size:10px;padding-bottom:4px;transition:.3s;cursor:pointer}
+.chart{display:flex;gap:6px;align-items:flex-end;height:140px;padding:8px}
+.chart .bar{flex:1;background:linear-gradient(180deg,var(--olive),var(--brown));border-radius:8px 8px 3px 3px;min-height:6px;display:flex;align-items:flex-end;justify-content:center;color:white;font-size:10px;padding-bottom:4px;transition:.3s}
 .chart .bar:hover{filter:brightness(1.1);transform:translateY(-3px)}
-.chart-labels{display:flex;gap:6px;margin-top:6px;padding:0 8px}
-.chart-labels span{flex:1;text-align:center;font-size:10px;color:var(--muted);font-weight:600}
 .svg-chart{width:100%;height:auto;display:block}
 .heatmap{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,1fr);gap:3px}
-.heatmap .cell{width:14px;height:14px;border-radius:3px;background:var(--cream2);transition:.2s;cursor:pointer}
+.heatmap .cell{width:14px;height:14px;border-radius:3px;background:var(--cream2);cursor:pointer}
 .heatmap .cell.l1{background:#d5e0bf}.heatmap .cell.l2{background:#a8bf82}.heatmap .cell.l3{background:#7d9c58}.heatmap .cell.l4{background:var(--olive)}
 .donut-wrap{display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap}
 .legend{display:flex;flex-direction:column;gap:8px;font-size:13px}
 .legend div{display:flex;align-items:center;gap:8px}
 .legend .dot{width:12px;height:12px;border-radius:50%}
-
-/* ═══════ صفحهٔ روزانه ═══════ */
 .today-hero{text-align:center;padding:28px 20px;background:linear-gradient(135deg,var(--white),var(--paper));border-radius:20px;border:1px solid var(--line);position:relative;overflow:hidden;margin-bottom:20px}
 .today-hero::before{content:"✦";position:absolute;top:-20px;right:20px;font-size:120px;color:var(--gold);opacity:.08}
 .today-hero h2{font-size:26px;color:var(--dark);margin-bottom:6px}
-.today-hero p{color:var(--muted);font-size:14px}
 .today-hero .date-big{font-size:32px;font-weight:800;color:var(--brown);margin:12px 0}
 .bullet-symbols{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted);justify-content:center;margin-top:12px;padding:10px;background:var(--cream2);border-radius:11px}
 .bullet-symbols span{display:flex;align-items:center;gap:5px}
 .bsym{font-size:16px;color:var(--brown);font-weight:800}
-.daily-notes-area{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px;min-height:120px;font-family:Vazirmatn,sans-serif;line-height:2;background-image:linear-gradient(transparent 31px,var(--dot) 32px);background-size:100% 32px}
+.daily-notes-area{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px;min-height:120px;font-family:Vazirmatn,sans-serif;line-height:2;background-image:linear-gradient(transparent 31px,var(--dot) 32px);background-size:100% 32px;width:100%}
 .daily-notes-area:focus{outline:2px solid var(--olive2);background:var(--white)}
 .checklist{display:flex;flex-direction:column;gap:8px}
 .checklist-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--paper);border:1px solid var(--line);border-radius:12px;cursor:pointer;transition:.15s}
 .checklist-item:hover{background:var(--white);transform:translateX(-2px)}
 .checklist-item.checked{opacity:.6}
 .checklist-item.checked .check-title{text-decoration:line-through}
-.check-box{width:22px;height:22px;border:2px solid var(--brown);border-radius:6px;display:grid;place-items:center;flex-shrink:0;transition:.2s;font-size:14px;color:transparent;font-weight:800}
+.check-box{width:22px;height:22px;border:2px solid var(--brown);border-radius:6px;display:grid;place-items:center;flex-shrink:0;font-size:14px;color:transparent;font-weight:800;transition:.2s}
 .checklist-item.checked .check-box{background:var(--olive);border-color:var(--olive);color:white}
 .check-title{font-weight:600;flex:1;min-width:0;overflow-wrap:anywhere}
-
-/* ═══════ حالت تمرکز ═══════ */
-.focus-overlay{position:fixed;inset:0;background:rgba(48,39,31,.95);z-index:9999;display:grid;place-items:center;padding:20px;color:var(--cream)}
-.focus-overlay .focus-card{background:var(--paper);border-radius:20px;padding:40px;max-width:520px;width:100%;text-align:center;color:var(--text)}
-.focus-overlay h2{color:var(--dark);font-size:24px;margin-bottom:16px}
-.focus-timer{font-size:72px;font-weight:800;color:var(--brown);letter-spacing:3px;margin:20px 0;font-variant-numeric:tabular-nums}
-.focus-btns{display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap}
-
-/* ═══════ چک‌باکس‌های بولت ═══════ */
-.bj-bullet{display:inline-flex;width:24px;height:24px;justify-content:center;align-items:center;border:2px solid var(--brown);border-radius:6px;font-weight:900;color:var(--brown);background:transparent;flex-shrink:0;cursor:pointer;transition:.2s;font-size:14px}
+.bj-bullet{display:inline-flex;width:24px;height:24px;justify-content:center;align-items:center;border:2px solid var(--brown);border-radius:6px;font-weight:900;color:var(--brown);flex-shrink:0;cursor:pointer;transition:.2s;font-size:14px}
 .bj-bullet[data-state="done"]{background:var(--olive);border-color:var(--olive);color:white}
-.bj-bullet[data-state="migrated"]{background:var(--gold);border-color:var(--gold);color:white}
-.bj-bullet[data-state="scheduled"]{background:var(--blue);border-color:var(--blue);color:white}
-.bj-bullet[data-state="cancelled"]{background:var(--red);border-color:var(--red);color:white;text-decoration:line-through}
-
-/* ═══════ پومودورو ═══════ */
-.pomo-box{position:fixed;bottom:20px;left:20px;background:var(--white);border:1px solid var(--line);border-radius:16px;padding:14px 18px;box-shadow:var(--shadow2);z-index:500;display:flex;align-items:center;gap:14px;font-weight:700;transition:.3s}
+.pomo-box{position:fixed;bottom:20px;left:20px;background:var(--white);border:1px solid var(--line);border-radius:16px;padding:14px 18px;box-shadow:var(--shadow2);z-index:500;display:flex;align-items:center;gap:14px;font-weight:700}
 .pomo-box.running{background:linear-gradient(135deg,var(--olive),var(--brown));color:white}
-.pomo-box .pomo-time{font-size:20px;font-variant-numeric:tabular-nums}
-.pomo-box .pomo-label{font-size:11px;opacity:.85;font-weight:500}
-
-/* ═══════ جدول هفتگی ═══════ */
-.week-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin-top:14px}
+.pomo-time{font-size:20px;font-variant-numeric:tabular-nums}
+.pomo-label{font-size:11px;opacity:.85;font-weight:500}
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:14px}
 .week-col{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:10px;min-height:180px;display:flex;flex-direction:column;gap:6px}
 .week-col .day-head{font-size:12px;font-weight:800;color:var(--dark);text-align:center;padding-bottom:8px;border-bottom:2px solid var(--line);margin-bottom:6px}
 .week-col .day-head.today{color:var(--olive);border-bottom-color:var(--olive)}
 .week-col .day-head small{display:block;font-size:10px;color:var(--muted);font-weight:500}
 .week-task{font-size:11px;padding:6px 8px;background:var(--white);border:1px solid var(--line);border-radius:8px;word-break:break-word;line-height:1.4}
-
-/* ═══════ حالت شب ═══════ */
-.theme-toggle{position:relative;width:52px;height:28px;border-radius:99px;background:var(--cream2);border:1px solid var(--line);cursor:pointer;transition:.3s;flex-shrink:0}
-.theme-toggle::after{content:"☀️";position:absolute;top:2px;right:2px;width:22px;height:22px;border-radius:50%;background:var(--white);display:grid;place-items:center;font-size:12px;transition:.3s;box-shadow:0 2px 4px rgba(0,0,0,.15)}
+.theme-toggle{position:relative;width:52px;height:28px;border-radius:99px;background:var(--cream2);border:1px solid var(--line);cursor:pointer;flex-shrink:0}
+.theme-toggle::after{content:"☀️";position:absolute;top:2px;right:2px;width:22px;height:22px;border-radius:50%;background:var(--white);display:grid;place-items:center;font-size:12px;transition:.3s}
 [data-theme="dark"] .theme-toggle::after{content:"🌙";transform:translateX(-24px)}
 [data-theme="dark"] .theme-toggle{background:var(--brown)}
-
-/* ═══════ Media Queries ═══════ */
-@media(max-width:900px){
-  .grid{grid-template-columns:repeat(2,1fr)}
-  .grid3{grid-template-columns:repeat(2,1fr)}
-  .week-grid{grid-template-columns:repeat(3,1fr)}
-}
-@media(max-width:780px){
-  .wrap{padding:14px}
-  .formgrid,.formgrid3{grid-template-columns:1fr 1fr}
-  .formgrid2{grid-template-columns:1fr}
-  .nav{gap:4px;padding:4px}
-  .nav button{padding:7px 10px;font-size:12px;flex:1}
-  .habitgrid{grid-template-columns:1fr}
-  .item{flex-direction:column;align-items:flex-start}
-  .item-actions{width:100%}
-  .item-actions button{flex:1}
-  .today-hero .date-big{font-size:24px}
-  .week-grid{grid-template-columns:repeat(2,1fr)}
-  .pomo-box{padding:10px 14px}
-  .focus-timer{font-size:52px}
-}
-@media(max-width:420px){
-  .grid{grid-template-columns:1fr 1fr;gap:10px}
-  .stat{padding:12px}
-  .stat .number{font-size:20px}
-  .formgrid{grid-template-columns:1fr}
-  .brand h1{font-size:16px}
-  .today-hero h2{font-size:20px}
-  .today-hero .date-big{font-size:20px}
-}
+.user-badge{display:flex;align-items:center;gap:8px;background:var(--cream2);padding:6px 12px;border-radius:99px;font-size:12px;font-weight:600}
+.user-badge .avatar{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--olive),var(--brown));color:white;display:grid;place-items:center;font-size:11px;font-weight:800}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.week-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:780px){.wrap{padding:14px}.formgrid{grid-template-columns:1fr 1fr}.formgrid2{grid-template-columns:1fr}.habitgrid{grid-template-columns:1fr}.item{flex-direction:column;align-items:flex-start}.item-actions{width:100%}.item-actions button{flex:1}.today-hero .date-big{font-size:24px}.week-grid{grid-template-columns:repeat(2,1fr)}.nav button{flex:1;padding:7px 8px;font-size:12px}}
 </style>
 </head>
 <body>
@@ -222,30 +134,41 @@ button.icon{padding:8px;width:38px;height:38px;display:inline-grid;place-items:c
       <div><h1>بولت ژورنال من</h1><p>نسخهٔ حرفه‌ای · ۱۴۰۵</p></div>
     </div>
     <div class="top-actions">
-      <span class="pill" id="syncPill">آماده</span>
+      <div class="user-badge hidden" id="userBadge">
+        <div class="avatar" id="userAvatar"></div>
+        <span id="userName"></span>
+      </div>
       <div class="theme-toggle" id="themeToggle" title="حالت شب"></div>
-      <button id="logoutBtn" class="secondary hidden small">خروج</button>
+      <button id="logoutBtn" class="secondary small hidden">خروج</button>
     </div>
   </header>
 
-  <!-- ═══════════ پنل ورود ═══════════ -->
+  <!-- صفحهٔ ورود -->
   <section id="authPanel" class="panel authbox hidden">
     <h2 id="authTitle">ورود به بولت ژورنال</h2>
-    <p class="muted">با حساب شخصی وارد شو تا اطلاعاتت ذخیره شود.</p>
+    <p class="muted" id="authSubtitle">با حساب شخصی وارد شو تا اطلاعاتت ذخیره شود.</p>
     <form id="authForm" class="auth-form">
-      <div class="field"><label for="email">ایمیل</label><input id="email" type="email" required autocomplete="email" placeholder="name@example.com"></div>
-      <div class="field"><label for="password">رمز عبور</label><input id="password" type="password" required minlength="6" autocomplete="current-password" placeholder="حداقل ۶ نویسه"></div>
+      <div class="field hidden" id="nameField">
+        <label for="authName">نام شما</label>
+        <input id="authName" type="text" placeholder="مثلاً: مبین">
+      </div>
+      <div class="field"><label for="email">ایمیل</label><input id="email" type="email" required placeholder="name@example.com"></div>
+      <div class="field"><label for="password">رمز عبور</label><input id="password" type="password" required minlength="4" placeholder="حداقل ۴ نویسه"></div>
       <button id="authSubmit" type="submit">ورود</button>
     </form>
-    <div class="toggleline"><button id="switchAuth" class="secondary" type="button">ساخت حساب جدید</button></div>
+    <div class="toggleline">
+      <button id="switchAuth" class="secondary" type="button">ساخت حساب جدید</button>
+    </div>
     <div id="authMessage" class="notice hidden"></div>
+    <div class="notice" style="font-size:11px;font-weight:400;background:var(--cream2);color:var(--muted)">
+      💡 اطلاعات شما فقط روی همین دستگاه ذخیره می‌شود. برای انتقال به دستگاه دیگر از «خروجی JSON» در تنظیمات استفاده کنید.
+    </div>
   </section>
 
-  <!-- ═══════════ اپ اصلی ═══════════ -->
+  <!-- اپ اصلی -->
   <main id="appPanel" class="hidden">
     <div id="globalMessage" class="notice hidden"></div>
-
-    <nav class="nav" aria-label="بخش‌ها">
+    <nav class="nav">
       <button class="active" data-tab="today">📓 امروز</button>
       <button data-tab="dashboard">📊 داشبورد</button>
       <button data-tab="week">📅 هفته</button>
@@ -263,22 +186,18 @@ button.icon{padding:8px;width:38px;height:38px;display:inline-grid;place-items:c
       <button data-tab="settings">⚙️ تنظیمات</button>
     </nav>
 
-    <!-- ═══════════ صفحهٔ امروز ═══════════ -->
     <section id="tab-today" class="tab">
       <div class="today-hero">
         <h2>سلام، امروز چه خبر؟ 🌿</h2>
         <div class="date-big" id="todayBigDate"></div>
-        <p id="todayGreeting">هر روز یک صفحهٔ سفید است.</p>
         <div class="bullet-symbols">
           <span><span class="bsym">•</span> وظیفه</span>
           <span><span class="bsym">×</span> انجام شد</span>
-          <span><span class="bsym">›</span> منتقل شد</span>
-          <span><span class="bsym">‹</span> زمان‌بندی شد</span>
+          <span><span class="bsym">›</span> منتقل</span>
+          <span><span class="bsym">‹</span> زمان‌بندی</span>
           <span><span class="bsym">○</span> رویداد</span>
-          <span><span class="bsym">—</span> یادداشت</span>
         </div>
       </div>
-
       <div class="grid2">
         <div class="panel">
           <div class="sectionhead" style="margin-bottom:12px">
@@ -287,7 +206,6 @@ button.icon{padding:8px;width:38px;height:38px;display:inline-grid;place-items:c
           </div>
           <div id="todayTasks" class="checklist"></div>
         </div>
-
         <div class="panel">
           <div class="sectionhead" style="margin-bottom:12px">
             <h3>🔥 عادت‌های امروز</h3>
@@ -296,131 +214,68 @@ button.icon{padding:8px;width:38px;height:38px;display:inline-grid;place-items:c
           <div id="todayHabits" class="checklist"></div>
         </div>
       </div>
-
       <div class="panel">
-        <div class="sectionhead" style="margin-bottom:12px">
-          <h3>💭 یادداشت‌های امروز</h3>
-          <button class="ghost small" id="focusBtn">🎯 حالت تمرکز</button>
-        </div>
+        <div class="sectionhead" style="margin-bottom:12px"><h3>💭 یادداشت‌های امروز</h3></div>
         <div class="grid2" style="gap:12px">
-          <div>
-            <label class="muted" style="font-size:12px;font-weight:700">🌅 صبح</label>
-            <textarea id="morningNote" class="daily-notes-area" rows="4" placeholder="امروز می‌خواهم چه کاری را انجام دهم؟"></textarea>
-          </div>
-          <div>
-            <label class="muted" style="font-size:12px;font-weight:700">🌙 شب</label>
-            <textarea id="eveningNote" class="daily-notes-area" rows="4" placeholder="امروز چه چیزی یاد گرفتم؟"></textarea>
-          </div>
+          <div><label class="muted" style="font-size:12px;font-weight:700">🌅 صبح</label><textarea id="morningNote" class="daily-notes-area" rows="4" placeholder="امروز می‌خواهم..."></textarea></div>
+          <div><label class="muted" style="font-size:12px;font-weight:700">🌙 شب</label><textarea id="eveningNote" class="daily-notes-area" rows="4" placeholder="امروز چه یاد گرفتم؟"></textarea></div>
         </div>
         <div class="grid2" style="gap:12px;margin-top:12px">
-          <div class="field">
-            <label>✨ بهترین اتفاق امروز</label>
-            <input id="highlightToday" placeholder="یک جمله کوتاه...">
-          </div>
-          <div class="field">
-            <label>🙏 شکرگزاری</label>
-            <input id="gratitudeToday" placeholder="بابت چه چیزی شکرگزارم؟">
-          </div>
+          <div class="field"><label>✨ بهترین اتفاق</label><input id="highlightToday"></div>
+          <div class="field"><label>🙏 شکرگزاری</label><input id="gratitudeToday"></div>
         </div>
-        <div style="margin-top:14px;text-align:center">
-          <button id="saveDailyBtn">💾 ذخیرهٔ یادداشت‌های امروز</button>
-        </div>
+        <div style="margin-top:14px;text-align:center"><button id="saveDailyBtn">💾 ذخیره</button></div>
       </div>
-
-      <div class="panel">
-        <h3>📊 نگاهی به امروز</h3>
-        <div class="grid" id="todayStats"></div>
-      </div>
+      <div class="panel"><h3>📊 نگاهی به امروز</h3><div class="grid" id="todayStats"></div></div>
     </section>
 
-    <!-- ═══════════ داشبورد ═══════════ -->
     <section id="tab-dashboard" class="tab hidden">
-      <div class="sectionhead">
-        <div><h2>داشبورد کلی</h2><p class="muted">نمای کامل وضعیت سه‌ماهه</p></div>
-        <span id="todayLabel" class="pill"></span>
-      </div>
+      <div class="sectionhead"><div><h2>داشبورد</h2></div><span id="todayLabel" class="pill"></span></div>
       <div class="grid" id="dashboardStats"></div>
-
       <div class="grid2" style="margin-top:20px">
-        <div class="panel">
-          <h3>📈 روند خلق‌وخو (۳۰ روز اخیر)</h3>
-          <div id="moodLineChart"></div>
-        </div>
-        <div class="panel">
-          <h3>💰 توزیع هزینه‌ها</h3>
-          <div id="expenseDonut"></div>
-        </div>
+        <div class="panel"><h3>📈 خلق‌وخو (۳۰ روز)</h3><div id="moodLineChart"></div></div>
+        <div class="panel"><h3>💰 توزیع هزینه‌ها</h3><div id="expenseDonut"></div></div>
       </div>
-
       <div class="grid2">
-        <div class="panel">
-          <h3>📊 گزارش ماهانهٔ مالی</h3>
-          <div id="monthlyFinance"></div>
-        </div>
-        <div class="panel">
-          <h3>🔥 عملکرد عادت‌ها (۱۲ هفته اخیر)</h3>
-          <div id="habitHeatmap"></div>
-        </div>
+        <div class="panel"><h3>📊 گزارش ماهانه مالی</h3><div id="monthlyFinance"></div></div>
+        <div class="panel"><h3>🔥 نقشهٔ حرارتی</h3><div id="habitHeatmap"></div></div>
       </div>
-
-      <div class="panel">
-        <h3>⏱️ برنامه‌ریزی در برابر واقعیت (۱۴ روز اخیر)</h3>
-        <div id="timeChart"></div>
-      </div>
-
-      <div class="panel">
-        <h3>🎯 پیشرفت اهداف</h3>
-        <div id="goalRings"></div>
-      </div>
+      <div class="panel"><h3>🎯 پیشرفت اهداف</h3><div id="goalRings"></div></div>
     </section>
 
-    <!-- ═══════════ هفته ═══════════ -->
     <section id="tab-week" class="tab hidden">
-      <div class="sectionhead">
-        <div><h2>نمای هفتگی</h2><p class="muted">هفتهٔ جاری در یک نگاه</p></div>
-        <span class="pill" id="weekRangeLabel"></span>
-      </div>
+      <div class="sectionhead"><div><h2>نمای هفتگی</h2></div><span class="pill" id="weekRangeLabel"></span></div>
       <div class="week-grid" id="weekGrid"></div>
-      <div class="panel" style="margin-top:20px">
-        <h3>📌 کارهای این هفته</h3>
-        <div id="weekTasksList" class="list"></div>
-      </div>
     </section>
 
-    <!-- ═══════════ وظایف ═══════════ -->
     <section id="tab-tasks" class="tab hidden">
       <div class="sectionhead"><div><h2>همهٔ وظایف</h2></div></div>
       <form id="taskForm" class="formgrid">
-        <div class="field"><label>عنوان</label><input id="taskTitle" required maxlength="180" placeholder="مثلاً مرور درس ریاضی"></div>
+        <div class="field"><label>عنوان</label><input id="taskTitle" required maxlength="180"></div>
         <div class="field"><label>اولویت</label><select id="taskPriority"><option value="urgent_important">فوری و مهم</option><option value="important">مهم</option><option value="normal" selected>عادی</option><option value="low">کم‌اهمیت</option></select></div>
         <div class="field"><label>سررسید</label><input id="taskDue" type="date"></div>
         <div class="field"><label>دسته</label><select id="taskCategory"><option>شخصی</option><option>دانشگاه</option><option>وردپرس</option><option>فارکس</option><option>ورزش</option><option>مالی</option><option>سایر</option></select></div>
         <button type="submit">افزودن</button>
       </form>
-      <div class="toggleline" style="margin-top:14px">
+      <div class="toggleline">
         <div class="field" style="max-width:220px"><label>نمایش</label><select id="taskFilter"><option value="all">همه</option><option value="today">امروز</option><option value="open">فقط باز</option><option value="done">انجام‌شده</option><option value="late">عقب‌افتاده</option></select></div>
-        <div class="field" style="max-width:220px"><label>جستجو</label><input id="taskSearch" placeholder="جستجو در عنوان..."></div>
+        <div class="field" style="max-width:220px"><label>جستجو</label><input id="taskSearch"></div>
       </div>
       <div id="taskList" class="list"></div>
     </section>
 
-    <!-- ═══════════ عادت‌ها ═══════════ -->
     <section id="tab-habits" class="tab hidden">
-      <div class="sectionhead"><div><h2>ردیاب عادت‌ها</h2></div><span id="habitDate" class="pill"></span></div>
+      <div class="sectionhead"><div><h2>ردیاب عادت‌ها</h2></div></div>
       <form id="habitForm" class="formgrid2">
-        <div class="field"><label>نام عادت</label><input id="habitName" required maxlength="120" placeholder="مثلاً مطالعهٔ روزانه"></div>
-        <button type="submit">افزودن عادت</button>
+        <div class="field"><label>نام عادت</label><input id="habitName" required maxlength="120"></div>
+        <button type="submit">افزودن</button>
       </form>
       <div id="habitList" class="habitgrid" style="margin-top:16px"></div>
-      <div class="panel" style="margin-top:20px">
-        <h3>🔥 نقشهٔ حرارتی (۱۲ هفته اخیر)</h3>
-        <div id="habitHeatmapTab"></div>
-      </div>
+      <div class="panel" style="margin-top:20px"><h3>🔥 ۱۲ هفته اخیر</h3><div id="habitHeatmapTab"></div></div>
     </section>
 
-    <!-- ═══════════ اهداف ═══════════ -->
     <section id="tab-goals" class="tab hidden">
-      <div class="sectionhead"><div><h2>اهداف و پروژه‌ها</h2></div></div>
+      <div class="sectionhead"><div><h2>اهداف</h2></div></div>
       <form id="goalForm" class="formgrid">
         <div class="field"><label>عنوان</label><input id="goalTitle" required maxlength="180"></div>
         <div class="field"><label>موعد</label><input id="goalDue" type="date"></div>
@@ -430,88 +285,76 @@ button.icon{padding:8px;width:38px;height:38px;display:inline-grid;place-items:c
       <div id="goalList" class="list"></div>
     </section>
 
-    <!-- ═══════════ مالی ═══════════ -->
     <section id="tab-finance" class="tab hidden">
-      <div class="sectionhead"><div><h2>مدیریت مالی</h2><p class="muted">مبالغ را مثبت وارد کن</p></div></div>
+      <div class="sectionhead"><div><h2>مالی</h2></div></div>
       <form id="financeForm" class="formgrid">
         <div class="field"><label>تاریخ</label><input id="finDate" type="date" required></div>
         <div class="field"><label>نوع</label><select id="finType"><option>درآمد</option><option>هزینه</option><option>پس‌انداز</option><option>بدهی</option><option>طلب</option></select></div>
         <div class="field"><label>دسته</label><select id="finCategory"><option>خوراک</option><option>رفت‌وآمد</option><option>دانشگاه</option><option>خرید</option><option>سلامت</option><option>تفریح</option><option>ابزار</option><option>درآمد</option><option>پس‌انداز</option><option>سایر</option></select></div>
-        <div class="field"><label>شرح</label><input id="finDesc" maxlength="200"></div>
-        <div class="field"><label>مبلغ (تومان)</label><input id="finAmount" type="number" min="0" step="1000" required></div>
-        <div class="field"><label>روش</label><select id="finPay"><option>نقدی</option><option>کارت</option><option>انتقال</option><option>آنلاین</option></select></div>
+        <div class="field"><label>شرح</label><input id="finDesc"></div>
+        <div class="field"><label>مبلغ</label><input id="finAmount" type="number" min="0" step="1000" required></div>
         <button type="submit">افزودن</button>
       </form>
       <div id="financeList" class="list"></div>
     </section>
 
-    <!-- ═══════════ خلق‌وخو ═══════════ -->
     <section id="tab-mood" class="tab hidden">
-      <div class="sectionhead"><div><h2>خلق‌وخو و انرژی</h2></div></div>
+      <div class="sectionhead"><div><h2>خلق‌وخو</h2></div></div>
       <form id="moodForm" class="formgrid">
         <div class="field"><label>تاریخ</label><input id="moodDate" type="date" required></div>
         <div class="field"><label>حال</label><select id="moodMood"><option>😄 عالی</option><option>🙂 خوب</option><option>😐 معمولی</option><option>😔 پایین</option><option>😣 سخت</option></select></div>
-        <div class="field"><label>انرژی</label><input id="moodEnergy" type="number" min="1" max="5" placeholder="1-5"></div>
-        <div class="field"><label>خواب</label><input id="moodSleep" type="number" min="1" max="5" placeholder="1-5"></div>
-        <div class="field"><label>استرس</label><input id="moodStress" type="number" min="1" max="5" placeholder="1-5"></div>
-        <div class="field"><label>ساعت خواب</label><input id="moodHours" type="number" min="0" max="24" step="0.5"></div>
+        <div class="field"><label>انرژی</label><input id="moodEnergy" type="number" min="1" max="5"></div>
+        <div class="field"><label>خواب</label><input id="moodSleep" type="number" min="1" max="5"></div>
+        <div class="field"><label>استرس</label><input id="moodStress" type="number" min="1" max="5"></div>
         <button type="submit">ثبت</button>
       </form>
       <div id="moodList" class="list"></div>
     </section>
 
-    <!-- ═══════════ دانشگاه ═══════════ -->
     <section id="tab-uni" class="tab hidden">
-      <div class="sectionhead"><div><h2>مدیریت دانشگاه</h2></div></div>
+      <div class="sectionhead"><div><h2>دانشگاه</h2></div></div>
       <form id="uniForm" class="formgrid">
-        <div class="field"><label>نام درس</label><input id="uniCourse" required maxlength="120"></div>
+        <div class="field"><label>درس</label><input id="uniCourse" required></div>
         <div class="field"><label>نوع</label><select id="uniType"><option>درس</option><option>تکلیف</option><option>امتحان</option><option>پروژه</option></select></div>
-        <div class="field"><label>عنوان</label><input id="uniTitle" maxlength="200"></div>
+        <div class="field"><label>عنوان</label><input id="uniTitle"></div>
         <div class="field"><label>موعد</label><input id="uniDue" type="date"></div>
-        <div class="field"><label>وضعیت</label><select id="uniStatus"><option value="planned">برنامه‌ریزی‌شده</option><option value="in_progress">در حال انجام</option><option value="done">تکمیل‌شده</option></select></div>
-        <div class="field"><label>نمره</label><input id="uniGrade" type="number" min="0" max="20" step="0.25"></div>
         <button type="submit">افزودن</button>
       </form>
       <div id="uniList" class="list"></div>
     </section>
 
-    <!-- ═══════════ فارکس ═══════════ -->
     <section id="tab-forex" class="tab hidden">
-      <div class="sectionhead"><div><h2>دفتر معاملاتی فارکس</h2></div></div>
+      <div class="sectionhead"><div><h2>فارکس</h2></div></div>
       <form id="forexForm" class="formgrid">
         <div class="field"><label>تاریخ</label><input id="fxDate" type="date"></div>
-        <div class="field"><label>نماد</label><input id="fxSymbol" placeholder="EUR/USD"></div>
+        <div class="field"><label>نماد</label><input id="fxSymbol"></div>
         <div class="field"><label>جهت</label><select id="fxDir"><option>خرید</option><option>فروش</option></select></div>
         <div class="field"><label>ورود</label><input id="fxEntry" type="number" step="0.00001"></div>
         <div class="field"><label>خروج</label><input id="fxExit" type="number" step="0.00001"></div>
-        <div class="field"><label>ریسک</label><input id="fxRisk" type="number"></div>
         <div class="field"><label>نتیجه</label><input id="fxResult" type="number"></div>
         <button type="submit">افزودن</button>
       </form>
       <div id="forexList" class="list"></div>
     </section>
 
-    <!-- ═══════════ یادگیری ═══════════ -->
     <section id="tab-skills" class="tab hidden">
-      <div class="sectionhead"><div><h2>مسیر یادگیری مهارت‌ها</h2></div></div>
+      <div class="sectionhead"><div><h2>یادگیری</h2></div></div>
       <form id="skillForm" class="formgrid">
-        <div class="field"><label>مهارت</label><input id="skillName" required maxlength="120"></div>
-        <div class="field"><label>مرحله</label><input id="skillStage" placeholder="مرحله ۱"></div>
-        <div class="field"><label>منبع</label><input id="skillSource" maxlength="200"></div>
+        <div class="field"><label>مهارت</label><input id="skillName" required></div>
+        <div class="field"><label>مرحله</label><input id="skillStage"></div>
+        <div class="field"><label>منبع</label><input id="skillSource"></div>
         <div class="field"><label>موعد</label><input id="skillEnd" type="date"></div>
-        <div class="field"><label>ساعت</label><input id="skillHours" type="number" min="0" step="0.5"></div>
         <button type="submit">افزودن</button>
       </form>
       <div id="skillList" class="list"></div>
     </section>
 
-    <!-- ═══════════ ثبت زمان ═══════════ -->
     <section id="tab-timelog" class="tab hidden">
       <div class="sectionhead"><div><h2>ثبت زمان</h2></div></div>
       <form id="timeForm" class="formgrid">
         <div class="field"><label>تاریخ</label><input id="timeDate" type="date" required></div>
         <div class="field"><label>دسته</label><select id="timeCat"><option>دانشگاه</option><option>وردپرس</option><option>فارکس</option><option>ورزش</option><option>تفریح</option><option>سایر</option></select></div>
-        <div class="field"><label>فعالیت</label><input id="timeAct" maxlength="200"></div>
+        <div class="field"><label>فعالیت</label><input id="timeAct"></div>
         <div class="field"><label>برنامه (ساعت)</label><input id="timePlan" type="number" min="0" step="0.25"></div>
         <div class="field"><label>واقعی (ساعت)</label><input id="timeReal" type="number" min="0" step="0.25"></div>
         <button type="submit">افزودن</button>
@@ -519,766 +362,501 @@ button.icon{padding:8px;width:38px;height:38px;display:inline-grid;place-items:c
       <div id="timeList" class="list"></div>
     </section>
 
-    <!-- ═══════════ برنامه‌ریزی ═══════════ -->
     <section id="tab-planner" class="tab hidden">
       <div class="sectionhead"><div><h2>برنامه‌ریزی</h2></div></div>
-      <div class="subnav" id="plannerSub">
-        <button class="active" data-sub="future">🔮 Future Log</button>
-        <button data-sub="monthly">📅 ماهانه</button>
-        <button data-sub="weekly">📋 هفتگی</button>
-      </div>
-      <div id="sub-future" class="subtab">
-        <form id="futureForm" class="formgrid2">
-          <div class="field"><label>عنوان</label><input id="futTitle" required maxlength="200"></div>
-          <div class="field"><label>دسته</label><input id="futCat" maxlength="80"></div>
-          <div class="field"><label>موعد</label><input id="futDue" type="date"></div>
-          <div class="field"><label>اولویت</label><select id="futPri"><option value="urgent_important">فوری و مهم</option><option value="important">مهم</option><option value="normal" selected>عادی</option><option value="low">کم‌اهمیت</option></select></div>
-          <button type="submit" style="grid-column:1/-1">افزودن</button>
-        </form>
-        <div id="futureList" class="list"></div>
-      </div>
-      <div id="sub-monthly" class="subtab hidden">
-        <form id="monthForm" class="formgrid">
-          <div class="field"><label>ماه</label><input id="monMonth" placeholder="آبان"></div>
-          <div class="field"><label>تمرکز</label><input id="monFocus" maxlength="120"></div>
-          <div class="field"><label>هدف</label><input id="monGoal" required maxlength="200"></div>
-          <div class="field"><label>موعد</label><input id="monDue" type="date"></div>
-          <button type="submit">افزودن</button>
-        </form>
-        <div id="monthList" class="list"></div>
-      </div>
-      <div id="sub-weekly" class="subtab hidden">
-        <form id="weekPlanForm" class="formgrid">
-          <div class="field"><label>هفته از</label><input id="weekFrom" type="date"></div>
-          <div class="field"><label>روز</label><select id="weekDay"><option>شنبه</option><option>یکشنبه</option><option>دوشنبه</option><option>سه‌شنبه</option><option>چهارشنبه</option><option>پنجشنبه</option><option>جمعه</option></select></div>
-          <div class="field"><label>شروع</label><input id="weekStart" type="time"></div>
-          <div class="field"><label>پایان</label><input id="weekEnd" type="time"></div>
-          <div class="field"><label>کار</label><input id="weekTask" required maxlength="200"></div>
-          <div class="field"><label>دسته</label><input id="weekCat" maxlength="80"></div>
-          <button type="submit">افزودن</button>
-        </form>
-        <div id="weekList" class="list"></div>
-      </div>
+      <form id="futureForm" class="formgrid">
+        <div class="field"><label>عنوان</label><input id="futTitle" required></div>
+        <div class="field"><label>دسته</label><input id="futCat"></div>
+        <div class="field"><label>موعد</label><input id="futDue" type="date"></div>
+        <div class="field"><label>اولویت</label><select id="futPri"><option value="urgent_important">فوری و مهم</option><option value="important">مهم</option><option value="normal" selected>عادی</option><option value="low">کم‌اهمیت</option></select></div>
+        <button type="submit">افزودن</button>
+      </form>
+      <div id="futureList" class="list"></div>
     </section>
 
-    <!-- ═══════════ مرور ═══════════ -->
     <section id="tab-review" class="tab hidden">
-      <div class="sectionhead"><div><h2>مرور و ارزیابی</h2></div></div>
+      <div class="sectionhead"><div><h2>مرور</h2></div></div>
       <form id="reviewForm" class="formgrid">
         <div class="field"><label>نوع</label><select id="revType"><option>روزانه</option><option>هفتگی</option><option>ماهانه</option></select></div>
-        <div class="field"><label>دوره</label><input id="revPeriod" placeholder="آبان"></div>
+        <div class="field"><label>دوره</label><input id="revPeriod"></div>
         <div class="field"><label>امتیاز ۱-۱۰</label><input id="revScore" type="number" min="1" max="10"></div>
-        <div class="field"><label>موفقیت‌ها</label><input id="revSucc" maxlength="200"></div>
-        <div class="field"><label>چالش‌ها</label><input id="revChal" maxlength="200"></div>
-        <div class="field"><label>درس آموخته</label><input id="revLesson" maxlength="200"></div>
-        <div class="field"><label>اقدام</label><input id="revAction" maxlength="200"></div>
+        <div class="field"><label>موفقیت‌ها</label><input id="revSucc"></div>
+        <div class="field"><label>چالش‌ها</label><input id="revChal"></div>
         <button type="submit">افزودن</button>
       </form>
       <div id="reviewList" class="list"></div>
     </section>
 
-    <!-- ═══════════ تنظیمات ═══════════ -->
     <section id="tab-settings" class="tab hidden">
       <h2>تنظیمات</h2>
-      <p class="muted">پروژه به‌صورت خودکار به Supabase وصل است.</p>
-      <div class="notice">🔐 کلید عمومی برای استفاده در فرانت‌اند امن است. هرگز کلید secret یا service_role را در کد قرار نده.</div>
+      <p class="muted">اطلاعات شما روی همین مرورگر ذخیره می‌شود.</p>
+      <div class="notice">💡 برای انتقال به دستگاه دیگر یا پشتیبان‌گیری، از «خروجی JSON» استفاده کنید.</div>
       <div class="toggleline">
         <button id="exportBtn">⬇️ خروجی JSON</button>
-        <button id="refreshBtn">🔄 بازخوانی از سرور</button>
-        <button id="logoutBtn2" class="danger">خروج</button>
+        <button id="importBtn" class="secondary">⬆️ بازیابی از فایل</button>
+        <input type="file" id="importFile" accept=".json" class="hidden">
+        <button id="clearDataBtn" class="danger">🗑️ پاک کردن همهٔ داده‌ها</button>
       </div>
       <div class="panel" style="margin-top:20px;box-shadow:none">
-        <h3>💡 راهنما</h3>
-        <p class="muted">• برای افزودن سریع وظیفه، از صفحهٔ «امروز» دکمهٔ «+ سریع» را بزن.<br>
-        • در حالت تمرکز، فقط یک کار روی صفحه می‌ماند.<br>
-        • پومودورو پایین صفحه گوشهٔ چپ است.<br>
-        • حالت شب با آیکون ☀️/🌙 در نوار بالا.</p>
+        <h3>حساب کاربری</h3>
+        <p class="muted">ایمیل: <b id="settingsEmail"></b></p>
+        <p class="muted">تاریخ عضویت: <b id="settingsCreated"></b></p>
+      </div>
+      <div class="panel" style="box-shadow:none">
+        <h3>📚 راهنما</h3>
+        <p class="muted">• در صفحهٔ «امروز» می‌توانی مستقیماً وظایف و عادت‌ها را تیک بزنی.<br>• با `Ctrl + P` پومودورو را نمایش/مخفی کن.<br>• حالت شب با آیکون ☀️/🌙 در نوار بالا.</p>
       </div>
     </section>
   </main>
-
   <div class="footer">بولت ژورنال شخصی ۱۴۰۵ · طراحی با ❤️</div>
 </div>
 
-<!-- پومودورو -->
 <div id="pomoBox" class="pomo-box hidden">
-  <div>
-    <div class="pomo-label">⏱️ پومودورو</div>
-    <div class="pomo-time" id="pomoTime">25:00</div>
-  </div>
+  <div><div class="pomo-label">⏱️ پومودورو</div><div class="pomo-time" id="pomoTime">25:00</div></div>
   <button class="small secondary" id="pomoToggle">شروع</button>
   <button class="small ghost" id="pomoClose">×</button>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-(() => {
-  // ═══════════ ثابت‌ها ═══════════
-  const DEFAULT_URL='https://xalgapmmzrbhznzvpouk.supabase.co';
-  const DEFAULT_KEY='sb_publishable_HGdGjsodMC5BRYkDiqQUpQ_0Sq4aFx5';
+(()=>{
+const $=id=>document.getElementById(id);
+const safe=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fa=n=>new Intl.NumberFormat('fa-IR').format(n||0);
+const dateISO=(d=new Date())=>{const x=new Date(d);return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`;};
+const toFaDate=s=>{if(!s)return'';try{return new Intl.DateTimeFormat('fa-IR-u-ca-persian',{year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(s));}catch{return s;}};
+const todayFaLong=()=>new Intl.DateTimeFormat('fa-IR-u-ca-persian',{weekday:'long',year:'numeric',month:'long',day:'numeric'}).format(new Date());
+const show=(id,y=true)=>$(id).classList.toggle('hidden',!y);
+const msg=(id,t,type='')=>{const el=$(id);el.textContent=t;el.className='notice'+(type?' '+type:'');el.classList.remove('hidden');setTimeout(()=>el.classList.add('hidden'),4000);};
+const labels={priority:{urgent_important:'فوری و مهم',important:'مهم',normal:'عادی',low:'کم‌اهمیت'},taskStatus:{planned:'برنامه‌ریزی‌شده',in_progress:'در حال انجام',done:'انجام شد',cancelled:'لغو شد'},goalStatus:{planned:'برنامه‌ریزی‌شده',in_progress:'در حال انجام',completed:'تکمیل‌شده'},habitStatus:{done:'انجام شد',not_done:'انجام نشد',rest:'استراحت'}};
 
-  const $=id=>document.getElementById(id);
-  const safe=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const fa=n=>new Intl.NumberFormat('fa-IR').format(n||0);
-  const dateISO=(d=new Date())=>{const x=new Date(d);return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`;};
-  const toFaDate=s=>{if(!s)return'';try{return new Intl.DateTimeFormat('fa-IR-u-ca-persian',{year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(s));}catch{return s;}};
-  const todayFaLong=()=>new Intl.DateTimeFormat('fa-IR-u-ca-persian',{weekday:'long',year:'numeric',month:'long',day:'numeric'}).format(new Date());
-  const show=(id,y=true)=>$(id).classList.toggle('hidden',!y);
-  const msg=(id,t,type='')=>{const el=$(id);el.textContent=t;el.className='notice'+(type?' '+type:'');el.classList.remove('hidden');setTimeout(()=>el.classList.add('hidden'),4000);};
-  const hideMsg=id=>$(id).classList.add('hidden');
+const STORAGE_USERS='bj_users_v1', STORAGE_SESSION='bj_session_v1', DATA_PREFIX='bj_data_';
+const emptyData=()=>({tasks:[],habits:[],logs:[],goals:[],finance:[],mood:[],uni:[],forex:[],skills:[],time:[],future:[],review:[],daily:[],pomodoro:[]});
+const getUsers=()=>{try{return JSON.parse(localStorage.getItem(STORAGE_USERS)||'{}');}catch{return{};}};
+const saveUsers=u=>localStorage.setItem(STORAGE_USERS,JSON.stringify(u));
+const hashPassword=async p=>{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(p));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');};
+const loadData=email=>{try{const d=JSON.parse(localStorage.getItem(DATA_PREFIX+email)||'null');return d||emptyData();}catch{return emptyData();}};
+const saveData=()=>{if(!session)return;localStorage.setItem(DATA_PREFIX+session.email,JSON.stringify(data));};
 
-  const labels={
-    priority:{urgent_important:'فوری و مهم',important:'مهم',normal:'عادی',low:'کم‌اهمیت'},
-    taskStatus:{planned:'برنامه‌ریزی‌شده',in_progress:'در حال انجام',done:'انجام شد',migrated:'منتقل',cancelled:'لغو شد'},
-    goalStatus:{planned:'برنامه‌ریزی‌شده',in_progress:'در حال انجام',completed:'تکمیل‌شده',cancelled:'لغو شده'},
-    habitStatus:{done:'انجام شد',not_done:'انجام نشد',rest:'استراحت'}
-  };
+let session=null,data=emptyData(),authMode='login';
+const uid=()=>session.email;
+const nid=()=>Date.now()+Math.floor(Math.random()*1000);
 
-  let client=null,session=null,authMode='login';
-  const data={tasks:[],habits:[],logs:[],goals:[],finance:[],mood:[],uni:[],forex:[],skills:[],time:[],future:[],monthly:[],weekly:[],review:[],daily:[],pomodoro:[]};
+// ═══════ تم ═══════
+function initTheme(){document.documentElement.setAttribute('data-theme',localStorage.getItem('bj_theme')||'light');}
+$('themeToggle').addEventListener('click',()=>{const cur=document.documentElement.getAttribute('data-theme');const next=cur==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',next);localStorage.setItem('bj_theme',next);});
 
-  // ═══════════ تم ═══════════
-  function initTheme(){
-    const saved=localStorage.getItem('bj_theme')||'light';
-    document.documentElement.setAttribute('data-theme',saved);
+// ═══════ ورود/ثبت‌نام ═══════
+function switchPanel(w){
+  show('authPanel',w==='auth');show('appPanel',w==='app');show('logoutBtn',w==='app');show('userBadge',w==='app');
+}
+$('switchAuth').addEventListener('click',()=>{
+  authMode=authMode==='login'?'signup':'login';
+  $('authTitle').textContent=authMode==='login'?'ورود به بولت ژورنال':'ساخت حساب جدید';
+  $('authSubmit').textContent=authMode==='login'?'ورود':'ساخت حساب';
+  $('switchAuth').textContent=authMode==='login'?'ساخت حساب جدید':'بازگشت به ورود';
+  show('nameField',authMode==='signup');
+  $('authMessage').classList.add('hidden');
+});
+$('authForm').addEventListener('submit',async e=>{
+  e.preventDefault();$('authMessage').classList.add('hidden');
+  const email=$('email').value.trim().toLowerCase(), pw=$('password').value, name=$('authName').value.trim();
+  if(authMode==='signup'){
+    if(!name){msg('authMessage','لطفاً نام خود را وارد کن.','error');return;}
+    const users=getUsers();
+    if(users[email]){msg('authMessage','این ایمیل قبلاً ثبت شده است.','error');return;}
+    const hash=await hashPassword(pw);
+    users[email]={email,name,passwordHash:hash,createdAt:new Date().toISOString()};
+    saveUsers(users);
+    localStorage.setItem(DATA_PREFIX+email,JSON.stringify(emptyData()));
+    session={email,name};localStorage.setItem(STORAGE_SESSION,email);
+    startApp();
+  } else {
+    const users=getUsers();
+    const u=users[email];
+    if(!u){msg('authMessage','حسابی با این ایمیل پیدا نشد.','error');return;}
+    const hash=await hashPassword(pw);
+    if(hash!==u.passwordHash){msg('authMessage','رمز عبور اشتباه است.','error');return;}
+    session={email,name:u.name};localStorage.setItem(STORAGE_SESSION,email);
+    startApp();
   }
-  $('themeToggle').addEventListener('click',()=>{
-    const cur=document.documentElement.getAttribute('data-theme');
-    const next=cur==='dark'?'light':'dark';
-    document.documentElement.setAttribute('data-theme',next);
-    localStorage.setItem('bj_theme',next);
-  });
+});
+function logout(){
+  localStorage.removeItem(STORAGE_SESSION);
+  session=null;data=emptyData();
+  switchPanel('auth');
+  $('authForm').reset();
+  authMode='login';
+  $('authTitle').textContent='ورود به بولت ژورنال';
+  $('authSubmit').textContent='ورود';
+  $('switchAuth').textContent='ساخت حساب جدید';
+  show('nameField',false);
+}
+$('logoutBtn').addEventListener('click',()=>{if(confirm('از حساب خارج شوی؟'))logout();});
 
-  // ═══════════ اتصال خودکار ═══════════
-  function getConfig(){
-    let c=null;
-    try{c=JSON.parse(localStorage.getItem('bj_supabase_config')||'null');}catch{}
-    if(!c||!c.url||!c.key){
-      c={url:DEFAULT_URL,key:DEFAULT_KEY};
-      localStorage.setItem('bj_supabase_config',JSON.stringify(c));
-    }
-    return c;
-  }
+function startApp(){
+  data=loadData(session.email);
+  $('userName').textContent=session.name;
+  $('userAvatar').textContent=(session.name||'?').charAt(0).toUpperCase();
+  $('settingsEmail').textContent=session.email;
+  const u=getUsers()[session.email];
+  $('settingsCreated').textContent=toFaDate(u?.createdAt)||'—';
+  switchPanel('app');
+  ['moodDate','finDate','timeDate','fxDate','futDue'].forEach(id=>{if($(id))$(id).value=dateISO();});
+  renderAll();
+}
 
-  function switchPanel(w){
-    show('authPanel',w==='auth');
-    show('appPanel',w==='app');
-    show('logoutBtn',w==='app');
-  }
+// ═══════ رندر ═══════
+function renderAll(){
+  $('todayBigDate').textContent=todayFaLong();
+  $('todayLabel').textContent=todayFaLong();
+  renderDashboard();renderToday();renderWeek();renderTasks();renderHabits();renderGoals();
+  renderFinance();renderMood();renderUni();renderForex();renderSkills();renderTime();renderFuture();renderReview();
+}
 
-  async function init(){
-    initTheme();
-    const todayStr=todayFaLong();
-    $('todayLabel').textContent=todayStr;
-    $('todayBigDate').textContent=todayStr;
-    $('habitDate').textContent=todayStr;
+function renderDashboard(){
+  const done=data.tasks.filter(t=>t.status==='done').length;
+  const goalsActive=data.goals.filter(g=>g.status!=='completed').length;
+  const goalAvg=data.goals.length?Math.round(data.goals.reduce((a,g)=>a+(g.progress||0),0)/data.goals.length):0;
+  const income=data.finance.filter(f=>f.type==='درآمد').reduce((a,f)=>a+Number(f.amount||0),0);
+  const expense=data.finance.filter(f=>f.type==='هزینه').reduce((a,f)=>a+Number(f.amount||0),0);
+  const saving=data.finance.filter(f=>f.type==='پس‌انداز').reduce((a,f)=>a+Number(f.amount||0),0);
+  const habitDone=data.logs.filter(l=>l.date===dateISO()&&l.status==='done').length;
+  $('dashboardStats').innerHTML=`
+    <div class="stat"><span class="icon">✓</span><div class="label">کل وظایف</div><div class="number">${fa(data.tasks.length)}</div></div>
+    <div class="stat"><span class="icon">✅</span><div class="label">انجام‌شده</div><div class="number">${fa(done)}</div></div>
+    <div class="stat"><span class="icon">🔥</span><div class="label">عادت امروز</div><div class="number">${fa(habitDone)}</div></div>
+    <div class="stat"><span class="icon">🎯</span><div class="label">اهداف جاری</div><div class="number">${fa(goalsActive)}</div></div>
+    <div class="stat"><span class="icon">💰</span><div class="label">درآمد</div><div class="number">${fa(income)}</div></div>
+    <div class="stat"><span class="icon">💸</span><div class="label">هزینه</div><div class="number">${fa(expense)}</div></div>
+    <div class="stat"><span class="icon">🏦</span><div class="label">پس‌انداز</div><div class="number">${fa(saving)}</div></div>
+    <div class="stat"><span class="icon">📈</span><div class="label">میانگین اهداف</div><div class="number">${fa(goalAvg)}٪</div></div>`;
+  renderMoodLine();renderExpenseDonut();renderMonthlyFinance();renderHabitHeatmap();renderGoalRings();
+}
 
-    // پر کردن تاریخ‌ها
-    ['moodDate','finDate','timeDate','uniDue','fxDate','skillEnd','futDue','monDue','weekFrom'].forEach(id=>{if($(id))$(id).value=dateISO();});
+function renderToday(){
+  const today=dateISO();
+  const todayTasks=data.tasks.filter(t=>{if(t.status==='cancelled')return false;if(t.due_date===today)return true;if(!t.due_date&&t.status!=='done')return true;return false;}).slice(0,10);
+  $('todayTasks').innerHTML=todayTasks.length?todayTasks.map(t=>{
+    const c=t.status==='done';
+    return `<div class="checklist-item ${c?'checked':''}" data-toggle-task="${t.id}">
+      <div class="check-box">${c?'✓':''}</div>
+      <div class="check-title">${safe(t.title)}</div>
+      ${t.priority==='urgent_important'?'<span class="status late">فوری</span>':''}</div>`;
+  }).join(''):'<p class="muted">هنوز وظیفه‌ای برای امروز نیست.</p>';
+  const habitToday=data.habits.map(h=>({h,s:data.logs.find(l=>l.habit_id===h.id&&l.date===today)?.status||''}));
+  const doneH=habitToday.filter(x=>x.s==='done').length;
+  $('habitTodayCount').textContent=`${fa(doneH)} / ${fa(habitToday.length)}`;
+  $('todayHabits').innerHTML=habitToday.length?habitToday.map(({h,s})=>{
+    const c=s==='done';
+    return `<div class="checklist-item ${c?'checked':''}" data-toggle-habit="${h.id}">
+      <div class="check-box">${c?'✓':''}</div>
+      <div class="check-title">${safe(h.name)}</div>
+      ${s==='rest'?'<span class="status gold">استراحت</span>':''}</div>`;
+  }).join(''):'<p class="muted">هنوز عادتی اضافه نکردی.</p>';
+  const note=data.daily.find(d=>d.date===today);
+  $('morningNote').value=note?.morning||'';
+  $('eveningNote').value=note?.evening||'';
+  $('highlightToday').value=note?.highlight||'';
+  $('gratitudeToday').value=note?.gratitude||'';
+  const pomos=data.pomodoro.filter(p=>p.date===today).reduce((a,p)=>a+(p.minutes||0),0);
+  $('todayStats').innerHTML=`
+    <div class="stat"><div class="label">وظایف امروز</div><div class="number">${fa(todayTasks.length)}</div></div>
+    <div class="stat"><div class="label">انجام‌شده</div><div class="number">${fa(todayTasks.filter(t=>t.status==='done').length)}</div></div>
+    <div class="stat"><div class="label">عادت انجام‌شده</div><div class="number">${fa(doneH)}</div></div>
+    <div class="stat"><div class="label">دقایق پومودورو</div><div class="number">${fa(pomos)}</div></div>`;
+}
 
-    const c=getConfig();
-    if(!window.supabase||!window.supabase.createClient){msg('globalMessage','کتابخانهٔ Supabase بارگذاری نشد.','error');return;}
-    try{
-      client=window.supabase.createClient(c.url,c.key);
-      const {data:d,error}=await client.auth.getSession();
-      if(error)throw error;
-      session=d.session;
-      if(session){switchPanel('app');await loadAll();}
-      else{switchPanel('auth');}
-      client.auth.onAuthStateChange((_e,s)=>{session=s;if(s){switchPanel('app');setTimeout(loadAll,0);}else{switchPanel('auth');}});
-    }catch(e){
-      msg('globalMessage','اتصال برقرار نشد: '+(e.message||''),'error');
-      switchPanel('auth');
-    }
-  }
-
-  $('switchAuth').addEventListener('click',()=>{
-    authMode=authMode==='login'?'signup':'login';
-    $('authTitle').textContent=authMode==='login'?'ورود به بولت ژورنال':'ساخت حساب جدید';
-    $('authSubmit').textContent=authMode==='login'?'ورود':'ساخت حساب';
-    $('switchAuth').textContent=authMode==='login'?'ساخت حساب جدید':'بازگشت به ورود';
-    $('password').autocomplete=authMode==='login'?'current-password':'new-password';
-    hideMsg('authMessage');
-  });
-
-  $('authForm').addEventListener('submit',async e=>{
-    e.preventDefault();hideMsg('authMessage');$('authSubmit').disabled=true;
-    try{
-      const email=$('email').value.trim(),password=$('password').value;
-      let r;
-      if(authMode==='signup')r=await client.auth.signUp({email,password,options:{emailRedirectTo:location.href.split('#')[0]}});
-      else r=await client.auth.signInWithPassword({email,password});
-      if(r.error)throw r.error;
-      if(authMode==='signup'&&!r.data.session)msg('authMessage','حساب ساخته شد. تأیید ایمیل را چک کن.');
-      else if(r.data.session){session=r.data.session;switchPanel('app');await loadAll();}
-    }catch(err){msg('authMessage',err.message||'ورود انجام نشد.','error');}
-    finally{$('authSubmit').disabled=false;}
-  });
-
-  // ═══════════ بارگذاری داده ═══════════
-  async function loadAll(){
-    if(!session||!client)return;
-    $('syncPill').textContent='در حال همگام‌سازی...';
-    try{
-      const q=[
-        client.from('tasks').select('*').order('created_at',{ascending:false}),
-        client.from('habits').select('*').order('created_at',{ascending:true}),
-        client.from('habit_logs').select('*').order('log_date',{ascending:false}).limit(1000),
-        client.from('goals').select('*').order('created_at',{ascending:false}),
-        client.from('finance').select('*').order('entry_date',{ascending:false}).limit(500),
-        client.from('mood').select('*').order('entry_date',{ascending:false}).limit(200),
-        client.from('uni').select('*').order('created_at',{ascending:false}).limit(200),
-        client.from('forex').select('*').order('entry_date',{ascending:false}).limit(200),
-        client.from('skills').select('*').order('created_at',{ascending:false}),
-        client.from('time_log').select('*').order('entry_date',{ascending:false}).limit(200),
-        client.from('future_log').select('*').order('due_date',{ascending:true}).limit(200),
-        client.from('monthly_plan').select('*').order('created_at',{ascending:false}),
-        client.from('weekly_plan').select('*').order('week_from',{ascending:true}).limit(200),
-        client.from('review').select('*').order('created_at',{ascending:false}),
-        client.from('daily_notes').select('*').order('entry_date',{ascending:false}).limit(200),
-        client.from('pomodoro').select('*').order('completed_at',{ascending:false}).limit(200)
-      ];
-      const rs=await Promise.all(q);
-      for(const r of rs)if(r.error&&!r.error.message.includes('relation'))throw r.error;
-      [data.tasks,data.habits,data.logs,data.goals,data.finance,data.mood,data.uni,data.forex,data.skills,data.time,data.future,data.monthly,data.weekly,data.review,data.daily,data.pomodoro]=rs.map(r=>r.data||[]);
-      renderAll();
-      $('syncPill').textContent='همگام ✓';
-      setTimeout(()=>$('syncPill').textContent='آماده',2000);
-    }catch(e){
-      msg('globalMessage','دریافت اطلاعات ناموفق: '+(e.message||''),'error');
-      $('syncPill').textContent='خطا';
-    }
-  }
-
-  // ═══════════ رندر همه ═══════════
-  function renderAll(){
-    renderDashboard();
-    renderToday();
-    renderWeek();
-    renderTasks();
-    renderHabits();
-    renderGoals();
-    renderFinance();
-    renderMood();
-    renderUni();
-    renderForex();
-    renderSkills();
-    renderTime();
-    renderFuture();
-    renderMonthly();
-    renderWeekly();
-    renderReview();
-  }
-
-  // ═══════════ داشبورد ═══════════
-  function renderDashboard(){
-    const done=data.tasks.filter(t=>t.status==='done').length;
-    const goalsActive=data.goals.filter(g=>!['completed','cancelled'].includes(g.status)).length;
-    const goalAvg=data.goals.length?Math.round(data.goals.reduce((a,g)=>a+(g.progress||0),0)/data.goals.length):0;
-    const income=data.finance.filter(f=>f.entry_type==='درآمد').reduce((a,f)=>a+Number(f.amount||0),0);
-    const expense=data.finance.filter(f=>f.entry_type==='هزینه').reduce((a,f)=>a+Number(f.amount||0),0);
-    const saving=data.finance.filter(f=>f.entry_type==='پس‌انداز').reduce((a,f)=>a+Number(f.amount||0),0);
-    const habitDone=data.logs.filter(l=>l.log_date===dateISO()&&l.status==='done').length;
-
-    $('dashboardStats').innerHTML=`
-      <div class="stat"><span class="icon">✓</span><div class="label">کل وظایف</div><div class="number">${fa(data.tasks.length)}</div></div>
-      <div class="stat"><span class="icon">✅</span><div class="label">انجام‌شده</div><div class="number">${fa(done)}</div></div>
-      <div class="stat"><span class="icon">🔥</span><div class="label">عادت امروز</div><div class="number">${fa(habitDone)}</div></div>
-      <div class="stat"><span class="icon">🎯</span><div class="label">اهداف جاری</div><div class="number">${fa(goalsActive)}</div></div>
-      <div class="stat"><span class="icon">💰</span><div class="label">درآمد</div><div class="number">${fa(income)}</div></div>
-      <div class="stat"><span class="icon">💸</span><div class="label">هزینه</div><div class="number">${fa(expense)}</div></div>
-      <div class="stat"><span class="icon">🏦</span><div class="label">پس‌انداز</div><div class="number">${fa(saving)}</div></div>
-      <div class="stat"><span class="icon">📈</span><div class="label">میانگین اهداف</div><div class="number">${fa(goalAvg)}٪</div></div>`;
-
-    renderMoodLine();
-    renderExpenseDonut();
-    renderMonthlyFinance();
-    renderHabitHeatmap();
-    renderTimeChart();
-    renderGoalRings();
-  }
-
-  // ═══════════ صفحهٔ امروز ═══════════
-  function renderToday(){
-    const today=dateISO();
-    // وظایف امروز
-    const todayTasks=data.tasks.filter(t=>{
-      if(t.status==='cancelled')return false;
-      if(t.due_date===today)return true;
-      if(!t.due_date&&t.status!=='done')return true;
-      return false;
-    }).slice(0,10);
-    $('todayTasks').innerHTML=todayTasks.length?todayTasks.map(t=>{
-      const checked=t.status==='done';
-      return `<div class="checklist-item ${checked?'checked':''}" data-toggle-task="${t.id}">
-        <div class="check-box">${checked?'✓':''}</div>
-        <div class="check-title">${safe(t.title)}</div>
-        ${t.priority==='urgent_important'?'<span class="status late">فوری</span>':''}
-      </div>`;
-    }).join(''):'<p class="muted">هنوز وظیفه‌ای برای امروز نیست.</p>';
-
-    // عادت‌های امروز
-    const habitToday=data.habits.map(h=>{
-      const log=data.logs.find(l=>l.habit_id===h.id&&l.log_date===today);
-      return {h,s:log?.status||''};
-    });
-    const doneHabits=habitToday.filter(x=>x.s==='done').length;
-    $('habitTodayCount').textContent=`${fa(doneHabits)} / ${fa(habitToday.length)}`;
-    $('todayHabits').innerHTML=habitToday.length?habitToday.map(({h,s})=>{
-      const checked=s==='done';
-      return `<div class="checklist-item ${checked?'checked':''}" data-toggle-habit="${h.id}">
-        <div class="check-box">${checked?'✓':''}</div>
-        <div class="check-title">${safe(h.name)}</div>
-        ${s==='rest'?'<span class="status gold">استراحت</span>':''}
-      </div>`;
-    }).join(''):'<p class="muted">هنوز عادتی اضافه نکردی.</p>';
-
-    // یادداشت‌های امروز
-    const note=data.daily.find(d=>d.entry_date===today);
-    $('morningNote').value=note?.morning_note||'';
-    $('eveningNote').value=note?.evening_note||'';
-    $('highlightToday').value=note?.highlight||'';
-    $('gratitudeToday').value=note?.gratitude||'';
-
-    // آمار کوچک امروز
-    const pomos=data.pomodoro.filter(p=>p.entry_date===today);
-    const pomoMinutes=pomos.reduce((a,p)=>a+(p.minutes||0),0);
-    $('todayStats').innerHTML=`
-      <div class="stat"><div class="label">وظایف امروز</div><div class="number">${fa(todayTasks.length)}</div></div>
-      <div class="stat"><div class="label">انجام‌شده</div><div class="number">${fa(todayTasks.filter(t=>t.status==='done').length)}</div></div>
-      <div class="stat"><div class="label">عادت انجام‌شده</div><div class="number">${fa(doneHabits)}</div></div>
-      <div class="stat"><div class="label">دقایق پومودورو</div><div class="number">${fa(pomoMinutes)}</div></div>`;
-  }
-
-  // ═══════════ هفته ═══════════
-  function renderWeek(){
-    const now=new Date();
-    const dayOfWeek=now.getDay(); // 0=Sunday ... 6=Saturday
-    // شروع هفته در ایران = شنبه
-    const daysFromSat=(dayOfWeek+1)%7;
-    const start=new Date(now);start.setDate(now.getDate()-daysFromSat);
-    const days=[];
-    for(let i=0;i<7;i++){const d=new Date(start);d.setDate(start.getDate()+i);days.push(d);}
-    $('weekRangeLabel').textContent=`${toFaDate(dateISO(days[0]))} — ${toFaDate(dateISO(days[6]))}`;
-
-    const faDays=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
-    $('weekGrid').innerHTML=days.map((d,i)=>{
-      const iso=dateISO(d);
-      const isToday=iso===dateISO();
-      const dayTasks=data.tasks.filter(t=>t.due_date===iso&&t.status!=='cancelled');
-      return `<div class="week-col">
-        <div class="day-head ${isToday?'today':''}">${faDays[i]}<small>${toFaDate(iso)}</small></div>
-        ${dayTasks.slice(0,5).map(t=>`<div class="week-task ${t.status==='done'?'done':''}">${t.status==='done'?'× ':''}${safe(t.title)}</div>`).join('')}
-        ${dayTasks.length>5?`<div class="muted" style="font-size:10px;text-align:center">+${fa(dayTasks.length-5)} مورد</div>`:''}
-      </div>`;
-    }).join('');
-
-    const weekPlan=data.weekly.filter(w=>{
-      if(!w.week_from)return false;
-      const wd=new Date(w.week_from);
-      return wd>=start&&wd<=days[6];
-    });
-    $('weekTasksList').innerHTML=weekPlan.length?weekPlan.map(w=>`<article class="item"><div class="item-main"><div class="item-title">${safe(w.task)}</div><div class="item-meta"><span class="status blue">${safe(w.day_of_week||'')}</span>${w.start_time?`<span>${w.start_time}${w.end_time?'–'+w.end_time:''}</span>`:''}<span class="status">${safe(labels.taskStatus[w.status]||w.status||'')}</span></div></div></article>`).join(''):'<p class="muted">هنوز کاری برای این هفته ثبت نشده.</p>';
-  }
-
-  // ═══════════ وظایف ═══════════
-  function renderTasks(){
-    const f=$('taskFilter').value;const search=($('taskSearch').value||'').trim().toLowerCase();
-    let arr=data.tasks;
-    if(f==='open')arr=arr.filter(t=>!['done','cancelled'].includes(t.status));
-    if(f==='done')arr=arr.filter(t=>t.status==='done');
-    if(f==='today')arr=arr.filter(t=>t.due_date===dateISO());
-    if(f==='late')arr=arr.filter(t=>t.due_date&&t.due_date<dateISO()&&!['done','cancelled'].includes(t.status));
-    if(search)arr=arr.filter(t=>(t.title||'').toLowerCase().includes(search));
-    $('taskList').innerHTML=arr.length?arr.map(t=>{
-      const late=t.due_date&&t.due_date<dateISO()&&!['done','cancelled'].includes(t.status);
-      return `<article class="item ${t.status==='done'?'done':''}">
-        <div class="bj-bullet" data-bj-task="${t.id}" data-state="${t.status==='done'?'done':''}" title="تغییر وضعیت">${t.status==='done'?'×':''}</div>
-        <div class="item-main"><div class="item-title">${safe(t.title)}</div>
-          <div class="item-meta"><span>${safe(t.category||'')}</span>
-          <span class="status ${t.status==='done'?'done':''} ${late?'late':''}">${safe(labels.taskStatus[t.status]||t.status)}</span>
-          <span>${safe(labels.priority[t.priority]||t.priority)}</span>
-          ${t.due_date?`<span>${toFaDate(t.due_date)}</span>`:''}</div></div>
-        <div class="item-actions">
-          <select data-task-status="${t.id}">${Object.entries(labels.taskStatus).map(([v,l])=>`<option value="${v}" ${v===t.status?'selected':''}>${l}</option>`).join('')}</select>
-          <button class="danger small" data-delete-task="${t.id}">×</button>
-        </div></article>`;
-    }).join(''):'<p class="muted">موردی یافت نشد.</p>';
-  }
-
-  // ═══════════ عادت‌ها ═══════════
-  function calcStreak(hid){
-    let s=0;const d=new Date();
-    for(let i=0;i<365;i++){
-      const iso=dateISO(d);
-      const log=data.logs.find(l=>l.habit_id===hid&&l.log_date===iso);
-      if(log?.status==='done'){s++;d.setDate(d.getDate()-1);}
-      else if(i===0){d.setDate(d.getDate()-1);}
-      else break;
-    }
-    return s;
-  }
-  function renderHabits(){
-    $('habitList').innerHTML=data.habits.length?data.habits.map(h=>{
-      const log=data.logs.find(l=>l.habit_id===h.id&&l.log_date===dateISO());const s=log?.status||'';
-      const streak=calcStreak(h.id);
-      return `<article class="habit"><span style="font-weight:700">${safe(h.name)} ${streak>0?`<span class="status gold">🔥 ${fa(streak)}</span>`:''}</span>
-        <select data-habit-status="${h.id}" style="width:auto"><option value="" ${!s?'selected':''}>ثبت نشده</option>${Object.entries(labels.habitStatus).map(([v,l])=>`<option value="${v}" ${s===v?'selected':''}>${l}</option>`).join('')}</select>
-        <button class="danger small" data-delete-habit="${h.id}">×</button></article>`;
-    }).join(''):'<p class="muted">هنوز عادتی اضافه نشده.</p>';
-    renderHabitHeatmapTab();
-  }
-  function renderHabitHeatmap(){
-    const weeks=12;const cells=[];
-    const today=new Date();
-    const start=new Date(today);start.setDate(today.getDate()-(weeks*7-1));
-    for(let i=0;i<weeks*7;i++){const d=new Date(start);d.setDate(start.getDate()+i);const iso=dateISO(d);
-      const count=data.logs.filter(l=>l.log_date===iso&&l.status==='done').length;
-      let lvl='';if(count>=Math.max(1,Math.ceil(data.habits.length*0.75)))lvl='l4';else if(count>=Math.ceil(data.habits.length*0.5))lvl='l3';else if(count>=Math.ceil(data.habits.length*0.25))lvl='l2';else if(count>0)lvl='l1';
-      cells.push(`<div class="cell ${lvl}" title="${toFaDate(iso)}: ${fa(count)} عادت"></div>`);
-    }
-    const html=`<div style="overflow-x:auto"><div class="heatmap" style="grid-template-rows:repeat(7,1fr)">${cells.join('')}</div></div>`;
-    if($('habitHeatmap'))$('habitHeatmap').innerHTML=html;
-    if($('habitHeatmapTab'))$('habitHeatmapTab').innerHTML=html;
-  }
-
-  // ═══════════ اهداف ═══════════
-  function renderGoals(){
-    $('goalList').innerHTML=data.goals.length?data.goals.map(g=>`<article class="item"><div class="item-main"><div class="item-title">${safe(g.title)}</div>
-      <div class="item-meta"><span class="status">${safe(labels.goalStatus[g.status]||g.status)}</span><span>${safe(labels.priority[g.priority]||'')}</span>${g.due_date?`<span>${toFaDate(g.due_date)}</span>`:''}</div>
-      <div class="progress"><span style="width:${Math.min(100,g.progress||0)}%"></span></div>
-      <input type="range" min="0" max="100" step="5" value="${g.progress||0}" data-goal-progress="${g.id}" style="width:100%;margin-top:8px"></div>
-      <div class="item-actions"><span class="status">${fa(g.progress||0)}٪</span><button class="danger small" data-delete-goal="${g.id}">×</button></div></article>`).join(''):'<p class="muted">هنوز هدفی ثبت نشده.</p>';
-  }
-  function renderGoalRings(){
-    const top=data.goals.filter(g=>!['cancelled'].includes(g.status)).slice(0,4);
-    if(!top.length){$('goalRings').innerHTML='<p class="muted">هنوز هدفی نداری.</p>';return;}
-    $('goalRings').innerHTML=`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px">${top.map(g=>{
-      const p=Math.max(0,Math.min(100,g.progress||0));
-      const r=45,c=2*Math.PI*r,off=c*(1-p/100);
-      return `<div style="text-align:center"><svg width="120" height="120" viewBox="0 0 120 120">
-        <circle cx="60" cy="60" r="${r}" fill="none" stroke="var(--cream2)" stroke-width="10"/>
-        <circle cx="60" cy="60" r="${r}" fill="none" stroke="var(--olive)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 60 60)" style="transition:.6s"/>
-        <text x="60" y="65" text-anchor="middle" font-size="22" font-weight="800" fill="var(--dark)">${fa(p)}٪</text></svg>
-        <div style="font-size:13px;font-weight:600;margin-top:6px">${safe(g.title.substring(0,30))}</div></div>`;
-    }).join('')}</div>`;
-  }
-
-  // ═══════════ مالی ═══════════
-  function renderFinance(){
-    $('financeList').innerHTML=data.finance.slice(0,40).length?data.finance.slice(0,40).map(f=>{
-      const cls=f.entry_type==='درآمد'?'money-pos':f.entry_type==='هزینه'?'money-neg':'';
-      return `<article class="item"><div class="item-main"><div class="item-title">${safe(f.description||f.category||'—')}</div>
-        <div class="item-meta"><span>${toFaDate(f.entry_date)}</span><span class="status blue">${safe(f.entry_type)}</span><span>${safe(f.category||'')}</span><span class="${cls}">${fa(f.amount)} تومان</span></div></div>
-        <div class="item-actions"><button class="danger small" data-delete-finance="${f.id}">×</button></div></article>`;
-    }).join(''):'<p class="muted">هنوز تراکنشی نیست.</p>';
-  }
-  function renderMonthlyFinance(){
-    const months=['آبان','آذر','دی'];
-    const rows=months.map(m=>{
-      const inc=data.finance.filter(f=>f.entry_month===m&&f.entry_type==='درآمد').reduce((a,f)=>a+Number(f.amount||0),0);
-      const exp=data.finance.filter(f=>f.entry_month===m&&f.entry_type==='هزینه').reduce((a,f)=>a+Number(f.amount||0),0);
-      const sav=data.finance.filter(f=>f.entry_month===m&&f.entry_type==='پس‌انداز').reduce((a,f)=>a+Number(f.amount||0),0);
-      return `<tr><td style="padding:10px;border-bottom:1px solid var(--line)">${m}</td><td style="padding:10px;border-bottom:1px solid var(--line)" class="money-pos">${fa(inc)}</td><td style="padding:10px;border-bottom:1px solid var(--line)" class="money-neg">${fa(exp)}</td><td style="padding:10px;border-bottom:1px solid var(--line)">${fa(sav)}</td></tr>`;
-    }).join('');
-    const el=$('monthlyFinance');
-    if(el)el.innerHTML=`<table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr style="background:var(--cream2)"><th style="padding:10px;text-align:right">ماه</th><th style="padding:10px;text-align:right">درآمد</th><th style="padding:10px;text-align:right">هزینه</th><th style="padding:10px;text-align:right">پس‌انداز</th></tr></thead><tbody>${rows}</tbody></table>`;
-  }
-  function renderExpenseDonut(){
-    const cats={};
-    data.finance.filter(f=>f.entry_type==='هزینه').forEach(f=>{cats[f.category||'سایر']=(cats[f.category||'سایر']||0)+Number(f.amount||0);});
-    const entries=Object.entries(cats).sort((a,b)=>b[1]-a[1]).slice(0,6);
-    const total=entries.reduce((a,e)=>a+e[1],0);
-    const el=$('expenseDonut');
-    if(!el)return;
-    if(!total){el.innerHTML='<p class="muted">هنوز هزینه‌ای ثبت نشده.</p>';return;}
-    const colors=['#78845b','#b58e42','#76543a','#5b7a99','#b95042','#4b3526'];
-    let acc=0;
-    const paths=entries.map((e,i)=>{
-      const pct=e[1]/total;const start=acc*360;const end=(acc+pct)*360;acc+=pct;
-      const large=end-start>180?1:0;
-      const sr=(start-90)*Math.PI/180,er=(end-90)*Math.PI/180;
-      const x1=80+60*Math.cos(sr),y1=80+60*Math.sin(sr);
-      const x2=80+60*Math.cos(er),y2=80+60*Math.sin(er);
-      return `<path d="M80,80 L${x1},${y1} A60,60 0 ${large} 1 ${x2},${y2} Z" fill="${colors[i]}" stroke="var(--white)" stroke-width="2"/>`;
-    }).join('');
-    el.innerHTML=`<div class="donut-wrap"><svg width="160" height="160" viewBox="0 0 160 160">${paths}<circle cx="80" cy="80" r="35" fill="var(--white)"/><text x="80" y="78" text-anchor="middle" font-size="11" fill="var(--muted)">مجموع</text><text x="80" y="95" text-anchor="middle" font-size="13" font-weight="800" fill="var(--dark)">${fa(total)}</text></svg>
-      <div class="legend">${entries.map((e,i)=>`<div><span class="dot" style="background:${colors[i]}"></span><span>${safe(e[0])}: ${fa(e[1])}</span></div>`).join('')}</div></div>`;
-  }
-
-  // ═══════════ خلق‌وخو ═══════════
-  function renderMood(){
-    $('moodList').innerHTML=data.mood.length?data.mood.slice(0,30).map(m=>`<article class="item"><div class="item-main"><div class="item-title">${toFaDate(m.entry_date)} — ${safe(m.mood||'')}</div>
-      <div class="item-meta"><span>انرژی: ${fa(m.energy)}</span><span>خواب: ${fa(m.sleep_quality)}</span><span>استرس: ${fa(m.stress)}</span>${m.sleep_hours?`<span>${m.sleep_hours} ساعت</span>`:''}</div></div>
-      <div class="item-actions"><button class="danger small" data-delete-mood="${m.id}">×</button></div></article>`).join(''):'<p class="muted">هنوز ثبت نشده.</p>';
-  }
-  function renderMoodLine(){
-    const el=$('moodLineChart');if(!el)return;
-    const days=[];for(let i=29;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(dateISO(d));}
-    const eArr=days.map(d=>data.mood.find(m=>m.entry_date===d)?.energy||null);
-    const sArr=days.map(d=>data.mood.find(m=>m.entry_date===d)?.stress||null);
-    const w=600,h=180,pad=30;
-    const x=i=>pad+(i/(days.length-1))*(w-2*pad);
-    const y=v=>h-pad-(v/5)*(h-2*pad);
-    const line=arr=>{let p='';let started=false;arr.forEach((v,i)=>{if(v==null){started=false;return;}if(!started){p+=`M${x(i)},${y(v)} `;started=true;}else p+=`L${x(i)},${y(v)} `;});return p;};
-    const ePath=line(eArr),sPath=line(sArr);
-    el.innerHTML=`<svg class="svg-chart" viewBox="0 0 ${w} ${h}">
-      ${[1,2,3,4,5].map(v=>`<line x1="${pad}" y1="${y(v)}" x2="${w-pad}" y2="${y(v)}" stroke="var(--line)" stroke-dasharray="2,4"/>`).join('')}
-      <path d="${ePath}" fill="none" stroke="var(--olive)" stroke-width="3" stroke-linecap="round"/>
-      <path d="${sPath}" fill="none" stroke="var(--red)" stroke-width="3" stroke-linecap="round" stroke-dasharray="4,4"/>
-      <text x="${w-8}" y="${y(5)-2}" text-anchor="end" font-size="10" fill="var(--olive)" font-weight="700">● انرژی</text>
-      <text x="${w-8}" y="${y(5)+12}" text-anchor="end" font-size="10" fill="var(--red)" font-weight="700">● استرس</text>
-    </svg>`;
-  }
-
-  // ═══════════ دانشگاه ═══════════
-  function renderUni(){
-    $('uniList').innerHTML=data.uni.length?data.uni.map(u=>`<article class="item"><div class="item-main"><div class="item-title">${safe(u.course)}${u.title?' — '+safe(u.title):''}</div>
-      <div class="item-meta"><span class="status">${safe(u.item_type||'')}</span><span class="status">${safe(labels.taskStatus[u.status]||u.status||'')}</span>${u.due_date?`<span>موعد: ${toFaDate(u.due_date)}</span>`:''}${u.grade?`<span>نمره: ${u.grade}</span>`:''}</div></div>
-      <div class="item-actions"><button class="danger small" data-delete-uni="${u.id}">×</button></div></article>`).join(''):'<p class="muted">—</p>';
-  }
-
-  // ═══════════ فارکس ═══════════
-  function renderForex(){
-    $('forexList').innerHTML=data.forex.length?data.forex.map(f=>{
-      const r=f.risk_amount&&f.result_amount?(f.result_amount/f.risk_amount).toFixed(2):'—';
-      const cls=f.result_amount>0?'money-pos':f.result_amount<0?'money-neg':'';
-      return `<article class="item"><div class="item-main"><div class="item-title">${safe(f.symbol)} — ${safe(f.direction)}</div>
-        <div class="item-meta"><span>${toFaDate(f.entry_date)}</span><span>ورود: ${f.entry_price||'—'}</span><span>خروج: ${f.exit_price||'—'}</span><span class="${cls}">نتیجه: ${fa(f.result_amount)}</span><span>R: ${r}</span></div></div>
-        <div class="item-actions"><button class="danger small" data-delete-forex="${f.id}">×</button></div></article>`;
-    }).join(''):'<p class="muted">—</p>';
-  }
-
-  // ═══════════ یادگیری ═══════════
-  function renderSkills(){
-    $('skillList').innerHTML=data.skills.length?data.skills.map(s=>`<article class="item"><div class="item-main"><div class="item-title">${safe(s.skill)}${s.stage?' — '+safe(s.stage):''}</div>
-      <div class="item-meta"><span class="status">${safe(labels.goalStatus[s.status]||s.status||'')}</span>${s.source?`<span>${safe(s.source)}</span>`:''}${s.hours?`<span>${s.hours} ساعت</span>`:''}${s.end_date?`<span>تا ${toFaDate(s.end_date)}</span>`:''}</div>
-      <div class="progress"><span style="width:${Math.min(100,s.progress||0)}%"></span></div></div>
-      <div class="item-actions"><span class="status">${fa(s.progress||0)}٪</span><button class="danger small" data-delete-skill="${s.id}">×</button></div></article>`).join(''):'<p class="muted">—</p>';
-  }
-
-  // ═══════════ ثبت زمان ═══════════
-  function renderTime(){
-    $('timeList').innerHTML=data.time.length?data.time.slice(0,40).map(t=>{
-      const diff=(t.actual_hours||0)-(t.planned_hours||0);
-      const cls=diff>0?'money-pos':diff<0?'money-neg':'';
-      return `<article class="item"><div class="item-main"><div class="item-title">${safe(t.activity||t.category||'—')}</div>
-        <div class="item-meta"><span>${toFaDate(t.entry_date)}</span><span class="status blue">${safe(t.category||'')}</span><span>برنامه: ${t.planned_hours||0}</span><span>واقعی: ${t.actual_hours||0}</span><span class="${cls}">اختلاف: ${diff>0?'+':''}${diff}</span></div></div>
-        <div class="item-actions"><button class="danger small" data-delete-time="${t.id}">×</button></div></article>`;
-    }).join(''):'<p class="muted">—</p>';
-  }
-  function renderTimeChart(){
-    const el=$('timeChart');if(!el)return;
-    const days=[];for(let i=13;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push({iso:dateISO(d),label:new Intl.DateTimeFormat('fa-IR',{day:'numeric'}).format(d)});}
-    const plan=days.map(d=>data.time.filter(t=>t.entry_date===d.iso).reduce((a,t)=>a+(t.planned_hours||0),0));
-    const real=days.map(d=>data.time.filter(t=>t.entry_date===d.iso).reduce((a,t)=>a+(t.actual_hours||0),0));
-    const max=Math.max(...plan,...real,1);
-    el.innerHTML=`<div class="chart">${days.map((d,i)=>`<div style="flex:1;display:flex;gap:2px;align-items:flex-end;height:100%">
-      <div class="bar" style="height:${Math.max(4,(plan[i]/max)*100)}%;flex:1;background:var(--olive);opacity:.5" title="برنامه: ${plan[i]}"></div>
-      <div class="bar" style="height:${Math.max(4,(real[i]/max)*100)}%;flex:1;background:var(--brown)" title="واقعی: ${real[i]}"></div>
-    </div>`).join('')}</div><div class="chart-labels">${days.map(d=>`<span>${d.label}</span>`).join('')}</div>
-    <div style="display:flex;gap:14px;justify-content:center;margin-top:8px;font-size:11px"><span><span style="display:inline-block;width:10px;height:10px;background:var(--olive);opacity:.5;border-radius:2px"></span> برنامه</span><span><span style="display:inline-block;width:10px;height:10px;background:var(--brown);border-radius:2px"></span> واقعی</span></div>`;
-  }
-
-  // ═══════════ برنامه‌ریزی ═══════════
-  function renderFuture(){
-    $('futureList').innerHTML=data.future.length?data.future.map(f=>`<article class="item"><div class="item-main"><div class="item-title">${safe(f.title)}</div>
-      <div class="item-meta"><span class="status">${safe(labels.taskStatus[f.status]||f.status||'')}</span><span>${safe(labels.priority[f.priority]||'')}</span>${f.category?`<span>${safe(f.category)}</span>`:''}${f.due_date?`<span>${toFaDate(f.due_date)}</span>`:''}</div></div>
-      <div class="item-actions"><button class="danger small" data-delete-future="${f.id}">×</button></div></article>`).join(''):'<p class="muted">—</p>';
-  }
-  function renderMonthly(){
-    $('monthList').innerHTML=data.monthly.length?data.monthly.map(m=>`<article class="item"><div class="item-main"><div class="item-title">${safe(m.goal)}</div>
-      <div class="item-meta"><span class="status">${safe(m.entry_month||'')}</span>${m.focus?`<span>${safe(m.focus)}</span>`:''}${m.due_date?`<span>${toFaDate(m.due_date)}</span>`:''}</div>
-      <div class="progress"><span style="width:${Math.min(100,m.progress||0)}%"></span></div></div>
-      <div class="item-actions"><button class="danger small" data-delete-monthly="${m.id}">×</button></div></article>`).join(''):'<p class="muted">—</p>';
-  }
-  function renderWeekly(){
-    $('weekList').innerHTML=data.weekly.length?data.weekly.map(w=>`<article class="item"><div class="item-main"><div class="item-title">${safe(w.task)}</div>
-      <div class="item-meta"><span class="status blue">${safe(w.day_of_week||'')}</span>${w.start_time?`<span>${w.start_time}${w.end_time?'–'+w.end_time:''}</span>`:''}<span class="status">${safe(labels.taskStatus[w.status]||w.status||'')}</span></div></div>
-      <div class="item-actions"><button class="danger small" data-delete-weekly="${w.id}">×</button></div></article>`).join(''):'<p class="muted">—</p>';
-  }
-
-  // ═══════════ مرور ═══════════
-  function renderReview(){
-    $('reviewList').innerHTML=data.review.length?data.review.map(r=>`<article class="item"><div class="item-main"><div class="item-title">${safe(r.review_type||'')}${r.period?' — '+safe(r.period):''}</div>
-      <div class="item-meta">${r.score?`<span class="status gold">امتیاز: ${fa(r.score)}/۱۰</span>`:''}${r.successes?`<span>✓ ${safe(r.successes)}</span>`:''}${r.challenges?`<span>⚠ ${safe(r.challenges)}</span>`:''}</div></div>
-      <div class="item-actions"><button class="danger small" data-delete-review="${r.id}">×</button></div></article>`).join(''):'<p class="muted">—</p>';
-  }
-
-  // ═══════════ عملیات CRUD ═══════════
-  async function perform(fn,ok){
-    hideMsg('globalMessage');
-    try{
-      await fn();
-      if(ok)msg('globalMessage',ok);
-      $('syncPill').textContent='✓';
-      setTimeout(()=>$('syncPill').textContent='آماده',1500);
-    }catch(e){msg('globalMessage',e.message||'خطا','error');}
-  }
-  const uid=()=>session.user.id;
-  const toFaMonth=iso=>{try{return new Intl.DateTimeFormat('fa-IR-u-ca-persian',{month:'long'}).format(new Date(iso));}catch{return'';}};
-
-  // — وظایف
-  $('taskForm').addEventListener('submit',async e=>{e.preventDefault();const title=$('taskTitle').value.trim();if(!title)return;
-    await perform(async()=>{const {error}=await client.from('tasks').insert({user_id:uid(),title,priority:$('taskPriority').value,status:'planned',due_date:$('taskDue').value||null,category:$('taskCategory').value});if(error)throw error;$('taskForm').reset();$('taskPriority').value='normal';$('taskCategory').value='شخصی';await loadAll();},'ذخیره شد');});
-  $('taskFilter').addEventListener('change',renderTasks);
-  $('taskSearch').addEventListener('input',renderTasks);
-  $('taskList').addEventListener('change',async e=>{const id=e.target.dataset.taskStatus;if(!id)return;const s=e.target.value;
-    await perform(async()=>{const {error}=await client.from('tasks').update({status:s,completed_at:s==='done'?new Date().toISOString():null}).eq('id',id);if(error)throw error;await loadAll();},'به‌روز شد');});
-  $('taskList').addEventListener('click',async e=>{
-    const bj=e.target.dataset.bjTask;if(bj){
-      const t=data.tasks.find(x=>x.id==bj);const next=t.status==='done'?'planned':'done';
-      await perform(async()=>{const {error}=await client.from('tasks').update({status:next,completed_at:next==='done'?new Date().toISOString():null}).eq('id',bj);if(error)throw error;await loadAll();});return;}
-    const id=e.target.dataset.deleteTask;if(!id||!confirm('حذف شود؟'))return;
-    await perform(async()=>{const {error}=await client.from('tasks').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
-  $('quickAddTask').addEventListener('click',async()=>{
-    const title=prompt('عنوان وظیفهٔ امروز:');if(!title)return;
-    await perform(async()=>{const {error}=await client.from('tasks').insert({user_id:uid(),title,priority:'normal',status:'planned',due_date:dateISO(),category:'شخصی'});if(error)throw error;await loadAll();},'افزوده شد');});
-
-  // — عادت‌ها
-  $('habitForm').addEventListener('submit',async e=>{e.preventDefault();const name=$('habitName').value.trim();if(!name)return;
-    await perform(async()=>{const {error}=await client.from('habits').insert({user_id:uid(),name,frequency:'daily'});if(error)throw error;$('habitForm').reset();await loadAll();},'ذخیره شد');});
-  $('habitList').addEventListener('change',async e=>{const id=e.target.dataset.habitStatus;if(!id)return;const s=e.target.value;
-    await perform(async()=>{if(!s){const {error}=await client.from('habit_logs').delete().eq('habit_id',id).eq('log_date',dateISO());if(error)throw error;}
-    else{const {error}=await client.from('habit_logs').upsert({user_id:uid(),habit_id:id,log_date:dateISO(),status:s},{onConflict:'habit_id,log_date'});if(error)throw error;}await loadAll();},'ذخیره شد');});
-  $('habitList').addEventListener('click',async e=>{const id=e.target.dataset.deleteHabit;if(!id||!confirm('حذف شود؟'))return;
-    await perform(async()=>{const {error}=await client.from('habits').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
-
-  // — صفحهٔ امروز
-  $('todayTasks').addEventListener('click',async e=>{
-    const el=e.target.closest('[data-toggle-task]');if(!el)return;
-    const id=el.dataset.toggleTask;const t=data.tasks.find(x=>x.id==id);const next=t.status==='done'?'planned':'done';
-    await perform(async()=>{const {error}=await client.from('tasks').update({status:next,completed_at:next==='done'?new Date().toISOString():null}).eq('id',id);if(error)throw error;await loadAll();});});
-  $('todayHabits').addEventListener('click',async e=>{
-    const el=e.target.closest('[data-toggle-habit]');if(!el)return;
-    const id=el.dataset.toggleHabit;const log=data.logs.find(l=>l.habit_id==id&&l.log_date===dateISO());
-    const next=log?.status==='done'?'not_done':'done';
-    await perform(async()=>{const {error}=await client.from('habit_logs').upsert({user_id:uid(),habit_id:id,log_date:dateISO(),status:next},{onConflict:'habit_id,log_date'});if(error)throw error;await loadAll();});});
-  $('saveDailyBtn').addEventListener('click',async()=>{
-    await perform(async()=>{const {error}=await client.from('daily_notes').upsert({user_id:uid(),entry_date:dateISO(),morning_note:$('morningNote').value,evening_note:$('eveningNote').value,highlight:$('highlightToday').value,gratitude:$('gratitudeToday').value},{onConflict:'entry_date'});if(error)throw error;await loadAll();},'یادداشت‌ها ذخیره شد');});
-
-  // — اهداف
-  $('goalForm').addEventListener('submit',async e=>{e.preventDefault();const title=$('goalTitle').value.trim();if(!title)return;
-    await perform(async()=>{const {error}=await client.from('goals').insert({user_id:uid(),title,priority:$('goalPriority').value,status:'planned',progress:0,due_date:$('goalDue').value||null});if(error)throw error;$('goalForm').reset();$('goalPriority').value='normal';await loadAll();},'ذخیره شد');});
-  $('goalList').addEventListener('change',async e=>{const id=e.target.dataset.goalProgress;if(!id)return;const p=Number(e.target.value);
-    await perform(async()=>{const {error}=await client.from('goals').update({progress:p,status:p===100?'completed':'in_progress'}).eq('id',id);if(error)throw error;await loadAll();});});
-  $('goalList').addEventListener('click',async e=>{const id=e.target.dataset.deleteGoal;if(!id||!confirm('حذف شود؟'))return;
-    await perform(async()=>{const {error}=await client.from('goals').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
-
-  // — مالی
-  $('financeForm').addEventListener('submit',async e=>{e.preventDefault();
-    await perform(async()=>{const d=$('finDate').value;const month=toFaMonth(d);
-      const {error}=await client.from('finance').insert({user_id:uid(),entry_date:d,entry_month:month,entry_type:$('finType').value,category:$('finCategory').value,description:$('finDesc').value,amount:Number($('finAmount').value||0),payment_method:$('finPay').value});if(error)throw error;$('financeForm').reset();$('finDate').value=dateISO();await loadAll();},'ذخیره شد');});
-  $('financeList').addEventListener('click',async e=>{const id=e.target.dataset.deleteFinance;if(!id||!confirm('حذف شود؟'))return;
-    await perform(async()=>{const {error}=await client.from('finance').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
-
-  // — خلق‌وخو
-  $('moodForm').addEventListener('submit',async e=>{e.preventDefault();
-    await perform(async()=>{const {error}=await client.from('mood').upsert({user_id:uid(),entry_date:$('moodDate').value,mood:$('moodMood').value,energy:Number($('moodEnergy').value||0),sleep_quality:Number($('moodSleep').value||0),stress:Number($('moodStress').value||0),sleep_hours:Number($('moodHours').value||0)},{onConflict:'entry_date'});if(error)throw error;await loadAll();},'ذخیره شد');});
-  $('moodList').addEventListener('click',async e=>{const id=e.target.dataset.deleteMood;if(!id||!confirm('حذف شود؟'))return;
-    await perform(async()=>{const {error}=await client.from('mood').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
-
-  // — دانشگاه
-  $('uniForm').addEventListener('submit',async e=>{e.preventDefault();const course=$('uniCourse').value.trim();if(!course)return;
-    await perform(async()=>{const {error}=await client.from('uni').insert({user_id:uid(),course,item_type:$('uniType').value,title:$('uniTitle').value,due_date:$('uniDue').value||null,status:$('uniStatus').value,grade:Number($('uniGrade').value||0)});if(error)throw error;$('uniForm').reset();$('uniDue').value=dateISO();await loadAll();},'ذخیره شد');});
-  $('uniList').addEventListener('click',async e=>{const id=e.target.dataset.deleteUni;if(!id||!confirm('حذف شود؟'))return;
-    await perform(async()=>{const {error}=await client.from('uni').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
-
-  // — فارکس
-  $('forexForm').addEventListener('submit',async e=>{e.preventDefault();
-    await perform(async()=>{const {error}=await client.from('forex').insert({user_id:uid(),entry_date:$('fxDate').value||null,symbol:$('fxSymbol').value,direction:$('fxDir').value,entry_price:Number($('fxEntry').value||0),exit_price:Number($('fxExit').value||0),risk_amount:Number($('fxRisk').value||0),result_amount:Number($('fxResult').value||0)});if(error)throw error;$('forexForm').reset();$('fxDate').value=dateISO();await loadAll();},'ذخیره شد');});
-  $('forexList').addEventListener('click',async e=>{const id=e.target.dataset.deleteForex;if(!id||!confirm('حذف شود؟'))return;
-    await perform(async()=>{const {error}=await client.from('forex').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
-
-  // — مهارت‌ها
-  $('skillForm').addEventListener('submit',async e=>{e.preventDefault();const skill=$('skillName').value.trim();if(!skill)return;
-    await perform(async()=>{const {error}=await client.from('skills').insert({user_id:uid(),skill,stage:$('skillStage').value,source:$('skillSource').value,end_date:$('skillEnd').value||null,hours:Number($('skillHours').value||0),status:'planned',progress:0});if(error)throw error;$('skillForm').reset();$('skillEnd').value=dateISO();await loadAll();},'ذخیره شد');});
-  $('skillList').addEventListener('click',async e=>{const id=e.target.dataset.deleteSkill;if(!id||!confirm('حذف شود؟'))return;
-    await perform(async()=>{const {error}=await client.from('skills').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
-
-  // — زمان
-  $('timeForm').addEventListener('submit',async e=>{e.preventDefault();
-    await perform(async()=>{const {error}=await client.from('time_log').insert({user_id:uid(),entry_date:$('timeDate').value,category:$('timeCat').value,activity:$('timeAct').value,planned_hours:Number($('timePlan').value||0),actual_hours:Number($('timeReal').value||0)});if(error)throw error;$('timeForm').reset();$('timeDate').value=dateISO();await loadAll();},'ذخیره شد');});
-  $('timeList').addEventListener('click',async e=>{const id=e.target.dataset.deleteTime;if(!id||!confirm('حذف شود؟'))return;
-    await perform(async()=>{const {error}=await client.from('time_log').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
-
-  // — برنامه‌ریزی
-  $('futureForm').addEventListener('submit',async e=>{e.preventDefault();const title=$('futTitle').value.trim();if(!title)return;
-    await perform(async()=>{const {error}=await client.from('future_log').insert({user_id:uid(),title,category:$('futCat').value,due_date:$('futDue').value||null,priority:$('futPri').value,status:'planned'});if(error)throw error;$('futureForm').reset();$('futDue').value=dateISO();await loadAll();},'ذخیره شد');});
-  $('futureList').addEventListener('click',async e=>{const id=e.target.dataset.deleteFuture;if(!id||!confirm('حذف شود؟'))return;
-    await perform(async()=>{const {error}=await client.from('future_log').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
-  $('monthForm').addEventListener('submit',async e=>{e.preventDefault();const goal=$('monGoal').value.trim();if(!goal)return;
-    await perform(async()=>{const {error}=await client.from('monthly_plan').insert({user_id:uid(),entry_month:$('monMonth').value,focus:$('monFocus').value,goal,due_date:$('monDue').value||null,status:'planned',progress:0});if(error)throw error;$('monthForm').reset();$('monDue').value=dateISO();await loadAll();},'ذخیره شد');});
-  $('monthList').addEventListener('click',async e=>{const id=e.target.dataset.deleteMonthly;if(!id||!confirm('حذف شود؟'))return;
-    await perform(async()=>{const {error}=await client.from('monthly_plan').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
-  $('weekPlanForm').addEventListener('submit',async e=>{e.preventDefault();const task=$('weekTask').value.trim();if(!task)return;
-    await perform(async()=>{const {error}=await client.from('weekly_plan').insert({user_id:uid(),week_from:$('weekFrom').value||null,day_of_week:$('weekDay').value,start_time:$('weekStart').value,end_time:$('weekEnd').value,task,category:$('weekCat').value,status:'planned'});if(error)throw error;$('weekPlanForm').reset();$('weekFrom').value=dateISO();await loadAll();},'ذخیره شد');});
-  $('weekList').addEventListener('click',async e=>{const id=e.target.dataset.deleteWeekly;if(!id||!confirm('حذف شود؟'))return;
-    await perform(async()=>{const {error}=await client.from('weekly_plan').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
-
-  // — مرور
-  $('reviewForm').addEventListener('submit',async e=>{e.preventDefault();
-    await perform(async()=>{const {error}=await client.from('review').insert({user_id:uid(),review_type:$('revType').value,period:$('revPeriod').value,score:Number($('revScore').value||0),successes:$('revSucc').value,challenges:$('revChal').value,lesson:$('revLesson').value,action:$('revAction').value});if(error)throw error;$('reviewForm').reset();await loadAll();},'ذخیره شد');});
-  $('reviewList').addEventListener('click',async e=>{const id=e.target.dataset.deleteReview;if(!id||!confirm('حذف شود؟'))return;
-    await perform(async()=>{const {error}=await client.from('review').delete().eq('id',id);if(error)throw error;await loadAll();},'حذف شد');});
-
-  // ═══════════ ناوبری ═══════════
-  function goTab(t){
-    document.querySelectorAll('.nav button[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));
-    document.querySelectorAll('.tab').forEach(s=>s.classList.toggle('hidden',s.id!=='tab-'+t));
-    window.scrollTo({top:0,behavior:'smooth'});
-  }
-  document.querySelectorAll('.nav button[data-tab]').forEach(b=>b.addEventListener('click',()=>goTab(b.dataset.tab)));
-  document.querySelectorAll('#plannerSub button').forEach(b=>b.addEventListener('click',()=>{
-    document.querySelectorAll('#plannerSub button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
-    document.querySelectorAll('.subtab').forEach(s=>s.classList.add('hidden'));$('sub-'+b.dataset.sub).classList.remove('hidden');}));
-
-  $('refreshBtn').addEventListener('click',loadAll);
-  $('exportBtn').addEventListener('click',()=>{
-    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-    const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='bullet-journal-'+dateISO()+'.json';a.click();URL.revokeObjectURL(url);});
-  async function logout(){if(client)await client.auth.signOut();session=null;switchPanel('auth');}
-  $('logoutBtn').addEventListener('click',logout);$('logoutBtn2').addEventListener('click',logout);
-
-  // ═══════════ پومودورو ═══════════
-  let pomoInterval=null,pomoRemaining=25*60,pomoRunning=false;
-  function updatePomoDisplay(){
-    const m=Math.floor(pomoRemaining/60),s=pomoRemaining%60;
-    $('pomoTime').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}
-  function startPomo(){
-    if(pomoRunning)return;pomoRunning=true;$('pomoBox').classList.add('running');$('pomoToggle').textContent='توقف';
-    pomoInterval=setInterval(()=>{
-      pomoRemaining--;updatePomoDisplay();
-      if(pomoRemaining<=0){clearInterval(pomoInterval);pomoRunning=false;$('pomoBox').classList.remove('running');$('pomoToggle').textContent='شروع';
-        if(client&&session)perform(async()=>{const {error}=await client.from('pomodoro').insert({user_id:uid(),entry_date:dateISO(),task_title:'پومودورو',minutes:25});if(error)throw error;await loadAll();},'پومودورو ثبت شد');
-        pomoRemaining=25*60;updatePomoDisplay();}},1000);}
-  function stopPomo(){clearInterval(pomoInterval);pomoRunning=false;$('pomoBox').classList.remove('running');$('pomoToggle').textContent='شروع';}
-  $('pomoToggle').addEventListener('click',()=>{pomoRunning?stopPomo():startPomo();});
-  $('pomoClose').addEventListener('click',()=>{stopPomo();show('pomoBox',false);});
-  document.addEventListener('keydown',e=>{if(e.key==='p'&&e.ctrlKey){e.preventDefault();show('pomoBox',!$('pomoBox').classList.contains('hidden'));if(!$('pomoBox').classList.contains('hidden'))updatePomoDisplay();}});
-
-  // ═══════════ حالت تمرکز ═══════════
-  $('focusBtn').addEventListener('click',()=>{
-    const tasks=data.tasks.filter(t=>t.status!=='done'&&t.status!=='cancelled').slice(0,3);
-    if(!tasks.length){alert('وظیفه‌ای برای تمرکز نداری!');return;}
-    const overlay=document.createElement('div');overlay.className='focus-overlay';
-    overlay.innerHTML=`<div class="focus-card">
-      <h2>🎯 حالت تمرکز</h2>
-      <div style="font-size:14px;color:var(--muted);margin-bottom:16px">روی یکی از کارهای زیر تمرکز کن:</div>
-      ${tasks.map(t=>`<div style="padding:14px;background:var(--white);border-radius:12px;margin-bottom:10px;text-align:right;font-weight:700">${safe(t.title)}</div>`).join('')}
-      <div class="focus-timer" id="focusTimer">25:00</div>
-      <div class="focus-btns">
-        <button id="focusStart">شروع پومودورو</button>
-        <button class="secondary" id="focusExit">خروج</button>
-      </div>
+function renderWeek(){
+  const now=new Date();const dow=now.getDay();const dfs=(dow+1)%7;
+  const start=new Date(now);start.setDate(now.getDate()-dfs);
+  const days=[];for(let i=0;i<7;i++){const d=new Date(start);d.setDate(start.getDate()+i);days.push(d);}
+  $('weekRangeLabel').textContent=`${toFaDate(dateISO(days[0]))} — ${toFaDate(dateISO(days[6]))}`;
+  const faDays=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
+  $('weekGrid').innerHTML=days.map((d,i)=>{
+    const iso=dateISO(d);const isToday=iso===dateISO();
+    const dayTasks=data.tasks.filter(t=>t.due_date===iso&&t.status!=='cancelled');
+    return `<div class="week-col"><div class="day-head ${isToday?'today':''}">${faDays[i]}<small>${toFaDate(iso)}</small></div>
+      ${dayTasks.slice(0,5).map(t=>`<div class="week-task">${t.status==='done'?'× ':''}${safe(t.title)}</div>`).join('')}
+      ${dayTasks.length>5?`<div class="muted" style="font-size:10px;text-align:center">+${fa(dayTasks.length-5)} مورد</div>`:''}
     </div>`;
-    document.body.appendChild(overlay);
-    let r=25*60,iv=null;
-    const up=()=>{const m=Math.floor(r/60),s=r%60;$('focusTimer').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;};
-    $('focusStart').addEventListener('click',()=>{if(iv)return;iv=setInterval(()=>{r--;up();if(r<=0){clearInterval(iv);iv=null;r=25*60;up();}},1000);});
-    $('focusExit').addEventListener('click',()=>{if(iv)clearInterval(iv);overlay.remove();});});
+  }).join('');
+}
 
-  init();
+function renderTasks(){
+  const f=$('taskFilter').value;const search=($('taskSearch').value||'').trim().toLowerCase();
+  let arr=[...data.tasks];
+  if(f==='open')arr=arr.filter(t=>t.status!=='done'&&t.status!=='cancelled');
+  if(f==='done')arr=arr.filter(t=>t.status==='done');
+  if(f==='today')arr=arr.filter(t=>t.due_date===dateISO());
+  if(f==='late')arr=arr.filter(t=>t.due_date&&t.due_date<dateISO()&&t.status!=='done'&&t.status!=='cancelled');
+  if(search)arr=arr.filter(t=>(t.title||'').toLowerCase().includes(search));
+  $('taskList').innerHTML=arr.length?arr.map(t=>{
+    const late=t.due_date&&t.due_date<dateISO()&&t.status!=='done';
+    return `<article class="item ${t.status==='done'?'done':''}">
+      <div class="bj-bullet" data-bj-task="${t.id}" data-state="${t.status==='done'?'done':''}">${t.status==='done'?'×':''}</div>
+      <div class="item-main"><div class="item-title">${safe(t.title)}</div>
+        <div class="item-meta"><span>${safe(t.category||'')}</span>
+        <span class="status ${t.status==='done'?'done':''} ${late?'late':''}">${labels.taskStatus[t.status]||t.status}</span>
+        ${t.due_date?`<span>${toFaDate(t.due_date)}</span>`:''}</div></div>
+      <div class="item-actions">
+        <select data-task-status="${t.id}">${Object.entries(labels.taskStatus).map(([v,l])=>`<option value="${v}" ${v===t.status?'selected':''}>${l}</option>`).join('')}</select>
+        <button class="danger small" data-del="tasks" data-id="${t.id}">×</button>
+      </div></article>`;
+  }).join(''):'<p class="muted">موردی یافت نشد.</p>';
+}
+
+function calcStreak(hid){
+  let s=0;const d=new Date();
+  for(let i=0;i<365;i++){
+    const iso=dateISO(d);
+    const log=data.logs.find(l=>l.habit_id===hid&&l.date===iso);
+    if(log?.status==='done'){s++;d.setDate(d.getDate()-1);}
+    else if(i===0){d.setDate(d.getDate()-1);}
+    else break;
+  }
+  return s;
+}
+function renderHabits(){
+  $('habitList').innerHTML=data.habits.length?data.habits.map(h=>{
+    const log=data.logs.find(l=>l.habit_id===h.id&&l.date===dateISO());const s=log?.status||'';
+    const streak=calcStreak(h.id);
+    return `<article class="habit"><span style="font-weight:700">${safe(h.name)} ${streak>0?`<span class="status gold">🔥 ${fa(streak)}</span>`:''}</span>
+      <select data-habit-status="${h.id}" style="width:auto"><option value="" ${!s?'selected':''}>ثبت نشده</option>${Object.entries(labels.habitStatus).map(([v,l])=>`<option value="${v}" ${s===v?'selected':''}>${l}</option>`).join('')}</select>
+      <button class="danger small" data-del="habits" data-id="${h.id}">×</button></article>`;
+  }).join(''):'<p class="muted">هنوز عادتی اضافه نشده.</p>';
+  renderHabitHeatmapTab();
+}
+function renderHabitHeatmap(){
+  const weeks=12;const cells=[];
+  const today=new Date();const start=new Date(today);start.setDate(today.getDate()-(weeks*7-1));
+  for(let i=0;i<weeks*7;i++){const d=new Date(start);d.setDate(start.getDate()+i);const iso=dateISO(d);
+    const c=data.logs.filter(l=>l.date===iso&&l.status==='done').length;
+    let lvl='';const tot=Math.max(1,data.habits.length);
+    if(c>=Math.ceil(tot*0.75))lvl='l4';else if(c>=Math.ceil(tot*0.5))lvl='l3';else if(c>=Math.ceil(tot*0.25))lvl='l2';else if(c>0)lvl='l1';
+    cells.push(`<div class="cell ${lvl}" title="${toFaDate(iso)}: ${fa(c)}"></div>`);
+  }
+  const html=`<div style="overflow-x:auto"><div class="heatmap" style="grid-template-rows:repeat(7,1fr)">${cells.join('')}</div></div>`;
+  if($('habitHeatmap'))$('habitHeatmap').innerHTML=html;
+  if($('habitHeatmapTab'))$('habitHeatmapTab').innerHTML=html;
+}
+function renderGoals(){
+  $('goalList').innerHTML=data.goals.length?data.goals.map(g=>`<article class="item"><div class="item-main"><div class="item-title">${safe(g.title)}</div>
+    <div class="item-meta"><span class="status">${labels.goalStatus[g.status]||g.status}</span><span>${labels.priority[g.priority]||''}</span>${g.due_date?`<span>${toFaDate(g.due_date)}</span>`:''}</div>
+    <div class="progress"><span style="width:${Math.min(100,g.progress||0)}%"></span></div>
+    <input type="range" min="0" max="100" step="5" value="${g.progress||0}" data-goal-progress="${g.id}" style="width:100%;margin-top:8px"></div>
+    <div class="item-actions"><span class="status">${fa(g.progress||0)}٪</span><button class="danger small" data-del="goals" data-id="${g.id}">×</button></div></article>`).join(''):'<p class="muted">هنوز هدفی ثبت نشده.</p>';
+}
+function renderGoalRings(){
+  const top=data.goals.slice(0,4);
+  if(!top.length){$('goalRings').innerHTML='<p class="muted">هنوز هدفی نداری.</p>';return;}
+  $('goalRings').innerHTML=`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px">${top.map(g=>{
+    const p=Math.max(0,Math.min(100,g.progress||0));const r=45,c=2*Math.PI*r,off=c*(1-p/100);
+    return `<div style="text-align:center"><svg width="120" height="120" viewBox="0 0 120 120">
+      <circle cx="60" cy="60" r="${r}" fill="none" stroke="var(--cream2)" stroke-width="10"/>
+      <circle cx="60" cy="60" r="${r}" fill="none" stroke="var(--olive)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 60 60)"/>
+      <text x="60" y="65" text-anchor="middle" font-size="22" font-weight="800" fill="var(--dark)">${fa(p)}٪</text></svg>
+      <div style="font-size:13px;font-weight:600;margin-top:6px">${safe(g.title.substring(0,30))}</div></div>`;
+  }).join('')}</div>`;
+}
+function renderFinance(){
+  $('financeList').innerHTML=data.finance.length?data.finance.slice(0,50).map(f=>{
+    const cls=f.type==='درآمد'?'money-pos':f.type==='هزینه'?'money-neg':'';
+    return `<article class="item"><div class="item-main"><div class="item-title">${safe(f.description||f.category||'—')}</div>
+      <div class="item-meta"><span>${toFaDate(f.date)}</span><span class="status blue">${safe(f.type)}</span><span>${safe(f.category||'')}</span><span class="${cls}">${fa(f.amount)} تومان</span></div></div>
+      <div class="item-actions"><button class="danger small" data-del="finance" data-id="${f.id}">×</button></div></article>`;
+  }).join(''):'<p class="muted">هنوز تراکنشی نیست.</p>';
+}
+function renderMonthlyFinance(){
+  const months=['آبان','آذر','دی'];
+  const rows=months.map(m=>{
+    const inc=data.finance.filter(f=>f.month===m&&f.type==='درآمد').reduce((a,f)=>a+Number(f.amount||0),0);
+    const exp=data.finance.filter(f=>f.month===m&&f.type==='هزینه').reduce((a,f)=>a+Number(f.amount||0),0);
+    const sav=data.finance.filter(f=>f.month===m&&f.type==='پس‌انداز').reduce((a,f)=>a+Number(f.amount||0),0);
+    return `<tr><td style="padding:10px;border-bottom:1px solid var(--line)">${m}</td><td style="padding:10px;border-bottom:1px solid var(--line)" class="money-pos">${fa(inc)}</td><td style="padding:10px;border-bottom:1px solid var(--line)" class="money-neg">${fa(exp)}</td><td style="padding:10px;border-bottom:1px solid var(--line)">${fa(sav)}</td></tr>`;
+  }).join('');
+  $('monthlyFinance').innerHTML=`<table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr style="background:var(--cream2)"><th style="padding:10px;text-align:right">ماه</th><th style="padding:10px;text-align:right">درآمد</th><th style="padding:10px;text-align:right">هزینه</th><th style="padding:10px;text-align:right">پس‌انداز</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+function renderExpenseDonut(){
+  const cats={};
+  data.finance.filter(f=>f.type==='هزینه').forEach(f=>{cats[f.category||'سایر']=(cats[f.category||'سایر']||0)+Number(f.amount||0);});
+  const entries=Object.entries(cats).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const total=entries.reduce((a,e)=>a+e[1],0);
+  if(!total){$('expenseDonut').innerHTML='<p class="muted">هنوز هزینه‌ای ثبت نشده.</p>';return;}
+  const colors=['#78845b','#b58e42','#76543a','#5b7a99','#b95042','#4b3526'];
+  let acc=0;
+  const paths=entries.map((e,i)=>{const pct=e[1]/total;const sa=acc*360,ea=(acc+pct)*360;acc+=pct;const lg=ea-sa>180?1:0;const sr=(sa-90)*Math.PI/180,er=(ea-90)*Math.PI/180;const x1=80+60*Math.cos(sr),y1=80+60*Math.sin(sr);const x2=80+60*Math.cos(er),y2=80+60*Math.sin(er);return `<path d="M80,80 L${x1},${y1} A60,60 0 ${lg} 1 ${x2},${y2} Z" fill="${colors[i]}" stroke="var(--white)" stroke-width="2"/>`;}).join('');
+  $('expenseDonut').innerHTML=`<div class="donut-wrap"><svg width="160" height="160" viewBox="0 0 160 160">${paths}<circle cx="80" cy="80" r="35" fill="var(--white)"/><text x="80" y="86" text-anchor="middle" font-size="13" font-weight="800" fill="var(--dark)">${fa(total)}</text></svg>
+    <div class="legend">${entries.map((e,i)=>`<div><span class="dot" style="background:${colors[i]}"></span><span>${safe(e[0])}: ${fa(e[1])}</span></div>`).join('')}</div></div>`;
+}
+function renderMood(){
+  $('moodList').innerHTML=data.mood.length?data.mood.slice(0,30).map(m=>`<article class="item"><div class="item-main"><div class="item-title">${toFaDate(m.date)} — ${safe(m.mood||'')}</div>
+    <div class="item-meta"><span>انرژی: ${fa(m.energy)}</span><span>خواب: ${fa(m.sleep)}</span><span>استرس: ${fa(m.stress)}</span></div></div>
+    <div class="item-actions"><button class="danger small" data-del="mood" data-id="${m.id}">×</button></div></article>`).join(''):'<p class="muted">هنوز ثبت نشده.</p>';
+}
+function renderMoodLine(){
+  const days=[];for(let i=29;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(dateISO(d));}
+  const e=days.map(d=>data.mood.find(m=>m.date===d)?.energy||null);
+  const s=days.map(d=>data.mood.find(m=>m.date===d)?.stress||null);
+  const w=600,h=180,p=30;
+  const x=i=>p+(i/(days.length-1))*(w-2*p);
+  const y=v=>h-p-(v/5)*(h-2*p);
+  const line=arr=>{let path='';let st=false;arr.forEach((v,i)=>{if(v==null){st=false;return;}if(!st){path+=`M${x(i)},${y(v)} `;st=true;}else path+=`L${x(i)},${y(v)} `;});return path;};
+  $('moodLineChart').innerHTML=`<svg class="svg-chart" viewBox="0 0 ${w} ${h}">
+    ${[1,2,3,4,5].map(v=>`<line x1="${p}" y1="${y(v)}" x2="${w-p}" y2="${y(v)}" stroke="var(--line)" stroke-dasharray="2,4"/>`).join('')}
+    <path d="${line(e)}" fill="none" stroke="var(--olive)" stroke-width="3" stroke-linecap="round"/>
+    <path d="${line(s)}" fill="none" stroke="var(--red)" stroke-width="3" stroke-linecap="round" stroke-dasharray="4,4"/>
+    <text x="${w-8}" y="${y(5)-2}" text-anchor="end" font-size="10" fill="var(--olive)" font-weight="700">● انرژی</text>
+    <text x="${w-8}" y="${y(5)+12}" text-anchor="end" font-size="10" fill="var(--red)" font-weight="700">● استرس</text>
+  </svg>`;
+}
+function renderUni(){
+  $('uniList').innerHTML=data.uni.length?data.uni.map(u=>`<article class="item"><div class="item-main"><div class="item-title">${safe(u.course)}${u.title?' — '+safe(u.title):''}</div>
+    <div class="item-meta"><span class="status">${safe(u.type||'')}</span>${u.due_date?`<span>موعد: ${toFaDate(u.due_date)}</span>`:''}</div></div>
+    <div class="item-actions"><button class="danger small" data-del="uni" data-id="${u.id}">×</button></div></article>`).join(''):'<p class="muted">—</p>';
+}
+function renderForex(){
+  $('forexList').innerHTML=data.forex.length?data.forex.map(f=>{
+    const cls=f.result>0?'money-pos':f.result<0?'money-neg':'';
+    return `<article class="item"><div class="item-main"><div class="item-title">${safe(f.symbol)} — ${safe(f.direction)}</div>
+      <div class="item-meta"><span>${toFaDate(f.date)}</span><span>ورود: ${f.entry||'—'}</span><span>خروج: ${f.exit||'—'}</span><span class="${cls}">نتیجه: ${fa(f.result)}</span></div></div>
+      <div class="item-actions"><button class="danger small" data-del="forex" data-id="${f.id}">×</button></div></article>`;
+  }).join(''):'<p class="muted">—</p>';
+}
+function renderSkills(){
+  $('skillList').innerHTML=data.skills.length?data.skills.map(s=>`<article class="item"><div class="item-main"><div class="item-title">${safe(s.skill)}${s.stage?' — '+safe(s.stage):''}</div>
+    <div class="item-meta">${s.source?`<span>${safe(s.source)}</span>`:''}${s.end_date?`<span>تا ${toFaDate(s.end_date)}</span>`:''}</div></div>
+    <div class="item-actions"><button class="danger small" data-del="skills" data-id="${s.id}">×</button></div></article>`).join(''):'<p class="muted">—</p>';
+}
+function renderTime(){
+  $('timeList').innerHTML=data.time.length?data.time.slice(0,40).map(t=>{
+    const diff=(t.actual||0)-(t.planned||0);const cls=diff>0?'money-pos':diff<0?'money-neg':'';
+    return `<article class="item"><div class="item-main"><div class="item-title">${safe(t.activity||t.category||'—')}</div>
+      <div class="item-meta"><span>${toFaDate(t.date)}</span><span class="status blue">${safe(t.category||'')}</span><span>برنامه: ${t.planned||0}</span><span>واقعی: ${t.actual||0}</span><span class="${cls}">${diff>0?'+':''}${diff}</span></div></div>
+      <div class="item-actions"><button class="danger small" data-del="time" data-id="${t.id}">×</button></div></article>`;
+  }).join(''):'<p class="muted">—</p>';
+}
+function renderFuture(){
+  $('futureList').innerHTML=data.future.length?data.future.map(f=>`<article class="item"><div class="item-main"><div class="item-title">${safe(f.title)}</div>
+    <div class="item-meta">${f.category?`<span>${safe(f.category)}</span>`:''}${f.due_date?`<span>${toFaDate(f.due_date)}</span>`:''}<span class="status">${labels.priority[f.priority]||''}</span></div></div>
+    <div class="item-actions"><button class="danger small" data-del="future" data-id="${f.id}">×</button></div></article>`).join(''):'<p class="muted">—</p>';
+}
+function renderReview(){
+  $('reviewList').innerHTML=data.review.length?data.review.map(r=>`<article class="item"><div class="item-main"><div class="item-title">${safe(r.type||'')}${r.period?' — '+safe(r.period):''}</div>
+    <div class="item-meta">${r.score?`<span class="status gold">${fa(r.score)}/۱۰</span>`:''}${r.successes?`<span>✓ ${safe(r.successes)}</span>`:''}${r.challenges?`<span>⚠ ${safe(r.challenges)}</span>`:''}</div></div>
+    <div class="item-actions"><button class="danger small" data-del="review" data-id="${r.id}">×</button></div></article>`).join(''):'<p class="muted">—</p>';
+}
+
+// ═══════ عملیات ═══════
+function save(){saveData();renderAll();}
+function flash(t){const el=$('globalMessage');el.textContent=t;el.className='notice';el.classList.remove('hidden');setTimeout(()=>el.classList.add('hidden'),2000);}
+
+$('taskForm').addEventListener('submit',e=>{e.preventDefault();const t=$('taskTitle').value.trim();if(!t)return;data.tasks.push({id:nid(),title:t,priority:$('taskPriority').value,status:'planned',due_date:$('taskDue').value||null,category:$('taskCategory').value,created:new Date().toISOString()});$('taskForm').reset();$('taskPriority').value='normal';$('taskCategory').value='شخصی';save();flash('ذخیره شد');});
+$('taskFilter').addEventListener('change',renderTasks);
+$('taskSearch').addEventListener('input',renderTasks);
+$('taskList').addEventListener('change',e=>{const id=e.target.dataset.taskStatus;if(!id)return;const t=data.tasks.find(x=>x.id==id);if(t){t.status=e.target.value;save();}});
+$('taskList').addEventListener('click',e=>{
+  const bj=e.target.dataset.bjTask;if(bj){const t=data.tasks.find(x=>x.id==bj);if(t){t.status=t.status==='done'?'planned':'done';save();}return;}
+  const del=e.target.dataset.del;if(del==='tasks'&&confirm('حذف شود؟')){data.tasks=data.tasks.filter(x=>x.id!=e.target.dataset.id);save();}
+});
+$('quickAddTask').addEventListener('click',()=>{const t=prompt('عنوان وظیفهٔ امروز:');if(!t)return;data.tasks.push({id:nid(),title:t,priority:'normal',status:'planned',due_date:dateISO(),category:'شخصی',created:new Date().toISOString()});save();});
+
+$('habitForm').addEventListener('submit',e=>{e.preventDefault();const n=$('habitName').value.trim();if(!n)return;data.habits.push({id:nid(),name:n,created:new Date().toISOString()});$('habitForm').reset();save();flash('ذخیره شد');});
+$('habitList').addEventListener('change',e=>{const id=e.target.dataset.habitStatus;if(!id)return;const s=e.target.value;const today=dateISO();
+  const idx=data.logs.findIndex(l=>l.habit_id==id&&l.date===today);
+  if(!s){if(idx>=0)data.logs.splice(idx,1);}
+  else if(idx>=0){data.logs[idx].status=s;}else{data.logs.push({id:nid(),habit_id:id,date:today,status:s});}
+  save();});
+$('habitList').addEventListener('click',e=>{if(e.target.dataset.del==='habits'&&confirm('حذف شود؟')){const id=e.target.dataset.id;data.habits=data.habits.filter(h=>h.id!=id);data.logs=data.logs.filter(l=>l.habit_id!=id);save();}});
+
+$('todayTasks').addEventListener('click',e=>{const el=e.target.closest('[data-toggle-task]');if(!el)return;const id=el.dataset.toggleTask;const t=data.tasks.find(x=>x.id==id);if(t){t.status=t.status==='done'?'planned':'done';save();}});
+$('todayHabits').addEventListener('click',e=>{const el=e.target.closest('[data-toggle-habit]');if(!el)return;const id=el.dataset.toggleHabit;const today=dateISO();
+  const log=data.logs.find(l=>l.habit_id==id&&l.date===today);
+  if(log){log.status=log.status==='done'?'not_done':'done';}
+  else{data.logs.push({id:nid(),habit_id:id,date:today,status:'done'});}
+  save();});
+$('saveDailyBtn').addEventListener('click',()=>{const today=dateISO();
+  const idx=data.daily.findIndex(d=>d.date===today);
+  const entry={date:today,morning:$('morningNote').value,evening:$('eveningNote').value,highlight:$('highlightToday').value,gratitude:$('gratitudeToday').value};
+  if(idx>=0)data.daily[idx]=entry;else data.daily.push(entry);
+  save();flash('ذخیره شد');});
+
+$('goalForm').addEventListener('submit',e=>{e.preventDefault();const t=$('goalTitle').value.trim();if(!t)return;data.goals.push({id:nid(),title:t,priority:$('goalPriority').value,status:'planned',progress:0,due_date:$('goalDue').value||null});$('goalForm').reset();$('goalPriority').value='normal';save();flash('ذخیره شد');});
+$('goalList').addEventListener('change',e=>{const id=e.target.dataset.goalProgress;if(!id)return;const g=data.goals.find(x=>x.id==id);if(g){g.progress=Number(e.target.value);g.status=g.progress===100?'completed':'in_progress';save();}});
+$('goalList').addEventListener('click',e=>{if(e.target.dataset.del==='goals'&&confirm('حذف شود؟')){data.goals=data.goals.filter(x=>x.id!=e.target.dataset.id);save();}});
+
+$('financeForm').addEventListener('submit',e=>{e.preventDefault();const d=$('finDate').value;const month=new Intl.DateTimeFormat('fa-IR-u-ca-persian',{month:'long'}).format(new Date(d));
+  data.finance.push({id:nid(),date:d,month,type:$('finType').value,category:$('finCategory').value,description:$('finDesc').value,amount:Number($('finAmount').value||0)});
+  $('financeForm').reset();$('finDate').value=dateISO();save();flash('ذخیره شد');});
+$('financeList').addEventListener('click',e=>{if(e.target.dataset.del==='finance'&&confirm('حذف شود؟')){data.finance=data.finance.filter(x=>x.id!=e.target.dataset.id);save();}});
+
+$('moodForm').addEventListener('submit',e=>{e.preventDefault();const d=$('moodDate').value;
+  const idx=data.mood.findIndex(m=>m.date===d);
+  const entry={id:nid(),date:d,mood:$('moodMood').value,energy:Number($('moodEnergy').value||0),sleep:Number($('moodSleep').value||0),stress:Number($('moodStress').value||0)};
+  if(idx>=0){entry.id=data.mood[idx].id;data.mood[idx]=entry;}else data.mood.push(entry);
+  save();flash('ذخیره شد');});
+$('moodList').addEventListener('click',e=>{if(e.target.dataset.del==='mood'&&confirm('حذف شود؟')){data.mood=data.mood.filter(x=>x.id!=e.target.dataset.id);save();}});
+
+$('uniForm').addEventListener('submit',e=>{e.preventDefault();data.uni.push({id:nid(),course:$('uniCourse').value.trim(),type:$('uniType').value,title:$('uniTitle').value,due_date:$('uniDue').value||null});$('uniForm').reset();$('uniDue').value=dateISO();save();flash('ذخیره شد');});
+$('uniList').addEventListener('click',e=>{if(e.target.dataset.del==='uni'&&confirm('حذف شود؟')){data.uni=data.uni.filter(x=>x.id!=e.target.dataset.id);save();}});
+
+$('forexForm').addEventListener('submit',e=>{e.preventDefault();data.forex.push({id:nid(),date:$('fxDate').value||null,symbol:$('fxSymbol').value,direction:$('fxDir').value,entry:Number($('fxEntry').value||0),exit:Number($('fxExit').value||0),result:Number($('fxResult').value||0)});$('forexForm').reset();$('fxDate').value=dateISO();save();flash('ذخیره شد');});
+$('forexList').addEventListener('click',e=>{if(e.target.dataset.del==='forex'&&confirm('حذف شود؟')){data.forex=data.forex.filter(x=>x.id!=e.target.dataset.id);save();}});
+
+$('skillForm').addEventListener('submit',e=>{e.preventDefault();data.skills.push({id:nid(),skill:$('skillName').value.trim(),stage:$('skillStage').value,source:$('skillSource').value,end_date:$('skillEnd').value||null});$('skillForm').reset();$('skillEnd').value=dateISO();save();flash('ذخیره شد');});
+$('skillList').addEventListener('click',e=>{if(e.target.dataset.del==='skills'&&confirm('حذف شود؟')){data.skills=data.skills.filter(x=>x.id!=e.target.dataset.id);save();}});
+
+$('timeForm').addEventListener('submit',e=>{e.preventDefault();data.time.push({id:nid(),date:$('timeDate').value,category:$('timeCat').value,activity:$('timeAct').value,planned:Number($('timePlan').value||0),actual:Number($('timeReal').value||0)});$('timeForm').reset();$('timeDate').value=dateISO();save();flash('ذخیره شد');});
+$('timeList').addEventListener('click',e=>{if(e.target.dataset.del==='time'&&confirm('حذف شود؟')){data.time=data.time.filter(x=>x.id!=e.target.dataset.id);save();}});
+
+$('futureForm').addEventListener('submit',e=>{e.preventDefault();data.future.push({id:nid(),title:$('futTitle').value.trim(),category:$('futCat').value,due_date:$('futDue').value||null,priority:$('futPri').value});$('futureForm').reset();$('futDue').value=dateISO();save();flash('ذخیره شد');});
+$('futureList').addEventListener('click',e=>{if(e.target.dataset.del==='future'&&confirm('حذف شود؟')){data.future=data.future.filter(x=>x.id!=e.target.dataset.id);save();}});
+
+$('reviewForm').addEventListener('submit',e=>{e.preventDefault();data.review.push({id:nid(),type:$('revType').value,period:$('revPeriod').value,score:Number($('revScore').value||0),successes:$('revSucc').value,challenges:$('revChal').value});$('reviewForm').reset();save();flash('ذخیره شد');});
+$('reviewList').addEventListener('click',e=>{if(e.target.dataset.del==='review'&&confirm('حذف شود؟')){data.review=data.review.filter(x=>x.id!=e.target.dataset.id);save();}});
+
+// ═══════ ناوبری ═══════
+document.querySelectorAll('.nav button[data-tab]').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.nav button[data-tab]').forEach(x=>x.classList.toggle('active',x===b));
+  document.querySelectorAll('.tab').forEach(s=>s.classList.toggle('hidden',s.id!=='tab-'+b.dataset.tab));
+  window.scrollTo({top:0,behavior:'smooth'});
+}));
+
+// ═══════ خروجی/ورودی ═══════
+$('exportBtn').addEventListener('click',()=>{
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');
+  a.href=url;a.download=`bullet-journal-${session.email}-${dateISO()}.json`;a.click();
+  URL.revokeObjectURL(url);flash('دانلود شد');});
+$('importBtn').addEventListener('click',()=>$('importFile').click());
+$('importFile').addEventListener('change',e=>{
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{try{const imported=JSON.parse(ev.target.result);if(confirm('داده‌های فعلی با فایل جدید جایگزین شود؟')){data={...emptyData(),...imported};save();flash('بازیابی شد');}}catch(err){flash('فایل نامعتبر است');}};
+  reader.readAsText(file);});
+$('clearDataBtn').addEventListener('click',()=>{if(confirm('همهٔ داده‌های شما پاک شود؟ این کار قابل بازگشت نیست!')){data=emptyData();save();flash('پاک شد');}});
+
+// ═══════ پومودورو ═══════
+let pInt=null,pRem=25*60,pRun=false;
+const upPomo=()=>{const m=Math.floor(pRem/60),s=pRem%60;$('pomoTime').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;};
+function startPomo(){if(pRun)return;pRun=true;$('pomoBox').classList.add('running');$('pomoToggle').textContent='توقف';
+  pInt=setInterval(()=>{pRem--;upPomo();if(pRem<=0){clearInterval(pInt);pRun=false;$('pomoBox').classList.remove('running');$('pomoToggle').textContent='شروع';
+    if(session){data.pomodoro.push({id:nid(),date:dateISO(),minutes:25});save();flash('پومودورو ثبت شد');}
+    pRem=25*60;upPomo();}},1000);}
+function stopPomo(){clearInterval(pInt);pRun=false;$('pomoBox').classList.remove('running');$('pomoToggle').textContent='شروع';}
+$('pomoToggle').addEventListener('click',()=>{pRun?stopPomo():startPomo();});
+$('pomoClose').addEventListener('click',()=>{stopPomo();show('pomoBox',false);});
+document.addEventListener('keydown',e=>{if(e.key==='p'&&e.ctrlKey){e.preventDefault();show('pomoBox',$('pomoBox').classList.contains('hidden'));if(!$('pomoBox').classList.contains('hidden'))upPomo();}});
+
+// ═══════ شروع ═══════
+initTheme();
+const savedSession=localStorage.getItem(STORAGE_SESSION);
+if(savedSession&&getUsers()[savedSession]){
+  const u=getUsers()[savedSession];
+  session={email:savedSession,name:u.name};
+  startApp();
+}else{
+  switchPanel('auth');
+}
 })();
 </script>
 </body>
