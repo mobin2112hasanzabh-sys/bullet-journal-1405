@@ -46,6 +46,7 @@ button.small{padding:5px 9px;font-size:12px;border-radius:9px}
 .subnav button.active{background:var(--olive);color:white}
 .formgrid{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:10px;align-items:end}
 .formgrid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:end}
+.formgrid-goal{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr auto;gap:10px;align-items:end}
 .field{display:flex;flex-direction:column;gap:6px}
 .field label{font-size:12px;color:var(--muted);font-weight:700}
 input,select,textarea{background:var(--paper);color:var(--text);border:1px solid var(--line);border-radius:11px;padding:10px 12px;width:100%;transition:.2s}
@@ -58,7 +59,6 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .item-meta{font-size:12px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap;margin-top:5px;align-items:center}
 .item-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .item select{padding:6px 10px;max-width:150px;width:auto}
-.done .item-title{text-decoration:line-through;color:var(--muted)}
 .status{font-size:11px;border-radius:999px;background:var(--cream2);padding:3px 10px;color:var(--text);font-weight:600;white-space:nowrap}
 .status.done{background:var(--greenbg);color:var(--green)}
 .status.late{background:var(--redbg);color:var(--red)}
@@ -103,6 +103,8 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 [data-theme="dark"] .theme-toggle{background:var(--brown)}
 .user-badge{display:flex;align-items:center;gap:8px;background:var(--cream2);padding:6px 12px;border-radius:99px;font-size:12px;font-weight:600}
 .user-badge .avatar{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--olive),var(--brown));color:white;display:grid;place-items:center;font-size:11px;font-weight:800}
+
+/* ===== کارت هدف ماهانه ===== */
 .goal-card{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:18px;position:relative;transition:.2s;overflow:hidden}
 .goal-card:hover{transform:translateY(-3px);box-shadow:var(--shadow2)}
 .goal-card::before{content:"";position:absolute;top:0;right:0;left:0;height:4px;background:linear-gradient(90deg,var(--olive),var(--gold))}
@@ -114,9 +116,13 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .goal-title{font-weight:800;font-size:15px;color:var(--dark);line-height:1.5;overflow-wrap:anywhere}
 .goal-desc{font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.6}
 .goal-progress-row{display:flex;align-items:center;gap:12px;margin-top:12px}
-.goal-ring{width:66px;height:66px;flex-shrink:0}
+.goal-ring{width:70px;height:70px;flex-shrink:0}
+.goal-stat-big{font-size:22px;font-weight:800;color:var(--dark);line-height:1.2}
+.goal-stat-lbl{font-size:11px;color:var(--muted);font-weight:600}
 .goal-meta{display:flex;gap:8px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:10px;align-items:center}
-.goal-actions{display:flex;gap:6px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.goal-actions{display:flex;gap:6px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);flex-wrap:wrap}
+
+/* ===== هفته ===== */
 .week-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
 .week-nav{display:flex;gap:6px;align-items:center}
 .week-nav button{padding:8px 12px;background:var(--cream2);color:var(--text);border:1px solid var(--line);border-radius:10px;font-size:13px;font-weight:600}
@@ -127,27 +133,34 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .week-day-header{text-align:center;padding-bottom:10px;border-bottom:2px solid var(--line);margin-bottom:4px}
 .week-day-header .name{font-weight:800;font-size:13px;color:var(--dark);display:block}
 .week-day-header .date{font-size:10px;color:var(--muted);display:block;margin-top:2px}
+.week-day-header .day-total{font-size:10px;color:var(--olive);display:block;margin-top:4px;font-weight:700}
 .week-day.today .week-day-header .name{color:var(--olive)}
 .week-day.today .week-day-header{border-bottom-color:var(--olive)}
-.week-task{font-size:12px;padding:8px 10px;background:var(--white);border:1px solid var(--line);border-radius:10px;word-break:break-word;line-height:1.5;display:flex;gap:6px;align-items:flex-start;cursor:pointer;transition:.15s}
-.week-task:hover{border-color:var(--olive);transform:translateX(-2px)}
-.week-task.done{opacity:.5;text-decoration:line-through}
-.week-task.done .wt-check{background:var(--olive);border-color:var(--olive);color:white}
-.wt-check{width:16px;height:16px;border:2px solid var(--line);border-radius:4px;flex-shrink:0;display:grid;place-items:center;font-size:10px;color:transparent;font-weight:800;margin-top:2px}
+.week-task{font-size:12px;padding:8px 10px;background:var(--white);border:1px solid var(--line);border-radius:10px;word-break:break-word;line-height:1.5;display:flex;gap:6px;flex-direction:column;transition:.15s}
+.week-task:hover{border-color:var(--olive)}
+.week-task.done{background:var(--greenbg);border-color:var(--green)}
+.wt-top{display:flex;gap:6px;align-items:flex-start}
 .wt-body{flex:1;min-width:0}
 .wt-title{font-weight:600}
 .wt-tag{display:inline-block;font-size:9px;padding:1px 6px;border-radius:6px;background:var(--olive2);color:var(--olive);margin-top:4px;font-weight:600}
+.wt-input-row{display:flex;align-items:center;gap:6px;margin-top:6px}
+.wt-input{flex:1;padding:4px 8px;font-size:11px;border-radius:8px;background:var(--paper);border:1px solid var(--line);text-align:center;font-weight:700}
+.wt-unit{font-size:10px;color:var(--muted);font-weight:600}
 .week-day-empty{font-size:11px;color:var(--muted);text-align:center;padding:20px 0;font-style:italic}
 .week-day-add{background:transparent;border:1px dashed var(--line);color:var(--muted);padding:6px;font-size:11px;border-radius:8px;font-weight:500;margin-top:auto}
-.wg-row{display:grid;grid-template-columns:1fr 60px;gap:10px;align-items:center}
+
+/* ===== ردیف هدف هفتگی ===== */
+.wg-row{display:grid;grid-template-columns:1fr 70px;gap:12px;align-items:center}
 .wg-info{min-width:0}.wg-title{font-weight:700;font-size:14px;color:var(--dark);overflow-wrap:anywhere}
 .wg-parent{font-size:11px;color:var(--muted);margin-top:4px;display:inline-flex;align-items:center;gap:4px;background:var(--cream2);padding:2px 8px;border-radius:8px}
 .wg-progress{height:6px;border-radius:99px;background:var(--cream2);overflow:hidden;margin-top:8px}
 .wg-progress span{height:100%;display:block;background:linear-gradient(90deg,var(--olive),var(--gold));transition:width .5s}
-.wg-tasks-count{font-size:11px;color:var(--muted);margin-top:6px}
+.wg-stats{font-size:11px;color:var(--muted);margin-top:6px;display:flex;gap:10px;flex-wrap:wrap}
+
+@media(max-width:1000px){.formgrid-goal{grid-template-columns:1fr 1fr 1fr}.formgrid-goal>button{grid-column:1/-1}}
 @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.week-columns{grid-template-columns:repeat(4,1fr)}}
-@media(max-width:780px){.wrap{padding:14px}.formgrid{grid-template-columns:1fr 1fr}.formgrid2{grid-template-columns:1fr}.item{flex-direction:column;align-items:flex-start}.item-actions{width:100%}.week-columns{grid-template-columns:repeat(2,1fr)}.nav button{flex:1;padding:7px 8px;font-size:12px}}
-@media(max-width:420px){.grid{grid-template-columns:1fr 1fr;gap:10px}.formgrid{grid-template-columns:1fr}}
+@media(max-width:780px){.wrap{padding:14px}.formgrid,.formgrid2,.formgrid-goal{grid-template-columns:1fr 1fr}.formgrid-goal>button{grid-column:1/-1}.item{flex-direction:column;align-items:flex-start}.item-actions{width:100%}.week-columns{grid-template-columns:repeat(2,1fr)}.nav button{flex:1;padding:7px 8px;font-size:12px}}
+@media(max-width:420px){.grid{grid-template-columns:1fr 1fr;gap:10px}.formgrid,.formgrid2,.formgrid-goal{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -170,7 +183,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
       <button id="authSubmit" type="submit">ورود / ثبت‌نام</button>
     </form>
     <div id="authMessage" class="notice hidden"></div>
-    <div class="notice" style="font-size:11px;font-weight:400;background:var(--cream2);color:var(--muted)">💡 اطلاعات روی همین دستگاه ذخیره می‌شه. برای انتقال، از «خروجی JSON» استفاده کن.</div>
+    <div class="notice" style="font-size:11px;font-weight:400;background:var(--cream2);color:var(--muted)">💡 اطلاعات روی همین دستگاه ذخیره می‌شه.</div>
   </section>
 
   <main id="appPanel" class="hidden">
@@ -220,8 +233,10 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
       <div id="sub-monthly" class="subtab">
         <div class="sectionhead"><div><h2>🎯 اهداف ماهانه</h2><p class="muted" id="monthlySubtitle"></p></div><span class="pill" id="monthlyProgressPill">—</span></div>
         <div class="panel" style="box-shadow:none"><h3>افزودن هدف ماهانه</h3>
-          <form id="monthlyGoalForm" class="formgrid">
-            <div class="field"><label>عنوان</label><input id="mgTitle" required maxlength="180"></div>
+          <form id="monthlyGoalForm" class="formgrid-goal">
+            <div class="field"><label>عنوان</label><input id="mgTitle" required maxlength="180" placeholder="مثلاً یادگیری زبان"></div>
+            <div class="field"><label>واحد</label><select id="mgUnit"><option>ساعت</option><option>دقیقه</option><option>بار</option><option>صفحه</option><option>عدد</option><option>جلسه</option><option>کیلومتر</option><option>متر</option><option>تومان</option><option>قدم</option><option>کلمه</option><option>درس</option><option>فصل</option><option>کتاب</option><option>پروژه</option><option>تمرین</option><option>وعده</option><option>لیتر</option><option>گرم</option><option>کیلوگرم</option><option>کالری</option><option>امتیاز</option><option>درصد</option></select></div>
+            <div class="field"><label>هدف کل (۱۰۰٪)</label><input id="mgTarget" type="number" min="1" step="0.5" required placeholder="۱۲"></div>
             <div class="field"><label>اولویت</label><select id="mgPriority"><option value="urgent_important">فوری و مهم</option><option value="important">مهم</option><option value="normal" selected>عادی</option><option value="low">کم‌اهمیت</option></select></div>
             <div class="field"><label>موعد</label><input id="mgDue" type="date"></div>
             <button type="submit">افزودن</button>
@@ -231,11 +246,12 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
         <div id="monthlyGoalsList" class="grid2"></div>
       </div>
       <div id="sub-weekly-goals" class="subtab hidden">
-        <div class="sectionhead"><div><h2>🗓️ اهداف هفتگی</h2><p class="muted">هر هدف هفتگی به یک هدف ماهانه وصل می‌شه و پیشرفتش خودکار محاسبه می‌شه.</p></div></div>
+        <div class="sectionhead"><div><h2>🗓️ اهداف هفتگی</h2><p class="muted">هر هدف هفتگی به یک هدف ماهانه وصل می‌شه.</p></div></div>
         <div class="panel" style="box-shadow:none"><h3>افزودن</h3>
           <form id="weeklyGoalForm" class="formgrid">
-            <div class="field"><label>عنوان</label><input id="wgTitle" required maxlength="180"></div>
+            <div class="field"><label>عنوان</label><input id="wgTitle" required maxlength="180" placeholder="مثلاً هفتهٔ اول: مرور لغات"></div>
             <div class="field"><label>هدف ماهانه</label><select id="wgParent"><option value="">— بدون والد —</option></select></div>
+            <div class="field"><label>هدف این هفته</label><input id="wgTarget" type="number" min="0" step="0.5" required placeholder="۴"></div>
             <div class="field"><label>پایان هفته</label><input id="wgDue" type="date"></div>
             <button type="submit">افزودن</button>
           </form>
@@ -244,14 +260,14 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
         <div id="weeklyGoalsList" class="list"></div>
       </div>
       <div id="sub-weekly-tasks" class="subtab hidden">
-        <div class="sectionhead"><div><h2>📋 کارهای هفتگی</h2></div><span class="pill" id="weeklyTasksProgress">—</span></div>
+        <div class="sectionhead"><div><h2>📋 کارهای هفتگی</h2><p class="muted">مقدار اجرا رو روی هر کار دستی وارد کن.</p></div><span class="pill" id="weeklyTasksProgress">—</span></div>
         <div class="week-toolbar">
           <div class="week-nav"><button id="wtPrev">‹ هفتهٔ قبل</button><span class="week-range" id="wtWeekRange"></span><button id="wtNext">هفتهٔ بعد ›</button></div>
           <button id="wtToday" class="secondary">📅 این هفته</button>
         </div>
         <div class="panel" style="box-shadow:none"><h3>افزودن</h3>
           <form id="weeklyTaskForm" class="formgrid">
-            <div class="field"><label>عنوان</label><input id="wtTitle" required maxlength="180"></div>
+            <div class="field"><label>عنوان</label><input id="wtTitle" required maxlength="180" placeholder="مثلاً ۱۰ لغت جدید"></div>
             <div class="field"><label>روز</label><select id="wtDay"><option>شنبه</option><option>یکشنبه</option><option>دوشنبه</option><option>سه‌شنبه</option><option>چهارشنبه</option><option>پنجشنبه</option><option>جمعه</option></select></div>
             <div class="field"><label>هدف هفتگی</label><select id="wtGoal"><option value="">— بدون والد —</option></select></div>
             <button type="submit">افزودن</button>
@@ -361,7 +377,6 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
     <section id="tab-settings" class="tab hidden">
       <h2>⚙️ تنظیمات</h2>
       <p class="muted">اطلاعات شما روی همین مرورگر ذخیره می‌شود.</p>
-      <div class="notice">💡 برای انتقال به دستگاه دیگر، از «خروجی JSON» استفاده کن.</div>
       <div class="panel" style="box-shadow:none"><h3>💾 پشتیبان‌گیری</h3>
         <div style="display:flex;gap:10px;flex-wrap:wrap">
           <button id="exportBtn">⬇️ خروجی JSON</button>
@@ -386,7 +401,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 (()=>{
 const $=id=>document.getElementById(id);
 const safe=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const fa=n=>new Intl.NumberFormat('fa-IR').format(n||0);
+const fa=n=>{const x=Number(n)||0;return new Intl.NumberFormat('fa-IR',{maximumFractionDigits:2}).format(x);};
 const dateISO=(d=new Date())=>{const x=new Date(d);return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`;};
 const toFaDate=s=>{if(!s)return'';try{return new Intl.DateTimeFormat('fa-IR-u-ca-persian',{year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(s));}catch{return s;}};
 const todayFaLong=()=>new Intl.DateTimeFormat('fa-IR-u-ca-persian',{weekday:'long',year:'numeric',month:'long',day:'numeric'}).format(new Date());
@@ -395,7 +410,7 @@ const msg=(id,t,type='')=>{const el=$(id);el.textContent=t;el.className='notice'
 const labels={priority:{urgent_important:'فوری و مهم',important:'مهم',normal:'عادی',low:'کم‌اهمیت'},taskStatus:{planned:'برنامه‌ریزی‌شده',in_progress:'در حال انجام',done:'انجام شد',cancelled:'لغو شد'}};
 const nid=()=>Date.now()+Math.floor(Math.random()*100000);
 
-const STORAGE_USERS='bj_users_v3', STORAGE_SESSION='bj_session_v3', DATA_PREFIX='bj_data_v3_';
+const STORAGE_USERS='bj_users_v4', STORAGE_SESSION='bj_session_v4', DATA_PREFIX='bj_data_v4_';
 const emptyData=()=>({tasks:[],habits:[],logs:[],monthlyGoals:[],weeklyGoals:[],weeklyTasks:[],finance:[],mood:[],uni:[],forex:[],skills:[],review:[],daily:[],pomodoro:[]});
 const getUsers=()=>{try{return JSON.parse(localStorage.getItem(STORAGE_USERS)||'{}');}catch{return{};}};
 const saveUsers=u=>localStorage.setItem(STORAGE_USERS,JSON.stringify(u));
@@ -406,11 +421,9 @@ const saveData=()=>{if(!session)return;localStorage.setItem(DATA_PREFIX+session.
 let session=null,data=emptyData();
 let weeklyOffset=0;
 
-// ═══════════ تم ═══════════
 const initTheme=()=>document.documentElement.setAttribute('data-theme',localStorage.getItem('bj_theme')||'light');
 $('themeToggle').addEventListener('click',()=>{const c=document.documentElement.getAttribute('data-theme');const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('bj_theme',n);});
 
-// ═══════════ ورود/ثبت‌نام ═══════════
 function switchPanel(w){show('authPanel',w==='auth');show('appPanel',w==='app');show('logoutBtn',w==='app');show('userBadge',w==='app');}
 
 $('authForm').addEventListener('submit',async e=>{
@@ -464,7 +477,6 @@ function startApp(){
   renderAll();
 }
 
-// ═══════════ ابزار هفته ═══════════
 function getWeekStart(offset=0){
   const now=new Date();
   const dow=now.getDay();
@@ -483,18 +495,31 @@ function getWeekDays(offset=0){
 const weekDayNames=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
 
 // ═══════════ محاسبه پیشرفت ═══════════
+// پیشرفت هفتگی = مجموع value های کارهای این هدف ÷ هدف این هفته × ۱۰۰
 function weeklyGoalProgress(wgId){
+  const wg=data.weeklyGoals.find(g=>g.id===wgId);
+  if(!wg||!wg.target||wg.target<=0)return 0;
   const tasks=data.weeklyTasks.filter(t=>t.weeklyGoalId===wgId);
-  if(!tasks.length)return 0;
-  return Math.round(tasks.filter(t=>t.done).length/tasks.length*100);
+  const sum=tasks.reduce((a,t)=>a+(Number(t.value)||0),0);
+  return Math.min(100,Math.round(sum/wg.target*100));
 }
+function weeklyGoalSum(wgId){
+  return data.weeklyTasks.filter(t=>t.weeklyGoalId===wgId).reduce((a,t)=>a+(Number(t.value)||0),0);
+}
+// پیشرفت ماهانه = مجموع value همهٔ کارهای زیرمجموعه ÷ هدف ماهانه × ۱۰۰
 function monthlyGoalProgress(mgId){
-  const children=data.weeklyGoals.filter(g=>g.monthlyGoalId===mgId);
-  if(!children.length)return 0;
-  return Math.round(children.reduce((a,g)=>a+weeklyGoalProgress(g.id),0)/children.length);
+  const mg=data.monthlyGoals.find(g=>g.id===mgId);
+  if(!mg||!mg.target||mg.target<=0)return 0;
+  const childIds=data.weeklyGoals.filter(w=>w.monthlyGoalId===mgId).map(w=>w.id);
+  const tasks=data.weeklyTasks.filter(t=>childIds.includes(t.weeklyGoalId));
+  const sum=tasks.reduce((a,t)=>a+(Number(t.value)||0),0);
+  return Math.min(100,Math.round(sum/mg.target*100));
+}
+function monthlyGoalSum(mgId){
+  const childIds=data.weeklyGoals.filter(w=>w.monthlyGoalId===mgId).map(w=>w.id);
+  return data.weeklyTasks.filter(t=>childIds.includes(t.weeklyGoalId)).reduce((a,t)=>a+(Number(t.value)||0),0);
 }
 
-// ═══════════ رندر همه ═══════════
 function renderAll(){
   $('todayBigDate').textContent=todayFaLong();
   $('todayLabel').textContent=todayFaLong();
@@ -595,6 +620,7 @@ function renderMonthlyGoals(){
   if(!data.monthlyGoals.length){el.innerHTML='<p class="muted" style="grid-column:1/-1;text-align:center;padding:20px">هنوز هدف ماهانه‌ای نداری.</p>';return;}
   el.innerHTML=data.monthlyGoals.map(g=>{
     const p=monthlyGoalProgress(g.id);
+    const sum=monthlyGoalSum(g.id);
     const childCount=data.weeklyGoals.filter(w=>w.monthlyGoalId===g.id).length;
     const daysLeft=g.due_date?Math.ceil((new Date(g.due_date)-new Date())/86400000):null;
     const priorityClass=g.priority==='urgent_important'?'priority-urgent':g.priority==='important'?'priority-important':'';
@@ -612,7 +638,8 @@ function renderMonthlyGoals(){
           <text x="50" y="56" text-anchor="middle" font-size="18" font-weight="800" fill="var(--dark)">${fa(p)}٪</text>
         </svg>
         <div style="flex:1">
-          <div class="wg-tasks-count">${childCount?`${fa(childCount)} هدف هفتگی متصل`:'بدون هدف هفتگی'}</div>
+          <div class="goal-stat-big">${fa(sum)} <span style="font-size:13px;color:var(--muted)">از ${fa(g.target)} ${safe(g.unit||'')}</span></div>
+          <div class="goal-stat-lbl">${childCount?`${fa(childCount)} هدف هفتگی متصل`:'بدون هدف هفتگی'}</div>
           <div class="progress" style="margin-top:6px"><span style="width:${p}%"></span></div>
         </div>
       </div>
@@ -620,9 +647,10 @@ function renderMonthlyGoals(){
         <span class="status">${labels.priority[g.priority]||''}</span>
         ${g.due_date?`<span>${toFaDate(g.due_date)}</span>`:''}
         ${daysLeft!==null?`<span class="${daysLeft<0?'status late':daysLeft<7?'status gold':'status blue'}">${daysLeft<0?`${fa(-daysLeft)} روز گذشت`:`${fa(daysLeft)} روز مانده`}</span>`:''}
-            <div class="goal-actions">
+      </div>
+      <div class="goal-actions">
         <button class="ghost small" data-toggle-mg="${g.id}">${g.done?'برگردان':'علامت تکمیل'}</button>
-        ${!g.done?`<button class="ghost small" data-add-wg-for="${g.id}">+ هدف هفتگی</button>`:''}
+        <button class="ghost small" data-add-wg-for="${g.id}">+ هدف هفتگی</button>
       </div>
     </div>`;
   }).join('');
@@ -643,9 +671,10 @@ function renderWeeklyGoals(){
   if(!arr.length){el.innerHTML='<p class="muted" style="text-align:center;padding:20px">هدفی برای نمایش نیست.</p>';return;}
   el.innerHTML=arr.map(g=>{
     const p=weeklyGoalProgress(g.id);
+    const sum=weeklyGoalSum(g.id);
     const parent=data.monthlyGoals.find(m=>m.id===g.monthlyGoalId);
+    const unit=parent?.unit||'';
     const taskCount=data.weeklyTasks.filter(t=>t.weeklyGoalId===g.id).length;
-    const doneCount=data.weeklyTasks.filter(t=>t.weeklyGoalId===g.id&&t.done).length;
     return `<article class="item ${g.done?'done':''}">
       <div class="item-main">
         <div class="wg-row">
@@ -653,7 +682,7 @@ function renderWeeklyGoals(){
             <div class="wg-title">${g.done?'✓ ':''}${safe(g.title)}</div>
             ${parent?`<span class="wg-parent">🎯 ${safe(parent.title)}</span>`:''}
             <div class="wg-progress"><span style="width:${p}%"></span></div>
-            <div class="wg-tasks-count">${fa(doneCount)} از ${fa(taskCount)} کار انجام شده · ${fa(p)}٪</div>
+            <div class="wg-stats"><span>📊 ${fa(sum)} از ${fa(g.target)} ${safe(unit)}</span><span>📋 ${fa(taskCount)} کار</span><span>✨ ${fa(p)}٪</span></div>
           </div>
           <div style="text-align:center"><div style="font-size:20px;font-weight:800;color:var(--olive)">${fa(p)}٪</div></div>
         </div>
@@ -679,17 +708,30 @@ function renderWeeklyTasks(){
     const iso=dateISO(d);
     const isToday=iso===dateISO();
     const dayTasks=data.weeklyTasks.filter(t=>t.date===iso);
+    const daySum=dayTasks.reduce((a,t)=>a+(Number(t.value)||0),0);
     return `<div class="week-day ${isToday?'today':''}">
-      <div class="week-day-header"><span class="name">${weekDayNames[i]}</span><span class="date">${toFaDate(iso)}</span></div>
+      <div class="week-day-header">
+        <span class="name">${weekDayNames[i]}</span>
+        <span class="date">${toFaDate(iso)}</span>
+        ${daySum>0?`<span class="day-total">📊 ${fa(daySum)}</span>`:''}
+      </div>
       ${dayTasks.length?dayTasks.map(t=>{
         const goal=data.weeklyGoals.find(g=>g.id===t.weeklyGoalId);
-        return `<div class="week-task ${t.done?'done':''}" data-toggle-wt="${t.id}">
-          <div class="wt-check">✓</div>
-          <div class="wt-body">
-            <div class="wt-title">${safe(t.title)}</div>
-            ${goal?`<div class="wt-tag">🎯 ${safe(goal.title.substring(0,20))}</div>`:''}
+        const parent=goal?data.monthlyGoals.find(m=>m.id===goal.monthlyGoalId):null;
+        const unit=parent?.unit||'';
+        return `<div class="week-task ${t.done?'done':''}">
+          <div class="wt-top">
+            <div class="wt-check" data-toggle-wt="${t.id}" style="width:16px;height:16px;border:2px solid var(--line);border-radius:4px;flex-shrink:0;display:grid;place-items:center;font-size:10px;color:${t.done?'white':'transparent'};font-weight:800;margin-top:2px;cursor:pointer;${t.done?'background:var(--olive);border-color:var(--olive);':''}">✓</div>
+            <div class="wt-body">
+              <div class="wt-title">${safe(t.title)}</div>
+              ${goal?`<div class="wt-tag">🎯 ${safe(goal.title.substring(0,22))}</div>`:''}
+            </div>
+            <button class="ghost small" data-del-wt="${t.id}" style="padding:2px 6px;font-size:10px">×</button>
           </div>
-          <button class="ghost small" data-del-wt="${t.id}" style="padding:2px 6px;font-size:10px">×</button>
+          <div class="wt-input-row">
+            <input type="number" class="wt-input" min="0" step="0.25" value="${t.value||''}" placeholder="—" data-value-wt="${t.id}">
+            <span class="wt-unit">${safe(unit)}</span>
+          </div>
         </div>`;
       }).join(''):'<div class="week-day-empty">خالی</div>'}
       <button class="week-day-add" data-add-wt-day="${iso}">+ افزودن</button>
@@ -840,7 +882,6 @@ function renderReview(){
     <div class="item-actions"><button class="danger small" data-del="review" data-id="${r.id}">×</button></div></article>`).join(''):'<p class="muted">—</p>';
 }
 
-// ═══════════ ذخیره ═══════════
 function save(){saveData();renderAll();}
 function flash(t){const el=$('globalMessage');el.textContent=t;el.className='notice';el.classList.remove('hidden');setTimeout(()=>el.classList.add('hidden'),2000);}
 
@@ -848,28 +889,37 @@ function flash(t){const el=$('globalMessage');el.textContent=t;el.className='not
 $('monthlyGoalForm').addEventListener('submit',e=>{
   e.preventDefault();
   const t=$('mgTitle').value.trim();if(!t)return;
-  data.monthlyGoals.push({id:nid(),title:t,description:$('mgDesc').value.trim(),priority:$('mgPriority').value,due_date:$('mgDue').value||null,done:false,created:new Date().toISOString()});
+  const target=Number($('mgTarget').value);
+  if(!target||target<=0){flash('هدف کل باید بزرگ‌تر از صفر باشه');return;}
+  data.monthlyGoals.push({
+    id:nid(),title:t,
+    unit:$('mgUnit').value,
+    target,
+    description:$('mgDesc').value.trim(),
+    priority:$('mgPriority').value,
+    due_date:$('mgDue').value||null,
+    done:false,created:new Date().toISOString()
+  });
   $('monthlyGoalForm').reset();$('mgDesc').value='';$('mgPriority').value='normal';$('mgDue').value=dateISO();
   save();flash('هدف ماهانه ذخیره شد');
 });
 $('monthlyGoalsList').addEventListener('click',e=>{
   const addWgFor=e.target.dataset.addWgFor;
   if(addWgFor){
-    // برو به تب اهداف هفتگی
     document.querySelectorAll('#tab-planner .subnav button[data-sub]').forEach(x=>x.classList.toggle('active',x.dataset.sub==='weekly-goals'));
     document.querySelectorAll('.subtab').forEach(s=>s.classList.add('hidden'));
     $('sub-weekly-goals').classList.remove('hidden');
-    // پر کردن dropdown والد
     refreshSelectors();
     $('wgParent').value=addWgFor;
-    // اسکرول به فرم
     window.scrollTo({top:0,behavior:'smooth'});
     setTimeout(()=>{if($('wgTitle'))$('wgTitle').focus();},300);
     return;
   }
-  const del=e.target.dataset.delMg;if(del&&confirm('حذف شود؟')){
+  const del=e.target.dataset.delMg;if(del&&confirm('حذف شود؟ همراه اهداف هفتگی و کارهای زیرمجموعه‌اش؟')){
+    const childIds=data.weeklyGoals.filter(w=>w.monthlyGoalId==del).map(w=>w.id);
     data.monthlyGoals=data.monthlyGoals.filter(g=>g.id!=del);
-    data.weeklyGoals.forEach(w=>{if(w.monthlyGoalId==del)w.monthlyGoalId=null;});
+    data.weeklyGoals=data.weeklyGoals.filter(w=>w.monthlyGoalId!=del);
+    data.weeklyTasks=data.weeklyTasks.filter(t=>!childIds.includes(t.weeklyGoalId));
     save();return;
   }
   const tg=e.target.dataset.toggleMg;if(tg){const g=data.monthlyGoals.find(x=>x.id==tg);if(g){g.done=!g.done;save();}}
@@ -879,7 +929,17 @@ $('monthlyGoalsList').addEventListener('click',e=>{
 $('weeklyGoalForm').addEventListener('submit',e=>{
   e.preventDefault();
   const t=$('wgTitle').value.trim();if(!t)return;
-  data.weeklyGoals.push({id:nid(),title:t,monthlyGoalId:$('wgParent').value||null,due_date:$('wgDue').value||null,done:false,created:new Date().toISOString()});
+  const parent=$('wgParent').value||null;
+  const target=Number($('wgTarget').value);
+  if(!target||target<=0){flash('هدف این هفته باید بزرگ‌تر از صفر باشه');return;}
+  if(!parent){flash('لطفاً یه هدف ماهانه انتخاب کن تا پیشرفت زنجیره‌ای کار کنه');return;}
+  data.weeklyGoals.push({
+    id:nid(),title:t,
+    monthlyGoalId:parent,
+    target,
+    due_date:$('wgDue').value||null,
+    done:false,created:new Date().toISOString()
+  });
   $('weeklyGoalForm').reset();$('wgDue').value=dateISO();
   save();flash('هدف هفتگی ذخیره شد');
 });
@@ -904,18 +964,74 @@ $('weeklyTaskForm').addEventListener('submit',e=>{
   const days=getWeekDays(weeklyOffset);
   const dayIdx=weekDayNames.indexOf(dayName);
   const dayDate=days[dayIdx>=0?dayIdx:0];
-  data.weeklyTasks.push({id:nid(),title:t,date:dateISO(dayDate),dayName,weeklyGoalId:$('wtGoal').value||null,done:false,created:new Date().toISOString()});
+  data.weeklyTasks.push({
+    id:nid(),title:t,
+    date:dateISO(dayDate),
+    dayName,
+    weeklyGoalId:$('wtGoal').value||null,
+    value:'',
+    done:false,created:new Date().toISOString()
+  });
   $('weeklyTaskForm').reset();
   save();flash('کار افزوده شد');
 });
 $('wtPrev').addEventListener('click',()=>{weeklyOffset--;renderWeeklyTasks();});
 $('wtNext').addEventListener('click',()=>{weeklyOffset++;renderWeeklyTasks();});
 $('wtToday').addEventListener('click',()=>{weeklyOffset=0;renderWeeklyTasks();});
+
+// ضبط مقدار با Enter یا blur
+document.addEventListener('input',e=>{
+  const id=e.target.dataset.valueWt;
+  if(!id)return;
+  const t=data.weeklyTasks.find(x=>x.id==id);
+  if(!t)return;
+  const v=e.target.value;
+  t.value=v===''?'':Number(v);
+  saveData();
+  // رفرش فقط بخش پیشرفت بدون رندر کامل
+  refreshProgressOnly();
+});
+document.addEventListener('change',e=>{
+  const id=e.target.dataset.valueWt;
+  if(!id)return;
+  const t=data.weeklyTasks.find(x=>x.id==id);
+  if(!t)return;
+  const v=e.target.value;
+  t.value=v===''?'':Number(v);
+  saveData();
+  renderWeeklyGoals();
+  renderMonthlyGoals();
+  renderDashboard();
+  const days=getWeekDays(weeklyOffset);
+  const weekTasks=data.weeklyTasks.filter(x=>{const d=new Date(x.date);return d>=days[0]&&d<=days[6];});
+  const doneCount=weekTasks.filter(x=>x.done).length;
+  $('weeklyTasksProgress').textContent=weekTasks.length?`${fa(doneCount)} / ${fa(weekTasks.length)} انجام‌شده`:'—';
+});
+
+function refreshProgressOnly(){
+  // به‌روزرسانی هدر ستون‌ها
+  const days=getWeekDays(weeklyOffset);
+  days.forEach((d,i)=>{
+    const iso=dateISO(d);
+    const dayTasks=data.weeklyTasks.filter(t=>t.date===iso);
+    const sum=dayTasks.reduce((a,t)=>a+(Number(t.value)||0),0);
+    const header=document.querySelectorAll('.week-day')[i]?.querySelector('.day-total');
+    if(header){
+      header.textContent=sum>0?`📊 ${fa(sum)}`:'';
+    } else if(sum>0){
+      const el=document.querySelectorAll('.week-day')[i]?.querySelector('.week-day-header');
+      if(el)el.insertAdjacentHTML('beforeend',`<span class="day-total">📊 ${fa(sum)}</span>`);
+    }
+  });
+  // پیشرفت هفته و ماه (بدون رندر کامل جدول)
+  renderWeeklyGoals();
+  renderMonthlyGoals();
+}
+
 $('weekColumns').addEventListener('click',e=>{
-  const tg=e.target.closest('[data-toggle-wt]');
+  const tg=e.target.dataset.toggleWt;
   if(tg){
-    const id=tg.dataset.toggleWt;
-    const t=data.weeklyTasks.find(x=>x.id==id);
+    const t=data.weeklyTasks.find(x=>x.id==tg);
     if(t){t.done=!t.done;save();}
     return;
   }
@@ -928,7 +1044,15 @@ $('weekColumns').addEventListener('click',e=>{
   if(add){
     const title=prompt('عنوان کار جدید:');
     if(!title)return;
-    data.weeklyTasks.push({id:nid(),title,date:add,dayName:'',weeklyGoalId:null,done:false,created:new Date().toISOString()});
+    data.weeklyTasks.push({
+      id:nid(),title,
+      date:add,
+      dayName:'',
+      weeklyGoalId:null,
+      value:'',
+      done:false,
+      created:new Date().toISOString()
+    });
     save();
   }
 });
