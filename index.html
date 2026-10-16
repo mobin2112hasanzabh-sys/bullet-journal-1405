@@ -16,6 +16,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;bac
 button,input,select,textarea{font:inherit;font-family:inherit}
 button{cursor:pointer;border:0;border-radius:12px;padding:10px 15px;background:var(--olive);color:white;font-weight:700;transition:transform .15s,filter .15s}
 button:hover{filter:brightness(.95);transform:translateY(-1px)}
+button:disabled{opacity:.6;cursor:not-allowed;transform:none}
 button.secondary{background:var(--cream2);color:var(--text);border:1px solid var(--line)}
 button.danger{background:var(--red)}
 button.ghost{background:transparent;color:var(--muted);border:1px dashed var(--line);font-weight:500}
@@ -67,7 +68,6 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .notice.error{background:var(--redbg);color:var(--red)}
 .authbox{max-width:480px;margin:6vh auto}
 .auth-form{display:grid;gap:14px}
-.toggleline{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px}
 .footer{text-align:center;color:var(--muted);font-size:11px;padding:20px;opacity:.7}
 .sectionhead{display:flex;justify-content:space-between;align-items:start;gap:14px;flex-wrap:wrap;margin-bottom:16px}
 .progress{height:8px;border-radius:99px;background:var(--cream2);overflow:hidden;margin-top:8px}
@@ -143,29 +143,20 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
     </div>
   </header>
 
-  <!-- صفحهٔ ورود -->
   <section id="authPanel" class="panel authbox hidden">
-    <h2 id="authTitle">ورود به بولت ژورنال</h2>
-    <p class="muted" id="authSubtitle">با حساب شخصی وارد شو تا اطلاعاتت ذخیره شود.</p>
+    <h2>ورود یا ساخت حساب</h2>
+    <p class="muted">ایمیل و رمز عبورت رو وارد کن. اگر تازه‌وارد هستی، حساب خودکار ساخته می‌شه.</p>
     <form id="authForm" class="auth-form">
-      <div class="field hidden" id="nameField">
-        <label for="authName">نام شما</label>
-        <input id="authName" type="text" placeholder="مثلاً: مبین">
-      </div>
-      <div class="field"><label for="email">ایمیل</label><input id="email" type="email" required placeholder="name@example.com"></div>
-      <div class="field"><label for="password">رمز عبور</label><input id="password" type="password" required minlength="4" placeholder="حداقل ۴ نویسه"></div>
-      <button id="authSubmit" type="submit">ورود</button>
+      <div class="field"><label for="email">ایمیل</label><input id="email" type="email" required placeholder="name@example.com" autocomplete="email"></div>
+      <div class="field"><label for="password">رمز عبور</label><input id="password" type="password" required minlength="4" placeholder="حداقل ۴ نویسه" autocomplete="current-password"></div>
+      <button id="authSubmit" type="submit">ورود / ثبت‌نام</button>
     </form>
-    <div class="toggleline">
-      <button id="switchAuth" class="secondary" type="button">ساخت حساب جدید</button>
-    </div>
     <div id="authMessage" class="notice hidden"></div>
     <div class="notice" style="font-size:11px;font-weight:400;background:var(--cream2);color:var(--muted)">
       💡 اطلاعات شما فقط روی همین دستگاه ذخیره می‌شود. برای انتقال به دستگاه دیگر از «خروجی JSON» در تنظیمات استفاده کنید.
     </div>
   </section>
 
-  <!-- اپ اصلی -->
   <main id="appPanel" class="hidden">
     <div id="globalMessage" class="notice hidden"></div>
     <nav class="nav">
@@ -257,7 +248,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
         <div class="field"><label>دسته</label><select id="taskCategory"><option>شخصی</option><option>دانشگاه</option><option>وردپرس</option><option>فارکس</option><option>ورزش</option><option>مالی</option><option>سایر</option></select></div>
         <button type="submit">افزودن</button>
       </form>
-      <div class="toggleline">
+      <div class="sectionhead" style="margin-top:14px;margin-bottom:0">
         <div class="field" style="max-width:220px"><label>نمایش</label><select id="taskFilter"><option value="all">همه</option><option value="today">امروز</option><option value="open">فقط باز</option><option value="done">انجام‌شده</option><option value="late">عقب‌افتاده</option></select></div>
         <div class="field" style="max-width:220px"><label>جستجو</label><input id="taskSearch"></div>
       </div>
@@ -391,14 +382,21 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
       <h2>تنظیمات</h2>
       <p class="muted">اطلاعات شما روی همین مرورگر ذخیره می‌شود.</p>
       <div class="notice">💡 برای انتقال به دستگاه دیگر یا پشتیبان‌گیری، از «خروجی JSON» استفاده کنید.</div>
-      <div class="toggleline">
-        <button id="exportBtn">⬇️ خروجی JSON</button>
-        <button id="importBtn" class="secondary">⬆️ بازیابی از فایل</button>
-        <input type="file" id="importFile" accept=".json" class="hidden">
-        <button id="clearDataBtn" class="danger">🗑️ پاک کردن همهٔ داده‌ها</button>
+      <div class="panel" style="box-shadow:none">
+        <h3>💾 پشتیبان‌گیری</h3>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button id="exportBtn">⬇️ خروجی JSON</button>
+          <button id="importBtn" class="secondary">⬆️ بازیابی از فایل</button>
+          <input type="file" id="importFile" accept=".json" class="hidden">
+        </div>
       </div>
-      <div class="panel" style="margin-top:20px;box-shadow:none">
-        <h3>حساب کاربری</h3>
+      <div class="panel" style="box-shadow:none">
+        <h3>🗑️ پاک‌سازی</h3>
+        <p class="muted" style="margin-bottom:12px">همهٔ داده‌های شما پاک می‌شود. این کار برگشت‌پذیر نیست!</p>
+        <button id="clearDataBtn" class="danger">پاک کردن همهٔ داده‌ها</button>
+      </div>
+      <div class="panel" style="box-shadow:none">
+        <h3>👤 حساب کاربری</h3>
         <p class="muted">ایمیل: <b id="settingsEmail"></b></p>
         <p class="muted">تاریخ عضویت: <b id="settingsCreated"></b></p>
       </div>
@@ -437,59 +435,55 @@ const hashPassword=async p=>{const b=await crypto.subtle.digest('SHA-256',new Te
 const loadData=email=>{try{const d=JSON.parse(localStorage.getItem(DATA_PREFIX+email)||'null');return d||emptyData();}catch{return emptyData();}};
 const saveData=()=>{if(!session)return;localStorage.setItem(DATA_PREFIX+session.email,JSON.stringify(data));};
 
-let session=null,data=emptyData(),authMode='login';
-const uid=()=>session.email;
+let session=null,data=emptyData();
 const nid=()=>Date.now()+Math.floor(Math.random()*1000);
 
-// ═══════ تم ═══════
 function initTheme(){document.documentElement.setAttribute('data-theme',localStorage.getItem('bj_theme')||'light');}
 $('themeToggle').addEventListener('click',()=>{const cur=document.documentElement.getAttribute('data-theme');const next=cur==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',next);localStorage.setItem('bj_theme',next);});
 
-// ═══════ ورود/ثبت‌نام ═══════
-function switchPanel(w){
-  show('authPanel',w==='auth');show('appPanel',w==='app');show('logoutBtn',w==='app');show('userBadge',w==='app');
-}
-$('switchAuth').addEventListener('click',()=>{
-  authMode=authMode==='login'?'signup':'login';
-  $('authTitle').textContent=authMode==='login'?'ورود به بولت ژورنال':'ساخت حساب جدید';
-  $('authSubmit').textContent=authMode==='login'?'ورود':'ساخت حساب';
-  $('switchAuth').textContent=authMode==='login'?'ساخت حساب جدید':'بازگشت به ورود';
-  show('nameField',authMode==='signup');
-  $('authMessage').classList.add('hidden');
-});
+function switchPanel(w){show('authPanel',w==='auth');show('appPanel',w==='app');show('logoutBtn',w==='app');show('userBadge',w==='app');}
+
 $('authForm').addEventListener('submit',async e=>{
-  e.preventDefault();$('authMessage').classList.add('hidden');
-  const email=$('email').value.trim().toLowerCase(), pw=$('password').value, name=$('authName').value.trim();
-  if(authMode==='signup'){
-    if(!name){msg('authMessage','لطفاً نام خود را وارد کن.','error');return;}
-    const users=getUsers();
-    if(users[email]){msg('authMessage','این ایمیل قبلاً ثبت شده است.','error');return;}
+  e.preventDefault();
+  $('authMessage').classList.add('hidden');
+  $('authSubmit').disabled=true;
+
+  const email=$('email').value.trim().toLowerCase();
+  const pw=$('password').value;
+  if(!email||!pw){$('authSubmit').disabled=false;return;}
+
+  const users=getUsers();
+  const existing=users[email];
+
+  if(existing){
+    const hash=await hashPassword(pw);
+    if(hash===existing.passwordHash){
+      session={email,name:existing.name};
+      localStorage.setItem(STORAGE_SESSION,email);
+      startApp();
+    }else{
+      msg('authMessage','رمز عبور اشتباه است. لطفاً دوباره امتحان کن.','error');
+    }
+  }else{
+    const name=email.split('@')[0];
     const hash=await hashPassword(pw);
     users[email]={email,name,passwordHash:hash,createdAt:new Date().toISOString()};
     saveUsers(users);
     localStorage.setItem(DATA_PREFIX+email,JSON.stringify(emptyData()));
-    session={email,name};localStorage.setItem(STORAGE_SESSION,email);
-    startApp();
-  } else {
-    const users=getUsers();
-    const u=users[email];
-    if(!u){msg('authMessage','حسابی با این ایمیل پیدا نشد.','error');return;}
-    const hash=await hashPassword(pw);
-    if(hash!==u.passwordHash){msg('authMessage','رمز عبور اشتباه است.','error');return;}
-    session={email,name:u.name};localStorage.setItem(STORAGE_SESSION,email);
-    startApp();
+    session={email,name};
+    localStorage.setItem(STORAGE_SESSION,email);
+    msg('authMessage','حساب ساخته شد! خوش آمدی 🌿');
+    setTimeout(()=>startApp(),600);
   }
+  $('authSubmit').disabled=false;
 });
+
 function logout(){
   localStorage.removeItem(STORAGE_SESSION);
   session=null;data=emptyData();
   switchPanel('auth');
   $('authForm').reset();
-  authMode='login';
-  $('authTitle').textContent='ورود به بولت ژورنال';
-  $('authSubmit').textContent='ورود';
-  $('switchAuth').textContent='ساخت حساب جدید';
-  show('nameField',false);
+  $('authMessage').classList.add('hidden');
 }
 $('logoutBtn').addEventListener('click',()=>{if(confirm('از حساب خارج شوی؟'))logout();});
 
@@ -505,7 +499,6 @@ function startApp(){
   renderAll();
 }
 
-// ═══════ رندر ═══════
 function renderAll(){
   $('todayBigDate').textContent=todayFaLong();
   $('todayLabel').textContent=todayFaLong();
@@ -746,7 +739,6 @@ function renderReview(){
     <div class="item-actions"><button class="danger small" data-del="review" data-id="${r.id}">×</button></div></article>`).join(''):'<p class="muted">—</p>';
 }
 
-// ═══════ عملیات ═══════
 function save(){saveData();renderAll();}
 function flash(t){const el=$('globalMessage');el.textContent=t;el.className='notice';el.classList.remove('hidden');setTimeout(()=>el.classList.add('hidden'),2000);}
 
@@ -814,14 +806,12 @@ $('futureList').addEventListener('click',e=>{if(e.target.dataset.del==='future'&
 $('reviewForm').addEventListener('submit',e=>{e.preventDefault();data.review.push({id:nid(),type:$('revType').value,period:$('revPeriod').value,score:Number($('revScore').value||0),successes:$('revSucc').value,challenges:$('revChal').value});$('reviewForm').reset();save();flash('ذخیره شد');});
 $('reviewList').addEventListener('click',e=>{if(e.target.dataset.del==='review'&&confirm('حذف شود؟')){data.review=data.review.filter(x=>x.id!=e.target.dataset.id);save();}});
 
-// ═══════ ناوبری ═══════
 document.querySelectorAll('.nav button[data-tab]').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('.nav button[data-tab]').forEach(x=>x.classList.toggle('active',x===b));
   document.querySelectorAll('.tab').forEach(s=>s.classList.toggle('hidden',s.id!=='tab-'+b.dataset.tab));
   window.scrollTo({top:0,behavior:'smooth'});
 }));
 
-// ═══════ خروجی/ورودی ═══════
 $('exportBtn').addEventListener('click',()=>{
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);const a=document.createElement('a');
@@ -835,7 +825,6 @@ $('importFile').addEventListener('change',e=>{
   reader.readAsText(file);});
 $('clearDataBtn').addEventListener('click',()=>{if(confirm('همهٔ داده‌های شما پاک شود؟ این کار قابل بازگشت نیست!')){data=emptyData();save();flash('پاک شد');}});
 
-// ═══════ پومودورو ═══════
 let pInt=null,pRem=25*60,pRun=false;
 const upPomo=()=>{const m=Math.floor(pRem/60),s=pRem%60;$('pomoTime').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;};
 function startPomo(){if(pRun)return;pRun=true;$('pomoBox').classList.add('running');$('pomoToggle').textContent='توقف';
@@ -847,7 +836,6 @@ $('pomoToggle').addEventListener('click',()=>{pRun?stopPomo():startPomo();});
 $('pomoClose').addEventListener('click',()=>{stopPomo();show('pomoBox',false);});
 document.addEventListener('keydown',e=>{if(e.key==='p'&&e.ctrlKey){e.preventDefault();show('pomoBox',$('pomoBox').classList.contains('hidden'));if(!$('pomoBox').classList.contains('hidden'))upPomo();}});
 
-// ═══════ شروع ═══════
 initTheme();
 const savedSession=localStorage.getItem(STORAGE_SESSION);
 if(savedSession&&getUsers()[savedSession]){
