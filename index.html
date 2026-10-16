@@ -620,9 +620,9 @@ function renderMonthlyGoals(){
         <span class="status">${labels.priority[g.priority]||''}</span>
         ${g.due_date?`<span>${toFaDate(g.due_date)}</span>`:''}
         ${daysLeft!==null?`<span class="${daysLeft<0?'status late':daysLeft<7?'status gold':'status blue'}">${daysLeft<0?`${fa(-daysLeft)} روز گذشت`:`${fa(daysLeft)} روز مانده`}</span>`:''}
-      </div>
-      <div class="goal-actions">
+            <div class="goal-actions">
         <button class="ghost small" data-toggle-mg="${g.id}">${g.done?'برگردان':'علامت تکمیل'}</button>
+        ${!g.done?`<button class="ghost small" data-add-wg-for="${g.id}">+ هدف هفتگی</button>`:''}
       </div>
     </div>`;
   }).join('');
@@ -853,6 +853,20 @@ $('monthlyGoalForm').addEventListener('submit',e=>{
   save();flash('هدف ماهانه ذخیره شد');
 });
 $('monthlyGoalsList').addEventListener('click',e=>{
+  const addWgFor=e.target.dataset.addWgFor;
+  if(addWgFor){
+    // برو به تب اهداف هفتگی
+    document.querySelectorAll('#tab-planner .subnav button[data-sub]').forEach(x=>x.classList.toggle('active',x.dataset.sub==='weekly-goals'));
+    document.querySelectorAll('.subtab').forEach(s=>s.classList.add('hidden'));
+    $('sub-weekly-goals').classList.remove('hidden');
+    // پر کردن dropdown والد
+    refreshSelectors();
+    $('wgParent').value=addWgFor;
+    // اسکرول به فرم
+    window.scrollTo({top:0,behavior:'smooth'});
+    setTimeout(()=>{if($('wgTitle'))$('wgTitle').focus();},300);
+    return;
+  }
   const del=e.target.dataset.delMg;if(del&&confirm('حذف شود؟')){
     data.monthlyGoals=data.monthlyGoals.filter(g=>g.id!=del);
     data.weeklyGoals.forEach(w=>{if(w.monthlyGoalId==del)w.monthlyGoalId=null;});
