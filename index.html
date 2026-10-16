@@ -206,6 +206,13 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
         <div class="panel"><div class="sectionhead" style="margin-bottom:12px"><h3>✓ وظایف امروز</h3><button class="ghost small" id="quickAddTask">+ سریع</button></div><div id="todayTasks" class="checklist"></div></div>
         <div class="panel"><div class="sectionhead" style="margin-bottom:12px"><h3>🔥 عادت‌های امروز</h3><span class="pill" id="habitTodayCount">—</span></div><div id="todayHabits" class="checklist"></div></div>
       </div>
+      <div class="panel">
+  <div class="sectionhead" style="margin-bottom:12px">
+    <h3>📋 کارهای برنامه‌ریزی امروز</h3>
+    <span class="pill" id="todayPlanCount">—</span>
+  </div>
+  <div id="todayPlanTasks"></div>
+</div>
       <div class="panel"><h3>💭 یادداشت‌های امروز</h3>
         <div class="grid2" style="gap:12px"><div><label class="muted" style="font-size:12px;font-weight:700">🌅 صبح</label><textarea id="morningNote" class="daily-notes-area" rows="3"></textarea></div><div><label class="muted" style="font-size:12px;font-weight:700">🌙 شب</label><textarea id="eveningNote" class="daily-notes-area" rows="3"></textarea></div></div>
         <div class="grid2" style="gap:12px;margin-top:12px"><div class="field"><label>✨ بهترین اتفاق</label><input id="highlightToday"></div><div class="field"><label>🙏 شکرگزاری</label><input id="gratitudeToday"></div></div>
@@ -596,9 +603,41 @@ function renderDashboard(){
   renderMoodLine();renderExpenseDonut();renderMonthlyFinance();renderHabitHeatmap();
 }
 
-// ═══════════ امروز ═══════════
+// ═══════════ کارهای برنامه‌ریزی امروز ═══════════
+function renderTodayPlan(){
+  const today=dateISO();
+  const list=data.weeklyTasks.filter(t=>t.date===today);
+  const done=list.filter(t=>t.done).length;
+  $('todayPlanCount').textContent=list.length?`${fa(done)} / ${fa(list.length)}`:'—';
+  const el=$('todayPlanTasks');
+  if(!el)return;
+  if(!list.length){
+    el.innerHTML='<p class="muted">هنوز کاری برای امروز برنامه‌ریزی نکردی. از «برنامه‌ریزی زنده» → «کارهای هفتگی» اضافه کن.</p>';
+    return;
+  }
+  el.innerHTML=list.map(t=>{
+    const goal=data.weeklyGoals.find(g=>String(g.id)===String(t.weeklyGoalId));
+    const parent=goal?data.monthlyGoals.find(m=>String(m.id)===String(goal.monthlyGoalId)):null;
+    const unit=parent?.unit||'';
+    return `<div class="week-task ${t.done?'done':''}" style="margin-bottom:8px">
+      <div class="wt-top">
+        <div class="wt-check ${t.done?'checked':''}" data-toggle-wt-today="${t.id}">✓</div>
+        <div class="wt-body">
+          <div class="wt-title">${safe(t.title)}</div>
+          ${goal?`<div class="wt-tag">🎯 ${safe(goal.title.substring(0,25))}${parent?' • '+safe(parent.title.substring(0,20)):''}</div>`:''}
+        </div>
+        <button class="ghost small" data-del-wt-today="${t.id}" style="padding:2px 6px;font-size:10px">×</button>
+      </div>
+      <div class="wt-input-row">
+        <input type="number" class="wt-input" min="0" step="0.25" value="${t.value||''}" placeholder="0" data-value-wt-today="${t.id}">
+        <span class="wt-unit">${safe(unit)}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
 function renderToday(){
   const today=dateISO();
+  renderTodayPlan();
   const todayTasks=data.tasks.filter(t=>{if(t.status==='cancelled')return false;if(t.due_date===today)return true;if(!t.due_date&&t.status!=='done')return true;return false;}).slice(0,10);
   $('todayTasks').innerHTML=todayTasks.length?todayTasks.map(t=>{
     const c=t.status==='done';
@@ -623,11 +662,16 @@ function renderToday(){
   $('highlightToday').value=note?.highlight||'';
   $('gratitudeToday').value=note?.gratitude||'';
   const pomos=data.pomodoro.filter(p=>p.date===today).reduce((a,p)=>a+(p.minutes||0),0);
+   const todayWeekly=data.weeklyTasks.filter(t=>t.date===today);
+  const doneWeekly=todayWeekly.filter(t=>t.done).length;
+  const weeklySum=todayWeekly.reduce((a,t)=>a+(Number(t.value)||0),0);
   $('todayStats').innerHTML=`
     <div class="stat"><div class="label">وظایف امروز</div><div class="number">${fa(todayTasks.length)}</div></div>
     <div class="stat"><div class="label">انجام‌شده</div><div class="number">${fa(todayTasks.filter(t=>t.status==='done').length)}</div></div>
     <div class="stat"><div class="label">عادت انجام‌شده</div><div class="number">${fa(doneH)}</div></div>
-    <div class="stat"><div class="label">دقایق پومودورو</div><div class="number">${fa(pomos)}</div></div>`;
+    <div class="stat"><div class="label">دقایق پومودورو</div><div class="number">${fa(pomos)}</div></div>
+    <div class="stat"><div class="label">برنامه‌ریزی امروز</div><div class="number">${fa(doneWeekly)}/${fa(todayWeekly.length)}</div></div>
+    <div class="stat"><div class="label">مجموع اجرا شده</div><div class="number">${fa(weeklySum)}</div></div>`;
 }
 
 // ═══════════ اهداف ماهانه ═══════════
@@ -1097,6 +1141,43 @@ $('habitList').addEventListener('change',e=>{const id=e.target.dataset.habitStat
   save();});
 $('habitList').addEventListener('click',e=>{if(e.target.dataset.del==='habits'&&confirm('حذف شود؟')){const id=e.target.dataset.id;data.habits=data.habits.filter(h=>String(h.id)!==String(id));data.logs=data.logs.filter(l=>String(l.habit_id)!==String(id));save();}});
 
+// ═══════════ رویدادهای کارهای برنامه‌ریزی امروز ═══════════
+$('todayPlanTasks').addEventListener('click',e=>{
+  const tg=e.target.dataset.toggleWtToday;
+  if(tg){
+    const t=data.weeklyTasks.find(x=>String(x.id)===String(tg));
+    if(t){t.done=!t.done;save();}
+    return;
+  }
+  const del=e.target.dataset.delWtToday;
+  if(del&&confirm('حذف شود؟')){
+    data.weeklyTasks=data.weeklyTasks.filter(t=>String(t.id)!==String(del));
+    save();return;
+  }
+});
+$('todayPlanTasks').addEventListener('input',e=>{
+  const id=e.target.dataset.valueWtToday;
+  if(!id)return;
+  const t=data.weeklyTasks.find(x=>String(x.id)===String(id));
+  if(!t)return;
+  const v=e.target.value;
+  t.value=v===''?'':Number(v);
+  saveData();
+});
+$('todayPlanTasks').addEventListener('change',e=>{
+  const id=e.target.dataset.valueWtToday;
+  if(!id)return;
+  const t=data.weeklyTasks.find(x=>String(x.id)===String(id));
+  if(!t)return;
+  const v=e.target.value;
+  t.value=v===''?'':Number(v);
+  saveData();
+  // رفرش سریع بخش‌های مرتبط
+  renderTodayPlan();
+  renderWeeklyGoals();
+  renderMonthlyGoals();
+  renderDashboard();
+});
 $('todayTasks').addEventListener('click',e=>{const el=e.target.closest('[data-toggle-task]');if(!el)return;const id=el.dataset.toggleTask;const t=data.tasks.find(x=>String(x.id)===String(id));if(t){t.status=t.status==='done'?'planned':'done';save();}});
 $('todayHabits').addEventListener('click',e=>{const el=e.target.closest('[data-toggle-habit]');if(!el)return;const id=el.dataset.toggleHabit;const today=dateISO();
   const log=data.logs.find(l=>String(l.habit_id)===String(id)&&l.date===today);
