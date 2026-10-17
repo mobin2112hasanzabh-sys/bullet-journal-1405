@@ -446,8 +446,6 @@ const API_URL='https://bj-api.mobin2112hasanzabh.workers.dev';
 const STORAGE_SESSION='bj_session_v6';
 const STORAGE_CACHE_PREFIX='bj_cache_v6_';
 const emptyData=()=>({tasks:[],habits:[],logs:[],monthlyGoals:[],weeklyGoals:[],weeklyTasks:[],finance:[],mood:[],uni:[],forex:[],skills:[],review:[],daily:[],pomodoro:[]});
-const getUsers=()=>{try{return JSON.parse(localStorage.getItem(STORAGE_USERS)||'{}');}catch{return{};}};
-const saveUsers=u=>localStorage.setItem(STORAGE_USERS,JSON.stringify(u));
 const hashPassword=async p=>{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(p));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');};
 const loadData=async(email)=>{
   try{
@@ -557,8 +555,7 @@ async function startApp(){
   $('userName').textContent=session.name;
   $('userAvatar').textContent=(session.name||'?').charAt(0).toUpperCase();
   $('settingsEmail').textContent=session.email;
-  const u=getUsers()[session.email];
-  $('settingsCreated').textContent=toFaDate(u?.createdAt)||'—';
+  $('settingsCreated').textContent=toFaDate(new Date().toISOString())||'—';
   ['moodDate','finDate','fxDate','uniDue','skillEnd','mgDue','wgDue'].forEach(id=>{if($(id))$(id).value=dateISO();});
   switchPanel('app');
   renderAll();
