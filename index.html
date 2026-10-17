@@ -442,13 +442,46 @@ const labels={priority:{urgent_important:'فوری و مهم',important:'مهم'
 const nid=()=>'g'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 
 // ═══════════ ذخیره‌سازی ═══════════
-const STORAGE_USERS='bj_users_v5', STORAGE_SESSION='bj_session_v5', DATA_PREFIX='bj_data_v5_';
+const API_URL='https://bj-api.mobin2112hasanzabh.workers.dev';
+const STORAGE_SESSION='bj_session_v6';
+const STORAGE_CACHE_PREFIX='bj_cache_v6_';
 const emptyData=()=>({tasks:[],habits:[],logs:[],monthlyGoals:[],weeklyGoals:[],weeklyTasks:[],finance:[],mood:[],uni:[],forex:[],skills:[],review:[],daily:[],pomodoro:[]});
 const getUsers=()=>{try{return JSON.parse(localStorage.getItem(STORAGE_USERS)||'{}');}catch{return{};}};
 const saveUsers=u=>localStorage.setItem(STORAGE_USERS,JSON.stringify(u));
 const hashPassword=async p=>{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(p));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');};
-const loadData=email=>{try{const d=JSON.parse(localStorage.getItem(DATA_PREFIX+email)||'null');return {...emptyData(),...(d||{})};}catch{return emptyData();}};
-const saveData=()=>{if(!session)return;localStorage.setItem(DATA_PREFIX+session.email,JSON.stringify(data));};
+const loadData=async(email)=>{
+  try{
+    const res=await fetch(`${API_URL}/data/${encodeURIComponent(email)}`);
+    if(!res.ok)throw new Error('Server load failed');
+    const json=await res.json();
+    const serverData=json.data||{};
+    localStorage.setItem(STORAGE_CACHE_PREFIX+email,JSON.stringify(serverData));
+    return {...emptyData(),...serverData};
+  }catch(e){
+    console.error('Server load failed, using cache:',e);
+    try{
+      const cached=JSON.parse(localStorage.getItem(STORAGE_CACHE_PREFIX+email)||'null');
+      return {...emptyData(),...(cached||{})};
+    }catch{return emptyData();}
+  }
+};
+let saveTimer=null;
+const saveData=()=>{
+  if(!session)return;
+  // ذخیره فوری توی مرورگر (کش آفلاین)
+  localStorage.setItem(STORAGE_CACHE_PREFIX+session.email,JSON.stringify(data));
+  // ارسال تأخیری به سرور
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(async()=>{
+    try{
+      await fetch(`${API_URL}/data/${encodeURIComponent(session.email)}`,{
+        method:'PUT',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({data})
+      });
+    }catch(e){console.error('Server save failed:',e);}
+  },800);
+};
 
 let session=null;
 let data=emptyData();
@@ -473,25 +506,39 @@ $('authForm').addEventListener('submit',async e=>{
   const email=$('email').value.trim().toLowerCase();
   const pw=$('password').value;
   if(!email||!pw){$('authSubmit').disabled=false;return;}
-  const users=getUsers();
-  const existing=users[email];
-  if(existing){
-    const hash=await hashPassword(pw);
-    if(hash===existing.passwordHash){
-      session={email,name:existing.name};
-      localStorage.setItem(STORAGE_SESSION,email);
-      startApp();
-    }else{msg('authMessage','رمز عبور اشتباه است.','error');}
-  }else{
-    const name=email.split('@')[0];
-    const hash=await hashPassword(pw);
-    users[email]={email,name,passwordHash:hash,createdAt:new Date().toISOString()};
-    saveUsers(users);
-    localStorage.setItem(DATA_PREFIX+email,JSON.stringify(emptyData()));
-    session={email,name};
+  try{
+    // اول تلاش کن وارد شی
+    let res=await fetch(API_URL+'/login',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email,password:pw})
+    });
+    let json=await res.json();
+    // اگه کاربر نبود، حساب بساز
+    if(res.status===404){
+      res=await fetch(API_URL+'/signup',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({email,password:pw})
+      });
+      json=await res.json();
+      if(!res.ok){
+        msg('authMessage',json.error||'خطا در ساخت حساب','error');
+        $('authSubmit').disabled=false;
+        return;
+      }
+      msg('authMessage','حساب ساخته شد! خوش آمدی 🌿');
+    } else if(!res.ok){
+      msg('authMessage',json.error||'خطا در ورود','error');
+      $('authSubmit').disabled=false;
+      return;
+    }
+    // موفق
+    session={email:json.email,name:json.email.split('@')[0]};
     localStorage.setItem(STORAGE_SESSION,email);
-    msg('authMessage','حساب ساخته شد! خوش آمدی 🌿');
-    setTimeout(()=>startApp(),600);
+    await startApp();
+  }catch(err){
+    msg('authMessage','خطای اتصال: '+err.message,'error');
   }
   $('authSubmit').disabled=false;
 });
@@ -505,8 +552,8 @@ function logout(){
 }
 $('logoutBtn').addEventListener('click',()=>{if(confirm('از حساب خارج شوی؟'))logout();});
 
-function startApp(){
-  data=loadData(session.email);
+async function startApp(){
+  data=await loadData(session.email);
   $('userName').textContent=session.name;
   $('userAvatar').textContent=(session.name||'?').charAt(0).toUpperCase();
   $('settingsEmail').textContent=session.email;
@@ -1389,12 +1436,12 @@ document.addEventListener('keydown',e=>{if(e.key==='p'&&e.ctrlKey){e.preventDefa
 // ═══════════ شروع ═══════════
 initTheme();
 const savedSession=localStorage.getItem(STORAGE_SESSION);
-if(savedSession&&getUsers()[savedSession]){
-  const u=getUsers()[savedSession];
-  session={email:savedSession,name:u.name};
-  startApp();
+if(savedSession){
+  session={email:savedSession,name:savedSession.split('@')[0]};
+  startApp().catch(e=>console.error(e));
 }else{
   switchPanel('auth');
+}
 }
 })();
 </script>
