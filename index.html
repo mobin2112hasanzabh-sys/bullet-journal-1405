@@ -160,63 +160,65 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .notebook-label{font-size:11px;color:var(--muted);font-weight:700;margin-bottom:4px}
 .notebook-text{font-size:13px;line-height:1.8;white-space:pre-wrap;word-break:break-word;color:var(--text)}
 
-/* ═══════════ استایل‌های نقشه حرارتی اختصاصی هر عادت ═══════════ */
+/* ═══════════ استایل‌های پنجره (Modal) ═══════════ */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000; padding: 20px; backdrop-filter: blur(3px);
+}
+.modal-content {
+  background: var(--white); border: 1px solid var(--line);
+  border-radius: 18px; padding: 24px; width: 100%; max-width: 450px;
+  box-shadow: var(--shadow2); animation: modalIn 0.3s ease;
+}
+@keyframes modalIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--line); padding-bottom: 10px; }
+.modal-header h3 { margin: 0; color: var(--dark); font-size: 16px; }
+
+/* ═══════════ استایل‌های نقشه حرارتی پیشرفته ═══════════ */
 .habit-heatmap-row {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 12px;
-  padding: 12px;
-  background: var(--paper);
-  border-radius: 12px;
-  border: 1px solid var(--line);
-  transition: transform 0.2s;
+  display: flex; flex-direction: column; gap: 8px;
+  margin-bottom: 16px; padding: 14px;
+  background: var(--paper); border-radius: 14px;
+  border: 1px solid var(--line); transition: transform 0.2s;
 }
-.habit-heatmap-row:hover {
-  transform: translateX(-3px);
-  box-shadow: var(--shadow);
-}
-.habit-heatmap-title {
-  min-width: 110px;
-  font-weight: 700;
-  font-size: 13px;
-  color: var(--dark);
-  overflow-wrap: anywhere;
-}
-.heatmap-scroll {
-  overflow-x: auto;
-  padding-bottom: 4px;
-  flex: 1;
-}
-.heatmap {
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-rows: repeat(7, 1fr);
-  gap: 3px;
-  width: max-content;
-}
+.habit-heatmap-row:hover { transform: translateX(-3px); box-shadow: var(--shadow); }
+.habit-heatmap-title { font-weight: 800; font-size: 14px; color: var(--dark); display: flex; justify-content: space-between; align-items: center; }
+
+.heatmap-wrapper { display: flex; gap: 6px; direction: rtl; overflow-x: auto; padding-bottom: 5px; }
+.heatmap-y-axis { display: grid; grid-template-rows: repeat(7, 14px); gap: 3px; font-size: 9px; color: var(--muted); padding-top: 20px; }
+.heatmap-main { display: flex; flex-direction: column; }
+.heatmap-x-axis { display: flex; gap: 3px; height: 20px; font-size: 9px; color: var(--muted); position: relative; align-items: flex-end; }
+.heatmap-x-label { position: absolute; white-space: nowrap; bottom: 0; }
+.heatmap-grid { display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, 14px); gap: 3px; direction: rtl; }
+
 .heatmap .cell {
-  width: 14px;
-  height: 14px;
-  border-radius: 3px;
-  background-color: var(--cream2); /* روزهای خالی */
-  border: 1px solid var(--line);
-  transition: transform 0.15s;
+  width: 14px; height: 14px; border-radius: 3px;
+  background-color: var(--cream2); border: 1px solid var(--line);
+  transition: transform 0.15s; cursor: pointer; position: relative;
 }
-.heatmap .cell:hover {
-  transform: scale(1.3);
-  outline: 1px solid var(--dark);
-  z-index: 10;
-}
-/* وضعیت‌های عادت */
+.heatmap .cell:hover { transform: scale(1.3); outline: 1px solid var(--dark); z-index: 10; }
 .heatmap .cell.done { background-color: var(--olive); border-color: var(--olive); }
 .heatmap .cell.rest { background-color: var(--gold); border-color: var(--gold); }
 .heatmap .cell.not_done { background-color: var(--redbg); border-color: var(--redbg); }
-
-/* حالت تاریک */
+.heatmap .cell.has-note::after {
+  content: ''; position: absolute; bottom: 1px; left: 1px;
+  width: 4px; height: 4px; background-color: var(--blue); border-radius: 50%;
+}
+/* استایل مخصوص روز جاری (امروز) */
+.heatmap .cell.today-cell {
+  box-shadow: 0 0 0 2px var(--gold);
+  border-color: var(--gold);
+  z-index: 5;
+}
+[data-theme="dark"] .heatmap .cell.today-cell {
+  box-shadow: 0 0 0 2px #d9b866;
+}
 [data-theme="dark"] .heatmap .cell.done { background-color: #9caf7a; border-color: #9caf7a; }
 [data-theme="dark"] .heatmap .cell.rest { background-color: #d9b866; border-color: #d9b866; }
 [data-theme="dark"] .heatmap .cell.not_done { background-color: #4a2a24; border-color: #4a2a24; }
+[data-theme="dark"] .heatmap .cell.has-note::after { background-color: #8bb0d0; }
+
 @media(max-width:1000px){.formgrid-goal{grid-template-columns:1fr 1fr 1fr}.formgrid-goal>button{grid-column:1/-1}}
 @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.week-columns{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:780px){.wrap{padding:14px}.formgrid,.formgrid2,.formgrid-goal{grid-template-columns:1fr 1fr}.formgrid-goal>button{grid-column:1/-1}.item{flex-direction:column;align-items:flex-start}.item-actions{width:100%}.week-columns{grid-template-columns:repeat(2,1fr)}.nav button{flex:1;padding:7px 8px;font-size:12px}}
@@ -478,6 +480,38 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
   <div><div class="pomo-label">⏱️ پومودورو</div><div class="pomo-time" id="pomoTime">25:00</div></div>
   <button class="small secondary" id="pomoToggle">شروع</button>
   <button class="small ghost" id="pomoClose">×</button>
+</div>
+
+<!-- پنجره یادداشت روزانه عادت‌ها -->
+<div id="habitNoteModal" class="modal-overlay hidden">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modalTitle">جزئیات روز</h3>
+      <button id="modalClose" class="ghost small">×</button>
+    </div>
+    <input type="hidden" id="modalHabitId">
+    <input type="hidden" id="modalDate">
+    
+    <div class="field" style="margin-bottom:12px">
+      <label>وضعیت این روز</label>
+      <select id="modalStatus">
+        <option value="">ثبت نشده (پاک کردن)</option>
+        <option value="done">✅ انجام شد</option>
+        <option value="not_done">❌ انجام نشد</option>
+        <option value="rest">☕ استراحت</option>
+      </select>
+    </div>
+    
+    <div class="field" style="margin-bottom:16px">
+      <label>📝 یادداشت / توضیحات این روز</label>
+      <textarea id="modalNote" rows="4" placeholder="امروز چطور گذشت؟ مثلاً: خیلی خسته بودم اما انجامش دادم!"></textarea>
+    </div>
+    
+    <div style="display:flex; gap:10px; justify-content:flex-end">
+      <button id="modalSaveBtn">💾 ذخیره</button>
+      <button id="modalCancelBtn" class="secondary">لغو</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -776,23 +810,28 @@ function renderToday(){
       <div class="check-title">${safe(t.title)}</div>
       ${t.priority==='urgent_important'?'<span class="status late">فوری</span>':''}</div>`;
   }).join(''):'<p class="muted">هنوز وظیفه‌ای برای امروز نیست.</p>';
+  
   const habitToday=data.habits.map(h=>({h,s:data.logs.find(l=>String(l.habit_id)===String(h.id)&&l.date===today)?.status||''}));
   const doneH=habitToday.filter(x=>x.s==='done').length;
   $('habitTodayCount').textContent=`${fa(doneH)} / ${fa(habitToday.length)}`;
+  
   $('todayHabits').innerHTML=habitToday.length?habitToday.map(({h,s})=>{
     const c=s==='done';
-    return `<div class="checklist-item ${c?'checked':''}" data-toggle-habit="${h.id}">
-      <div class="check-box">${c?'✓':''}</div>
-      <div class="check-title">${safe(h.name)}</div>
-      ${s==='rest'?'<span class="status gold">استراحت</span>':''}</div>`;
+    return `<div class="checklist-item ${c?'checked':''}">
+      <div class="check-box" data-toggle-habit="${h.id}">${c?'✓':''}</div>
+      <div class="check-title" data-toggle-habit="${h.id}">${safe(h.name)}</div>
+      ${s==='rest'?'<span class="status gold">استراحت</span>':''}
+      <button class="ghost small" data-open-note="${h.id}" data-date="${today}" style="padding:2px 8px;font-size:11px">📝</button>
+    </div>`;
   }).join(''):'<p class="muted">هنوز عادتی اضافه نکردی.</p>';
+  
   const note=data.daily.find(d=>d.date===today);
   $('morningNote').value=note?.morning||'';
   $('eveningNote').value=note?.evening||'';
   $('highlightToday').value=note?.highlight||'';
   $('gratitudeToday').value=note?.gratitude||'';
   const pomos=data.pomodoro.filter(p=>p.date===today).reduce((a,p)=>a+(p.minutes||0),0);
-   const todayWeekly=data.weeklyTasks.filter(t=>t.date===today);
+  const todayWeekly=data.weeklyTasks.filter(t=>t.date===today);
   const doneWeekly=todayWeekly.filter(t=>t.done).length;
   const weeklySum=todayWeekly.reduce((a,t)=>a+(Number(t.value)||0),0);
   $('todayStats').innerHTML=`
@@ -977,31 +1016,47 @@ function renderHabits(){
     const streak=calcStreak(h.id);
     return `<article class="habit" style="background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
       <span style="font-weight:700">${safe(h.name)} ${streak>0?`<span class="status gold">🔥 ${fa(streak)}</span>`:''}</span>
-      <select data-habit-status="${h.id}" style="width:auto"><option value="" ${!s?'selected':''}>ثبت نشده</option>${Object.entries(sl).map(([v,l])=>`<option value="${v}" ${s===v?'selected':''}>${l}</option>`).join('')}</select>
-      <button class="danger small" data-del="habits" data-id="${h.id}">×</button></article>`;
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+        <button class="ghost small" data-open-note="${h.id}" data-date="${dateISO()}">📝 یادداشت</button>
+        <select data-habit-status="${h.id}" style="width:auto"><option value="" ${!s?'selected':''}>ثبت نشده</option>${Object.entries(sl).map(([v,l])=>`<option value="${v}" ${s===v?'selected':''}>${l}</option>`).join('')}</select>
+        <button class="danger small" data-del="habits" data-id="${h.id}">×</button>
+      </div>
+    </article>`;
   }).join(''):'<p class="muted">هنوز عادتی اضافه نشده.</p>';
   renderHabitHeatmap();
 }
 function renderHabitHeatmap(){
   const weeks = 12;
   const today = new Date();
+  const todayStr = dateISO(today); // استرینگ امروز برای مقایسه
   const start = new Date(today);
   start.setDate(today.getDate() - (weeks * 7 - 1));
   
-  // هم‌راستا کردن شروع با شنبه (برای اینکه ستون‌ها دقیقاً روزهای هفته باشن)
+  // هم‌راستا کردن شروع با شنبه
   const startDay = start.getDay(); 
   const fromSat = (startDay + 1) % 7;
   start.setDate(start.getDate() - fromSat);
 
-  // تابع کمکی برای ساخت نقشه یک عادت خاص
   const generateHeatmapForHabit = (habit) => {
     let cells = [];
+    let xLabels = [];
+    let lastMonth = -1;
+    
     for (let i = 0; i < (weeks * 7) + 7; i++) {
       const d = new Date(start);
       d.setDate(start.getDate() + i);
       const iso = dateISO(d);
       
-      // پیدا کردن وضعیت این عادت در این روز خاص
+      // لیبل ماه‌ها روی محور X
+      const faDateObj = new Intl.DateTimeFormat('fa-IR-u-ca-persian', {month:'long', day:'numeric'}).formatToParts(d);
+      const monthName = faDateObj.find(p => p.type === 'month')?.value;
+      const dayNum = parseInt(faDateObj.find(p => p.type === 'day')?.value, 10);
+      
+      if (monthName && monthName !== lastMonth && dayNum <= 7) {
+        xLabels.push({ col: i, name: monthName });
+        lastMonth = monthName;
+      }
+
       const log = data.logs.find(l => String(l.habit_id) === String(habit.id) && l.date === iso);
       let cls = '';
       if (log) {
@@ -1009,48 +1064,56 @@ function renderHabitHeatmap(){
         else if (log.status === 'rest') cls = 'rest';
         else if (log.status === 'not_done') cls = 'not_done';
       }
+      if (log && log.note) cls += ' has-note';
       
       const isFuture = new Date(iso) > today;
+      const isToday = iso === todayStr; // چک کردن اینکه این مربع مربوط به امروزه یا نه
       const futureStyle = isFuture ? 'opacity: 0.3;' : '';
+      const todayClass = isToday ? 'today-cell' : ''; // اضافه کردن کلاس امروز
       
-      cells.push(`<div class="cell ${cls}" style="${futureStyle}" title="${toFaDate(iso)}: ${log ? log.status : 'ثبت نشده'}"></div>`);
+      cells.push(`<div class="cell ${cls} ${todayClass}" style="${futureStyle}" 
+        data-heatmap-cell="1" 
+        data-habit-id="${habit.id}" 
+        data-date="${iso}"
+        title="${isToday ? 'امروز - ' : ''}${toFaDate(iso)} ${log?.note ? '- ' + safe(log.note) : ''}"></div>`);
     }
-    return `<div class="heatmap">${cells.join('')}</div>`;
+
+    // ساخت محور X (ماه‌ها)
+    const xAxisHtml = xLabels.map(l => `<span class="heatmap-x-label" style="right: ${(l.col * 17) + 20}px;">${l.name}</span>`).join('');
+    
+    return `
+      <div class="heatmap-wrapper">
+        <div class="heatmap-y-axis">
+          <span>شنبه</span><span></span><span>دوشنبه</span><span></span><span>چهارشنبه</span><span></span><span>جمعه</span>
+        </div>
+        <div class="heatmap-main">
+          <div class="heatmap-x-axis">${xAxisHtml}</div>
+          <div class="heatmap-grid">${cells.join('')}</div>
+        </div>
+      </div>
+    `;
   };
 
-  // ۱. رندر در تب "عادت‌ها" (برای همه عادت‌ها)
   const tabEl = $('habitHeatmapTab');
   if (tabEl) {
-    if (!data.habits.length) {
-      tabEl.innerHTML = '<p class="muted">هنوز عادتی اضافه نکردی.</p>';
-    } else {
-      tabEl.innerHTML = data.habits.map(h => `
-        <div class="habit-heatmap-row">
-          <div class="habit-heatmap-title">${safe(h.name)}</div>
-          <div class="heatmap-scroll">
-            ${generateHeatmapForHabit(h)}
-          </div>
-        </div>
-      `).join('');
-    }
+    if (!data.habits.length) tabEl.innerHTML = '<p class="muted">هنوز عادتی اضافه نکردی.</p>';
+    else tabEl.innerHTML = data.habits.map(h => `
+      <div class="habit-heatmap-row">
+        <div class="habit-heatmap-title"><span>${safe(h.name)}</span></div>
+        ${generateHeatmapForHabit(h)}
+      </div>
+    `).join('');
   }
 
-  // ۲. رندر در تب "داشبورد" (فقط ۳ عادت اول برای اینکه شلوغ نشه)
   const dashEl = $('habitHeatmap');
   if (dashEl) {
-    if (!data.habits.length) {
-      dashEl.innerHTML = '<p class="muted">هنوز عادتی نیست.</p>';
-    } else {
-      const topHabits = data.habits.slice(0, 3);
-      dashEl.innerHTML = topHabits.map(h => `
-        <div class="habit-heatmap-row" style="padding: 8px; margin-bottom: 8px;">
-          <div class="habit-heatmap-title" style="min-width: 80px; font-size: 11px;">${safe(h.name)}</div>
-          <div class="heatmap-scroll" style="flex: 1;">
-            ${generateHeatmapForHabit(h)}
-          </div>
-        </div>
-      `).join('');
-    }
+    if (!data.habits.length) dashEl.innerHTML = '<p class="muted">هنوز عادتی نیست.</p>';
+    else dashEl.innerHTML = data.habits.slice(0, 3).map(h => `
+      <div class="habit-heatmap-row" style="padding: 10px; margin-bottom: 10px;">
+        <div class="habit-heatmap-title" style="font-size:12px; margin-bottom:4px;">${safe(h.name)}</div>
+        ${generateHeatmapForHabit(h)}
+      </div>
+    `).join('');
   }
 }
 
@@ -1064,13 +1127,24 @@ function renderFinance(){
   }).join(''):'<p class="muted">هنوز تراکنشی نیست.</p>';
 }
 function renderMonthlyFinance(){
-  const months=['آبان','آذر','دی'];
+  // استخراج ماه‌های منحصر به فرد از بین تمام تراکنش‌های مالی
+  const allMonths = [...new Set(data.finance.map(f => f.month).filter(Boolean))];
+  
+  if(allMonths.length === 0) {
+    $('monthlyFinance').innerHTML = '<p class="muted" style="text-align:center;padding:20px">هنوز تراکنشی برای نمایش نیست.</p>';
+    return;
+  }
+
+  // نمایش ۳ ماه آخر (اگر بیشتر از ۳ ماه داده داری)
+  const months = allMonths.slice(-3);
+  
   const rows=months.map(m=>{
     const inc=data.finance.filter(f=>f.month===m&&f.type==='درآمد').reduce((a,f)=>a+Number(f.amount||0),0);
     const exp=data.finance.filter(f=>f.month===m&&f.type==='هزینه').reduce((a,f)=>a+Number(f.amount||0),0);
     const sav=data.finance.filter(f=>f.month===m&&f.type==='پس‌انداز').reduce((a,f)=>a+Number(f.amount||0),0);
     return `<tr><td style="padding:10px;border-bottom:1px solid var(--line)">${m}</td><td style="padding:10px;border-bottom:1px solid var(--line)" class="money-pos">${fa(inc)}</td><td style="padding:10px;border-bottom:1px solid var(--line)" class="money-neg">${fa(exp)}</td><td style="padding:10px;border-bottom:1px solid var(--line)">${fa(sav)}</td></tr>`;
   }).join('');
+  
   $('monthlyFinance').innerHTML=`<table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr style="background:var(--cream2)"><th style="padding:10px;text-align:right">ماه</th><th style="padding:10px;text-align:right">درآمد</th><th style="padding:10px;text-align:right">هزینه</th><th style="padding:10px;text-align:right">پس‌انداز</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 function renderExpenseDonut(){
@@ -1116,54 +1190,81 @@ function renderNotebook(){
   if(!el)return;
   const search=($('notebookSearch')?.value||'').trim().toLowerCase();
   const filter=$('notebookFilter')?.value||'all';
-  let arr=[...data.daily].sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+  
+  // ۱. یادداشت‌های روزانه (دفترچه خاطرات)
+  let dailyNotes = data.daily.map(n => ({ type: 'daily', date: n.date, data: n }));
+  
+  // ۲. یادداشت‌های مربوط به عادت‌ها
+  let habitNotes = data.logs.filter(l => l.note && l.note.trim() !== '').map(l => {
+    const habit = data.habits.find(h => String(h.id) === String(l.habit_id));
+    return { type: 'habit', date: l.date, data: l, habitName: habit ? habit.name : 'عادت حذف‌شده' };
+  });
 
-  if(filter==='7'){
-    const cutoff=new Date();cutoff.setDate(cutoff.getDate()-7);
-    arr=arr.filter(n=>new Date(n.date)>=cutoff);
-  }
-  if(filter==='30'){
-    const cutoff=new Date();cutoff.setDate(cutoff.getDate()-30);
-    arr=arr.filter(n=>new Date(n.date)>=cutoff);
-  }
-  if(filter==='this_month'){
-    const first=new Date();first.setDate(1);
-    arr=arr.filter(n=>new Date(n.date)>=first);
-  }
+  // ترکیب و مرتب‌سازی بر اساس تاریخ (نزولی)
+  let arr = [...dailyNotes, ...habitNotes].sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+
+  // فیلتر زمان
+  if(filter==='7'){ const cutoff=new Date(); cutoff.setDate(cutoff.getDate()-7); arr=arr.filter(n=>new Date(n.date)>=cutoff); }
+  if(filter==='30'){ const cutoff=new Date(); cutoff.setDate(cutoff.getDate()-30); arr=arr.filter(n=>new Date(n.date)>=cutoff); }
+  if(filter==='this_month'){ const first=new Date(); first.setDate(1); arr=arr.filter(n=>new Date(n.date)>=first); }
+
+  // فیلتر جستجو
   if(search){
-    arr=arr.filter(n=>
-      String(n.morning||'').toLowerCase().includes(search)||
-      String(n.evening||'').toLowerCase().includes(search)||
-      String(n.highlight||'').toLowerCase().includes(search)||
-      String(n.gratitude||'').toLowerCase().includes(search)
-    );
+    arr=arr.filter(n=>{
+      if (n.type === 'daily') {
+        return String(n.data.morning||'').toLowerCase().includes(search) ||
+               String(n.data.evening||'').toLowerCase().includes(search) ||
+               String(n.data.highlight||'').toLowerCase().includes(search) ||
+               String(n.data.gratitude||'').toLowerCase().includes(search);
+      } else {
+        return String(n.data.note||'').toLowerCase().includes(search) ||
+               String(n.habitName||'').toLowerCase().includes(search);
+      }
+    });
   }
 
-  const total=data.daily.length;
-  $('notebookCount').textContent=total?`${fa(arr.length)} از ${fa(total)}`:'—';
+  const total = arr.length;
+  $('notebookCount').textContent = total ? `${fa(total)} یادداشت` : '—';
 
   if(!arr.length){
-    el.innerHTML='<p class="muted" style="text-align:center;padding:30px">یادداشتی برای نمایش نیست. از تب «📓 امروز» شروع کن.</p>';
+    el.innerHTML='<p class="muted" style="text-align:center;padding:30px">یادداشتی برای نمایش نیست.</p>';
     return;
   }
 
   el.innerHTML=arr.map(n=>{
-    const isToday=n.date===dateISO();
-    return `<div class="panel notebook-card" data-notebook-date="${n.date}">
-      <div class="sectionhead" style="margin-bottom:10px">
-        <div><h3 style="margin:0">📅 ${toFaDate(n.date)} ${isToday?'<span class="status gold" style="font-size:10px">امروز</span>':''}</h3></div>
-        <div style="display:flex;gap:6px">
-          <button class="ghost small" data-edit-notebook="${n.date}">✏️ ویرایش</button>
-          <button class="danger small" data-del-notebook="${n.date}">×</button>
+    const isToday = n.date === dateISO();
+    
+    if (n.type === 'daily') {
+      return `<div class="panel notebook-card" data-notebook-date="${n.date}">
+        <div class="sectionhead" style="margin-bottom:10px">
+          <div><h3 style="margin:0">📅 ${toFaDate(n.date)} ${isToday?'<span class="status gold" style="font-size:10px">امروز</span>':''}</h3></div>
+          <div style="display:flex;gap:6px">
+            <button class="ghost small" data-edit-notebook="${n.date}">✏️ ویرایش</button>
+            <button class="danger small" data-del-notebook="${n.date}">×</button>
+          </div>
         </div>
-      </div>
-      <div class="grid2" style="gap:10px">
-        ${n.morning?`<div class="notebook-section"><div class="notebook-label">🌅 صبح</div><div class="notebook-text">${safe(n.morning)}</div></div>`:''}
-        ${n.evening?`<div class="notebook-section"><div class="notebook-label">🌙 شب</div><div class="notebook-text">${safe(n.evening)}</div></div>`:''}
-      </div>
-      ${n.highlight?`<div class="notebook-section" style="margin-top:10px"><div class="notebook-label">✨ بهترین اتفاق</div><div class="notebook-text">${safe(n.highlight)}</div></div>`:''}
-      ${n.gratitude?`<div class="notebook-section" style="margin-top:10px"><div class="notebook-label">🙏 شکرگزاری</div><div class="notebook-text">${safe(n.gratitude)}</div></div>`:''}
-    </div>`;
+        <div class="grid2" style="gap:10px">
+          ${n.data.morning?`<div class="notebook-section"><div class="notebook-label">🌅 صبح</div><div class="notebook-text">${safe(n.data.morning)}</div></div>`:''}
+          ${n.data.evening?`<div class="notebook-section"><div class="notebook-label">🌙 شب</div><div class="notebook-text">${safe(n.data.evening)}</div></div>`:''}
+        </div>
+        ${n.data.highlight?`<div class="notebook-section" style="margin-top:10px"><div class="notebook-label">✨ بهترین اتفاق</div><div class="notebook-text">${safe(n.data.highlight)}</div></div>`:''}
+        ${n.data.gratitude?`<div class="notebook-section" style="margin-top:10px"><div class="notebook-label">🙏 شکرگزاری</div><div class="notebook-text">${safe(n.data.gratitude)}</div></div>`:''}
+      </div>`;
+    } else {
+      // نمایش یادداشت عادت
+      return `<div class="panel notebook-card">
+        <div class="sectionhead" style="margin-bottom:10px">
+          <div><h3 style="margin:0">🔥 ${safe(n.habitName)} - ${toFaDate(n.date)}</h3></div>
+          <span class="status ${n.data.status==='done'?'done':n.data.status==='rest'?'gold':'late'}">
+            ${n.data.status==='done'?'انجام شد':n.data.status==='rest'?'استراحت':'انجام نشد'}
+          </span>
+        </div>
+        <div class="notebook-section">
+          <div class="notebook-label">📝 یادداشت</div>
+          <div class="notebook-text">${safe(n.data.note)}</div>
+        </div>
+      </div>`;
+    }
   }).join('');
 }
 function renderUni(){
@@ -1554,6 +1655,61 @@ function stopPomo(){clearInterval(pInt);pRun=false;$('pomoBox').classList.remove
 $('pomoToggle').addEventListener('click',()=>{pRun?stopPomo():startPomo();});
 $('pomoClose').addEventListener('click',()=>{stopPomo();show('pomoBox',false);});
 document.addEventListener('keydown',e=>{if(e.key==='p'&&e.ctrlKey){e.preventDefault();show('pomoBox',$('pomoBox').classList.contains('hidden'));if(!$('pomoBox').classList.contains('hidden'))upPomo();}});
+
+// ═══════════ منطق پنجره یادداشت عادت ═══════════
+document.addEventListener('click', e => {
+  // باز کردن از طریق دکمه 📝 یا کلیک روی مربع هیت‌مپ
+  const btn = e.target.closest('[data-open-note]');
+  const cell = e.target.closest('[data-heatmap-cell]');
+  
+  if (btn || cell) {
+    const habitId = btn ? btn.dataset.openNote : cell.dataset.habitId;
+    const date = btn ? btn.dataset.date : cell.dataset.date;
+    
+    const habit = data.habits.find(h => String(h.id) === String(habitId));
+    const log = data.logs.find(l => String(l.habit_id) === String(habitId) && l.date === date);
+    
+    $('modalTitle').textContent = `${habit ? habit.name : 'عادت'} - ${toFaDate(date)}`;
+    $('modalHabitId').value = habitId;
+    $('modalDate').value = date;
+    $('modalStatus').value = log ? log.status : '';
+    $('modalNote').value = log ? (log.note || '') : '';
+    
+    $('habitNoteModal').classList.remove('hidden');
+    return;
+  }
+
+  // بستن مدال
+  if (e.target.id === 'modalClose' || e.target.id === 'modalCancelBtn' || e.target.id === 'habitNoteModal') {
+    $('habitNoteModal').classList.add('hidden');
+    return;
+  }
+
+  // ذخیره یادداشت
+  if (e.target.id === 'modalSaveBtn') {
+    const hid = $('modalHabitId').value;
+    const date = $('modalDate').value;
+    const status = $('modalStatus').value;
+    const note = $('modalNote').value.trim();
+    
+    const idx = data.logs.findIndex(l => String(l.habit_id) === String(hid) && l.date === date);
+    
+    if (!status && !note) {
+      if (idx >= 0) data.logs.splice(idx, 1);
+    } else {
+      if (idx >= 0) {
+        data.logs[idx].status = status;
+        data.logs[idx].note = note;
+      } else {
+        data.logs.push({ id: nid(), habit_id: String(hid), date: date, status: status, note: note });
+      }
+    }
+    
+    $('habitNoteModal').classList.add('hidden');
+    save(); 
+    flash('یادداشت ذخیره شد ✓');
+  }
+});
 
 // ═══════════ شروع ═══════════
 initTheme();
