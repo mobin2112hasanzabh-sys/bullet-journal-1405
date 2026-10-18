@@ -160,6 +160,28 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .notebook-label{font-size:11px;color:var(--muted);font-weight:700;margin-bottom:4px}
 .notebook-text{font-size:13px;line-height:1.8;white-space:pre-wrap;word-break:break-word;color:var(--text)}
 
+/* ═══════════ استایل‌های نقشه حرارتی (Heatmap) ═══════════ */
+.heatmap .cell {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  background-color: var(--cream2); /* رنگ پیش‌فرض (خالی) */
+  transition: transform 0.1s;
+}
+.heatmap .cell:hover {
+  transform: scale(1.3);
+  outline: 1px solid var(--brown);
+  z-index: 10;
+}
+/* سطوح مختلف رنگ سبز برای روزهای پرکار */
+.heatmap .cell.l1 { background-color: #c6d3a8; } /* کم */
+.heatmap .cell.l2 { background-color: #a1bc75; } /* متوسط */
+.heatmap .cell.l3 { background-color: #78845b; } /* خوب */
+.heatmap .cell.l4 { background-color: #4b5a32; } /* عالی */
+[data-theme="dark"] .heatmap .cell.l1 { background-color: #4a5c3a; }
+[data-theme="dark"] .heatmap .cell.l2 { background-color: #5f7a42; }
+[data-theme="dark"] .heatmap .cell.l3 { background-color: #7d9e53; }
+[data-theme="dark"] .heatmap .cell.l4 { background-color: #9caf7a; }
 @media(max-width:1000px){.formgrid-goal{grid-template-columns:1fr 1fr 1fr}.formgrid-goal>button{grid-column:1/-1}}
 @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.week-columns{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:780px){.wrap{padding:14px}.formgrid,.formgrid2,.formgrid-goal{grid-template-columns:1fr 1fr}.formgrid-goal>button{grid-column:1/-1}.item{flex-direction:column;align-items:flex-start}.item-actions{width:100%}.week-columns{grid-template-columns:repeat(2,1fr)}.nav button{flex:1;padding:7px 8px;font-size:12px}}
