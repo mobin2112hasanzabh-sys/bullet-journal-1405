@@ -983,17 +983,75 @@ function renderHabits(){
   renderHabitHeatmap();
 }
 function renderHabitHeatmap(){
-  const weeks=12;const cells=[];
-  const today=new Date();const start=new Date(today);start.setDate(today.getDate()-(weeks*7-1));
-  for(let i=0;i<weeks*7;i++){const d=new Date(start);d.setDate(start.getDate()+i);const iso=dateISO(d);
-    const c=data.logs.filter(l=>l.date===iso&&l.status==='done').length;
-    let lvl='';const tot=Math.max(1,data.habits.length);
-    if(c>=Math.ceil(tot*0.75))lvl='l4';else if(c>=Math.ceil(tot*0.5))lvl='l3';else if(c>=Math.ceil(tot*0.25))lvl='l2';else if(c>0)lvl='l1';
-    cells.push(`<div class="cell ${lvl}" title="${toFaDate(iso)}: ${fa(c)}"></div>`);
+  const weeks = 12;
+  const today = new Date();
+  const start = new Date(today);
+  start.setDate(today.getDate() - (weeks * 7 - 1));
+  
+  // هم‌راستا کردن شروع با شنبه (برای اینکه ستون‌ها دقیقاً روزهای هفته باشن)
+  const startDay = start.getDay(); 
+  const fromSat = (startDay + 1) % 7;
+  start.setDate(start.getDate() - fromSat);
+
+  // تابع کمکی برای ساخت نقشه یک عادت خاص
+  const generateHeatmapForHabit = (habit) => {
+    let cells = [];
+    for (let i = 0; i < (weeks * 7) + 7; i++) {
+      const d = new Date(start);
+      d.setDate(start.getDate() + i);
+      const iso = dateISO(d);
+      
+      // پیدا کردن وضعیت این عادت در این روز خاص
+      const log = data.logs.find(l => String(l.habit_id) === String(habit.id) && l.date === iso);
+      let cls = '';
+      if (log) {
+        if (log.status === 'done') cls = 'done';
+        else if (log.status === 'rest') cls = 'rest';
+        else if (log.status === 'not_done') cls = 'not_done';
+      }
+      
+      const isFuture = new Date(iso) > today;
+      const futureStyle = isFuture ? 'opacity: 0.3;' : '';
+      
+      cells.push(`<div class="cell ${cls}" style="${futureStyle}" title="${toFaDate(iso)}: ${log ? log.status : 'ثبت نشده'}"></div>`);
+    }
+    return `<div class="heatmap">${cells.join('')}</div>`;
+  };
+
+  // ۱. رندر در تب "عادت‌ها" (برای همه عادت‌ها)
+  const tabEl = $('habitHeatmapTab');
+  if (tabEl) {
+    if (!data.habits.length) {
+      tabEl.innerHTML = '<p class="muted">هنوز عادتی اضافه نکردی.</p>';
+    } else {
+      tabEl.innerHTML = data.habits.map(h => `
+        <div class="habit-heatmap-row">
+          <div class="habit-heatmap-title">${safe(h.name)}</div>
+          <div class="heatmap-scroll">
+            ${generateHeatmapForHabit(h)}
+          </div>
+        </div>
+      `).join('');
+    }
   }
-  const html=`<div style="overflow-x:auto"><div class="heatmap" style="display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,1fr);gap:3px">${cells.join('')}</div></div>`;
-  if($('habitHeatmap'))$('habitHeatmap').innerHTML=html;
-  if($('habitHeatmapTab'))$('habitHeatmapTab').innerHTML=html;
+
+  // ۲. رندر در تب "داشبورد" (فقط ۳ عادت اول برای اینکه شلوغ نشه)
+  const dashEl = $('habitHeatmap');
+  if (dashEl) {
+    if (!data.habits.length) {
+      dashEl.innerHTML = '<p class="muted">هنوز عادتی نیست.</p>';
+    } else {
+      const topHabits = data.habits.slice(0, 3);
+      dashEl.innerHTML = topHabits.map(h => `
+        <div class="habit-heatmap-row" style="padding: 8px; margin-bottom: 8px;">
+          <div class="habit-heatmap-title" style="min-width: 80px; font-size: 11px;">${safe(h.name)}</div>
+          <div class="heatmap-scroll" style="flex: 1;">
+            ${generateHeatmapForHabit(h)}
+          </div>
+        </div>
+      `).join('');
+    }
+  }
 }
 
 // ═══════════ مالی ═══════════
