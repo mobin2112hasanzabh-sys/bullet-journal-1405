@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#4b3526">
 <title>بولت ژورنال من | ۱۴۰۵</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📓</text></svg>">
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
 
 <!-- کتابخانه تقویم شمسی -->
@@ -667,7 +668,7 @@ const labels={priority:{urgent_important:'فوری و مهم',important:'مهم'
 
 const nid=()=>'g'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 
-// ابزارهای تاریخ شمسی
+// ابزارهای تاریخ شمسی (اصلاح‌شده برای پذیرش تاریخ میلادی)
 const getPersianDateValue = (id) => {
   const el = $(id);
   if (!el) return null;
@@ -685,6 +686,11 @@ const getPersianDateValue = (id) => {
     const m = parseInt(parts[1], 10);
     const d = parseInt(parts[2], 10);
     
+    // اگر کاربر تاریخ میلادی وارد کرده باشد (مثلاً 2026/10/03)
+    if (y > 1900) {
+      return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    }
+
     if (y < 1300 || y > 1500 || m < 1 || m > 12 || d < 1 || d > 31) return null;
 
     const pDate = new persianDate([y, m, d]);
@@ -821,9 +827,17 @@ async function startApp(){
   $('settingsEmail').textContent=session.email;
   $('settingsCreated').textContent=toFaDate(new Date().toISOString())||'—';
   
-  ['moodDate','finDate','fxDate','uniDue','skillEnd','mgDue','taskDue','rtStartDate','rtEndDate'].forEach(id=>{if($(id))setPersianDateValue(id, dateISO());});
+  ['moodDate','finDate','fxDate','uniDue','skillEnd','mgDue','taskDue'].forEach(id=>{if($(id))setPersianDateValue(id, dateISO());});
   if($('wgDue')) setPersianDateValue('wgDue', getWeekStartStr(0)); 
   
+  // تنظیم پیش‌فرض بازه زمانی برای برنامه‌های زمان‌دار (از امروز تا یک ماه بعد)
+  if($('rtStartDate')) setPersianDateValue('rtStartDate', dateISO());
+  if($('rtEndDate')) {
+    const nextMonth = new Date();
+    nextMonth.setMonth(nextMonth.getMonth() + 1);
+    setPersianDateValue('rtEndDate', dateISO(nextMonth));
+  }
+
   switchPanel('app');
   renderAll();
   startLiveClock(); // شروع ساعت زنده
@@ -899,10 +913,15 @@ function renderRoutines(){
 
 function getRoutinesForDay(isoDate) {
   if (!data.routines) return [];
-  const d = new Date(isoDate);
-  const dow = d.getDay();
+  const parts = isoDate.split('-');
+  // استفاده از ساعت ۱۲ ظهر برای جلوگیری از مشکل اختلاف زمانی
+  const d = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]), 12, 0, 0);
+  const dow = d.getDay(); // 0=یکشنبه, 1=دوشنبه, ... 6=شنبه
+  
   return data.routines.filter(r => {
-    return r.dayOfWeek === dow && isoDate >= r.startDate && isoDate <= r.endDate;
+    const dayMatches = parseInt(r.dayOfWeek) === dow;
+    const dateInRange = isoDate >= r.startDate && isoDate <= r.endDate;
+    return dayMatches && dateInRange;
   }).sort((a,b) => a.startTime.localeCompare(b.startTime));
 }
 
@@ -1833,6 +1852,12 @@ $('routineForm').addEventListener('submit', e => {
   });
   
   $('routineForm').reset();
+  // تنظیم مجدد تاریخ‌ها به حالت پیش‌فرض
+  setPersianDateValue('rtStartDate', dateISO());
+  const nextMonth = new Date();
+  nextMonth.setMonth(nextMonth.getMonth() + 1);
+  setPersianDateValue('rtEndDate', dateISO(nextMonth));
+  
   save();
   flash('برنامه زمان‌دار ثبت شد ✓');
 });
