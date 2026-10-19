@@ -944,7 +944,6 @@ function renderTimeline() {
 
   container.innerHTML = html;
 
-  // روتین‌ها
   const routines = getRoutinesForDay(today);
   routines.forEach(r => {
     const startP = r.startTime.split(':');
@@ -964,7 +963,6 @@ function renderTimeline() {
     container.appendChild(el);
   });
 
-  // کارهای هفتگی ساعت‌دارِ امروز
   const todayTimedTasks = data.weeklyTasks.filter(t => t.date === today && t.startTime && t.endTime);
   todayTimedTasks.forEach(t => {
     const startP = t.startTime.split(':');
@@ -1032,42 +1030,55 @@ function renderDashboard(){
 function renderTodayPlan(){
   const today=dateISO();
   const list=data.weeklyTasks.filter(t=>t.date===today);
-  const done=list.filter(t=>t.done).length;
-  $('todayPlanCount').textContent=list.length?`${fa(done)} / ${fa(list.length)}`:'—';
+  const todayRoutines = getRoutinesForDay(today);
+
+  const doneTasksCount = list.filter(t=>t.done).length;
+  $('todayPlanCount').textContent=list.length ? `${fa(doneTasksCount)} / ${fa(list.length)}` : '—';
+
   const el=$('todayPlanTasks');
   if(!el)return;
-  if(!list.length){
-    el.innerHTML='<p class="muted">هنوز کاری برای امروز برنامه‌ریزی نکردی.</p>';
-    return;
+
+  let html = '';
+
+  // 1. Routines
+  if(todayRoutines.length) {
+    html += `<div style="margin-bottom:12px">${todayRoutines.map(r => `<div style="background:var(--bluebg);color:var(--blue);padding:8px 12px;border-radius:8px;margin-bottom:6px;font-size:13px;font-weight:600;cursor:pointer;" data-event-type="routine" data-event-id="${r.id}">⏰ ${r.startTime} - ${r.endTime} | ${safe(r.title)}</div>`).join('')}</div>`;
   }
-  el.innerHTML=list.map(t=>{
-    const goal=data.weeklyGoals.find(g=>String(g.id)===String(t.weeklyGoalId));
-    const parent=goal?data.monthlyGoals.find(m=>String(m.id)===String(goal.monthlyGoalId)):null;
-    const unit=parent?.unit||'';
-    return `<div class="week-task ${t.done?'done':''}" style="margin-bottom:8px">
-      <div class="wt-top">
-        <div class="wt-check ${t.done?'checked':''}" data-toggle-wt-today="${t.id}">✓</div>
-        <div class="wt-body">
-          <div class="wt-title">${safe(t.title)} ${t.startTime ? `<small style="color:var(--blue)">(${t.startTime})</small>`:''}</div>
-          ${goal?`<div class="wt-tag">🎯 ${safe(goal.title.substring(0,25))}${parent?' • '+safe(parent.title.substring(0,20)):''}</div>`:''}
+
+  // 2. Weekly Tasks
+  if(list.length) {
+    html += list.map(t=>{
+      const goal=data.weeklyGoals.find(g=>String(g.id)===String(t.weeklyGoalId));
+      const parent=goal?data.monthlyGoals.find(m=>String(m.id)===String(goal.monthlyGoalId)):null;
+      const unit=parent?.unit||'';
+      return `<div class="week-task ${t.done?'done':''}" style="margin-bottom:8px">
+        <div class="wt-top">
+          <div class="wt-check ${t.done?'checked':''}" data-toggle-wt-today="${t.id}">✓</div>
+          <div class="wt-body">
+            <div class="wt-title">${safe(t.title)} ${t.startTime ? `<small style="color:var(--blue)">(${t.startTime})</small>`:''}</div>
+            ${goal?`<div class="wt-tag">🎯 ${safe(goal.title.substring(0,25))}${parent?' • '+safe(parent.title.substring(0,20)):''}</div>`:''}
+          </div>
+          <button class="ghost small" data-del-wt-today="${t.id}" style="padding:2px 6px;font-size:10px">×</button>
         </div>
-        <button class="ghost small" data-del-wt-today="${t.id}" style="padding:2px 6px;font-size:10px">×</button>
-      </div>
-      <div class="wt-input-row">
-        <input type="number" class="wt-input" min="0" step="0.25" value="${t.value||''}" placeholder="0" data-value-wt-today="${t.id}">
-        <span class="wt-unit">${safe(unit)}</span>
-      </div>
-    </div>`;
-  }).join('');
+        <div class="wt-input-row">
+          <input type="number" class="wt-input" min="0" step="0.25" value="${t.value||''}" placeholder="0" data-value-wt-today="${t.id}">
+          <span class="wt-unit">${safe(unit)}</span>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  if(!html) {
+    el.innerHTML='<p class="muted">هنوز کاری برای امروز برنامه‌ریزی نکردی.</p>';
+  } else {
+    el.innerHTML = html;
+  }
 }
 
 function renderToday(){
   const today=dateISO();
   renderTodayPlan();
   
-  const todayRoutines = getRoutinesForDay(today);
-  const routinesHtml = todayRoutines.length ? `<div style="margin-bottom:12px">${todayRoutines.map(r => `<div style="background:var(--bluebg);color:var(--blue);padding:8px 12px;border-radius:8px;margin-bottom:6px;font-size:13px;font-weight:600;cursor:pointer;" data-event-type="routine" data-event-id="${r.id}">⏰ ${r.startTime} - ${r.endTime} | ${safe(r.title)}</div>`).join('')}</div>` : '';
-
   const habitToday=data.habits.map(h=>({h,s:data.logs.find(l=>String(l.habit_id)===String(h.id)&&l.date===today)?.status||''}));
   const doneH=habitToday.filter(x=>x.s==='done').length;
   $('habitTodayCount').textContent=`${fa(doneH)} / ${fa(habitToday.length)}`;
@@ -1081,11 +1092,6 @@ function renderToday(){
       <button class="ghost small" data-open-note="${h.id}" data-date="${today}" style="padding:2px 8px;font-size:11px">📝</button>
     </div>`;
   }).join(''):'<p class="muted">هنوز عادتی اضافه نکردی.</p>';
-
-  const habitsContainer = $('todayHabits').parentElement;
-  let routineDiv = habitsContainer.querySelector('.today-routines-container');
-  if(!routineDiv) { routineDiv = document.createElement('div'); routineDiv.className = 'today-routines-container'; habitsContainer.insertBefore(routineDiv, $('todayHabits')); }
-  routineDiv.innerHTML = routinesHtml;
   
   const note=data.daily.find(d=>d.date===today);
   $('morningNote').value=note?.morning||'';
@@ -1098,7 +1104,7 @@ function renderToday(){
   const weeklySum=todayWeekly.reduce((a,t)=>a+(Number(t.value)||0),0);
   $('todayStats').innerHTML=`
     <div class="stat"><div class="label">عادت انجام‌شده</div><div class="number">${fa(doneH)}</div></div>
-    <div class="stat"><div class="label">دقایق پومودورو</div><div class="number">${fa(pomos)}</div></div>
+    <div class="stat"><div class="label">دقایق تمرکز</div><div class="number">${fa(pomos)}</div></div>
     <div class="stat"><div class="label">برنامه‌ریزی امروز</div><div class="number">${fa(doneWeekly)}/${fa(todayWeekly.length)}</div></div>
     <div class="stat"><div class="label">مجموع اجرا شده</div><div class="number">${fa(weeklySum)}</div></div>`;
 }
@@ -1692,8 +1698,7 @@ document.addEventListener('change',e=>{
 
 $('weekColumns').addEventListener('click',e=>{
   if (e.target.closest('[data-event-type]')) {
-    // Modal logic handled globally below
-    return;
+    return; // handled globally
   }
   const tg=e.target.dataset.toggleWt;
   if(tg){
