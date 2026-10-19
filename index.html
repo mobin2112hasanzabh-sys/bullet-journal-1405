@@ -6,6 +6,12 @@
 <meta name="theme-color" content="#4b3526">
 <title>بولت ژورنال من | ۱۴۰۵</title>
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+
+<!-- کتابخانه تقویم شمسی -->
+<link rel="stylesheet" href="https://unpkg.com/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">
+<script src="https://unpkg.com/persian-date@1.1.0/dist/persian-date.min.js"></script>
+<script src="https://unpkg.com/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
+
 <style>
 :root{--cream:#f7f1e7;--cream2:#eee3d2;--cream3:#e5d8bf;--brown:#76543a;--dark:#4b3526;--olive:#78845b;--olive2:#e5ead9;--text:#30271f;--muted:#766c61;--line:#ddd0be;--white:#fffdf9;--paper:#faf5ea;--red:#b95042;--redbg:#fbe9e5;--green:#456b3f;--greenbg:#e5f2e2;--gold:#b58e42;--goldbg:#faf1dd;--blue:#5b7a99;--bluebg:#e7eff5;--shadow:0 4px 18px rgba(75,53,38,.07);--shadow2:0 12px 40px rgba(75,53,38,.12);--radius:18px;--dot:rgba(118,84,58,.10)}
 [data-theme="dark"]{--cream:#2a241d;--cream2:#332b22;--cream3:#3d3328;--brown:#c4a684;--dark:#e8d9c0;--olive:#9caf7a;--olive2:#3a4232;--text:#f0e5d0;--muted:#a89b85;--line:#4a3f31;--white:#38302a;--paper:#2f2823;--red:#d97767;--redbg:#4a2a24;--green:#a4c47a;--greenbg:#2e3d28;--gold:#d9b866;--goldbg:#453a20;--blue:#8bb0d0;--bluebg:#2a3a48;--shadow:0 4px 18px rgba(0,0,0,.3);--shadow2:0 12px 40px rgba(0,0,0,.45);--dot:rgba(232,217,192,.06)}
@@ -92,7 +98,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .check-title{font-weight:600;flex:1;min-width:0;overflow-wrap:anywhere}
 .bj-bullet{display:inline-flex;width:24px;height:24px;justify-content:center;align-items:center;border:2px solid var(--brown);border-radius:6px;font-weight:900;color:var(--brown);flex-shrink:0;cursor:pointer;transition:.2s;font-size:14px}
 .bj-bullet[data-state="done"]{background:var(--olive);border-color:var(--olive);color:white}
-.pomo-box{position:fixed;bottom:20px;left:20px;background:var(--white);border:1px solid var(--line);border-radius:16px;padding:14px 18px;box-shadow:var(--shadow2);z-index:500;display:flex;align-items:center;gap:14px;font-weight:700}
+.pomo-box{position:fixed;bottom:20px;right:20px;background:var(--white);border:1px solid var(--line);border-radius:16px;padding:14px 18px;box-shadow:var(--shadow2);z-index:500;display:flex;align-items:center;gap:14px;font-weight:700}
 .pomo-box.running{background:linear-gradient(135deg,var(--olive),var(--brown));color:white}
 .pomo-time{font-size:20px;font-variant-numeric:tabular-nums}
 .pomo-label{font-size:11px;opacity:.85;font-weight:500}
@@ -192,7 +198,6 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .heatmap-x-label { position: absolute; white-space: nowrap; bottom: 0; }
 .heatmap-grid { display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, 14px); gap: 3px; direction: rtl; }
 
-/* ✅ اصلاح شد: کلاس والد به heatmap-grid تغییر کرد */
 .heatmap-grid .cell {
   width: 14px; height: 14px; border-radius: 3px;
   background-color: var(--cream2); border: 1px solid var(--line);
@@ -206,8 +211,6 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
   content: ''; position: absolute; bottom: 1px; left: 1px;
   width: 4px; height: 4px; background-color: var(--blue); border-radius: 50%;
 }
-
-/* استایل مخصوص روز جاری (امروز) */
 .heatmap-grid .cell.today-cell {
   border: 2px solid var(--gold) !important;
   box-shadow: 0 0 8px rgba(181, 142, 66, 0.5);
@@ -225,7 +228,6 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
   border-radius: 50%;
   z-index: 15;
 }
-
 [data-theme="dark"] .heatmap-grid .cell.done { background-color: #9caf7a; border-color: #9caf7a; }
 [data-theme="dark"] .heatmap-grid .cell.rest { background-color: #d9b866; border-color: #d9b866; }
 [data-theme="dark"] .heatmap-grid .cell.not_done { background-color: #4a2a24; border-color: #4a2a24; }
@@ -237,6 +239,22 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 [data-theme="dark"] .heatmap-grid .cell.today-cell::before {
   background-color: #d9b866;
 }
+
+/* ✅ استایل‌های جدید برای آیکون تقویم */
+.date-input-wrapper { position: relative; width: 100%; display: flex; align-items: center; }
+.date-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 16px; opacity: 0.6; user-select: none; z-index: 2; }
+.date-input-wrapper input { padding-left: 38px !important; }
+
+.datepicker-plot-area {
+  font-family: Vazirmatn, Tahoma, sans-serif !important;
+  border-radius: 12px !important;
+  box-shadow: var(--shadow2) !important;
+  border: 1px solid var(--line) !important;
+  background-color: var(--white) !important;
+}
+.datepicker-plot-area .datepicker-day-view .table-days td span { color: var(--text); }
+.datepicker-plot-area .datepicker-day-view .table-days td.selected span { background-color: var(--olive) !important; color: white !important; }
+.datepicker-plot-area .datepicker-header .btn-switch { color: var(--olive) !important; }
 
 @media(max-width:1000px){.formgrid-goal{grid-template-columns:1fr 1fr 1fr}.formgrid-goal>button{grid-column:1/-1}}
 @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.week-columns{grid-template-columns:repeat(4,1fr)}}
@@ -336,9 +354,15 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
           <form id="monthlyGoalForm" class="formgrid-goal">
             <div class="field"><label>عنوان</label><input id="mgTitle" required maxlength="180" placeholder="مثلاً یادگیری زبان"></div>
             <div class="field"><label>واحد</label><select id="mgUnit"><option>ساعت</option><option>دقیقه</option><option>بار</option><option>صفحه</option><option>عدد</option><option>جلسه</option><option>کیلومتر</option><option>متر</option><option>تومان</option><option>قدم</option><option>کلمه</option><option>درس</option><option>فصل</option><option>کتاب</option><option>پروژه</option><option>تمرین</option><option>وعده</option><option>لیتر</option><option>گرم</option><option>کیلوگرم</option><option>کالری</option><option>امتیاز</option><option>درصد</option></select></div>
-            <div class="field"><label>هدف کل (۱۰۰٪)</label><input id="mgTarget" type="number" min="1" step="0.5" required placeholder="۱۲"></div>
+            <div class="field"><label>هدف کل (۱۰۰٪)</label><input id="mgTarget" type="number" min="1" step="1" required placeholder="۱۲"></div>
             <div class="field"><label>اولویت</label><select id="mgPriority"><option value="urgent_important">فوری و مهم</option><option value="important">مهم</option><option value="normal" selected>عادی</option><option value="low">کم‌اهمیت</option></select></div>
-            <div class="field"><label>موعد</label><input id="mgDue" type="date"></div>
+            <div class="field">
+              <label>موعد</label>
+              <div class="date-input-wrapper">
+                <input id="mgDue" type="text" class="persian-date" placeholder="انتخاب تاریخ">
+                <span class="date-icon" onclick="document.getElementById('mgDue').focus()">📅</span>
+              </div>
+            </div>
             <button type="submit">افزودن</button>
           </form>
           <div class="field" style="margin-top:10px"><label>توضیحات (اختیاری)</label><textarea id="mgDesc" rows="2"></textarea></div>
@@ -351,8 +375,14 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
           <form id="weeklyGoalForm" class="formgrid">
             <div class="field"><label>عنوان</label><input id="wgTitle" required maxlength="180" placeholder="مثلاً هفتهٔ اول"></div>
             <div class="field"><label>هدف ماهانه</label><select id="wgParent" required><option value="">— انتخاب کن —</option></select></div>
-            <div class="field"><label>هدف این هفته</label><input id="wgTarget" type="number" min="0.1" step="0.5" required placeholder="۴"></div>
-            <div class="field"><label>پایان هفته</label><input id="wgDue" type="date"></div>
+            <div class="field"><label>هدف این هفته (فقط عدد صحیح)</label><input id="wgTarget" type="number" min="1" step="1" required placeholder="1"></div>
+            <div class="field">
+              <label>پایان هفته</label>
+              <div class="date-input-wrapper">
+                <input id="wgDue" type="text" class="persian-date" placeholder="انتخاب تاریخ">
+                <span class="date-icon" onclick="document.getElementById('wgDue').focus()">📅</span>
+              </div>
+            </div>
             <button type="submit">افزودن</button>
           </form>
         </div>
@@ -382,7 +412,13 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
       <form id="taskForm" class="formgrid">
         <div class="field"><label>عنوان</label><input id="taskTitle" required maxlength="180"></div>
         <div class="field"><label>اولویت</label><select id="taskPriority"><option value="urgent_important">فوری و مهم</option><option value="important">مهم</option><option value="normal" selected>عادی</option><option value="low">کم‌اهمیت</option></select></div>
-        <div class="field"><label>سررسید</label><input id="taskDue" type="date"></div>
+        <div class="field">
+          <label>سررسید</label>
+          <div class="date-input-wrapper">
+            <input id="taskDue" type="text" class="persian-date" placeholder="انتخاب تاریخ">
+            <span class="date-icon" onclick="document.getElementById('taskDue').focus()">📅</span>
+          </div>
+        </div>
         <div class="field"><label>دسته</label><select id="taskCategory"><option>شخصی</option><option>دانشگاه</option><option>وردپرس</option><option>فارکس</option><option>ورزش</option><option>مالی</option><option>سایر</option></select></div>
         <button type="submit">افزودن</button>
       </form>
@@ -400,7 +436,13 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
     <section id="tab-finance" class="tab hidden">
       <div class="sectionhead"><div><h2>💰 مالی</h2></div></div>
       <form id="financeForm" class="formgrid">
-        <div class="field"><label>تاریخ</label><input id="finDate" type="date" required></div>
+        <div class="field">
+          <label>تاریخ</label>
+          <div class="date-input-wrapper">
+            <input id="finDate" type="text" class="persian-date" required placeholder="انتخاب تاریخ">
+            <span class="date-icon" onclick="document.getElementById('finDate').focus()">📅</span>
+          </div>
+        </div>
         <div class="field"><label>نوع</label><select id="finType"><option>درآمد</option><option>هزینه</option><option>پس‌انداز</option><option>بدهی</option><option>طلب</option></select></div>
         <div class="field"><label>دسته</label><select id="finCategory"><option>خوراک</option><option>رفت‌وآمد</option><option>دانشگاه</option><option>خرید</option><option>سلامت</option><option>تفریح</option><option>ابزار</option><option>درآمد</option><option>پس‌انداز</option><option>سایر</option></select></div>
         <div class="field"><label>شرح</label><input id="finDesc"></div>
@@ -413,7 +455,13 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
     <section id="tab-mood" class="tab hidden">
       <div class="sectionhead"><div><h2>😊 خلق‌وخو</h2></div></div>
       <form id="moodForm" class="formgrid">
-        <div class="field"><label>تاریخ</label><input id="moodDate" type="date" required></div>
+        <div class="field">
+          <label>تاریخ</label>
+          <div class="date-input-wrapper">
+            <input id="moodDate" type="text" class="persian-date" required placeholder="انتخاب تاریخ">
+            <span class="date-icon" onclick="document.getElementById('moodDate').focus()">📅</span>
+          </div>
+        </div>
         <div class="field"><label>حال</label><select id="moodMood"><option>😄 عالی</option><option>🙂 خوب</option><option>😐 معمولی</option><option>😔 پایین</option><option>😣 سخت</option></select></div>
         <div class="field"><label>انرژی</label><input id="moodEnergy" type="number" min="1" max="5"></div>
         <div class="field"><label>خواب</label><input id="moodSleep" type="number" min="1" max="5"></div>
@@ -429,7 +477,13 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
         <div class="field"><label>درس</label><input id="uniCourse" required></div>
         <div class="field"><label>نوع</label><select id="uniType"><option>درس</option><option>تکلیف</option><option>امتحان</option><option>پروژه</option></select></div>
         <div class="field"><label>عنوان</label><input id="uniTitle"></div>
-        <div class="field"><label>موعد</label><input id="uniDue" type="date"></div>
+        <div class="field">
+          <label>موعد</label>
+          <div class="date-input-wrapper">
+            <input id="uniDue" type="text" class="persian-date" placeholder="انتخاب تاریخ">
+            <span class="date-icon" onclick="document.getElementById('uniDue').focus()">📅</span>
+          </div>
+        </div>
         <button type="submit">افزودن</button>
       </form>
       <div id="uniList" class="list"></div>
@@ -438,7 +492,13 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
     <section id="tab-forex" class="tab hidden">
       <div class="sectionhead"><div><h2>📈 فارکس</h2></div></div>
       <form id="forexForm" class="formgrid">
-        <div class="field"><label>تاریخ</label><input id="fxDate" type="date"></div>
+        <div class="field">
+          <label>تاریخ</label>
+          <div class="date-input-wrapper">
+            <input id="fxDate" type="text" class="persian-date" placeholder="انتخاب تاریخ">
+            <span class="date-icon" onclick="document.getElementById('fxDate').focus()">📅</span>
+          </div>
+        </div>
         <div class="field"><label>نماد</label><input id="fxSymbol"></div>
         <div class="field"><label>جهت</label><select id="fxDir"><option>خرید</option><option>فروش</option></select></div>
         <div class="field"><label>ورود</label><input id="fxEntry" type="number" step="0.00001"></div>
@@ -455,7 +515,13 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
         <div class="field"><label>مهارت</label><input id="skillName" required></div>
         <div class="field"><label>مرحله</label><input id="skillStage"></div>
         <div class="field"><label>منبع</label><input id="skillSource"></div>
-        <div class="field"><label>موعد</label><input id="skillEnd" type="date"></div>
+        <div class="field">
+          <label>موعد</label>
+          <div class="date-input-wrapper">
+            <input id="skillEnd" type="text" class="persian-date" placeholder="انتخاب تاریخ">
+            <span class="date-icon" onclick="document.getElementById('skillEnd').focus()">📅</span>
+          </div>
+        </div>
         <button type="submit">افزودن</button>
       </form>
       <div id="skillList" class="list"></div>
@@ -551,6 +617,40 @@ const labels={priority:{urgent_important:'فوری و مهم',important:'مهم'
 // ✅ همهٔ IDها رشته‌ای ساخته می‌شن
 const nid=()=>'g'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 
+// ابزارهای تاریخ شمسی
+const getPersianDateValue = (id) => {
+  const el = $(id);
+  if (!el) return null;
+  let val = el.value.trim();
+  if (!val) return null;
+
+  val = val.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
+  val = val.replace(/[-.]/g, '/');
+  
+  const parts = val.split('/');
+  if (parts.length !== 3) return null;
+
+  try {
+    const y = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10);
+    const d = parseInt(parts[2], 10);
+    
+    if (y < 1300 || y > 1500 || m < 1 || m > 12 || d < 1 || d > 31) return null;
+
+    const pDate = new persianDate([y, m, d]);
+    return pDate.toCalendar('gregorian').format('YYYY-MM-DD');
+  } catch (e) {
+    return null;
+  }
+};
+const setPersianDateValue = (id, isoDate) => {
+  if (!$(id)) return;
+  try {
+    const pDate = new persianDate(new Date(isoDate));
+    $(id).value = pDate.format('YYYY/MM/DD');
+  } catch { $(id).value = ''; }
+};
+
 // ═══════════ ذخیره‌سازی ═══════════
 const API_URL='https://bj-api.mobin2112hasanzabh.workers.dev';
 const STORAGE_SESSION='bj_session_v6';
@@ -579,9 +679,7 @@ const loadData=async(email)=>{
 let saveTimer=null;
 const saveData=()=>{
   if(!session)return;
-  // ذخیره فوری توی مرورگر (کش آفلاین)
   localStorage.setItem(STORAGE_CACHE_PREFIX+session.email,JSON.stringify(data));
-  // ارسال تأخیری به سرور
   clearTimeout(saveTimer);
     saveTimer=setTimeout(async()=>{
     try{
@@ -621,14 +719,12 @@ $('authForm').addEventListener('submit',async e=>{
   const pw=$('password').value;
   if(!email||!pw){$('authSubmit').disabled=false;return;}
   try{
-    // اول تلاش کن وارد شی
     let res=await fetch(API_URL+'/login',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({email,password:pw})
     });
     let json=await res.json();
-    // اگه کاربر نبود، حساب بساز
     if(res.status===404){
       res=await fetch(API_URL+'/signup',{
         method:'POST',
@@ -647,7 +743,6 @@ $('authForm').addEventListener('submit',async e=>{
       $('authSubmit').disabled=false;
       return;
     }
-       // موفق
     session = {
       email: json.email,
       name: json.email.split('@')[0],
@@ -676,7 +771,10 @@ async function startApp(){
   $('userAvatar').textContent=(session.name||'?').charAt(0).toUpperCase();
   $('settingsEmail').textContent=session.email;
   $('settingsCreated').textContent=toFaDate(new Date().toISOString())||'—';
-  ['moodDate','finDate','fxDate','uniDue','skillEnd','mgDue','wgDue'].forEach(id=>{if($(id))$(id).value=dateISO();});
+  
+  ['moodDate','finDate','fxDate','uniDue','skillEnd','mgDue','taskDue'].forEach(id=>{if($(id))setPersianDateValue(id, dateISO());});
+  if($('wgDue')) setPersianDateValue('wgDue', getWeekEnd(0)); // ✅ پیش‌فرض پایان هفته
+  
   switchPanel('app');
   renderAll();
 }
@@ -691,6 +789,13 @@ function getWeekStart(offset=0){
   start.setHours(0,0,0,0);
   return start;
 }
+// ✅ محاسبه پایان هفته (جمعه)
+function getWeekEnd(offset=0){
+  const start=getWeekStart(offset);
+  const end=new Date(start);
+  end.setDate(start.getDate()+6);
+  return dateISO(end);
+}
 function getWeekDays(offset=0){
   const start=getWeekStart(offset);
   const days=[];
@@ -699,7 +804,7 @@ function getWeekDays(offset=0){
 }
 const weekDayNames=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
 
-// ═══════════ محاسبه پیشرفت (با String تضمینی) ═══════════
+// ═══════════ محاسبه پیشرفت ═══════════
 function weeklyGoalSum(wgId){
   const sId=String(wgId);
   return data.weeklyTasks.filter(t=>String(t.weeklyGoalId)===sId).reduce((a,t)=>a+(Number(t.value)||0),0);
@@ -724,7 +829,7 @@ function monthlyGoalProgress(mgId){
 function renderAll(){
   $('todayBigDate').textContent=todayFaLong();
   $('todayLabel').textContent=todayFaLong();
-  refreshSelectors();  // ← قبل از همه، selectها پر بشن
+  refreshSelectors();
   renderDashboard();
   renderToday();
   renderNotebook();
@@ -743,7 +848,6 @@ function renderAll(){
 
 // ═══════════ پر کردن select ها ═══════════
 function refreshSelectors(){
-  // والد اهداف هفتگی = اهداف ماهانه
   const mgSel=$('wgParent');
   if(mgSel){
     const cur=mgSel.value;
@@ -751,7 +855,6 @@ function refreshSelectors(){
     mgSel.innerHTML='<option value="">— انتخاب کن —</option>'+opts.map(g=>`<option value="${g.id}">${safe(g.title)}</option>`).join('');
     if(cur && opts.some(g=>String(g.id)===String(cur))) mgSel.value=cur;
   }
-  // والد کارهای هفتگی = اهداف هفتگی
   const wgSel=$('wtGoal');
   if(wgSel){
     const cur=wgSel.value;
@@ -1144,7 +1247,6 @@ function renderFinance(){
   }).join(''):'<p class="muted">هنوز تراکنشی نیست.</p>';
 }
 function renderMonthlyFinance(){
-  // استخراج ماه‌های منحصر به فرد از بین تمام تراکنش‌های مالی
   const allMonths = [...new Set(data.finance.map(f => f.month).filter(Boolean))];
   
   if(allMonths.length === 0) {
@@ -1152,7 +1254,6 @@ function renderMonthlyFinance(){
     return;
   }
 
-  // نمایش ۳ ماه آخر (اگر بیشتر از ۳ ماه داده داری)
   const months = allMonths.slice(-3);
   
   const rows=months.map(m=>{
@@ -1208,24 +1309,19 @@ function renderNotebook(){
   const search=($('notebookSearch')?.value||'').trim().toLowerCase();
   const filter=$('notebookFilter')?.value||'all';
   
-  // ۱. یادداشت‌های روزانه (دفترچه خاطرات)
   let dailyNotes = data.daily.map(n => ({ type: 'daily', date: n.date, data: n }));
   
-  // ۲. یادداشت‌های مربوط به عادت‌ها
   let habitNotes = data.logs.filter(l => l.note && l.note.trim() !== '').map(l => {
     const habit = data.habits.find(h => String(h.id) === String(l.habit_id));
     return { type: 'habit', date: l.date, data: l, habitName: habit ? habit.name : 'عادت حذف‌شده' };
   });
 
-  // ترکیب و مرتب‌سازی بر اساس تاریخ (نزولی)
   let arr = [...dailyNotes, ...habitNotes].sort((a,b)=>String(b.date).localeCompare(String(a.date)));
 
-  // فیلتر زمان
   if(filter==='7'){ const cutoff=new Date(); cutoff.setDate(cutoff.getDate()-7); arr=arr.filter(n=>new Date(n.date)>=cutoff); }
   if(filter==='30'){ const cutoff=new Date(); cutoff.setDate(cutoff.getDate()-30); arr=arr.filter(n=>new Date(n.date)>=cutoff); }
   if(filter==='this_month'){ const first=new Date(); first.setDate(1); arr=arr.filter(n=>new Date(n.date)>=first); }
 
-  // فیلتر جستجو
   if(search){
     arr=arr.filter(n=>{
       if (n.type === 'daily') {
@@ -1268,7 +1364,6 @@ function renderNotebook(){
         ${n.data.gratitude?`<div class="notebook-section" style="margin-top:10px"><div class="notebook-label">🙏 شکرگزاری</div><div class="notebook-text">${safe(n.data.gratitude)}</div></div>`:''}
       </div>`;
     } else {
-      // نمایش یادداشت عادت
       return `<div class="panel notebook-card">
         <div class="sectionhead" style="margin-bottom:10px">
           <div><h3 style="margin:0">🔥 ${safe(n.habitName)} - ${toFaDate(n.date)}</h3></div>
@@ -1323,10 +1418,10 @@ $('monthlyGoalForm').addEventListener('submit',e=>{
     target,
     description:$('mgDesc').value.trim(),
     priority:$('mgPriority').value,
-    due_date:$('mgDue').value||null,
+    due_date:getPersianDateValue('mgDue'),
     done:false,created:new Date().toISOString()
   });
-  $('monthlyGoalForm').reset();$('mgDesc').value='';$('mgPriority').value='normal';$('mgDue').value=dateISO();
+  $('monthlyGoalForm').reset();$('mgDesc').value='';$('mgPriority').value='normal';setPersianDateValue('mgDue', dateISO());
   save();flash('هدف ماهانه ذخیره شد ✓');
 });
 $('monthlyGoalsList').addEventListener('click',e=>{
@@ -1365,10 +1460,11 @@ $('weeklyGoalForm').addEventListener('submit',e=>{
     id:nid(),title:t,
     monthlyGoalId:String(parent),
     target,
-    due_date:$('wgDue').value||null,
+    due_date:getPersianDateValue('wgDue'),
     done:false,created:new Date().toISOString()
   });
-  $('weeklyGoalForm').reset();$('wgDue').value=dateISO();
+  $('weeklyGoalForm').reset();
+  setPersianDateValue('wgDue', getWeekEnd(0)); // ✅ تنظیم مجدد روی پایان هفته
   save();flash('هدف هفتگی ذخیره شد ✓');
 });
 document.querySelectorAll('[data-wgfilter]').forEach(b=>b.addEventListener('click',()=>{
@@ -1411,7 +1507,6 @@ $('wtPrev').addEventListener('click',()=>{weeklyOffset--;renderWeeklyTasks();});
 $('wtNext').addEventListener('click',()=>{weeklyOffset++;renderWeeklyTasks();});
 $('wtToday').addEventListener('click',()=>{weeklyOffset=0;renderWeeklyTasks();});
 
-// ذخیرهٔ مقدار وقتی کاربر تایپ می‌کنه یا از input خارج می‌شه
 document.addEventListener('input',e=>{
   const id=e.target.dataset.valueWt;
   if(!id)return;
@@ -1432,7 +1527,6 @@ document.addEventListener('change',e=>{
   renderWeeklyGoals();
   renderMonthlyGoals();
   renderDashboard();
-  // به‌روزرسانی هدر ستون
   const days=getWeekDays(weeklyOffset);
   days.forEach((d,i)=>{
     const iso=dateISO(d);
@@ -1484,7 +1578,7 @@ $('weekColumns').addEventListener('click',e=>{
 });
 
 // ═══════════ CRUD: بقیه بخش‌ها ═══════════
-$('taskForm').addEventListener('submit',e=>{e.preventDefault();const t=$('taskTitle').value.trim();if(!t)return;data.tasks.push({id:nid(),title:t,priority:$('taskPriority').value,status:'planned',due_date:$('taskDue').value||null,category:$('taskCategory').value,created:new Date().toISOString()});$('taskForm').reset();$('taskPriority').value='normal';$('taskCategory').value='شخصی';save();flash('ذخیره شد');});
+$('taskForm').addEventListener('submit',e=>{e.preventDefault();const t=$('taskTitle').value.trim();if(!t)return;data.tasks.push({id:nid(),title:t,priority:$('taskPriority').value,status:'planned',due_date:getPersianDateValue('taskDue'),category:$('taskCategory').value,created:new Date().toISOString()});$('taskForm').reset();$('taskPriority').value='normal';$('taskCategory').value='شخصی';setPersianDateValue('taskDue', dateISO());save();flash('ذخیره شد');});
 $('taskFilter').addEventListener('change',renderTasks);
 $('taskSearch').addEventListener('input',renderTasks);
 $('taskList').addEventListener('change',e=>{const id=e.target.dataset.taskStatus;if(!id)return;const t=data.tasks.find(x=>String(x.id)===String(id));if(t){t.status=e.target.value;save();}});
@@ -1533,7 +1627,6 @@ $('todayPlanTasks').addEventListener('change',e=>{
   const v=e.target.value;
   t.value=v===''?'':Number(v);
   saveData();
-  // رفرش سریع بخش‌های مرتبط
   renderTodayPlan();
   renderWeeklyGoals();
   renderMonthlyGoals();
@@ -1551,23 +1644,28 @@ $('saveDailyBtn').addEventListener('click',()=>{const today=dateISO();
   if(idx>=0)data.daily[idx]=entry;else data.daily.push(entry);
   save();flash('ذخیره شد');});
 
-$('financeForm').addEventListener('submit',e=>{e.preventDefault();const d=$('finDate').value;const month=new Intl.DateTimeFormat('fa-IR-u-ca-persian',{month:'long'}).format(new Date(d));
+$('financeForm').addEventListener('submit',e=>{e.preventDefault();
+  const d=getPersianDateValue('finDate') || dateISO();
+  const month=new Intl.DateTimeFormat('fa-IR-u-ca-persian',{month:'long'}).format(new Date(d));
   data.finance.push({id:nid(),date:d,month,type:$('finType').value,category:$('finCategory').value,description:$('finDesc').value,amount:Number($('finAmount').value||0)});
-  $('financeForm').reset();$('finDate').value=dateISO();save();flash('ذخیره شد');});
+  $('financeForm').reset();setPersianDateValue('finDate', dateISO());save();flash('ذخیره شد');
+});
 $('financeList').addEventListener('click',e=>{if(e.target.dataset.del==='finance'&&confirm('حذف شود؟')){data.finance=data.finance.filter(x=>String(x.id)!==String(e.target.dataset.id));save();}});
 
-$('moodForm').addEventListener('submit',e=>{e.preventDefault();const d=$('moodDate').value;
+$('moodForm').addEventListener('submit',e=>{e.preventDefault();
+  const d=getPersianDateValue('moodDate') || dateISO();
   const idx=data.mood.findIndex(m=>m.date===d);
   const entry={id:nid(),date:d,mood:$('moodMood').value,energy:Number($('moodEnergy').value||0),sleep:Number($('moodSleep').value||0),stress:Number($('moodStress').value||0)};
   if(idx>=0){entry.id=data.mood[idx].id;data.mood[idx]=entry;}else data.mood.push(entry);
-  save();flash('ذخیره شد');});
+  save();setPersianDateValue('moodDate', dateISO());flash('ذخیره شد');
+});
 $('moodList').addEventListener('click',e=>{if(e.target.dataset.del==='mood'&&confirm('حذف شود؟')){data.mood=data.mood.filter(x=>String(x.id)!==String(e.target.dataset.id));save();}});
 
-$('uniForm').addEventListener('submit',e=>{e.preventDefault();data.uni.push({id:nid(),course:$('uniCourse').value.trim(),type:$('uniType').value,title:$('uniTitle').value,due_date:$('uniDue').value||null});$('uniForm').reset();$('uniDue').value=dateISO();save();flash('ذخیره شد');});
+$('uniForm').addEventListener('submit',e=>{e.preventDefault();data.uni.push({id:nid(),course:$('uniCourse').value.trim(),type:$('uniType').value,title:$('uniTitle').value,due_date:getPersianDateValue('uniDue')});$('uniForm').reset();setPersianDateValue('uniDue', dateISO());save();flash('ذخیره شد');});
 $('uniList').addEventListener('click',e=>{if(e.target.dataset.del==='uni'&&confirm('حذف شود؟')){data.uni=data.uni.filter(x=>String(x.id)!==String(e.target.dataset.id));save();}});
-$('forexForm').addEventListener('submit',e=>{e.preventDefault();data.forex.push({id:nid(),date:$('fxDate').value||null,symbol:$('fxSymbol').value,direction:$('fxDir').value,entry:Number($('fxEntry').value||0),exit:Number($('fxExit').value||0),result:Number($('fxResult').value||0)});$('forexForm').reset();$('fxDate').value=dateISO();save();flash('ذخیره شد');});
+$('forexForm').addEventListener('submit',e=>{e.preventDefault();data.forex.push({id:nid(),date:getPersianDateValue('fxDate'),symbol:$('fxSymbol').value,direction:$('fxDir').value,entry:Number($('fxEntry').value||0),exit:Number($('fxExit').value||0),result:Number($('fxResult').value||0)});$('forexForm').reset();setPersianDateValue('fxDate', dateISO());save();flash('ذخیره شد');});
 $('forexList').addEventListener('click',e=>{if(e.target.dataset.del==='forex'&&confirm('حذف شود؟')){data.forex=data.forex.filter(x=>String(x.id)!==String(e.target.dataset.id));save();}});
-$('skillForm').addEventListener('submit',e=>{e.preventDefault();data.skills.push({id:nid(),skill:$('skillName').value.trim(),stage:$('skillStage').value,source:$('skillSource').value,end_date:$('skillEnd').value||null});$('skillForm').reset();$('skillEnd').value=dateISO();save();flash('ذخیره شد');});
+$('skillForm').addEventListener('submit',e=>{e.preventDefault();data.skills.push({id:nid(),skill:$('skillName').value.trim(),stage:$('skillStage').value,source:$('skillSource').value,end_date:getPersianDateValue('skillEnd')});$('skillForm').reset();setPersianDateValue('skillEnd', dateISO());save();flash('ذخیره شد');});
 $('skillList').addEventListener('click',e=>{if(e.target.dataset.del==='skills'&&confirm('حذف شود؟')){data.skills=data.skills.filter(x=>String(x.id)!==String(e.target.dataset.id));save();}});
 $('reviewForm').addEventListener('submit',e=>{e.preventDefault();data.review.push({id:nid(),type:$('revType').value,period:$('revPeriod').value,score:Number($('revScore').value||0),successes:$('revSucc').value,challenges:$('revChal').value});$('reviewForm').reset();save();flash('ذخیره شد');});
 $('reviewList').addEventListener('click',e=>{if(e.target.dataset.del==='review'&&confirm('حذف شود؟')){data.review=data.review.filter(x=>String(x.id)!==String(e.target.dataset.id));save();}});
@@ -1675,7 +1773,6 @@ document.addEventListener('keydown',e=>{if(e.key==='p'&&e.ctrlKey){e.preventDefa
 
 // ═══════════ منطق پنجره یادداشت عادت ═══════════
 document.addEventListener('click', e => {
-  // باز کردن از طریق دکمه 📝 یا کلیک روی مربع هیت‌مپ
   const btn = e.target.closest('[data-open-note]');
   const cell = e.target.closest('[data-heatmap-cell]');
   
@@ -1696,13 +1793,11 @@ document.addEventListener('click', e => {
     return;
   }
 
-  // بستن مدال
   if (e.target.id === 'modalClose' || e.target.id === 'modalCancelBtn' || e.target.id === 'habitNoteModal') {
     $('habitNoteModal').classList.add('hidden');
     return;
   }
 
-  // ذخیره یادداشت
   if (e.target.id === 'modalSaveBtn') {
     const hid = $('modalHabitId').value;
     const date = $('modalDate').value;
@@ -1726,6 +1821,22 @@ document.addEventListener('click', e => {
     save(); 
     flash('یادداشت ذخیره شد ✓');
   }
+});
+
+// ═══════════ راه‌اندازی تقویم شمسی ═══════════
+document.querySelectorAll('.persian-date').forEach(input => {
+  input.addEventListener('focus', function() {
+    if (!this.dataset.init) {
+      new persianDatepicker(this, {
+        format: 'YYYY/MM/DD',
+        initialValue: true,
+        autoClose: true,
+        observer: true,
+        calendar: { persian: { locale: 'fa' } }
+      });
+      this.dataset.init = '1';
+    }
+  });
 });
 
 // ═══════════ شروع ═══════════
