@@ -281,7 +281,31 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .live-clock-badge { background: var(--redbg); color: var(--red); padding: 5px 12px; border-radius: 99px; font-weight: 800; font-size: 14px; font-variant-numeric: tabular-nums; }
 
 /* استایل ورودی‌های ساعت (فرمت ۲۴ ساعته متنی) */
-.time-input { direction: ltr; text-align: center; font-family: monospace; letter-spacing: 1px; font-weight: bold; }
+.time-input { direction: ltr; text-align: center; font-family: monospace; letter-spacing: 1px; font-weight: bold; min-width: 60px; }
+.date-input-wrapper { position: relative; width: 100%; display: flex; align-items: center; min-width: 100px; }
+
+/* استایل فرم‌های پیچیده */
+.weekly-task-grid { display: grid; grid-template-columns: 2fr 1.5fr 1.5fr 1fr 1fr auto; gap: 10px; align-items: end; }
+.routine-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr auto; gap: 10px; align-items: end; }
+
+/* جلوگیری از بیرون‌زدگی فیلدها در گرید */
+.weekly-task-grid .field, .routine-grid .field { min-width: 0; }
+
+@media(max-width: 900px) {
+  .weekly-task-grid, .routine-grid { grid-template-columns: 1fr 1fr; }
+  .weekly-task-grid > button, .routine-grid > button { grid-column: 1 / -1; }
+}
+
+/* برای گوشی‌های کوچک (مثل تصویر شما - عرض کمتر از 600 پیکسل) */
+@media(max-width: 600px) {
+  .weekly-task-grid, .routine-grid { grid-template-columns: 1fr; }
+  /* چک‌باکس زمان مشخص کل عرض را بگیرد */
+  .weekly-task-grid .field[style*="flex-direction:row"], 
+  .routine-grid .field[style*="flex-direction:row"] { grid-column: 1 / -1; }
+  /* فیلدهای ساعت شروع و پایان در موبایل زیر هم بروند */
+  #wtTimeFields { flex-direction: column !important; gap: 8px !important; }
+  #wtTimeFields input { width: 100% !important; }
+}
 
 @media(max-width:1000px){.formgrid-goal{grid-template-columns:1fr 1fr 1fr}.formgrid-goal>button{grid-column:1/-1}}
 @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.week-columns{grid-template-columns:repeat(4,1fr)}}
@@ -462,7 +486,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
           <button id="wtToday" class="secondary">📅 این هفته</button>
         </div>
         <div class="panel" style="box-shadow:none"><h3>افزودن</h3>
-          <form id="weeklyTaskForm" class="formgrid" style="grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr auto;">
+          <form id="weeklyTaskForm" class="weekly-task-grid">
             <div class="field"><label>عنوان</label><input id="wtTitle" required maxlength="180" placeholder="مثلاً ۱۰ لغت جدید"></div>
             <div class="field"><label>روز</label><select id="wtDay"><option>شنبه</option><option>یکشنبه</option><option>دوشنبه</option><option>سه‌شنبه</option><option>چهارشنبه</option><option>پنجشنبه</option><option>جمعه</option></select></div>
             <div class="field"><label>هدف هفتگی</label><select id="wtGoal" required><option value="">— انتخاب کن —</option></select></div>
@@ -481,7 +505,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
       <div id="sub-routines" class="subtab hidden">
         <div class="sectionhead"><div><h2>⏰ برنامه‌های زمان‌دار</h2><p class="muted">کلاس‌ها یا کارهای تکرارشونده با بازه زمانی مشخص (مثل ترم دانشگاه).</p></div></div>
         <div class="panel" style="box-shadow:none"><h3>افزودن برنامه جدید</h3>
-          <form id="routineForm" class="formgrid-goal" style="grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr auto;">
+          <form id="routineForm" class="routine-grid">
             <div class="field"><label>عنوان (مثلاً کلاس ریاضی)</label><input id="rtTitle" required placeholder="عنوان برنامه"></div>
             <div class="field"><label>روز هفته</label><select id="rtDay"><option value="6">شنبه</option><option value="0">یکشنبه</option><option value="1">دوشنبه</option><option value="2">سه‌شنبه</option><option value="3">چهارشنبه</option><option value="4">پنجشنبه</option><option value="5">جمعه</option></select></div>
             <div class="field"><label>ساعت شروع</label><input id="rtStartTime" type="text" class="time-input" placeholder="15:30" maxlength="5" required value="15:30"></div>
