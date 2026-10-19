@@ -8,6 +8,7 @@
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
 
 <!-- کتابخانه تقویم شمسی -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">
 <script src="https://unpkg.com/persian-date@1.1.0/dist/persian-date.min.js"></script>
 <script src="https://unpkg.com/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
@@ -218,43 +219,42 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
   position: relative;
 }
 .heatmap-grid .cell.today-cell::before {
-  content: '';
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  width: 4px;
-  height: 4px;
-  background-color: var(--gold);
-  border-radius: 50%;
-  z-index: 15;
+  content: ''; position: absolute; top: 2px; right: 2px; width: 4px; height: 4px; background-color: var(--gold); border-radius: 50%; z-index: 15;
 }
 [data-theme="dark"] .heatmap-grid .cell.done { background-color: #9caf7a; border-color: #9caf7a; }
 [data-theme="dark"] .heatmap-grid .cell.rest { background-color: #d9b866; border-color: #d9b866; }
 [data-theme="dark"] .heatmap-grid .cell.not_done { background-color: #4a2a24; border-color: #4a2a24; }
 [data-theme="dark"] .heatmap-grid .cell.has-note::after { background-color: #8bb0d0; }
-[data-theme="dark"] .heatmap-grid .cell.today-cell {
-  border-color: #d9b866 !important;
-  box-shadow: 0 0 8px rgba(217, 184, 102, 0.5);
-}
-[data-theme="dark"] .heatmap-grid .cell.today-cell::before {
-  background-color: #d9b866;
-}
+[data-theme="dark"] .heatmap-grid .cell.today-cell { border-color: #d9b866 !important; box-shadow: 0 0 8px rgba(217, 184, 102, 0.5); }
+[data-theme="dark"] .heatmap-grid .cell.today-cell::before { background-color: #d9b866; }
 
-/* ✅ استایل‌های جدید برای آیکون تقویم */
+/* استایل آیکون تقویم */
 .date-input-wrapper { position: relative; width: 100%; display: flex; align-items: center; }
-.date-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 16px; opacity: 0.6; user-select: none; z-index: 2; }
-.date-input-wrapper input { padding-left: 38px !important; }
+.date-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 16px; opacity: 0.7; user-select: none; z-index: 2; }
+.date-input-wrapper input { padding-left: 38px !important; cursor: pointer; }
 
 .datepicker-plot-area {
   font-family: Vazirmatn, Tahoma, sans-serif !important;
-  border-radius: 12px !important;
-  box-shadow: var(--shadow2) !important;
-  border: 1px solid var(--line) !important;
-  background-color: var(--white) !important;
+  border-radius: 12px !important; box-shadow: var(--shadow2) !important; border: 1px solid var(--line) !important;
+  background-color: var(--white) !important; z-index: 9999 !important; position: absolute;
 }
 .datepicker-plot-area .datepicker-day-view .table-days td span { color: var(--text); }
 .datepicker-plot-area .datepicker-day-view .table-days td.selected span { background-color: var(--olive) !important; color: white !important; }
 .datepicker-plot-area .datepicker-header .btn-switch { color: var(--olive) !important; }
+
+/* ═══════════ استایل‌های نمودار زمانی (Timeline) ═══════════ */
+.timeline-container { position: relative; height: 500px; overflow-y: auto; background: var(--paper); border-radius: 12px; border: 1px solid var(--line); margin-top: 15px; padding: 10px 50px 10px 10px; }
+.timeline-hour { height: 60px; border-bottom: 1px dashed var(--line); position: relative; }
+.timeline-hour-label { position: absolute; right: -45px; top: -10px; font-size: 11px; color: var(--muted); font-weight: 600; }
+.timeline-event { position: absolute; left: 10px; right: 10px; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; overflow: hidden; z-index: 2; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+.timeline-event.routine { background: var(--bluebg); color: var(--blue); border-right: 4px solid var(--blue); }
+.timeline-event.task { background: var(--olive2); color: var(--olive); border-right: 4px solid var(--olive); }
+.current-time-line { position: absolute; left: 0; right: 0; height: 2px; background: var(--red); z-index: 5; pointer-events: none; }
+.current-time-dot { width: 12px; height: 12px; background: var(--red); border-radius: 50%; position: absolute; right: -6px; top: -5px; box-shadow: 0 0 6px rgba(185, 80, 66, 0.8); }
+.live-clock-badge { background: var(--redbg); color: var(--red); padding: 5px 12px; border-radius: 99px; font-weight: 800; font-size: 14px; font-variant-numeric: tabular-nums; }
+
+/* استایل ورودی‌های ساعت (فرمت ۲۴ ساعته متنی) */
+.time-input { direction: ltr; text-align: center; font-family: monospace; letter-spacing: 1px; font-weight: bold; }
 
 @media(max-width:1000px){.formgrid-goal{grid-template-columns:1fr 1fr 1fr}.formgrid-goal>button{grid-column:1/-1}}
 @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.week-columns{grid-template-columns:repeat(4,1fr)}}
@@ -304,6 +304,18 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 
     <section id="tab-today" class="tab">
       <div class="today-hero"><h2>سلام، امروز چه خبر؟ 🌿</h2><div class="date-big" id="todayBigDate"></div></div>
+      
+      <!-- نمودار زمانی امروز -->
+      <div class="panel">
+        <div class="sectionhead" style="margin-bottom:0; align-items:center;">
+          <h3>⏳ برنامه زمانی امروز</h3>
+          <div class="live-clock-badge" id="liveClock">00:00:00</div>
+        </div>
+        <div class="timeline-container" id="dailyTimeline">
+          <!-- Timeline items generated by JS -->
+        </div>
+      </div>
+
       <div class="grid2">
         <div class="panel"><div class="sectionhead" style="margin-bottom:12px"><h3>✓ وظایف امروز</h3><button class="ghost small" id="quickAddTask">+ سریع</button></div><div id="todayTasks" class="checklist"></div></div>
         <div class="panel"><div class="sectionhead" style="margin-bottom:12px"><h3>🔥 عادت‌های امروز</h3><span class="pill" id="habitTodayCount">—</span></div><div id="todayHabits" class="checklist"></div></div>
@@ -322,6 +334,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
       </div>
       <div class="panel"><h3>📊 نگاهی به امروز</h3><div class="grid" id="todayStats"></div></div>
     </section>
+
 <section id="tab-notebook" class="tab hidden">
   <div class="sectionhead">
     <div><h2>📖 دفترچه</h2><p class="muted">همهٔ یادداشت‌های روزانه‌ات، به ترتیب تاریخ</p></div>
@@ -347,6 +360,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
         <button class="active" data-sub="monthly">🎯 اهداف ماهانه</button>
         <button data-sub="weekly-goals">🗓️ اهداف هفتگی</button>
         <button data-sub="weekly-tasks">📋 کارهای هفتگی</button>
+        <button data-sub="routines">⏰ برنامه‌های زمان‌دار</button>
       </div>
       <div id="sub-monthly" class="subtab">
         <div class="sectionhead"><div><h2>🎯 اهداف ماهانه</h2><p class="muted" id="monthlySubtitle"></p></div><span class="pill" id="monthlyProgressPill">—</span></div>
@@ -377,7 +391,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
             <div class="field"><label>هدف ماهانه</label><select id="wgParent" required><option value="">— انتخاب کن —</option></select></div>
             <div class="field"><label>هدف این هفته (فقط عدد صحیح)</label><input id="wgTarget" type="number" min="1" step="1" required placeholder="1"></div>
             <div class="field">
-              <label>پایان هفته</label>
+              <label>شروع هفته (شنبه)</label>
               <div class="date-input-wrapper">
                 <input id="wgDue" type="text" class="persian-date" placeholder="انتخاب تاریخ">
                 <span class="date-icon" onclick="document.getElementById('wgDue').focus()">📅</span>
@@ -386,7 +400,15 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
             <button type="submit">افزودن</button>
           </form>
         </div>
-        <div class="panel" style="box-shadow:none"><div class="subnav" style="margin:0"><button class="active" data-wgfilter="current">این هفته</button><button data-wgfilter="next">هفته بعد</button><button data-wgfilter="all">همه</button><button data-wgfilter="done">تکمیل</button></div></div>
+        <div class="panel" style="box-shadow:none">
+          <div class="subnav" style="margin:0">
+            <button data-wgfilter="last">هفته قبل</button>
+            <button class="active" data-wgfilter="current">این هفته</button>
+            <button data-wgfilter="next">هفته بعد</button>
+            <button data-wgfilter="all">همه</button>
+            <button data-wgfilter="done">تکمیل</button>
+          </div>
+        </div>
         <div id="weeklyGoalsList" class="list"></div>
       </div>
       <div id="sub-weekly-tasks" class="subtab hidden">
@@ -405,11 +427,38 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
         </div>
         <div class="week-columns" id="weekColumns"></div>
       </div>
+      <div id="sub-routines" class="subtab hidden">
+        <div class="sectionhead"><div><h2>⏰ برنامه‌های زمان‌دار</h2><p class="muted">کلاس‌ها یا کارهای تکرارشونده با بازه زمانی مشخص (مثل ترم دانشگاه).</p></div></div>
+        <div class="panel" style="box-shadow:none"><h3>افزودن برنامه جدید</h3>
+          <form id="routineForm" class="formgrid-goal" style="grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr auto;">
+            <div class="field"><label>عنوان (مثلاً کلاس ریاضی)</label><input id="rtTitle" required placeholder="عنوان برنامه"></div>
+            <div class="field"><label>روز هفته</label><select id="rtDay"><option value="6">شنبه</option><option value="0">یکشنبه</option><option value="1">دوشنبه</option><option value="2">سه‌شنبه</option><option value="3">چهارشنبه</option><option value="4">پنجشنبه</option><option value="5">جمعه</option></select></div>
+            <div class="field"><label>ساعت شروع</label><input id="rtStartTime" type="text" class="time-input" placeholder="15:30" maxlength="5" required value="15:30"></div>
+            <div class="field"><label>ساعت پایان</label><input id="rtEndTime" type="text" class="time-input" placeholder="17:30" maxlength="5" required value="17:30"></div>
+            <div class="field">
+              <label>از تاریخ</label>
+              <div class="date-input-wrapper">
+                <input id="rtStartDate" type="text" class="persian-date" required placeholder="شروع">
+                <span class="date-icon" onclick="document.getElementById('rtStartDate').focus()">📅</span>
+              </div>
+            </div>
+            <div class="field">
+              <label>تا تاریخ</label>
+              <div class="date-input-wrapper">
+                <input id="rtEndDate" type="text" class="persian-date" required placeholder="پایان">
+                <span class="date-icon" onclick="document.getElementById('rtEndDate').focus()">📅</span>
+              </div>
+            </div>
+            <button type="submit">افزودن</button>
+          </form>
+        </div>
+        <div id="routineList" class="list"></div>
+      </div>
     </section>
 
     <section id="tab-tasks" class="tab hidden">
       <div class="sectionhead"><div><h2>✓ وظایف روزانه</h2></div></div>
-      <form id="taskForm" class="formgrid">
+      <form id="taskForm" class="formgrid" style="grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;">
         <div class="field"><label>عنوان</label><input id="taskTitle" required maxlength="180"></div>
         <div class="field"><label>اولویت</label><select id="taskPriority"><option value="urgent_important">فوری و مهم</option><option value="important">مهم</option><option value="normal" selected>عادی</option><option value="low">کم‌اهمیت</option></select></div>
         <div class="field">
@@ -419,6 +468,8 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
             <span class="date-icon" onclick="document.getElementById('taskDue').focus()">📅</span>
           </div>
         </div>
+        <div class="field"><label>ساعت شروع</label><input id="taskStartTime" type="text" class="time-input" placeholder="15:30" maxlength="5"></div>
+        <div class="field"><label>ساعت پایان</label><input id="taskEndTime" type="text" class="time-input" placeholder="17:30" maxlength="5"></div>
         <div class="field"><label>دسته</label><select id="taskCategory"><option>شخصی</option><option>دانشگاه</option><option>وردپرس</option><option>فارکس</option><option>ورزش</option><option>مالی</option><option>سایر</option></select></div>
         <button type="submit">افزودن</button>
       </form>
@@ -614,7 +665,6 @@ const show=(id,y=true)=>{const el=$(id);if(el)el.classList.toggle('hidden',!y);}
 const msg=(id,t,type='')=>{const el=$(id);if(!el)return;el.textContent=t;el.className='notice'+(type?' '+type:'');el.classList.remove('hidden');setTimeout(()=>el.classList.add('hidden'),4000);};
 const labels={priority:{urgent_important:'فوری و مهم',important:'مهم',normal:'عادی',low:'کم‌اهمیت'},taskStatus:{planned:'برنامه‌ریزی‌شده',in_progress:'در حال انجام',done:'انجام شد',cancelled:'لغو شد'}};
 
-// ✅ همهٔ IDها رشته‌ای ساخته می‌شن
 const nid=()=>'g'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 
 // ابزارهای تاریخ شمسی
@@ -655,8 +705,7 @@ const setPersianDateValue = (id, isoDate) => {
 const API_URL='https://bj-api.mobin2112hasanzabh.workers.dev';
 const STORAGE_SESSION='bj_session_v6';
 const STORAGE_CACHE_PREFIX='bj_cache_v6_';
-const emptyData=()=>({tasks:[],habits:[],logs:[],monthlyGoals:[],weeklyGoals:[],weeklyTasks:[],finance:[],mood:[],uni:[],forex:[],skills:[],review:[],daily:[],pomodoro:[]});
-const hashPassword=async p=>{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(p));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');};
+const emptyData=()=>({tasks:[],habits:[],logs:[],monthlyGoals:[],weeklyGoals:[],weeklyTasks:[],finance:[],mood:[],uni:[],forex:[],skills:[],review:[],daily:[],pomodoro:[],routines:[]});
 const loadData=async(email)=>{
   try{
     const res=await fetch(`${API_URL}/data/${encodeURIComponent(email)}`, {
@@ -772,11 +821,12 @@ async function startApp(){
   $('settingsEmail').textContent=session.email;
   $('settingsCreated').textContent=toFaDate(new Date().toISOString())||'—';
   
-  ['moodDate','finDate','fxDate','uniDue','skillEnd','mgDue','taskDue'].forEach(id=>{if($(id))setPersianDateValue(id, dateISO());});
-  if($('wgDue')) setPersianDateValue('wgDue', getWeekEnd(0)); // ✅ پیش‌فرض پایان هفته
+  ['moodDate','finDate','fxDate','uniDue','skillEnd','mgDue','taskDue','rtStartDate','rtEndDate'].forEach(id=>{if($(id))setPersianDateValue(id, dateISO());});
+  if($('wgDue')) setPersianDateValue('wgDue', getWeekStartStr(0)); 
   
   switchPanel('app');
   renderAll();
+  startLiveClock(); // شروع ساعت زنده
 }
 
 // ═══════════ هفته ═══════════
@@ -789,12 +839,8 @@ function getWeekStart(offset=0){
   start.setHours(0,0,0,0);
   return start;
 }
-// ✅ محاسبه پایان هفته (جمعه)
-function getWeekEnd(offset=0){
-  const start=getWeekStart(offset);
-  const end=new Date(start);
-  end.setDate(start.getDate()+6);
-  return dateISO(end);
+function getWeekStartStr(offset=0) {
+  return dateISO(getWeekStart(offset));
 }
 function getWeekDays(offset=0){
   const start=getWeekStart(offset);
@@ -825,6 +871,41 @@ function monthlyGoalProgress(mgId){
   return Math.min(100,Math.round(monthlyGoalSum(mgId)/mg.target*100));
 }
 
+// ═══════════ برنامه‌های زمان‌دار (روتین‌ها) ═══════════
+function renderRoutines(){
+  const el = $('routineList');
+  if (!el) return;
+  if (!data.routines || data.routines.length === 0) {
+    el.innerHTML = '<p class="muted" style="text-align:center;padding:20px">هنوز برنامه زمان‌داری ثبت نکردی.</p>';
+    return;
+  }
+  el.innerHTML = data.routines.map(r => {
+    const dayName = ['یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه','شنبه'][r.dayOfWeek];
+    return `<article class="item" style="border-right:4px solid var(--blue)">
+      <div class="item-main">
+        <div class="item-title">⏰ ${safe(r.title)}</div>
+        <div class="item-meta">
+          <span class="status blue">${dayName}</span>
+          <span>🕒 ${r.startTime} تا ${r.endTime}</span>
+          <span>از ${toFaDate(r.startDate)} تا ${toFaDate(r.endDate)}</span>
+        </div>
+      </div>
+      <div class="item-actions">
+        <button class="danger small" data-del-routine="${r.id}">×</button>
+      </div>
+    </article>`;
+  }).join('');
+}
+
+function getRoutinesForDay(isoDate) {
+  if (!data.routines) return [];
+  const d = new Date(isoDate);
+  const dow = d.getDay();
+  return data.routines.filter(r => {
+    return r.dayOfWeek === dow && isoDate >= r.startDate && isoDate <= r.endDate;
+  }).sort((a,b) => a.startTime.localeCompare(b.startTime));
+}
+
 // ═══════════ رندر همه ═══════════
 function renderAll(){
   $('todayBigDate').textContent=todayFaLong();
@@ -844,6 +925,88 @@ function renderAll(){
   renderForex();
   renderSkills();
   renderReview();
+  renderRoutines();
+  renderTimeline(); // رندر نمودار زمانی
+}
+
+// ═══════════ نمودار زمانی و ساعت زنده ═══════════
+function startLiveClock() {
+  setInterval(() => {
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString('fa-IR', { hour12: false });
+    const clockEl = $('liveClock');
+    if (clockEl) clockEl.textContent = timeStr;
+
+    // آپدیت خط قرمز روی تایم‌لاین
+    const line = document.querySelector('.current-time-line');
+    if (line) {
+      const h = now.getHours();
+      const m = now.getMinutes();
+      const s = now.getSeconds();
+      const totalMinutes = (h * 60) + m + (s / 60);
+      const topPos = totalMinutes; // 1 دقیقه = 1 پیکسل
+      line.style.top = `${topPos}px`;
+    }
+  }, 1000);
+}
+
+function renderTimeline() {
+  const container = $('dailyTimeline');
+  if (!container) return;
+  const today = dateISO();
+  
+  let html = '';
+  for (let i = 0; i <= 24; i++) {
+    html += `<div class="timeline-hour" id="hour-${i}">
+      <span class="timeline-hour-label">${String(i).padStart(2,'0')}:00</span>
+    </div>`;
+  }
+
+  const now = new Date();
+  const currentTotalMinutes = (now.getHours() * 60) + now.getMinutes() + (now.getSeconds()/60);
+  html += `<div class="current-time-line" style="top: ${currentTotalMinutes}px;"><div class="current-time-dot"></div></div>`;
+
+  container.innerHTML = html;
+
+  // افزودن روتین‌ها به نمودار
+  const routines = getRoutinesForDay(today);
+  routines.forEach(r => {
+    const startP = r.startTime.split(':');
+    const endP = r.endTime.split(':');
+    const startM = (parseInt(startP[0]) * 60) + parseInt(startP[1]);
+    const endM = (parseInt(endP[0]) * 60) + parseInt(endP[1]);
+    const top = startM;
+    const height = Math.max(endM - startM, 20);
+
+    const el = document.createElement('div');
+    el.className = 'timeline-event routine';
+    el.style.top = `${top}px`;
+    el.style.height = `${height}px`;
+    el.innerHTML = `<span>⏰ ${r.startTime} - ${r.endTime}</span><br><strong>${safe(r.title)}</strong>`;
+    container.appendChild(el);
+  });
+
+  // افزودن تسک‌های امروز که ساعت دارند به نمودار
+  const timedTasks = data.tasks.filter(t => t.due_date === today && t.startTime && t.endTime);
+  timedTasks.forEach(t => {
+    const startP = t.startTime.split(':');
+    const endP = t.endTime.split(':');
+    const startM = (parseInt(startP[0]) * 60) + parseInt(startP[1]);
+    const endM = (parseInt(endP[0]) * 60) + parseInt(endP[1]);
+    const top = startM;
+    const height = Math.max(endM - startM, 20);
+
+    const el = document.createElement('div');
+    el.className = 'timeline-event task';
+    el.style.top = `${top}px`;
+    el.style.height = `${height}px`;
+    el.innerHTML = `<span>✓ ${t.startTime} - ${t.endTime}</span><br><strong>${safe(t.title)}</strong>`;
+    container.appendChild(el);
+  });
+
+  // اسکرول خودکار به ساعت فعلی
+  const scrollPos = Math.max(currentTotalMinutes - 100, 0);
+  container.scrollTop = scrollPos;
 }
 
 // ═══════════ پر کردن select ها ═══════════
@@ -924,12 +1087,17 @@ function renderTodayPlan(){
 function renderToday(){
   const today=dateISO();
   renderTodayPlan();
+  
+  // روتین‌های امروز
+  const todayRoutines = getRoutinesForDay(today);
+  const routinesHtml = todayRoutines.length ? `<div style="margin-bottom:12px">${todayRoutines.map(r => `<div style="background:var(--bluebg);color:var(--blue);padding:8px 12px;border-radius:8px;margin-bottom:6px;font-size:13px;font-weight:600">⏰ ${r.startTime} - ${r.endTime} | ${safe(r.title)}</div>`).join('')}</div>` : '';
+
   const todayTasks=data.tasks.filter(t=>{if(t.status==='cancelled')return false;if(t.due_date===today)return true;if(!t.due_date&&t.status!=='done')return true;return false;}).slice(0,10);
   $('todayTasks').innerHTML=todayTasks.length?todayTasks.map(t=>{
     const c=t.status==='done';
     return `<div class="checklist-item ${c?'checked':''}" data-toggle-task="${t.id}">
       <div class="check-box">${c?'✓':''}</div>
-      <div class="check-title">${safe(t.title)}</div>
+      <div class="check-title">${safe(t.title)} ${t.startTime ? `<small style="color:var(--blue)">(${t.startTime})</small>`:''}</div>
       ${t.priority==='urgent_important'?'<span class="status late">فوری</span>':''}</div>`;
   }).join(''):'<p class="muted">هنوز وظیفه‌ای برای امروز نیست.</p>';
   
@@ -946,6 +1114,12 @@ function renderToday(){
       <button class="ghost small" data-open-note="${h.id}" data-date="${today}" style="padding:2px 8px;font-size:11px">📝</button>
     </div>`;
   }).join(''):'<p class="muted">هنوز عادتی اضافه نکردی.</p>';
+
+  // قرار دادن روتین‌ها بالای عادت‌ها
+  const habitsContainer = $('todayHabits').parentElement;
+  let routineDiv = habitsContainer.querySelector('.today-routines-container');
+  if(!routineDiv) { routineDiv = document.createElement('div'); routineDiv.className = 'today-routines-container'; habitsContainer.insertBefore(routineDiv, $('todayHabits')); }
+  routineDiv.innerHTML = routinesHtml;
   
   const note=data.daily.find(d=>d.date===today);
   $('morningNote').value=note?.morning||'';
@@ -1015,16 +1189,33 @@ function renderMonthlyGoals(){
 // ═══════════ اهداف هفتگی ═══════════
 function renderWeeklyGoals(){
   const filter=document.querySelector('[data-wgfilter].active')?.dataset.wgfilter||'current';
-  const weekStart=getWeekStart(0);
-  const nextWeekStart=getWeekStart(1);
-  const weekEnd=new Date(weekStart);weekEnd.setDate(weekEnd.getDate()+6);
-  const nextWeekEnd=new Date(nextWeekStart);nextWeekEnd.setDate(nextWeekEnd.getDate()+6);
+  
+  const lastWeekStart = getWeekStart(-1);
+  const lastWeekEnd = new Date(lastWeekStart); lastWeekEnd.setDate(lastWeekEnd.getDate()+6);
+  
+  const weekStart = getWeekStart(0);
+  const weekEnd = new Date(weekStart); weekEnd.setDate(weekEnd.getDate()+6);
+  
+  const nextWeekStart = getWeekStart(1);
+  const nextWeekEnd = new Date(nextWeekStart); nextWeekEnd.setDate(nextWeekEnd.getDate()+6);
+  
   let arr=[...data.weeklyGoals];
-  if(filter==='current')arr=arr.filter(g=>{if(!g.due_date)return true;const d=new Date(g.due_date);return d>=weekStart&&d<=weekEnd;});
-  if(filter==='next')arr=arr.filter(g=>{if(!g.due_date)return false;const d=new Date(g.due_date);return d>=nextWeekStart&&d<=nextWeekEnd;});
-  if(filter==='done')arr=arr.filter(g=>g.done);
+  
+  if(filter==='last') {
+    arr=arr.filter(g=>{if(!g.due_date)return false;const d=new Date(g.due_date);return d>=lastWeekStart&&d<=lastWeekEnd;});
+  }
+  if(filter==='current') {
+    arr=arr.filter(g=>{if(!g.due_date)return true;const d=new Date(g.due_date);return d>=weekStart&&d<=weekEnd;});
+  }
+  if(filter==='next') {
+    arr=arr.filter(g=>{if(!g.due_date)return false;const d=new Date(g.due_date);return d>=nextWeekStart&&d<=nextWeekEnd;});
+  }
+  if(filter==='done') {
+    arr=arr.filter(g=>g.done);
+  }
+  
   const el=$('weeklyGoalsList');
-  if(!arr.length){el.innerHTML='<p class="muted" style="text-align:center;padding:20px">هدفی برای نمایش نیست.</p>';return;}
+  if(!arr.length){el.innerHTML='<p class="muted" style="text-align:center;padding:20px">هدفی برای نمایش در این هفته نیست.</p>';return;}
   el.innerHTML=arr.map(g=>{
     const p=weeklyGoalProgress(g.id);
     const sum=weeklyGoalSum(g.id);
@@ -1042,7 +1233,7 @@ function renderWeeklyGoals(){
           </div>
           <div style="text-align:center"><div style="font-size:20px;font-weight:800;color:var(--olive)">${fa(p)}٪</div></div>
         </div>
-        ${g.due_date?`<div class="item-meta"><span>${toFaDate(g.due_date)}</span></div>`:''}
+        ${g.due_date?`<div class="item-meta"><span>شروع: ${toFaDate(g.due_date)}</span></div>`:''}
       </div>
       <div class="item-actions">
         <button class="ghost small" data-toggle-wg="${g.id}">${g.done?'برگردان':'تکمیل'}</button>
@@ -1064,6 +1255,7 @@ function renderWeeklyTasks(){
     const iso=dateISO(d);
     const isToday=iso===dateISO();
     const dayTasks=data.weeklyTasks.filter(t=>t.date===iso);
+    const dayRoutines = getRoutinesForDay(iso); // روتین‌های این روز
     const daySum=dayTasks.reduce((a,t)=>a+(Number(t.value)||0),0);
     return `<div class="week-day ${isToday?'today':''}">
       <div class="week-day-header">
@@ -1071,6 +1263,7 @@ function renderWeeklyTasks(){
         <span class="date">${toFaDate(iso)}</span>
         ${daySum>0?`<span class="day-total">📊 ${fa(daySum)}</span>`:''}
       </div>
+      ${dayRoutines.map(r => `<div style="background:var(--bluebg);color:var(--blue);padding:6px;border-radius:8px;font-size:10px;font-weight:700;margin-bottom:4px;border:1px solid #c0d4e6">⏰ ${r.startTime} - ${r.endTime}<br>${safe(r.title)}</div>`).join('')}
       ${dayTasks.length?dayTasks.map(t=>{
         const goal=data.weeklyGoals.find(g=>String(g.id)===String(t.weeklyGoalId));
         const parent=goal?data.monthlyGoals.find(m=>String(m.id)===String(goal.monthlyGoalId)):null;
@@ -1111,7 +1304,7 @@ function renderTasks(){
       <div class="item-main"><div class="item-title">${safe(t.title)}</div>
         <div class="item-meta"><span>${safe(t.category||'')}</span>
         <span class="status ${t.status==='done'?'done':''} ${late?'late':''}">${labels.taskStatus[t.status]||t.status}</span>
-        ${t.due_date?`<span>${toFaDate(t.due_date)}</span>`:''}</div></div>
+        ${t.due_date?`<span>${toFaDate(t.due_date)} ${t.startTime ? 'ساعت '+t.startTime : ''}</span>`:''}</div></div>
       <div class="item-actions">
         <select data-task-status="${t.id}">${Object.entries(labels.taskStatus).map(([v,l])=>`<option value="${v}" ${v===t.status?'selected':''}>${l}</option>`).join('')}</select>
         <button class="danger small" data-del="tasks" data-id="${t.id}">×</button>
@@ -1456,15 +1649,23 @@ $('weeklyGoalForm').addEventListener('submit',e=>{
   const target=Number($('wgTarget').value);
   if(!parent){flash('لطفاً یه هدف ماهانه انتخاب کن');return;}
   if(!target||target<=0){flash('هدف این هفته باید بزرگ‌تر از صفر باشه');return;}
+  
+  let selDateStr = getPersianDateValue('wgDue') || dateISO();
+  let d = new Date(selDateStr);
+  let dow = d.getDay(); 
+  let fromSat = (dow + 1) % 7;
+  d.setDate(d.getDate() - fromSat);
+  const weekStartStr = dateISO(d); 
+
   data.weeklyGoals.push({
     id:nid(),title:t,
     monthlyGoalId:String(parent),
     target,
-    due_date:getPersianDateValue('wgDue'),
+    due_date:weekStartStr, 
     done:false,created:new Date().toISOString()
   });
   $('weeklyGoalForm').reset();
-  setPersianDateValue('wgDue', getWeekEnd(0)); // ✅ تنظیم مجدد روی پایان هفته
+  setPersianDateValue('wgDue', getWeekStartStr(0)); 
   save();flash('هدف هفتگی ذخیره شد ✓');
 });
 document.querySelectorAll('[data-wgfilter]').forEach(b=>b.addEventListener('click',()=>{
@@ -1578,7 +1779,75 @@ $('weekColumns').addEventListener('click',e=>{
 });
 
 // ═══════════ CRUD: بقیه بخش‌ها ═══════════
-$('taskForm').addEventListener('submit',e=>{e.preventDefault();const t=$('taskTitle').value.trim();if(!t)return;data.tasks.push({id:nid(),title:t,priority:$('taskPriority').value,status:'planned',due_date:getPersianDateValue('taskDue'),category:$('taskCategory').value,created:new Date().toISOString()});$('taskForm').reset();$('taskPriority').value='normal';$('taskCategory').value='شخصی';setPersianDateValue('taskDue', dateISO());save();flash('ذخیره شد');});
+// ═══════════ ماسک هوشمند برای فیلدهای ساعت ═══════════
+document.querySelectorAll('.time-input').forEach(input => {
+  input.addEventListener('input', function(e) {
+    let val = this.value.replace(/[^0-9]/g, ''); // فقط عدد قبول کن
+    if (val.length >= 3) {
+      val = val.slice(0, 2) + ':' + val.slice(2, 4); // خودکار علامت : بذار
+    }
+    this.value = val;
+  });
+
+  input.addEventListener('blur', function() {
+    let val = this.value;
+    if (!val) return;
+    // اصلاح فرمت‌های ناقص (مثلاً 930 -> 09:30)
+    if (val.length === 4 && !val.includes(':')) {
+      val = val.slice(0,2) + ':' + val.slice(2);
+    } else if (val.length === 3 && !val.includes(':')) {
+      val = '0' + val.charAt(0) + ':' + val.slice(1);
+    }
+    this.value = val;
+  });
+});
+
+// چک کردن اعتبار ساعت قبل از ذخیره
+const isValidTime = (timeStr) => {
+  if (!timeStr) return true; // خالی مجازه
+  const regex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+  return regex.test(timeStr);
+};
+
+$('routineForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const title = $('rtTitle').value.trim();
+  const dayOfWeek = parseInt($('rtDay').value);
+  const startTime = $('rtStartTime').value;
+  const endTime = $('rtEndTime').value;
+  const startDate = getPersianDateValue('rtStartDate');
+  const endDate = getPersianDateValue('rtEndDate');
+
+  if (!title || !startDate || !endDate || !startTime || !endTime) {
+    flash('لطفاً همه فیلدها را پر کنید');
+    return;
+  }
+
+  if (!isValidTime(startTime) || !isValidTime(endTime)) {
+    flash('ساعت باید به فرمت ۲۴ ساعته باشد (مثال: 15:30)');
+    return;
+  }
+
+  data.routines.push({
+    id: nid(), title, dayOfWeek, startTime, endTime, startDate, endDate, created: new Date().toISOString()
+  });
+  
+  $('routineForm').reset();
+  save();
+  flash('برنامه زمان‌دار ثبت شد ✓');
+});
+
+// حذف برنامه زمان‌دار
+$('routineList').addEventListener('click', e => {
+  const delId = e.target.dataset.delRoutine;
+  if (delId && confirm('این برنامه زمان‌دار حذف شود؟')) {
+    data.routines = data.routines.filter(r => String(r.id) !== String(delId));
+    save();
+    flash('حذف شد');
+  }
+});
+
+$('taskForm').addEventListener('submit',e=>{e.preventDefault();const t=$('taskTitle').value.trim();if(!t)return;const st = $('taskStartTime').value, et = $('taskEndTime').value; if ((st && !isValidTime(st)) || (et && !isValidTime(et))) { flash('ساعت باید به فرمت ۲۴ ساعته باشد (مثال: 15:30)'); return; } data.tasks.push({id:nid(),title:t,priority:$('taskPriority').value,status:'planned',due_date:getPersianDateValue('taskDue'),startTime:st||null,endTime:et||null,category:$('taskCategory').value,created:new Date().toISOString()});$('taskForm').reset();$('taskPriority').value='normal';$('taskCategory').value='شخصی';setPersianDateValue('taskDue', dateISO());save();flash('ذخیره شد');});
 $('taskFilter').addEventListener('change',renderTasks);
 $('taskSearch').addEventListener('input',renderTasks);
 $('taskList').addEventListener('change',e=>{const id=e.target.dataset.taskStatus;if(!id)return;const t=data.tasks.find(x=>String(x.id)===String(id));if(t){t.status=e.target.value;save();}});
@@ -1749,7 +2018,8 @@ $('debugBtn').addEventListener('click',()=>{
     counts:{
       monthlyGoals:data.monthlyGoals.length,
       weeklyGoals:data.weeklyGoals.length,
-      weeklyTasks:data.weeklyTasks.length
+      weeklyTasks:data.weeklyTasks.length,
+      routines:data.routines.length
     },
     monthlyGoals:data.monthlyGoals.map(g=>({id:g.id,idType:typeof g.id,title:g.title,unit:g.unit,target:g.target})),
     weeklyGoals:data.weeklyGoals.map(g=>({id:g.id,idType:typeof g.id,title:g.title,parent:g.monthlyGoalId,parentType:typeof g.monthlyGoalId,target:g.target})),
@@ -1827,7 +2097,7 @@ document.addEventListener('click', e => {
 document.querySelectorAll('.persian-date').forEach(input => {
   input.addEventListener('focus', function() {
     if (!this.dataset.init) {
-      new persianDatepicker(this, {
+      jQuery(this).persianDatepicker({
         format: 'YYYY/MM/DD',
         initialValue: true,
         autoClose: true,
