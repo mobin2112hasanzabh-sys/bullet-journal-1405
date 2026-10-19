@@ -244,13 +244,13 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .datepicker-plot-area .datepicker-header .btn-switch { color: var(--olive) !important; }
 
 /* ═══════════ استایل‌های نمودار زمانی (Timeline) ═══════════ */
-.timeline-container { position: relative; height: 500px; overflow-y: auto; background: var(--paper); border-radius: 12px; border: 1px solid var(--line); margin-top: 15px; padding: 10px 50px 10px 10px; }
+.timeline-container { position: relative; height: 500px; overflow-y: auto; background: var(--paper); border-radius: 12px; border: 1px solid var(--line); margin-top: 15px; padding: 0 50px 0 10px; }
 .timeline-hour { height: 60px; border-bottom: 1px dashed var(--line); position: relative; }
 .timeline-hour-label { position: absolute; right: -45px; top: -10px; font-size: 11px; color: var(--muted); font-weight: 600; }
-.timeline-event { position: absolute; left: 10px; right: 10px; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; overflow: hidden; z-index: 2; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+.timeline-event { position: absolute; left: 10px; right: 10px; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; overflow: hidden; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.05); box-sizing: border-box; }
 .timeline-event.routine { background: var(--bluebg); color: var(--blue); border-right: 4px solid var(--blue); }
 .timeline-event.task { background: var(--olive2); color: var(--olive); border-right: 4px solid var(--olive); }
-.current-time-line { position: absolute; left: 0; right: 0; height: 2px; background: var(--red); z-index: 5; pointer-events: none; }
+.current-time-line { position: absolute; left: 0; right: 0; height: 2px; background: var(--red); z-index: 100; pointer-events: none; }
 .current-time-dot { width: 12px; height: 12px; background: var(--red); border-radius: 50%; position: absolute; right: -6px; top: -5px; box-shadow: 0 0 6px rgba(185, 80, 66, 0.8); }
 .live-clock-badge { background: var(--redbg); color: var(--red); padding: 5px 12px; border-radius: 99px; font-weight: 800; font-size: 14px; font-variant-numeric: tabular-nums; }
 
@@ -439,14 +439,14 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
             <div class="field">
               <label>از تاریخ</label>
               <div class="date-input-wrapper">
-                <input id="rtStartDate" type="text" class="persian-date" required placeholder="شروع">
+                <input id="rtStartDate" type="text" class="persian-date" required placeholder="1405/07/28">
                 <span class="date-icon" onclick="document.getElementById('rtStartDate').focus()">📅</span>
               </div>
             </div>
             <div class="field">
               <label>تا تاریخ</label>
               <div class="date-input-wrapper">
-                <input id="rtEndDate" type="text" class="persian-date" required placeholder="پایان">
+                <input id="rtEndDate" type="text" class="persian-date" required placeholder="1405/08/28">
                 <span class="date-icon" onclick="document.getElementById('rtEndDate').focus()">📅</span>
               </div>
             </div>
@@ -668,7 +668,7 @@ const labels={priority:{urgent_important:'فوری و مهم',important:'مهم'
 
 const nid=()=>'g'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 
-// ابزارهای تاریخ شمسی (اصلاح‌شده برای پذیرش تاریخ میلادی)
+// ابزارهای تاریخ شمسی (اصلاح‌شده برای رفع مشکل تایم‌زون)
 const getPersianDateValue = (id) => {
   const el = $(id);
   if (!el) return null;
@@ -681,22 +681,31 @@ const getPersianDateValue = (id) => {
   const parts = val.split('/');
   if (parts.length !== 3) return null;
 
-  try {
-    const y = parseInt(parts[0], 10);
-    const m = parseInt(parts[1], 10);
-    const d = parseInt(parts[2], 10);
+  let y, m, d;
+  if (parseInt(parts[0]) > 1900) {
+    y = parseInt(parts[0], 10);
+    m = parseInt(parts[1], 10);
+    d = parseInt(parts[2], 10);
+    return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+  } else if (parseInt(parts[2]) > 1900) {
+    d = parseInt(parts[0], 10);
+    m = parseInt(parts[1], 10);
+    y = parseInt(parts[2], 10);
+    return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+  } else {
+    y = parseInt(parts[0], 10);
+    m = parseInt(parts[1], 10);
+    d = parseInt(parts[2], 10);
     
-    // اگر کاربر تاریخ میلادی وارد کرده باشد (مثلاً 2026/10/03)
-    if (y > 1900) {
-      return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    }
-
     if (y < 1300 || y > 1500 || m < 1 || m > 12 || d < 1 || d > 31) return null;
 
-    const pDate = new persianDate([y, m, d]);
-    return pDate.toCalendar('gregorian').format('YYYY-MM-DD');
-  } catch (e) {
-    return null;
+    try {
+      const safeDate = new persianDate([y, m, d, 12, 0, 0]);
+      const gDate = safeDate.toCalendar('gregorian');
+      return `${gDate.year()}-${String(gDate.month()).padStart(2,'0')}-${String(gDate.date()).padStart(2,'0')}`;
+    } catch (e) {
+      return null;
+    }
   }
 };
 const setPersianDateValue = (id, isoDate) => {
@@ -830,7 +839,6 @@ async function startApp(){
   ['moodDate','finDate','fxDate','uniDue','skillEnd','mgDue','taskDue'].forEach(id=>{if($(id))setPersianDateValue(id, dateISO());});
   if($('wgDue')) setPersianDateValue('wgDue', getWeekStartStr(0)); 
   
-  // تنظیم پیش‌فرض بازه زمانی برای برنامه‌های زمان‌دار (از امروز تا یک ماه بعد)
   if($('rtStartDate')) setPersianDateValue('rtStartDate', dateISO());
   if($('rtEndDate')) {
     const nextMonth = new Date();
@@ -840,7 +848,7 @@ async function startApp(){
 
   switchPanel('app');
   renderAll();
-  startLiveClock(); // شروع ساعت زنده
+  startLiveClock();
 }
 
 // ═══════════ هفته ═══════════
@@ -914,14 +922,16 @@ function renderRoutines(){
 function getRoutinesForDay(isoDate) {
   if (!data.routines) return [];
   const parts = isoDate.split('-');
-  // استفاده از ساعت ۱۲ ظهر برای جلوگیری از مشکل اختلاف زمانی
   const d = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]), 12, 0, 0);
-  const dow = d.getDay(); // 0=یکشنبه, 1=دوشنبه, ... 6=شنبه
+  const dow = d.getDay(); // 0=Sun, 1=Mon, ... 6=Sat
   
   return data.routines.filter(r => {
+    if (!r.startDate || !r.endDate) return false;
     const dayMatches = parseInt(r.dayOfWeek) === dow;
-    const dateInRange = isoDate >= r.startDate && isoDate <= r.endDate;
-    return dayMatches && dateInRange;
+    const rStart = new Date(r.startDate + 'T00:00:00');
+    const rEnd = new Date(r.endDate + 'T23:59:59');
+    const current = new Date(isoDate + 'T12:00:00');
+    return dayMatches && current >= rStart && current <= rEnd;
   }).sort((a,b) => a.startTime.localeCompare(b.startTime));
 }
 
@@ -956,14 +966,13 @@ function startLiveClock() {
     const clockEl = $('liveClock');
     if (clockEl) clockEl.textContent = timeStr;
 
-    // آپدیت خط قرمز روی تایم‌لاین
     const line = document.querySelector('.current-time-line');
     if (line) {
       const h = now.getHours();
       const m = now.getMinutes();
       const s = now.getSeconds();
       const totalMinutes = (h * 60) + m + (s / 60);
-      const topPos = totalMinutes; // 1 دقیقه = 1 پیکسل
+      const topPos = totalMinutes;
       line.style.top = `${topPos}px`;
     }
   }, 1000);
@@ -987,7 +996,7 @@ function renderTimeline() {
 
   container.innerHTML = html;
 
-  // افزودن روتین‌ها به نمودار
+  // افزودن روتین‌ها
   const routines = getRoutinesForDay(today);
   routines.forEach(r => {
     const startP = r.startTime.split(':');
@@ -1005,7 +1014,7 @@ function renderTimeline() {
     container.appendChild(el);
   });
 
-  // افزودن تسک‌های امروز که ساعت دارند به نمودار
+  // افزودن تسک‌های ساعت‌دار
   const timedTasks = data.tasks.filter(t => t.due_date === today && t.startTime && t.endTime);
   timedTasks.forEach(t => {
     const startP = t.startTime.split(':');
@@ -1023,7 +1032,7 @@ function renderTimeline() {
     container.appendChild(el);
   });
 
-  // اسکرول خودکار به ساعت فعلی
+  // اسکرول به زمان حال
   const scrollPos = Math.max(currentTotalMinutes - 100, 0);
   container.scrollTop = scrollPos;
 }
@@ -1107,7 +1116,6 @@ function renderToday(){
   const today=dateISO();
   renderTodayPlan();
   
-  // روتین‌های امروز
   const todayRoutines = getRoutinesForDay(today);
   const routinesHtml = todayRoutines.length ? `<div style="margin-bottom:12px">${todayRoutines.map(r => `<div style="background:var(--bluebg);color:var(--blue);padding:8px 12px;border-radius:8px;margin-bottom:6px;font-size:13px;font-weight:600">⏰ ${r.startTime} - ${r.endTime} | ${safe(r.title)}</div>`).join('')}</div>` : '';
 
@@ -1134,7 +1142,6 @@ function renderToday(){
     </div>`;
   }).join(''):'<p class="muted">هنوز عادتی اضافه نکردی.</p>';
 
-  // قرار دادن روتین‌ها بالای عادت‌ها
   const habitsContainer = $('todayHabits').parentElement;
   let routineDiv = habitsContainer.querySelector('.today-routines-container');
   if(!routineDiv) { routineDiv = document.createElement('div'); routineDiv.className = 'today-routines-container'; habitsContainer.insertBefore(routineDiv, $('todayHabits')); }
@@ -1274,7 +1281,7 @@ function renderWeeklyTasks(){
     const iso=dateISO(d);
     const isToday=iso===dateISO();
     const dayTasks=data.weeklyTasks.filter(t=>t.date===iso);
-    const dayRoutines = getRoutinesForDay(iso); // روتین‌های این روز
+    const dayRoutines = getRoutinesForDay(iso);
     const daySum=dayTasks.reduce((a,t)=>a+(Number(t.value)||0),0);
     return `<div class="week-day ${isToday?'today':''}">
       <div class="week-day-header">
@@ -1798,12 +1805,11 @@ $('weekColumns').addEventListener('click',e=>{
 });
 
 // ═══════════ CRUD: بقیه بخش‌ها ═══════════
-// ═══════════ ماسک هوشمند برای فیلدهای ساعت ═══════════
 document.querySelectorAll('.time-input').forEach(input => {
   input.addEventListener('input', function(e) {
-    let val = this.value.replace(/[^0-9]/g, ''); // فقط عدد قبول کن
+    let val = this.value.replace(/[^0-9]/g, ''); 
     if (val.length >= 3) {
-      val = val.slice(0, 2) + ':' + val.slice(2, 4); // خودکار علامت : بذار
+      val = val.slice(0, 2) + ':' + val.slice(2, 4); 
     }
     this.value = val;
   });
@@ -1811,7 +1817,6 @@ document.querySelectorAll('.time-input').forEach(input => {
   input.addEventListener('blur', function() {
     let val = this.value;
     if (!val) return;
-    // اصلاح فرمت‌های ناقص (مثلاً 930 -> 09:30)
     if (val.length === 4 && !val.includes(':')) {
       val = val.slice(0,2) + ':' + val.slice(2);
     } else if (val.length === 3 && !val.includes(':')) {
@@ -1821,9 +1826,8 @@ document.querySelectorAll('.time-input').forEach(input => {
   });
 });
 
-// چک کردن اعتبار ساعت قبل از ذخیره
 const isValidTime = (timeStr) => {
-  if (!timeStr) return true; // خالی مجازه
+  if (!timeStr) return true;
   const regex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
   return regex.test(timeStr);
 };
@@ -1852,7 +1856,6 @@ $('routineForm').addEventListener('submit', e => {
   });
   
   $('routineForm').reset();
-  // تنظیم مجدد تاریخ‌ها به حالت پیش‌فرض
   setPersianDateValue('rtStartDate', dateISO());
   const nextMonth = new Date();
   nextMonth.setMonth(nextMonth.getMonth() + 1);
@@ -1862,7 +1865,6 @@ $('routineForm').addEventListener('submit', e => {
   flash('برنامه زمان‌دار ثبت شد ✓');
 });
 
-// حذف برنامه زمان‌دار
 $('routineList').addEventListener('click', e => {
   const delId = e.target.dataset.delRoutine;
   if (delId && confirm('این برنامه زمان‌دار حذف شود؟')) {
@@ -1890,7 +1892,6 @@ $('habitList').addEventListener('change',e=>{const id=e.target.dataset.habitStat
   save();});
 $('habitList').addEventListener('click',e=>{if(e.target.dataset.del==='habits'&&confirm('حذف شود؟')){const id=e.target.dataset.id;data.habits=data.habits.filter(h=>String(h.id)!==String(id));data.logs=data.logs.filter(l=>String(l.habit_id)!==String(id));save();}});
 
-// ═══════════ رویدادهای کارهای برنامه‌ریزی امروز ═══════════
 $('todayPlanTasks').addEventListener('click',e=>{
   const tg=e.target.dataset.toggleWtToday;
   if(tg){
@@ -1964,7 +1965,6 @@ $('skillList').addEventListener('click',e=>{if(e.target.dataset.del==='skills'&&
 $('reviewForm').addEventListener('submit',e=>{e.preventDefault();data.review.push({id:nid(),type:$('revType').value,period:$('revPeriod').value,score:Number($('revScore').value||0),successes:$('revSucc').value,challenges:$('revChal').value});$('reviewForm').reset();save();flash('ذخیره شد');});
 $('reviewList').addEventListener('click',e=>{if(e.target.dataset.del==='review'&&confirm('حذف شود؟')){data.review=data.review.filter(x=>String(x.id)!==String(e.target.dataset.id));save();}});
 
-// ═══════════ رویدادهای دفترچه ═══════════
 document.addEventListener('input',e=>{
   if(e.target.id==='notebookSearch')renderNotebook();
 });
@@ -2021,7 +2021,6 @@ document.querySelectorAll('#tab-planner .subnav button[data-sub]').forEach(b=>b.
   if(b.dataset.sub==='weekly-goals'||b.dataset.sub==='weekly-tasks')refreshSelectors();
 }));
 
-// ═══════════ خروجی/ورودی ═══════════
 $('exportBtn').addEventListener('click',()=>{
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);const a=document.createElement('a');
@@ -2035,7 +2034,6 @@ $('importFile').addEventListener('change',e=>{
   reader.readAsText(file);});
 $('clearDataBtn').addEventListener('click',()=>{if(confirm('همهٔ داده‌های شما پاک شود؟ این کار قابل بازگشت نیست!')){data=emptyData();save();flash('پاک شد');}});
 
-// ═══════════ دیباگ ═══════════
 $('debugBtn').addEventListener('click',()=>{
   const out=$('debugOutput');
   const info={
@@ -2054,7 +2052,6 @@ $('debugBtn').addEventListener('click',()=>{
   out.classList.remove('hidden');
 });
 
-// ═══════════ پومودورو ═══════════
 let pInt=null,pRem=25*60,pRun=false;
 const upPomo=()=>{const m=Math.floor(pRem/60),s=pRem%60;$('pomoTime').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;};
 function startPomo(){if(pRun)return;pRun=true;$('pomoBox').classList.add('running');$('pomoToggle').textContent='توقف';
@@ -2066,7 +2063,6 @@ $('pomoToggle').addEventListener('click',()=>{pRun?stopPomo():startPomo();});
 $('pomoClose').addEventListener('click',()=>{stopPomo();show('pomoBox',false);});
 document.addEventListener('keydown',e=>{if(e.key==='p'&&e.ctrlKey){e.preventDefault();show('pomoBox',$('pomoBox').classList.contains('hidden'));if(!$('pomoBox').classList.contains('hidden'))upPomo();}});
 
-// ═══════════ منطق پنجره یادداشت عادت ═══════════
 document.addEventListener('click', e => {
   const btn = e.target.closest('[data-open-note]');
   const cell = e.target.closest('[data-heatmap-cell]');
@@ -2118,7 +2114,6 @@ document.addEventListener('click', e => {
   }
 });
 
-// ═══════════ راه‌اندازی تقویم شمسی ═══════════
 document.querySelectorAll('.persian-date').forEach(input => {
   input.addEventListener('focus', function() {
     if (!this.dataset.init) {
@@ -2134,7 +2129,6 @@ document.querySelectorAll('.persian-date').forEach(input => {
   });
 });
 
-// ═══════════ شروع ═══════════
 initTheme();
 const savedSession = localStorage.getItem(STORAGE_SESSION);
 if (savedSession) {
