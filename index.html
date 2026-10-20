@@ -6,20 +6,23 @@
 <meta name="theme-color" content="#4b3526">
 <title>بولت ژورنال من | ۱۴۰۵</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📓</text></svg>">
-<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<!-- PWA Meta Tags -->
+<link rel="manifest" href="./manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="بولت ژورنال">
 
 <!-- کتابخانه تقویم شمسی -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- کتابخانه تقویم شمسی از jsDelivr -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">
 <script src="https://cdn.jsdelivr.net/npm/persian-date@1.1.0/dist/persian-date.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
 
-<!-- PWA Meta Tags -->
-<link rel="manifest" href="./manifest.json">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="بولت ژورنال">
 <style>
 :root{--cream:#f7f1e7;--cream2:#eee3d2;--cream3:#e5d8bf;--brown:#76543a;--dark:#4b3526;--olive:#78845b;--olive2:#e5ead9;--text:#30271f;--muted:#766c61;--line:#ddd0be;--white:#fffdf9;--paper:#faf5ea;--red:#b95042;--redbg:#fbe9e5;--green:#456b3f;--greenbg:#e5f2e2;--gold:#b58e42;--goldbg:#faf1dd;--blue:#5b7a99;--bluebg:#e7eff5;--shadow:0 4px 18px rgba(75,53,38,.07);--shadow2:0 12px 40px rgba(75,53,38,.12);--radius:18px;--dot:rgba(118,84,58,.10)}
 [data-theme="dark"]{--cream:#2a241d;--cream2:#332b22;--cream3:#3d3328;--brown:#c4a684;--dark:#e8d9c0;--olive:#9caf7a;--olive2:#3a4232;--text:#f0e5d0;--muted:#a89b85;--line:#4a3f31;--white:#38302a;--paper:#2f2823;--red:#d97767;--redbg:#4a2a24;--green:#a4c47a;--greenbg:#2e3d28;--gold:#d9b866;--goldbg:#453a20;--blue:#8bb0d0;--bluebg:#2a3a48;--shadow:0 4px 18px rgba(0,0,0,.3);--shadow2:0 12px 40px rgba(0,0,0,.45);--dot:rgba(232,217,192,.06)}
@@ -259,7 +262,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 [data-theme="dark"] .heatmap-grid .cell.today-cell::before { background-color: #d9b866; }
 
 /* استایل آیکون تقویم */
-.date-input-wrapper { position: relative; width: 100%; display: flex; align-items: center; }
+.date-input-wrapper { position: relative; width: 100%; display: flex; align-items: center; min-width: 100px;}
 .date-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 16px; opacity: 0.7; user-select: none; z-index: 2; transition:opacity .2s}
 .date-icon:hover{opacity:1}
 .date-input-wrapper input { padding-left: 38px !important; cursor: pointer; }
@@ -287,46 +290,35 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 
 /* استایل ورودی‌های ساعت (فرمت ۲۴ ساعته متنی) */
 .time-input { direction: ltr; text-align: center; font-family: monospace; letter-spacing: 1px; font-weight: bold; min-width: 60px; }
-.date-input-wrapper { position: relative; width: 100%; display: flex; align-items: center; min-width: 100px; }
 
 /* استایل فرم‌های پیچیده */
 .weekly-task-grid { display: grid; grid-template-columns: 2fr 1.5fr 1.5fr 1fr 1fr auto; gap: 10px; align-items: end; }
 .routine-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr auto; gap: 10px; align-items: end; }
-
-/* جلوگیری از بیرون‌زدگی فیلدها در گرید */
 .weekly-task-grid .field, .routine-grid .field { min-width: 0; }
 
-@media(max-width: 900px) {
+@media(max-width:1000px){
+  .formgrid-goal{grid-template-columns:1fr 1fr 1fr}.formgrid-goal>button{grid-column:1/-1}
+  .weekly-task-grid, .routine-grid { grid-template-columns: 1fr 1fr 1fr; }
+  .weekly-task-grid > button, .routine-grid > button { grid-column: 1 / -1; }
+}
+@media(max-width:900px){
+  .grid{grid-template-columns:repeat(2,1fr)}.week-columns{grid-template-columns:repeat(4,1fr)}
   .weekly-task-grid, .routine-grid { grid-template-columns: 1fr 1fr; }
   .weekly-task-grid > button, .routine-grid > button { grid-column: 1 / -1; }
 }
-
-/* برای گوشی‌های کوچک (مثل تصویر شما - عرض کمتر از 600 پیکسل) */
-@media(max-width: 600px) {
-  .weekly-task-grid, .routine-grid { grid-template-columns: 1fr; }
-  /* چک‌باکس زمان مشخص کل عرض را بگیرد */
-  .weekly-task-grid .field[style*="flex-direction:row"], 
-  .routine-grid .field[style*="flex-direction:row"] { grid-column: 1 / -1; }
-  /* فیلدهای ساعت شروع و پایان در موبایل زیر هم بروند */
-  #wtTimeFields { flex-direction: column !important; gap: 8px !important; }
-  #wtTimeFields input { width: 100% !important; }
-}
-
-@media(max-width:1000px){.formgrid-goal{grid-template-columns:1fr 1fr 1fr}.formgrid-goal>button{grid-column:1/-1}}
-@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.week-columns{grid-template-columns:repeat(4,1fr)}}
-
-/* ریسپانسیو موبایل و نویگیشن اسکرولی */
 @media(max-width:780px){
-  .wrap{padding:14px}
-  .formgrid,.formgrid2,.formgrid-goal{grid-template-columns:1fr 1fr}
-  .formgrid-goal>button{grid-column:1/-1}
-  .item{flex-direction:column;align-items:flex-start}
-  .item-actions{width:100%}
-  .week-columns{grid-template-columns:repeat(2,1fr)}
+  .wrap{padding:14px}.formgrid,.formgrid2,.formgrid-goal{grid-template-columns:1fr 1fr}.formgrid-goal>button{grid-column:1/-1}.item{flex-direction:column;align-items:flex-start}.item-actions{width:100%}.week-columns{grid-template-columns:repeat(2,1fr)}
   .nav{flex-wrap:nowrap; overflow-x:auto; padding-bottom:10px; -webkit-overflow-scrolling:touch; scrollbar-width:none;}
   .nav::-webkit-scrollbar{display:none;}
   .nav button{flex:0 0 auto; padding:8px 12px; font-size:12px}
   .pomo-box{right:50%; transform:translateX(50%); bottom:15px; padding:10px 14px}
+}
+@media(max-width:600px){
+  .weekly-task-grid, .routine-grid { grid-template-columns: 1fr; }
+  .weekly-task-grid .field[style*="flex-direction:row"], 
+  .routine-grid .field[style*="flex-direction:row"] { grid-column: 1 / -1; }
+  #wtTimeFields { flex-direction: column !important; gap: 8px !important; }
+  #wtTimeFields input { width: 100% !important; }
 }
 @media(max-width:420px){.grid{grid-template-columns:1fr 1fr;gap:10px}.formgrid,.formgrid2,.formgrid-goal{grid-template-columns:1fr}}
 
@@ -1838,403 +1830,462 @@ $('routineForm').addEventListener('submit', e => {
   const startDate = getPersianDateValue('rtStartDate');
   const endDate = getPersianDateValue('rtEndDate');
 
-  if (!title || !startDate || !endDate || !startTime || !endTime) {
-    flash('لطفاً همه فیلدها را پر کنید');
-    return;
+    if (!title || !startDate || !endDate || !startTime || !endTime) {
+    flash('همهٔ فیلدها الزامی هستند'); return;
   }
-
   if (!isValidTime(startTime) || !isValidTime(endTime)) {
-    flash('ساعت باید به فرمت ۲۴ ساعته باشد (مثال: 15:30)');
-    return;
+    flash('ساعت باید به فرمت ۲۴ ساعته باشد (مثال: 15:30)'); return;
   }
+  if (startDate > endDate) { flash('تاریخ شروع باید قبل از پایان باشد'); return; }
+  if (endTime <= startTime) { flash('ساعت پایان باید بعد از شروع باشد'); return; }
 
+  if (!data.routines) data.routines = [];
   data.routines.push({
-    id: nid(), title, dayOfWeek, startTime, endTime, startDate, endDate, created: new Date().toISOString()
+    id: nid(), title, dayOfWeek, startTime, endTime, startDate, endDate,
+    created: new Date().toISOString()
   });
-  
   $('routineForm').reset();
+  $('rtStartTime').value = '15:30';
+  $('rtEndTime').value = '17:30';
   setPersianDateValue('rtStartDate', dateISO());
-  const nextMonth = new Date();
-  nextMonth.setMonth(nextMonth.getMonth() + 1);
-  setPersianDateValue('rtEndDate', dateISO(nextMonth));
-  
+  const nm = new Date(); nm.setMonth(nm.getMonth() + 1);
+  setPersianDateValue('rtEndDate', dateISO(nm));
   save();
-  flash('برنامه زمان‌دار ثبت شد ✓');
+  flash('برنامه زمان‌دار اضافه شد ✓');
 });
 
-$('routineList').addEventListener('click', e => {
-  if (e.target.closest('[data-event-type]')) return; // handled globally
-  const delId = e.target.dataset.delRoutine;
-  if (delId && confirm('این برنامه زمان‌دار حذف شود؟')) {
-    data.routines = data.routines.filter(r => String(r.id) !== String(delId));
-    save();
-    flash('حذف شد');
+// ═══════════ CRUD: فرم‌های باقی‌مانده ═══════════
+// حذف روتین
+document.addEventListener('click', e => {
+  const delR = e.target.dataset.delRoutine;
+  if (!delR) return;
+  if (!confirm('حذف شود؟')) return;
+  data.routines = data.routines.filter(r => String(r.id) !== String(delR));
+  if (data.routineLogs) {
+    data.routineLogs = data.routineLogs.filter(l => String(l.eventId) !== String(delR));
   }
+  save();
 });
 
-$('habitForm').addEventListener('submit',e=>{e.preventDefault();const n=$('habitName').value.trim();if(!n)return;data.habits.push({id:nid(),name:n,created:new Date().toISOString()});$('habitForm').reset();save();flash('ذخیره شد');});
-$('habitList').addEventListener('change',e=>{const id=e.target.dataset.habitStatus;if(!id)return;const s=e.target.value;const today=dateISO();
-  const idx=data.logs.findIndex(l=>String(l.habit_id)===String(id)&&l.date===today);
-  if(!s){if(idx>=0)data.logs.splice(idx,1);}
-  else if(idx>=0){data.logs[idx].status=s;}else{data.logs.push({id:nid(),habit_id:String(id),date:today,status:s});}
-  save();});
-$('habitList').addEventListener('click',e=>{if(e.target.dataset.del==='habits'&&confirm('حذف شود؟')){const id=e.target.dataset.id;data.habits=data.habits.filter(h=>String(h.id)!==String(id));data.logs=data.logs.filter(l=>String(l.habit_id)!==String(id));save();}});
+// افزودن عادت
+$('habitForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = $('habitName').value.trim();
+  if (!name) return;
+  data.habits.push({ id: nid(), name, created: new Date().toISOString() });
+  $('habitForm').reset();
+  save();
+  flash('عادت اضافه شد ✓');
+});
 
-// ═══════════ رویدادهای کارهای برنامه‌ریزی امروز ═══════════
-$('todayPlanTasks').addEventListener('click',e=>{
-  if (e.target.closest('[data-event-type]')) return; // handled globally
-  const tg=e.target.dataset.toggleWtToday;
-  if(tg){
-    const t=data.weeklyTasks.find(x=>String(x.id)===String(tg));
-    if(t){t.done=!t.done;save();}
-    return;
-  }
-  const del=e.target.dataset.delWtToday;
-  if(del&&confirm('حذف شود؟')){
-    data.weeklyTasks=data.weeklyTasks.filter(t=>String(t.id)!==String(del));
-    save();return;
-  }
+// ثبت تراکنش مالی
+$('financeForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const date = getPersianDateValue('finDate');
+  const amount = Number($('finAmount').value);
+  if (!date) { flash('تاریخ نامعتبر'); return; }
+  if (!amount || amount <= 0) { flash('مبلغ باید بزرگ‌تر از صفر باشد'); return; }
+  const month = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { year: 'numeric', month: 'long' }).format(new Date(date));
+  data.finance.unshift({
+    id: nid(), date, month,
+    type: $('finType').value,
+    category: $('finCategory').value,
+    description: $('finDesc').value.trim(),
+    amount,
+    created: new Date().toISOString()
+  });
+  $('financeForm').reset();
+  setPersianDateValue('finDate', dateISO());
+  save();
+  flash('تراکنش ثبت شد ✓');
 });
-$('todayPlanTasks').addEventListener('input',e=>{
-  const id=e.target.dataset.valueWtToday;
-  if(!id)return;
-  const t=data.weeklyTasks.find(x=>String(x.id)===String(id));
-  if(!t)return;
-  const v=e.target.value;
-  t.value=v===''?'':Number(v);
-  saveData();
-});
-$('todayPlanTasks').addEventListener('change',e=>{
-  const id=e.target.dataset.valueWtToday;
-  if(!id)return;
-  const t=data.weeklyTasks.find(x=>String(x.id)===String(id));
-  if(!t)return;
-  const v=e.target.value;
-  t.value=v===''?'':Number(v);
-  saveData();
-  renderTodayPlan();
-  renderWeeklyGoals();
-  renderMonthlyGoals();
-  renderDashboard();
-});
-$('todayHabits').addEventListener('click',e=>{const el=e.target.closest('[data-toggle-habit]');if(!el)return;const id=el.dataset.toggleHabit;const today=dateISO();
-  const log=data.logs.find(l=>String(l.habit_id)===String(id)&&l.date===today);
-  if(log){log.status=log.status==='done'?'not_done':'done';}
-  else{data.logs.push({id:nid(),habit_id:String(id),date:today,status:'done'});}
-  save();});
-$('saveDailyBtn').addEventListener('click',()=>{const today=dateISO();
-  const idx=data.daily.findIndex(d=>d.date===today);
-  const entry={date:today,morning:$('morningNote').value,evening:$('eveningNote').value,highlight:$('highlightToday').value,gratitude:$('gratitudeToday').value};
-  if(idx>=0)data.daily[idx]=entry;else data.daily.push(entry);
-  save();flash('ذخیره شد');});
 
-$('financeForm').addEventListener('submit',e=>{e.preventDefault();
-  const d=getPersianDateValue('finDate') || dateISO();
-  const month=new Intl.DateTimeFormat('fa-IR-u-ca-persian',{month:'long'}).format(new Date(d));
-  data.finance.push({id:nid(),date:d,month,type:$('finType').value,category:$('finCategory').value,description:$('finDesc').value,amount:Number($('finAmount').value||0)});
-  $('financeForm').reset();setPersianDateValue('finDate', dateISO());save();flash('ذخیره شد');
-});
-$('financeList').addEventListener('click',e=>{if(e.target.dataset.del==='finance'&&confirm('حذف شود؟')){data.finance=data.finance.filter(x=>String(x.id)!==String(e.target.dataset.id));save();}});
-
-$('moodForm').addEventListener('submit',e=>{e.preventDefault();
-  const d=getPersianDateValue('moodDate') || dateISO();
-  const idx=data.mood.findIndex(m=>m.date===d);
-  const entry={id:nid(),date:d,mood:$('moodMood').value,energy:Number($('moodEnergy').value||0),sleep:Number($('moodSleep').value||0),stress:Number($('moodStress').value||0)};
-  if(idx>=0){entry.id=data.mood[idx].id;data.mood[idx]=entry;}else data.mood.push(entry);
-  save();setPersianDateValue('moodDate', dateISO());flash('ذخیره شد');
-});
-$('moodList').addEventListener('click',e=>{if(e.target.dataset.del==='mood'&&confirm('حذف شود؟')){data.mood=data.mood.filter(x=>String(x.id)!==String(e.target.dataset.id));save();}});
-
-document.addEventListener('input',e=>{
-  if(e.target.id==='notebookSearch')renderNotebook();
-});
-document.addEventListener('change',e=>{
-  if(e.target.id==='notebookFilter')renderNotebook();
-});
-document.addEventListener('click',e=>{
-  const del=e.target.dataset.delNotebook;
-  if(del&&confirm('این یادداشت حذف شود؟')){
-    data.daily=data.daily.filter(d=>d.date!==del);
-    save();return;
-  }
-  const edit=e.target.dataset.editNotebook;
-  if(edit){
-    const card=document.querySelector(`[data-notebook-date="${edit}"]`);
-    const note=data.daily.find(d=>d.date===edit);
-    if(!card||!note)return;
-    card.innerHTML=`<div class="sectionhead" style="margin-bottom:10px">
-        <h3 style="margin:0">✏️ ویرایش یادداشت ${toFaDate(edit)}</h3></div>
-      <div class="grid2" style="gap:10px">
-        <div class="field"><label>🌅 صبح</label><textarea class="daily-notes-area" rows="3" data-edit-field="morning">${safe(note.morning||'')}</textarea></div>
-        <div class="field"><label>🌙 شب</label><textarea class="daily-notes-area" rows="3" data-edit-field="evening">${safe(note.evening||'')}</textarea></div>
-      </div>
-      <div class="grid2" style="gap:10px;margin-top:10px">
-        <div class="field"><label>✨ بهترین اتفاق</label><input data-edit-field="highlight" value="${safe(note.highlight||'')}"></div>
-        <div class="field"><label>🙏 شکرگزاری</label><input data-edit-field="gratitude" value="${safe(note.gratitude||'')}"></div>
-      </div>
-      <div style="margin-top:12px;display:flex;gap:8px">
-        <button data-save-notebook="${edit}">💾 ذخیره</button>
-        <button class="secondary" data-cancel-notebook="1">لغو</button>
-      </div>`;
-    return;
-  }
-  const sv=e.target.dataset.saveNotebook;
-  if(sv){
-    const card=document.querySelector(`[data-notebook-date="${sv}"]`);
-    const note=data.daily.find(d=>d.date===sv);
-    if(!card||!note)return;
-    card.querySelectorAll('[data-edit-field]').forEach(f=>{note[f.dataset.editField]=f.value;});
-    saveData();renderNotebook();flash('ویرایش ذخیره شد');
-    return;
-  }
-  if(e.target.dataset.cancelNotebook){renderNotebook();return;}
-});
-document.querySelectorAll('.nav button[data-tab]').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('.nav button[data-tab]').forEach(x=>x.classList.toggle('active',x===b));
-  document.querySelectorAll('.tab').forEach(s=>s.classList.toggle('hidden',s.id!=='tab-'+b.dataset.tab));
-  window.scrollTo({top:0,behavior:'smooth'});
-}));
-document.querySelectorAll('#tab-planner .subnav button[data-sub]').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('#tab-planner .subnav button[data-sub]').forEach(x=>x.classList.toggle('active',x===b));
-  document.querySelectorAll('.subtab').forEach(s=>s.classList.add('hidden'));
-  const sub=$('sub-'+b.dataset.sub);if(sub)sub.classList.remove('hidden');
-  if(b.dataset.sub==='weekly-goals'||b.dataset.sub==='weekly-tasks')refreshSelectors();
-}));
-
-$('exportBtn').addEventListener('click',()=>{
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob);const a=document.createElement('a');
-  a.href=url;a.download=`bullet-journal-${session.email}-${dateISO()}.json`;a.click();
-  URL.revokeObjectURL(url);flash('دانلود شد');});
-$('importBtn').addEventListener('click',()=>$('importFile').click());
-$('importFile').addEventListener('change',e=>{
-  const file=e.target.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=ev=>{try{const imported=JSON.parse(ev.target.result);if(confirm('داده‌های فعلی با فایل جدید جایگزین شود؟')){data={...emptyData(),...imported};save();flash('بازیابی شد');}}catch(err){flash('فایل نامعتبر است');}};
-  reader.readAsText(file);});
-$('clearDataBtn').addEventListener('click',()=>{if(confirm('همهٔ داده‌های شما پاک شود؟ این کار قابل بازگشت نیست!')){data=emptyData();save();flash('پاک شد');}});
-
-$('debugBtn').addEventListener('click',()=>{
-  const out=$('debugOutput');
-  const info={
-    session:session,
-    counts:{
-      monthlyGoals:data.monthlyGoals.length,
-      weeklyGoals:data.weeklyGoals.length,
-      weeklyTasks:data.weeklyTasks.length,
-      routines:data.routines.length
-    },
-    monthlyGoals:data.monthlyGoals.map(g=>({id:g.id,idType:typeof g.id,title:g.title,unit:g.unit,target:g.target})),
-    weeklyGoals:data.weeklyGoals.map(g=>({id:g.id,idType:typeof g.id,title:g.title,parent:g.monthlyGoalId,parentType:typeof g.monthlyGoalId,target:g.target})),
-    weeklyTasks:data.weeklyTasks.map(t=>({id:t.id,title:t.title,goalId:t.weeklyGoalId,goalIdType:typeof t.weeklyGoalId,value:t.value}))
+// ثبت خلق‌وخو
+$('moodForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const date = getPersianDateValue('moodDate');
+  if (!date) { flash('تاریخ نامعتبر'); return; }
+  const payload = {
+    date,
+    mood: $('moodMood').value,
+    energy: Number($('moodEnergy').value) || null,
+    sleep: Number($('moodSleep').value) || null,
+    stress: Number($('moodStress').value) || null,
+    created: new Date().toISOString()
   };
-  out.textContent=JSON.stringify(info,null,2);
-  out.classList.remove('hidden');
+  const idx = data.mood.findIndex(m => m.date === date);
+  if (idx >= 0) { payload.id = data.mood[idx].id; data.mood[idx] = payload; }
+  else { payload.id = nid(); data.mood.unshift(payload); }
+  $('moodForm').reset();
+  setPersianDateValue('moodDate', dateISO());
+  save();
+  flash('ثبت شد ✓');
 });
 
-let pInt=null,pRem=25*60,pRun=false,pCurrentTask='';
-const upPomo=()=>{const m=Math.floor(pRem/60),s=pRem%60;$('pomoTime').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;};
-function startPomo(taskName='تمرکز'){if(pRun)return;pRun=true;pCurrentTask=taskName;$('pomoTitle').textContent=`⏱️ ${taskName}`;$('pomoBox').classList.add('running');$('pomoToggle').textContent='توقف';
-  pInt=setInterval(()=>{pRem--;upPomo();if(pRem<=0){clearInterval(pInt);pRun=false;$('pomoBox').classList.remove('running');$('pomoToggle').textContent='شروع';
-    if(session){data.pomodoro.push({id:nid(),date:dateISO(),minutes:25,title:pCurrentTask});save();flash('تایمر تمرکز ثبت شد');}
-    pRem=25*60;upPomo();}},1000);}
-function stopPomo(){clearInterval(pInt);pRun=false;$('pomoBox').classList.remove('running');$('pomoToggle').textContent='شروع';}
-$('pomoToggle').addEventListener('click',()=>{pRun?stopPomo():startPomo('تمرکز');});
-$('pomoClose').addEventListener('click',()=>{stopPomo();show('pomoBox',false);});
-document.addEventListener('keydown',e=>{if(e.key==='p'&&e.ctrlKey){e.preventDefault();show('pomoBox',$('pomoBox').classList.contains('hidden'));if(!$('pomoBox').classList.contains('hidden'))upPomo();}});
+// ═══════════ ذخیره یادداشت روزانه ═══════════
+$('saveDailyBtn').addEventListener('click', () => {
+  const today = dateISO();
+  const note = {
+    date: today,
+    morning: $('morningNote').value.trim(),
+    evening: $('eveningNote').value.trim(),
+    highlight: $('highlightToday').value.trim(),
+    gratitude: $('gratitudeToday').value.trim()
+  };
+  const idx = data.daily.findIndex(d => d.date === today);
+  if (idx >= 0) data.daily[idx] = note; else data.daily.unshift(note);
+  save();
+  flash('یادداشت روز ذخیره شد ✓');
+});
 
-// ═══════════ منطق پنجره یادداشت عادت و برنامه‌ها ═══════════
-let currentEventType = null;
-let currentEventId = null;
-let currentEventDate = null;
-let currentEventTitle = null;
+// ═══════════ تغییر وضعیت عادت‌ها ═══════════
+document.addEventListener('change', e => {
+  const id = e.target.dataset.habitStatus;
+  if (!id) return;
+  const today = dateISO();
+  const status = e.target.value;
+  const habitId = String(id);
+  const idx = data.logs.findIndex(l => String(l.habit_id) === habitId && l.date === today);
+  if (status === '') { if (idx >= 0) data.logs.splice(idx, 1); }
+  else if (idx >= 0) data.logs[idx].status = status;
+  else data.logs.push({ id: nid(), habit_id: habitId, date: today, status, note: '' });
+  save();
+});
 
 document.addEventListener('click', e => {
-  // Habit Notes
-  const btn = e.target.closest('[data-open-note]');
-  const cell = e.target.closest('[data-heatmap-cell]');
-  
-  if (btn || cell) {
-    const habitId = btn ? btn.dataset.openNote : cell.dataset.habitId;
-    const date = btn ? btn.dataset.date : cell.dataset.date;
-    
-    const habit = data.habits.find(h => String(h.id) === String(habitId));
-    const log = data.logs.find(l => String(l.habit_id) === String(habitId) && l.date === date);
-    
-    $('modalTitle').textContent = `${habit ? habit.name : 'عادت'} - ${toFaDate(date)}`;
-    $('modalHabitId').value = habitId;
-    $('modalDate').value = date;
-    $('modalStatus').value = log ? log.status : '';
-    $('modalNote').value = log ? (log.note || '') : '';
-    
-    $('habitNoteModal').classList.remove('hidden');
-    return;
-  }
+  const t = e.target.closest('[data-toggle-habit]');
+  if (!t) return;
+  const today = dateISO();
+  const habitId = String(t.dataset.toggleHabit);
+  const log = data.logs.find(l => String(l.habit_id) === habitId && l.date === today);
+  if (log && log.status === 'done') {
+    data.logs = data.logs.filter(l => !(String(l.habit_id) === habitId && l.date === today));
+  } else if (log) { log.status = 'done'; }
+  else { data.logs.push({ id: nid(), habit_id: habitId, date: today, status: 'done', note: '' }); }
+  save();
+});
 
-  if (e.target.id === 'modalClose' || e.target.id === 'modalCancelBtn' || e.target.id === 'habitNoteModal') {
-    $('habitNoteModal').classList.add('hidden');
-    return;
-  }
+// ═══════════ کارهای امروز ═══════════
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-toggle-wt-today]');
+  if (!t) return;
+  const task = data.weeklyTasks.find(x => String(x.id) === String(t.dataset.toggleWtToday));
+  if (task) { task.done = !task.done; save(); }
+});
 
-  if (e.target.id === 'modalSaveBtn') {
-    const hid = $('modalHabitId').value;
-    const date = $('modalDate').value;
-    const status = $('modalStatus').value;
-    const note = $('modalNote').value.trim();
-    
-    const idx = data.logs.findIndex(l => String(l.habit_id) === String(hid) && l.date === date);
-    
-    if (!status && !note) {
-      if (idx >= 0) data.logs.splice(idx, 1);
-    } else {
-      if (idx >= 0) {
-        data.logs[idx].status = status;
-        data.logs[idx].note = note;
-      } else {
-        data.logs.push({ id: nid(), habit_id: String(hid), date: date, status: status, note: note });
-      }
-    }
-    
-    $('habitNoteModal').classList.add('hidden');
-    save(); 
-    flash('یادداشت ذخیره شد ✓');
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-del-wt-today]');
+  if (!t) return;
+  const id = t.dataset.delWtToday;
+  if (!confirm('حذف شود؟')) return;
+  data.weeklyTasks = data.weeklyTasks.filter(x => String(x.id) !== String(id));
+  if (data.routineLogs) {
+    data.routineLogs = data.routineLogs.filter(l => !(String(l.eventId) === String(id) && l.eventType === 'task'));
+  }
+  save();
+});
+
+document.addEventListener('input', e => {
+  const id = e.target.dataset.valueWtToday;
+  if (!id) return;
+  const task = data.weeklyTasks.find(x => String(x.id) === String(id));
+  if (!task) return;
+  const v = e.target.value;
+  task.value = v === '' ? '' : Number(v);
+  saveData();
+});
+
+document.addEventListener('change', e => {
+  const id = e.target.dataset.valueWtToday;
+  if (!id) return;
+  const today = dateISO();
+  const todayWeekly = data.weeklyTasks.filter(t => t.date === today);
+  const doneWeekly = todayWeekly.filter(t => t.done).length;
+  const weeklySum = todayWeekly.reduce((a,t) => a + (Number(t.value)||0), 0);
+  const habitDone = data.habits.filter(h => data.logs.some(l => String(l.habit_id) === String(h.id) && l.date === today && l.status === 'done')).length;
+  const pomos = data.pomodoro.filter(p => p.date === today).reduce((a,p) => a + (p.minutes||0), 0);
+  renderWeeklyGoals(); renderMonthlyGoals(); renderDashboard();
+  const statsEl = $('todayStats');
+  if (statsEl) statsEl.innerHTML = `
+    <div class="stat"><div class="label">عادت انجام‌شده</div><div class="number">${fa(habitDone)}</div></div>
+    <div class="stat"><div class="label">دقایق تمرکز</div><div class="number">${fa(pomos)}</div></div>
+    <div class="stat"><div class="label">برنامه‌ریزی امروز</div><div class="number">${fa(doneWeekly)}/${fa(todayWeekly.length)}</div></div>
+    <div class="stat"><div class="label">مجموع اجرا شده</div><div class="number">${fa(weeklySum)}</div></div>`;
+  const planCount = $('todayPlanCount');
+  if (planCount) planCount.textContent = todayWeekly.length ? `${fa(doneWeekly)} / ${fa(todayWeekly.length)}` : '—';
+});
+
+// ═══════════ حذف عمومی ═══════════
+document.addEventListener('click', e => {
+  const table = e.target.dataset.del;
+  if (!table) return;
+  const id = e.target.dataset.id;
+  if (!id) return;
+  if (!confirm('حذف شود؟')) return;
+  if (Array.isArray(data[table])) {
+    data[table] = data[table].filter(x => String(x.id) !== String(id));
+    save();
   }
 });
 
-// Event Notes (Routines & Tasks)
+// ═══════════ دفترچه ═══════════
+if ($('notebookSearch')) $('notebookSearch').addEventListener('input', renderNotebook);
+if ($('notebookFilter')) $('notebookFilter').addEventListener('change', renderNotebook);
+
+document.addEventListener('click', e => {
+  const d = e.target.dataset.editNotebook;
+  if (!d) return;
+  document.querySelectorAll('.nav button').forEach(b => b.classList.toggle('active', b.dataset.tab === 'today'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('hidden', t.id !== 'tab-today'));
+  const note = data.daily.find(x => x.date === d);
+  if (note) {
+    $('morningNote').value = note.morning || '';
+    $('eveningNote').value = note.evening || '';
+    $('highlightToday').value = note.highlight || '';
+    $('gratitudeToday').value = note.gratitude || '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+});
+
+document.addEventListener('click', e => {
+  const d = e.target.dataset.delNotebook;
+  if (!d) return;
+  if (!confirm('حذف شود؟')) return;
+  data.daily = data.daily.filter(x => x.date !== d);
+  save();
+});
+
+// ═══════════ ناوبری تب‌ها ═══════════
+document.querySelectorAll('.nav button[data-tab]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav button').forEach(b => b.classList.toggle('active', b === btn));
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('hidden', t.id !== 'tab-' + btn.dataset.tab));
+  });
+});
+
+document.querySelectorAll('#tab-planner .subnav button[data-sub]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#tab-planner .subnav button[data-sub]').forEach(b => b.classList.toggle('active', b === btn));
+    document.querySelectorAll('#tab-planner .subtab').forEach(s => s.classList.add('hidden'));
+    const target = document.getElementById('sub-' + btn.dataset.sub);
+    if (target) target.classList.remove('hidden');
+  });
+});
+
+// ═══════════ مودال یادداشت عادت ═══════════
+function openHabitNoteModal(habitId, date) {
+  $('modalHabitId').value = habitId;
+  $('modalDate').value = date;
+  const log = data.logs.find(l => String(l.habit_id) === String(habitId) && l.date === date);
+  const habit = data.habits.find(h => String(h.id) === String(habitId));
+  $('modalTitle').textContent = `${habit ? habit.name : 'عادت'} — ${toFaDate(date)}`;
+  $('modalStatus').value = log?.status || '';
+  $('modalNote').value = log?.note || '';
+  $('habitNoteModal').classList.remove('hidden');
+}
+function closeHabitNoteModal() { $('habitNoteModal').classList.add('hidden'); }
+
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-open-note]');
+  if (!t) return;
+  openHabitNoteModal(t.dataset.openNote, t.dataset.date || dateISO());
+});
+if ($('modalClose')) $('modalClose').addEventListener('click', closeHabitNoteModal);
+if ($('modalCancelBtn')) $('modalCancelBtn').addEventListener('click', closeHabitNoteModal);
+if ($('habitNoteModal')) $('habitNoteModal').addEventListener('click', e => { if (e.target === $('habitNoteModal')) closeHabitNoteModal(); });
+if ($('modalSaveBtn')) $('modalSaveBtn').addEventListener('click', () => {
+  const habitId = $('modalHabitId').value;
+  const date = $('modalDate').value;
+  const status = $('modalStatus').value;
+  const note = $('modalNote').value.trim();
+  const idx = data.logs.findIndex(l => String(l.habit_id) === String(habitId) && l.date === date);
+  if (status === '' && !note) { if (idx >= 0) data.logs.splice(idx, 1); }
+  else if (idx >= 0) { data.logs[idx].status = status; data.logs[idx].note = note; }
+  else data.logs.push({ id: nid(), habit_id: habitId, date, status, note });
+  save();
+  closeHabitNoteModal();
+  flash('ذخیره شد ✓');
+});
+
+document.addEventListener('click', e => {
+  if (!e.target.dataset.heatmapCell) return;
+  openHabitNoteModal(e.target.dataset.habitId, e.target.dataset.date);
+});
+
+// ═══════════ مودال رویداد (روتین/کار ساعت‌دار) ═══════════
+function openEventNoteModal(type, id, date) {
+  $('eventModalType').value = type;
+  $('eventModalId').value = id;
+  $('eventModalDate').value = date;
+  let title = '';
+  if (type === 'routine') {
+    const r = data.routines.find(x => String(x.id) === String(id));
+    title = r?.title || 'برنامه';
+    $('eventModalTimeStr').value = r ? `${r.startTime}-${r.endTime}` : '';
+  } else {
+    const t = data.weeklyTasks.find(x => String(x.id) === String(id));
+    title = t?.title || 'کار';
+    $('eventModalTimeStr').value = t ? `${t.startTime||''}-${t.endTime||''}` : '';
+  }
+  const log = (data.routineLogs || []).find(l =>
+    String(l.eventId) === String(id) && l.date === date && l.eventType === type
+  );
+  $('eventModalTitle').textContent = `${title} — ${toFaDate(date)}`;
+  $('eventModalStatus').value = log?.status || '';
+  $('eventModalNote').value = log?.note || '';
+  $('eventNoteModal').classList.remove('hidden');
+}
+function closeEventNoteModal() { $('eventNoteModal').classList.add('hidden'); }
+
 document.addEventListener('click', e => {
   const el = e.target.closest('[data-event-type]');
   if (!el) return;
-  
-  const type = el.dataset.eventType;
-  const id = el.dataset.eventId;
-  const date = dateISO(); // Default to today for timeline clicks
-  
-  let title = '';
-  let startTime = '';
-  let endTime = '';
-  let note = '';
-  let status = '';
-
-  if (type === 'routine') {
-    const r = data.routines.find(x => String(x.id) === String(id));
-    if (!r) return;
-    title = r.title;
-    startTime = r.startTime;
-    endTime = r.endTime;
-    // Find log
-    const log = data.routineLogs.find(l => String(l.routineId) === String(id) && l.date === date);
-    if (log) { note = log.note; status = log.status; }
-  } else if (type === 'task') {
-    const t = data.weeklyTasks.find(x => String(x.id) === String(id));
-    if (!t) return;
-    title = t.title;
-    startTime = t.startTime || '';
-    endTime = t.endTime || '';
-    note = t.note || '';
-    status = t.done ? 'done' : '';
-    if (t.date) date = t.date; // Use task's own date
-  }
-
-  currentEventType = type;
-  currentEventId = id;
-  currentEventDate = date;
-  currentEventTitle = title;
-
-  $('eventModalTitle').textContent = `${title} - ${toFaDate(date)}`;
-  $('eventModalTimeStr').value = `${startTime} - ${endTime}`;
-  $('eventModalNote').value = note;
-  $('eventModalStatus').value = status;
-
-  $('eventNoteModal').classList.remove('hidden');
+  // اگه روی کنترل‌های داخلی کلیک شده، مودال باز نشه
+  if (e.target.closest('[data-toggle-wt]') || e.target.closest('[data-del-wt]') ||
+      e.target.closest('[data-toggle-wt-today]') || e.target.closest('[data-del-wt-today]')) return;
+  openEventNoteModal(el.dataset.eventType, el.dataset.eventId, dateISO());
 });
-
-$('eventModalClose').addEventListener('click', () => $('eventNoteModal').classList.add('hidden'));
-$('eventModalCancelBtn').addEventListener('click', () => $('eventNoteModal').classList.add('hidden'));
-$('eventNoteModal').addEventListener('click', (e) => { if (e.target.id === 'eventNoteModal') $('eventNoteModal').classList.add('hidden'); });
-
-$('eventModalSaveBtn').addEventListener('click', () => {
+if ($('eventModalClose')) $('eventModalClose').addEventListener('click', closeEventNoteModal);
+if ($('eventModalCancelBtn')) $('eventModalCancelBtn').addEventListener('click', closeEventNoteModal);
+if ($('eventNoteModal')) $('eventNoteModal').addEventListener('click', e => { if (e.target === $('eventNoteModal')) closeEventNoteModal(); });
+if ($('eventModalSaveBtn')) $('eventModalSaveBtn').addEventListener('click', () => {
+  const type = $('eventModalType').value;
+  const id = $('eventModalId').value;
+  const date = $('eventModalDate').value;
   const status = $('eventModalStatus').value;
   const note = $('eventModalNote').value.trim();
-
-  if (currentEventType === 'routine') {
-    const idx = data.routineLogs.findIndex(l => String(l.routineId) === String(currentEventId) && l.date === currentEventDate);
-    if (!status && !note) {
-      if (idx >= 0) data.routineLogs.splice(idx, 1);
-    } else {
-      if (idx >= 0) {
-        data.routineLogs[idx].status = status;
-        data.routineLogs[idx].note = note;
-      } else {
-        data.routineLogs.push({ id: nid(), routineId: String(currentEventId), date: currentEventDate, status: status, note: note });
-      }
-    }
-  } else if (currentEventType === 'task') {
-    const t = data.weeklyTasks.find(x => String(x.id) === String(currentEventId));
-    if (t) {
-      t.note = note;
-      t.done = status === 'done';
-    }
-  }
-
-  $('eventNoteModal').classList.add('hidden');
+  if (!data.routineLogs) data.routineLogs = [];
+  const idx = data.routineLogs.findIndex(l =>
+    String(l.eventId) === String(id) && l.date === date && l.eventType === type
+  );
+  if (status === '' && !note) { if (idx >= 0) data.routineLogs.splice(idx, 1); }
+  else if (idx >= 0) { data.routineLogs[idx].status = status; data.routineLogs[idx].note = note; }
+  else data.routineLogs.push({ id: nid(), eventType: type, eventId: id, date, status, note });
   save();
-  flash('جزئیات ذخیره شد ✓');
+  closeEventNoteModal();
+  flash('ذخیره شد ✓');
+});
+if ($('eventStartTimerBtn')) $('eventStartTimerBtn').addEventListener('click', () => {
+  closeEventNoteModal();
+  $('pomoBox').classList.remove('hidden');
+  if (pomoRunning) stopPomo();
+  pomoRemaining = 25 * 60;
+  updatePomoDisplay();
+  startPomo();
 });
 
-$('eventStartTimerBtn').addEventListener('click', () => {
-  show('pomoBox', true);
-  startPomo(currentEventTitle);
-  $('eventNoteModal').classList.add('hidden');
-});
+// ═══════════ تایمر تمرکز (پومودورو) ═══════════
+let pomoTimer = null;
+let pomoRemaining = 25 * 60;
+let pomoRunning = false;
 
-// ═══════════ راه‌اندازی تقویم شمسی ═══════════
-document.querySelectorAll('.persian-date').forEach(input => {
-  input.addEventListener('focus', function() {
-    if (!this.dataset.init) {
-      jQuery(this).persianDatepicker({
-        format: 'YYYY/MM/DD',
-        initialValue: true,
-        autoClose: true,
-        observer: true,
-        calendar: { persian: { locale: 'fa' } }
-      });
-      this.dataset.init = '1';
-    }
-  });
-});
-
-initTheme();
-const savedSession = localStorage.getItem(STORAGE_SESSION);
-if (savedSession) {
-  try {
-    const s = JSON.parse(savedSession);
-    if (s && s.token && s.email) {
-      session = s;
-      startApp().catch((e) => console.error(e));
-    } else {
-      throw new Error('توکن موجود نیست');
-    }
-  } catch {
-    localStorage.removeItem(STORAGE_SESSION);
-    switchPanel('auth');
-  }
-} else {
-  switchPanel('auth');
+function formatPomo(s) {
+  const m = Math.floor(s / 60), sec = s % 60;
+  return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
 }
-})();
-// ثبت Service Worker برای PWA
+function updatePomoDisplay() {
+  $('pomoTime').textContent = formatPomo(pomoRemaining);
+  $('pomoBox').classList.toggle('running', pomoRunning);
+  $('pomoToggle').textContent = pomoRunning ? 'توقف' : 'شروع';
+}
+function startPomo() {
+  if (pomoRunning) return;
+  pomoRunning = true;
+  updatePomoDisplay();
+  pomoTimer = setInterval(() => {
+    pomoRemaining--;
+    if (pomoRemaining <= 0) {
+      clearInterval(pomoTimer);
+      pomoRunning = false;
+      pomoRemaining = 0;
+      updatePomoDisplay();
+      data.pomodoro.push({ id: nid(), date: dateISO(), minutes: 25 });
+      save();
+      alert('⏱️ زمان تمرکز تمام شد!');
+    } else { updatePomoDisplay(); }
+  }, 1000);
+}
+function stopPomo() {
+  if (!pomoRunning) return;
+  clearInterval(pomoTimer);
+  pomoRunning = false;
+  const elapsed = 25 * 60 - pomoRemaining;
+  if (elapsed > 0) {
+    data.pomodoro.push({ id: nid(), date: dateISO(), minutes: Math.round(elapsed / 60) });
+    save();
+  }
+  updatePomoDisplay();
+}
+if ($('pomoToggle')) $('pomoToggle').addEventListener('click', () => {
+  if (pomoRunning) stopPomo(); else startPomo();
+});
+if ($('pomoClose')) $('pomoClose').addEventListener('click', () => {
+  stopPomo();
+  $('pomoBox').classList.add('hidden');
+  pomoRemaining = 25 * 60;
+  updatePomoDisplay();
+});
+
+// ═══════════ تنظیمات ═══════════
+if ($('exportBtn')) $('exportBtn').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `bolt-journal-backup-${dateISO()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+if ($('importBtn')) $('importBtn').addEventListener('click', () => $('importFile').click());
+if ($('importFile')) $('importFile').addEventListener('change', async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const parsed = JSON.parse(await file.text());
+    if (!confirm('داده‌های فعلی جایگزین می‌شوند. مطمئنی؟')) { e.target.value = ''; return; }
+    data = { ...emptyData(), ...parsed };
+    save();
+    flash('بازیابی شد ✓');
+  } catch { flash('فایل نامعتبر است'); }
+  e.target.value = '';
+});
+if ($('clearDataBtn')) $('clearDataBtn').addEventListener('click', () => {
+  if (!confirm('همهٔ داده‌ها پاک شود؟ این عمل بازگشت‌پذیر نیست.')) return;
+  data = emptyData();
+  save();
+  flash('پاک شد');
+});
+if ($('debugBtn')) $('debugBtn').addEventListener('click', () => {
+  $('debugOutput').textContent = JSON.stringify(data, null, 2);
+});
+
+// ═══════════ ثبت Service Worker ═══════════
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
-      .then(registration => {
-        console.log('ServiceWorker registration successful');
-      })
-      .catch(err => {
-        console.log('ServiceWorker registration failed: ', err);
-      });
+    navigator.serviceWorker.register('./sw.js').catch(err => console.error('SW registration failed:', err));
   });
 }
+
+// ═══════════ راه‌اندازی اولیه ═══════════
+initTheme();
+(function boot() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_SESSION) || 'null');
+    if (saved && saved.email && saved.token) {
+      session = saved;
+      startApp().catch(err => {
+        console.error('startApp failed:', err);
+        switchPanel('auth');
+      });
+    } else {
+      switchPanel('auth');
+    }
+  } catch {
+    switchPanel('auth');
+  }
+})();
+
+})();
 </script>
 </body>
 </html>
