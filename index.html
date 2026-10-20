@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#4b3526">
 <title>بولت ژورنال من | ۱۴۰۵</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📓</text></svg>">
+<!-- لوگوی SVG داخلی برای تب مرورگر -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%234b3526%22/><text x=%2250%22 y=%2272%22 font-size=%2260%22 text-anchor=%22middle%22 fill=%22%23f7f1e7%22>📓</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -241,15 +242,16 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .routine-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr auto; gap: 10px; align-items: end; }
 .weekly-task-grid .field, .routine-grid .field { min-width: 0; }
 
-/* ═══════════ استایل‌های اختصاصی تقویم (اصلاح نهایی برای موبایل و تم تاریک) ═══════════ */
+/* ═══════════ استایل‌های اختصاصی تقویم ═══════════ */
 .datepicker-plot-area {
   font-family: Vazirmatn, Tahoma, sans-serif !important;
   border-radius: 12px !important; 
-  box-shadow: 0 10px 40px rgba(0,0,0,0.3) !important; 
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important; 
   border: 1px solid var(--line) !important;
   background-color: var(--white) !important; 
   z-index: 99999 !important; 
   direction: rtl;
+  position: absolute !important; /* باز شدن دقیقا زیر فیلد */
 }
 
 .datepicker-plot-area .datepicker-day-view .table-days td span { color: var(--text); }
@@ -267,7 +269,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 }
 [data-theme="dark"] .datepicker-plot-area .datepicker-header .btn-switch,
 [data-theme="dark"] .datepicker-plot-area .datepicker-header .btn-switch span { 
-  color: #f0e5d0 !important; /* رنگ کرم روشن برای ماه و سال */
+  color: #f0e5d0 !important; 
 }
 [data-theme="dark"] .datepicker-plot-area .datepicker-day-view .table-days td span { 
   color: #f0e5d0 !important; 
@@ -281,18 +283,6 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 }
 [data-theme="dark"] .datepicker-plot-area .toolbox .btn { 
   color: #f0e5d0 !important; 
-}
-
-/* اصلاح موقعیت تقویم در موبایل (وسط و بالای صفحه) */
-@media (max-width: 780px) {
-  .datepicker-plot-area {
-    position: fixed !important;
-    top: 15% !important; 
-    left: 50% !important; 
-    transform: translateX(-50%) !important; /* وسط چین افقی بدون باگ */
-    width: 280px !important; 
-    z-index: 99999 !important;
-  }
 }
 
 @media(max-width:1000px){
@@ -1795,7 +1785,8 @@ function initDatepickers() {
         });
       }
     });
-    // فقط روی آیکون کلیک شود، نه روی خود فیلد تا دوبار باز/بسته نشود
+    
+    // باز شدن تقویم با کلیک روی فیلد یا آیکون (بدون تداخل)
     jQuery(document).off('click', '.date-icon').on('click', '.date-icon', function(e) {
       e.preventDefault();
       let input = jQuery(this).siblings('input.persian-date');
