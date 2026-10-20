@@ -1,0 +1,23 @@
+{
+  "name": "بولت ژورنال من",
+  "short_name": "ژورنال",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f7f1e7",
+  "theme_color": "#4b3526",
+  "description": "بولت ژورنال شخصی برای مدیریت زمان و اهداف",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3203/3203510.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3203/3203510.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
