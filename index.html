@@ -27,16 +27,8 @@
 :root{--cream:#f7f1e7;--cream2:#eee3d2;--cream3:#e5d8bf;--brown:#76543a;--dark:#4b3526;--olive:#78845b;--olive2:#e5ead9;--text:#30271f;--muted:#766c61;--line:#ddd0be;--white:#fffdf9;--paper:#faf5ea;--red:#b95042;--redbg:#fbe9e5;--green:#456b3f;--greenbg:#e5f2e2;--gold:#b58e42;--goldbg:#faf1dd;--blue:#5b7a99;--bluebg:#e7eff5;--shadow:0 4px 18px rgba(75,53,38,.07);--shadow2:0 12px 40px rgba(75,53,38,.12);--radius:18px;--dot:rgba(118,84,58,.10)}
 [data-theme="dark"]{--cream:#2a241d;--cream2:#332b22;--cream3:#3d3328;--brown:#c4a684;--dark:#e8d9c0;--olive:#9caf7a;--olive2:#3a4232;--text:#f0e5d0;--muted:#a89b85;--line:#4a3f31;--white:#38302a;--paper:#2f2823;--red:#d97767;--redbg:#4a2a24;--green:#a4c47a;--greenbg:#2e3d28;--gold:#d9b866;--goldbg:#453a20;--blue:#8bb0d0;--bluebg:#2a3a48;--shadow:0 4px 18px rgba(0,0,0,.3);--shadow2:0 12px 40px rgba(0,0,0,.45);--dot:rgba(232,217,192,.06)}
 
-/* ═══════════ انیمیشن‌ها و اسکرول‌بار ═══════════ */
-@keyframes fadeSlideIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes pulseTimer {
-  0% { box-shadow: 0 0 0 0 rgba(120, 132, 91, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(120, 132, 91, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(120, 132, 91, 0); }
-}
+@keyframes fadeSlideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulseTimer { 0% { box-shadow: 0 0 0 0 rgba(120, 132, 91, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(120, 132, 91, 0); } 100% { box-shadow: 0 0 0 0 rgba(120, 132, 91, 0); } }
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: var(--cream); border-radius: 10px; }
 ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 10px; }
@@ -232,11 +224,6 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .date-icon:hover{opacity:1}
 .date-input-wrapper input { padding-left: 38px !important; cursor: pointer; }
 
-.datepicker-plot-area {font-family: Vazirmatn, Tahoma, sans-serif !important; border-radius: 12px !important; box-shadow: var(--shadow2) !important; border: 1px solid var(--line) !important; background-color: var(--white) !important; z-index: 9999 !important; position: absolute;}
-.datepicker-plot-area .datepicker-day-view .table-days td span { color: var(--text); }
-.datepicker-plot-area .datepicker-day-view .table-days td.selected span { background-color: var(--olive) !important; color: white !important; }
-.datepicker-plot-area .datepicker-header .btn-switch { color: var(--olive) !important; }
-
 .timeline-container { position: relative; height: 500px; overflow-y: auto; background: var(--paper); border-radius: 12px; border: 1px solid var(--line); margin-top: 15px; padding: 0 50px 0 10px; }
 .timeline-hour { height: 60px; border-bottom: 1px dashed var(--line); position: relative; }
 .timeline-hour-label { position: absolute; right: -45px; top: -10px; font-size: 11px; color: var(--muted); font-weight: 600; }
@@ -254,6 +241,58 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .routine-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr auto; gap: 10px; align-items: end; }
 .weekly-task-grid .field, .routine-grid .field { min-width: 0; }
 
+/* ═══════════ استایل‌های اختصاصی تقویم (اصلاح شده برای موبایل و تم تاریک) ═══════════ */
+.datepicker-plot-area {
+  font-family: Vazirmatn, Tahoma, sans-serif !important;
+  border-radius: 12px !important; 
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3) !important; 
+  border: 1px solid var(--line) !important;
+  background-color: var(--white) !important; 
+  z-index: 99999 !important; 
+  direction: rtl;
+}
+
+.datepicker-plot-area .datepicker-day-view .table-days td span { color: var(--text); }
+.datepicker-plot-area .datepicker-day-view .table-days td.selected span { background-color: var(--olive) !important; color: white !important; }
+.datepicker-plot-area .datepicker-header .btn-switch { color: var(--olive) !important; }
+
+/* حالت تاریک (Dark Mode) برای تقویم - روشن‌تر برای دیده شدن */
+[data-theme="dark"] .datepicker-plot-area {
+  background-color: #38302a !important;
+  border-color: #5a4b3c !important;
+}
+[data-theme="dark"] .datepicker-plot-area .datepicker-header { 
+  background-color: #4b3526 !important; 
+  border-bottom: 1px solid #5a4b3c !important;
+}
+[data-theme="dark"] .datepicker-plot-area .datepicker-header .btn-switch,
+[data-theme="dark"] .datepicker-plot-area .datepicker-header .btn-switch span { 
+  color: #f0e5d0 !important; /* رنگ روشن برای متن ماه و سال */
+}
+[data-theme="dark"] .datepicker-plot-area .datepicker-day-view .table-days td span,
+[data-theme="dark"] .datepicker-plot-area .datepicker-month-view .month-item,
+[data-theme="dark"] .datepicker-plot-area .datepicker-year-view .year-item { 
+  color: #f0e5d0 !important; 
+}
+[data-theme="dark"] .datepicker-plot-area .datepicker-day-view .table-days td span:hover,
+[data-theme="dark"] .datepicker-plot-area .datepicker-month-view .month-item:hover { 
+  background: #5a4b3c !important; 
+}
+[data-theme="dark"] .datepicker-plot-area .toolbox { background-color: #4b3526 !important; border-top: 1px solid #5a4b3c !important;}
+[data-theme="dark"] .datepicker-plot-area .toolbox .btn { color: #f0e5d0 !important; }
+
+/* اصلاح موقعیت تقویم در موبایل (باز شدن در بالای صفحه و وسط‌چین) */
+@media (max-width: 780px) {
+  .datepicker-plot-area {
+    position: fixed !important;
+    top: 10% !important; 
+    left: 50% !important; 
+    margin-left: -140px !important; /* نصف عرض 280 پیکسل */
+    width: 280px !important; 
+    transform: none !important; 
+  }
+}
+
 @media(max-width:1000px){
   .formgrid-goal{grid-template-columns:1fr 1fr 1fr}.formgrid-goal>button{grid-column:1/-1}
   .weekly-task-grid, .routine-grid { grid-template-columns: 1fr 1fr 1fr; }
@@ -270,18 +309,6 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
   .nav::-webkit-scrollbar{display:none;}
   .nav button{flex:0 0 auto; padding:8px 12px; font-size:12px}
   .pomo-box{right:50%; transform:translateX(50%); bottom:15px; padding:10px 14px}
-  
-  /* اصلاح تقویم در موبایل */
-  .datepicker-plot-area {
-    position: fixed !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    z-index: 99999 !important;
-    width: 90% !important;
-    max-width: 320px !important;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.3) !important;
-  }
 }
 @media(max-width:600px){
   .weekly-task-grid, .routine-grid { grid-template-columns: 1fr; }
