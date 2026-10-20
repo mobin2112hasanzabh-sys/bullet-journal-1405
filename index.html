@@ -2264,37 +2264,74 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').catch(err => console.error('SW registration failed:', err));
   });
 }
-// ═══════════ راه‌اندازی تقویم شمسی (Persian Datepicker) ═══════════
+
+// ═══════════ راه‌اندازی اولیه ═══════════
+// ═══════════ راه‌اندازی امن تقویم شمسی ═══════════
 function initDatepickers() {
+  // بررسی می‌کنیم که jQuery و کتابخانه تقویم به درستی لود شده باشند
   if (typeof jQuery !== 'undefined' && jQuery.fn.persianDatepicker) {
-    $('.persian-date').persianDatepicker({
-      format: 'YYYY/MM/DD',
-      initialValue: false,
-      autoClose: true,
-      observer: true,
-      calendar: {
-        persian: {
-          locale: 'fa'
-        }
-      },
-      toolbox: {
-        calendarSwitch: {
-          enabled: false
-        }
+    
+    // روی تمام فیلدهایی که کلاس persian-date دارند حلقه می‌زنیم
+    jQuery('.persian-date').each(function() {
+      // فقط اگر فیلد واقعاً در صفحه وجود داشت (null نبود) تقویم را روی آن فعال می‌کنیم
+      if (this) {
+        jQuery(this).persianDatepicker({
+          format: 'YYYY/MM/DD',
+          initialValue: false,
+          autoClose: true,
+          observer: true,
+          calendar: {
+            persian: {
+              locale: 'fa'
+            }
+          },
+          toolbox: {
+            calendarSwitch: {
+              enabled: false
+            }
+          }
+        });
       }
     });
 
-    // کلیک روی آیکون تقویم باعث باز شدن پنجره تقویم شود
-    $('.date-icon').on('click', function(e) {
+    // فعال‌سازی دکمه‌های آیکون کنار فیلدها
+    jQuery('.date-icon').on('click', function(e) {
       e.preventDefault();
-      $(this).siblings('input.persian-date').persianDatepicker('show');
+      const input = jQuery(this).siblings('input.persian-date');
+      if (input.length) {
+        input.persianDatepicker('show');
+      }
     });
   } else {
-    console.error('Persian Datepicker library is not loaded!');
+    console.error('کتابخانه Persian Datepicker لود نشده است.');
   }
 }
 
 // ═══════════ راه‌اندازی اولیه ═══════════
+initTheme();
+
+// اجرای تقویم فقط زمانی که کل ساختار HTML آماده است
+document.addEventListener('DOMContentLoaded', function() {
+  initDatepickers();
+});
+
+// ادامه کدهای بوت (boot)...
+(function boot() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_SESSION) || 'null');
+    if (saved && saved.email && saved.token) {
+      session = saved;
+      startApp().catch(err => {
+        console.error('startApp failed:', err);
+        switchPanel('auth');
+      });
+    } else {
+      switchPanel('auth');
+    }
+  } catch {
+    switchPanel('auth');
+  }
+})();
 initTheme();
 initDatepickers(); // <--- این خط را اضافه کن
 (function boot() {
