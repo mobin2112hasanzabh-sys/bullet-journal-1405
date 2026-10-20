@@ -241,7 +241,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .routine-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr auto; gap: 10px; align-items: end; }
 .weekly-task-grid .field, .routine-grid .field { min-width: 0; }
 
-/* ═══════════ استایل‌های اختصاصی تقویم (اصلاح شده برای موبایل و تم تاریک) ═══════════ */
+/* ═══════════ استایل‌های اختصاصی تقویم (اصلاح نهایی برای موبایل و تم تاریک) ═══════════ */
 .datepicker-plot-area {
   font-family: Vazirmatn, Tahoma, sans-serif !important;
   border-radius: 12px !important; 
@@ -256,7 +256,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .datepicker-plot-area .datepicker-day-view .table-days td.selected span { background-color: var(--olive) !important; color: white !important; }
 .datepicker-plot-area .datepicker-header .btn-switch { color: var(--olive) !important; }
 
-/* حالت تاریک (Dark Mode) برای تقویم - روشن‌تر برای دیده شدن */
+/* حالت تاریک (Dark Mode) برای تقویم - کاملاً روشن و خوانا */
 [data-theme="dark"] .datepicker-plot-area {
   background-color: #38302a !important;
   border-color: #5a4b3c !important;
@@ -267,29 +267,31 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 }
 [data-theme="dark"] .datepicker-plot-area .datepicker-header .btn-switch,
 [data-theme="dark"] .datepicker-plot-area .datepicker-header .btn-switch span { 
-  color: #f0e5d0 !important; /* رنگ روشن برای متن ماه و سال */
+  color: #f0e5d0 !important; /* رنگ کرم روشن برای ماه و سال */
 }
-[data-theme="dark"] .datepicker-plot-area .datepicker-day-view .table-days td span,
-[data-theme="dark"] .datepicker-plot-area .datepicker-month-view .month-item,
-[data-theme="dark"] .datepicker-plot-area .datepicker-year-view .year-item { 
+[data-theme="dark"] .datepicker-plot-area .datepicker-day-view .table-days td span { 
   color: #f0e5d0 !important; 
 }
-[data-theme="dark"] .datepicker-plot-area .datepicker-day-view .table-days td span:hover,
-[data-theme="dark"] .datepicker-plot-area .datepicker-month-view .month-item:hover { 
+[data-theme="dark"] .datepicker-plot-area .datepicker-day-view .table-days td span:hover { 
   background: #5a4b3c !important; 
 }
-[data-theme="dark"] .datepicker-plot-area .toolbox { background-color: #4b3526 !important; border-top: 1px solid #5a4b3c !important;}
-[data-theme="dark"] .datepicker-plot-area .toolbox .btn { color: #f0e5d0 !important; }
+[data-theme="dark"] .datepicker-plot-area .toolbox { 
+  background-color: #4b3526 !important; 
+  border-top: 1px solid #5a4b3c !important;
+}
+[data-theme="dark"] .datepicker-plot-area .toolbox .btn { 
+  color: #f0e5d0 !important; 
+}
 
-/* اصلاح موقعیت تقویم در موبایل (باز شدن در بالای صفحه و وسط‌چین) */
+/* اصلاح موقعیت تقویم در موبایل (وسط و بالای صفحه) */
 @media (max-width: 780px) {
   .datepicker-plot-area {
     position: fixed !important;
-    top: 10% !important; 
+    top: 15% !important; 
     left: 50% !important; 
-    margin-left: -140px !important; /* نصف عرض 280 پیکسل */
+    transform: translateX(-50%) !important; /* وسط چین افقی بدون باگ */
     width: 280px !important; 
-    transform: none !important; 
+    z-index: 99999 !important;
   }
 }
 
@@ -432,7 +434,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
             <div class="field">
               <label>موعد</label>
               <div class="date-input-wrapper">
-                <input id="mgDue" type="text" class="persian-date" placeholder="انتخاب تاریخ" readonly>
+                <input id="mgDue" type="text" class="persian-date" placeholder="انتخاب تاریخ" inputmode="none" autocomplete="off">
                 <span class="date-icon">📅</span>
               </div>
             </div>
@@ -452,7 +454,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
             <div class="field">
               <label>شروع هفته (شنبه)</label>
               <div class="date-input-wrapper">
-                <input id="wgDue" type="text" class="persian-date" placeholder="انتخاب تاریخ" readonly>
+                <input id="wgDue" type="text" class="persian-date" placeholder="انتخاب تاریخ" inputmode="none" autocomplete="off">
                 <span class="date-icon">📅</span>
               </div>
             </div>
@@ -504,14 +506,14 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
             <div class="field">
               <label>از تاریخ</label>
               <div class="date-input-wrapper">
-                <input id="rtStartDate" type="text" class="persian-date" required placeholder="1405/07/28" readonly>
+                <input id="rtStartDate" type="text" class="persian-date" required placeholder="1405/07/28" inputmode="none" autocomplete="off">
                 <span class="date-icon">📅</span>
               </div>
             </div>
             <div class="field">
               <label>تا تاریخ</label>
               <div class="date-input-wrapper">
-                <input id="rtEndDate" type="text" class="persian-date" required placeholder="1405/08/28" readonly>
+                <input id="rtEndDate" type="text" class="persian-date" required placeholder="1405/08/28" inputmode="none" autocomplete="off">
                 <span class="date-icon">📅</span>
               </div>
             </div>
@@ -535,7 +537,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
         <div class="field">
           <label>تاریخ</label>
           <div class="date-input-wrapper">
-            <input id="finDate" type="text" class="persian-date" required placeholder="انتخاب تاریخ" readonly>
+            <input id="finDate" type="text" class="persian-date" required placeholder="انتخاب تاریخ" inputmode="none" autocomplete="off">
             <span class="date-icon">📅</span>
           </div>
         </div>
@@ -554,7 +556,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
         <div class="field">
           <label>تاریخ</label>
           <div class="date-input-wrapper">
-            <input id="moodDate" type="text" class="persian-date" required placeholder="انتخاب تاریخ" readonly>
+            <input id="moodDate" type="text" class="persian-date" required placeholder="انتخاب تاریخ" inputmode="none" autocomplete="off">
             <span class="date-icon">📅</span>
           </div>
         </div>
@@ -1787,15 +1789,16 @@ function initDatepickers() {
   if (typeof jQuery !== 'undefined' && jQuery.fn.persianDatepicker) {
     jQuery('.persian-date').each(function() {
       if (this) {
-        jQuery(this).attr('readonly', true).persianDatepicker({
+        jQuery(this).persianDatepicker({
           format: 'YYYY/MM/DD', initialValue: false, autoClose: true, observer: true,
           calendar: { persian: { locale: 'fa' } }, toolbox: { calendarSwitch: { enabled: false } }
         });
       }
     });
-    jQuery('.date-icon, input.persian-date').on('click', function(e) {
+    // فقط روی آیکون کلیک شود، نه روی خود فیلد تا دوبار باز/بسته نشود
+    jQuery(document).off('click', '.date-icon').on('click', '.date-icon', function(e) {
       e.preventDefault();
-      let input = jQuery(this).hasClass('persian-date') ? jQuery(this) : jQuery(this).siblings('input.persian-date');
+      let input = jQuery(this).siblings('input.persian-date');
       if (input.length) input.persianDatepicker('show');
     });
   } else { console.error('Persian Datepicker library is not loaded!'); }
