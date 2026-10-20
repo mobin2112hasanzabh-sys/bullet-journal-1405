@@ -1,7 +1,7 @@
 {
   "name": "بولت ژورنال من",
   "short_name": "ژورنال",
-  "start_url": "./index.html",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#f7f1e7",
   "theme_color": "#4b3526",
