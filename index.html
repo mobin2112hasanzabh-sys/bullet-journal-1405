@@ -2264,9 +2264,39 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').catch(err => console.error('SW registration failed:', err));
   });
 }
+// ═══════════ راه‌اندازی تقویم شمسی (Persian Datepicker) ═══════════
+function initDatepickers() {
+  if (typeof jQuery !== 'undefined' && jQuery.fn.persianDatepicker) {
+    $('.persian-date').persianDatepicker({
+      format: 'YYYY/MM/DD',
+      initialValue: false,
+      autoClose: true,
+      observer: true,
+      calendar: {
+        persian: {
+          locale: 'fa'
+        }
+      },
+      toolbox: {
+        calendarSwitch: {
+          enabled: false
+        }
+      }
+    });
+
+    // کلیک روی آیکون تقویم باعث باز شدن پنجره تقویم شود
+    $('.date-icon').on('click', function(e) {
+      e.preventDefault();
+      $(this).siblings('input.persian-date').persianDatepicker('show');
+    });
+  } else {
+    console.error('Persian Datepicker library is not loaded!');
+  }
+}
 
 // ═══════════ راه‌اندازی اولیه ═══════════
 initTheme();
+initDatepickers(); // <--- این خط را اضافه کن
 (function boot() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_SESSION) || 'null');
