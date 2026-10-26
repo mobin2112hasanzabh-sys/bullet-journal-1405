@@ -1,11 +1,14 @@
 {
   "name": "بولت ژورنال من",
   "short_name": "ژورنال",
+  "id": "/",
   "start_url": "./",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#f7f1e7",
   "theme_color": "#4b3526",
   "description": "بولت ژورنال شخصی برای مدیریت زمان و اهداف",
+  "categories": ["productivity", "lifestyle"],
   "icons": [
     {
       "src": "./icon-192.png",
@@ -18,6 +21,15 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "نمای برنامه"
     }
   ]
 }
