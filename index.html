@@ -312,6 +312,38 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 @media(max-width:420px){.grid{grid-template-columns:1fr 1fr;gap:10px}.formgrid,.formgrid2,.formgrid-goal{grid-template-columns:1fr}}
 
 .tab:not(.hidden) { animation: fadeSlideIn 0.35s ease-out forwards; }
+/* ═══════════ اصلاح نهایی و قطعی داشبورد در موبایل ═══════════ */
+/* جلوگیری از بیرون زدن محتوا از کادر */
+.grid, .grid2 {
+  min-width: 0 !important;
+}
+.grid > *, .grid2 > * {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden;
+}
+
+/* در تبلت و موبایل، پنل‌های داشبورد حتماً باید تک‌ستونه شوند */
+@media (max-width: 900px) {
+  .grid2 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* مرتب‌سازی نمودار دایره‌ای (پای) */
+.donut-wrap {
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  width: 100%;
+}
+
+/* مرتب‌سازی نقشه حرارتی و جدول مالی (اسکرول درون خودشان) */
+.heatmap-wrapper, #monthlyFinance {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
 </style>
 </head>
 <body>
