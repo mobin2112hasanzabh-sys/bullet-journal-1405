@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bj-cache-v3'; // نسخه رو تغییر دادم تا کش قدیمی پاک بشه
+const CACHE_NAME = 'bj-cache-v4'; // نسخه رو تغییر دادم تا کش قدیمی پاک بشه
 const urlsToCache = [
   './',
   './index.html',
@@ -13,9 +13,9 @@ const urlsToCache = [
 ];
 
 self.addEventListener('install', event => {
+  self.skipWaiting(); // مجبور کردن سرویس ورکر به فعال شدن فوری
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      // دانلود تک تک فایل‌ها به صورت جداگانه (اگر یکی خراب بود، بقیه لود بشن)
       return Promise.all(
         urlsToCache.map(url => {
           return cache.add(url).catch(err => {
@@ -23,7 +23,7 @@ self.addEventListener('install', event => {
           });
         })
       );
-    }).then(() => self.skipWaiting()) // فعال‌سازی فوری
+    })
   );
 });
 
@@ -33,7 +33,7 @@ self.addEventListener('activate', event => {
       return Promise.all(
         cacheNames.map(cacheName => {
           if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
+            return caches.delete(cacheName); // پاک کردن کش‌های قدیمی
           }
         })
       );
@@ -42,14 +42,11 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  // درخواست‌های مربوط به API یا متدهای غیر GET (مثل ذخیره داده‌ها) کش نشن
   if (event.request.method !== 'GET' || event.request.url.includes('workers.dev')) {
     return;
   }
-  
   event.respondWith(
     caches.match(event.request).then(response => {
-      // اگر در کش بود، از کش بیار (سرعت بالا)، اگر نبود از اینترنت بگیر
       return response || fetch(event.request);
     })
   );
