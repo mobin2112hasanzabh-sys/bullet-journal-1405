@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap" rel="stylesheet">
+
 <!-- PWA Meta Tags -->
 <link rel="manifest" href="./manifest.json">
 <link rel="apple-touch-icon" href="./icon-192.png">
@@ -304,6 +305,18 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .grid > *, .grid2 > * { min-width: 0 !important; max-width: 100% !important; overflow: hidden; }
 .donut-wrap { flex-wrap: wrap !important; justify-content: center !important; width: 100%; }
 .heatmap-wrapper, #monthlyFinance { width: 100%; max-width: 100%; overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+
+/* ═══════════ استایل‌های مخصوص چاپ به PDF ═══════════ */
+@media print {
+  body { background: white !important; color: black !important; }
+  body::before { display: none !important; }
+  .nav, .top-actions, .pomo-box, .footer, button, .date-icon, .item-actions, #uiDialog, .modal-overlay { display: none !important; }
+  .wrap { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+  .panel { box-shadow: none !important; border: 1px solid #ddd !important; page-break-inside: avoid; margin-bottom: 10px !important; }
+  .tab { display: block !important; }
+  .tab.hidden { display: none !important; }
+  .tab.active-print { display: block !important; }
+}
 </style>
 </head>
 <body>
@@ -391,7 +404,13 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
     </section>
 
     <section id="tab-dashboard" class="tab hidden">
-      <div class="sectionhead"><div><h2>داشبورد</h2></div><span id="todayLabel" class="pill"></span></div>
+      <div class="sectionhead">
+        <div><h2>داشبورد</h2></div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <span id="todayLabel" class="pill"></span>
+          <button id="printDashboardBtn" class="secondary small">🖨️ پرینت داشبورد</button>
+        </div>
+      </div>
       <div class="grid" id="dashboardStats"></div>
       <div class="grid2" style="margin-top:20px"><div class="panel"><h3>📈 خلق‌وخو (۳۰ روز)</h3><div id="moodLineChart"></div></div><div class="panel"><h3>💰 توزیع هزینه‌ها</h3><div id="expenseDonut"></div></div></div>
       <div class="grid2"><div class="panel"><h3>📊 گزارش ماهانه مالی</h3><div id="monthlyFinance"></div></div><div class="panel"><h3>🔥 نقشهٔ حرارتی</h3><div id="habitHeatmap"></div></div></div>
@@ -560,6 +579,11 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
           <input type="file" id="importFile" accept=".json" class="hidden">
         </div>
       </div>
+      <div class="panel" style="box-shadow:none">
+        <h3>🖨️ خروجی PDF</h3>
+        <p class="muted" style="margin-bottom:10px">گزارش‌ها و داده‌های فعلی صفحه را به PDF تبدیل کنید.</p>
+        <button id="printPdfBtn" class="secondary">📄 دانلود گزارش به صورت PDF</button>
+      </div>
       <div class="panel" style="box-shadow:none"><h3>🗑️ پاک‌سازی</h3><button id="clearDataBtn" class="danger">پاک کردن همهٔ داده‌ها</button></div>
       <div class="panel" style="box-shadow:none"><h3>👤 حساب</h3><p class="muted">ایمیل: <b id="settingsEmail"></b></p><p class="muted">عضویت: <b id="settingsCreated"></b></p></div>
       <div class="panel" style="box-shadow:none"><h3>🔍 دیباگ (برای بررسی مشکل)</h3>
@@ -684,7 +708,6 @@ function flash(t, type = '') {
   el.className = 'notice' + (type ? ' ' + type : '');
   el.classList.remove('hidden');
   
-  // لغو تایمر قبلی اگر وجود دارد
   if (window.toastTimeout) clearTimeout(window.toastTimeout);
   
   window.toastTimeout = setTimeout(() => {
@@ -712,7 +735,6 @@ const customConfirm = (msg, title = 'تاییدیه') => showDialog(title, msg, 
 const customAlert = (msg, title = 'پیام سیستم') => showDialog(title, msg, false, '', true);
 const customPrompt = (msg, defaultVal = '', title = 'درخواست ورودی') => showDialog(title, msg, true, defaultVal, false);
 
-// راه‌اندازی دکمه‌های دیالوگ
 $('uiDialogOk').addEventListener('click', () => {
   if (dialogResolve) {
     const isPrompt = !$('uiDialogInput').classList.contains('hidden');
@@ -874,7 +896,7 @@ async function startApp(){
   startLiveClock();
 }
 
-// ═══════════ توابع دیگر (بدون تغییر) ═══════════
+// ═══════════ توابع دیگر ═══════════
 function getWeekStart(offset=0){
   const now=new Date(); const dow=now.getDay(); const fromSat=(dow+1)%7;
   const start=new Date(now); start.setDate(now.getDate()-fromSat+offset*7); start.setHours(0,0,0,0);
@@ -1848,6 +1870,21 @@ if ($('clearDataBtn')) $('clearDataBtn').addEventListener('click',async () => {
   data = emptyData(); save(); flash('پاک شد');
 });
 if ($('debugBtn')) $('debugBtn').addEventListener('click', () => { $('debugOutput').textContent = JSON.stringify(data, null, 2); });
+
+// PDF و پرینت
+if ($('printPdfBtn')) {
+  $('printPdfBtn').addEventListener('click', () => {
+    window.print();
+  });
+}
+if ($('printDashboardBtn')) {
+  $('printDashboardBtn').addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active-print'));
+    $('tab-dashboard').classList.add('active-print');
+    window.print();
+    setTimeout(() => $('tab-dashboard').classList.remove('active-print'), 1000);
+  });
+}
 
 // راه‌اندازی تقویم شمسی
 function initDatepickers() {
