@@ -10,14 +10,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap" rel="stylesheet">
-
 <!-- PWA Meta Tags -->
 <link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icon-192.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="بولت ژورنال">
-<link rel="apple-touch-icon" href="./icon-192.png">
 
 <!-- کتابخانه تقویم شمسی -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -31,6 +30,7 @@
 
 @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes pulseTimer { 0% { box-shadow: 0 0 0 0 rgba(120, 132, 91, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(120, 132, 91, 0); } 100% { box-shadow: 0 0 0 0 rgba(120, 132, 91, 0); } }
+@keyframes toastIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: var(--cream); border-radius: 10px; }
 ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 10px; }
@@ -96,8 +96,11 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .status.gold{background:var(--goldbg);color:var(--gold)}
 .status.blue{background:var(--bluebg);color:var(--blue)}
 .hidden{display:none!important}
-.notice{border-radius:12px;padding:12px 14px;background:var(--olive2);color:var(--olive);font-size:13px;margin:12px 0;font-weight:600}
-.notice.error{background:var(--redbg);color:var(--red)}
+
+/* پیام‌های شناور (Toast) */
+.notice{position:fixed; top:20px; left:50%; transform:translateX(-50%); border-radius:12px; padding:12px 24px; background:var(--olive); color:white; font-size:14px; font-weight:600; box-shadow:0 10px 30px rgba(0,0,0,0.2); z-index:999999; animation:toastIn 0.3s ease-out;}
+.notice.error{background:var(--red)}
+
 .authbox{max-width:480px;margin:6vh auto;animation:fadeSlideIn .5s ease}
 .auth-form{display:grid;gap:14px}
 .footer{text-align:center;color:var(--muted);font-size:11px;padding:20px;opacity:.7}
@@ -121,7 +124,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .checklist-item.checked{opacity:.6}.checklist-item.checked .check-title{text-decoration:line-through;color:var(--muted)}
 .check-box{width:22px;height:22px;border:2px solid var(--brown);border-radius:6px;display:grid;place-items:center;flex-shrink:0;font-size:14px;color:transparent;font-weight:800;transition:all .25s ease}
 .checklist-item.checked .check-box{background:var(--olive);border-color:var(--olive);color:white;transform:scale(1.05)}
-.check-title{font-weight:600;flex:1;min-width:0;overflow-wrap:anywhere;transition:color .2s}
+.check-title{font-weight:600;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .2s}
 
 .pomo-box{position:fixed;bottom:20px;right:20px;background:var(--white);border:1px solid var(--line);border-radius:16px;padding:14px 18px;box-shadow:var(--shadow2);z-index:500;display:flex;align-items:center;gap:14px;font-weight:700;transition:all .3s}
 .pomo-box.running{background:linear-gradient(135deg,var(--olive),var(--brown));color:white;animation:pulseTimer 2s infinite}
@@ -252,39 +255,22 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
   background-color: var(--white) !important; 
   z-index: 99999 !important; 
   direction: rtl;
-  position: absolute !important; /* باز شدن دقیقا زیر فیلد */
+  position: absolute !important;
 }
 
 .datepicker-plot-area .datepicker-day-view .table-days td span { color: var(--text); }
 .datepicker-plot-area .datepicker-day-view .table-days td.selected span { background-color: var(--olive) !important; color: white !important; }
 .datepicker-plot-area .datepicker-header .btn-switch { color: var(--olive) !important; }
 
-/* حالت تاریک (Dark Mode) برای تقویم - کاملاً روشن و خوانا */
-[data-theme="dark"] .datepicker-plot-area {
-  background-color: #38302a !important;
-  border-color: #5a4b3c !important;
-}
-[data-theme="dark"] .datepicker-plot-area .datepicker-header { 
-  background-color: #4b3526 !important; 
-  border-bottom: 1px solid #5a4b3c !important;
-}
+/* حالت تاریک (Dark Mode) برای تقویم */
+[data-theme="dark"] .datepicker-plot-area { background-color: #38302a !important; border-color: #5a4b3c !important; }
+[data-theme="dark"] .datepicker-plot-area .datepicker-header { background-color: #4b3526 !important; border-bottom: 1px solid #5a4b3c !important; }
 [data-theme="dark"] .datepicker-plot-area .datepicker-header .btn-switch,
-[data-theme="dark"] .datepicker-plot-area .datepicker-header .btn-switch span { 
-  color: #f0e5d0 !important; 
-}
-[data-theme="dark"] .datepicker-plot-area .datepicker-day-view .table-days td span { 
-  color: #f0e5d0 !important; 
-}
-[data-theme="dark"] .datepicker-plot-area .datepicker-day-view .table-days td span:hover { 
-  background: #5a4b3c !important; 
-}
-[data-theme="dark"] .datepicker-plot-area .toolbox { 
-  background-color: #4b3526 !important; 
-  border-top: 1px solid #5a4b3c !important;
-}
-[data-theme="dark"] .datepicker-plot-area .toolbox .btn { 
-  color: #f0e5d0 !important; 
-}
+[data-theme="dark"] .datepicker-plot-area .datepicker-header .btn-switch span { color: #f0e5d0 !important; }
+[data-theme="dark"] .datepicker-plot-area .datepicker-day-view .table-days td span { color: #f0e5d0 !important; }
+[data-theme="dark"] .datepicker-plot-area .datepicker-day-view .table-days td span:hover { background: #5a4b3c !important; }
+[data-theme="dark"] .datepicker-plot-area .toolbox { background-color: #4b3526 !important; border-top: 1px solid #5a4b3c !important; }
+[data-theme="dark"] .datepicker-plot-area .toolbox .btn { color: #f0e5d0 !important; }
 
 @media(max-width:1000px){
   .formgrid-goal{grid-template-columns:1fr 1fr 1fr}.formgrid-goal>button{grid-column:1/-1}
@@ -295,6 +281,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
   .grid{grid-template-columns:repeat(2,1fr)}.week-columns{grid-template-columns:repeat(4,1fr)}
   .weekly-task-grid, .routine-grid { grid-template-columns: 1fr 1fr; }
   .weekly-task-grid > button, .routine-grid > button { grid-column: 1 / -1; }
+  .grid2 { grid-template-columns: 1fr !important; }
 }
 @media(max-width:780px){
   .wrap{padding:14px}.formgrid,.formgrid2,.formgrid-goal{grid-template-columns:1fr 1fr}.formgrid-goal>button{grid-column:1/-1}.item{flex-direction:column;align-items:flex-start}.item-actions{width:100%}.week-columns{grid-template-columns:repeat(2,1fr)}
@@ -313,38 +300,10 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 @media(max-width:420px){.grid{grid-template-columns:1fr 1fr;gap:10px}.formgrid,.formgrid2,.formgrid-goal{grid-template-columns:1fr}}
 
 .tab:not(.hidden) { animation: fadeSlideIn 0.35s ease-out forwards; }
-/* ═══════════ اصلاح نهایی و قطعی داشبورد در موبایل ═══════════ */
-/* جلوگیری از بیرون زدن محتوا از کادر */
-.grid, .grid2 {
-  min-width: 0 !important;
-}
-.grid > *, .grid2 > * {
-  min-width: 0 !important;
-  max-width: 100% !important;
-  overflow: hidden;
-}
-
-/* در تبلت و موبایل، پنل‌های داشبورد حتماً باید تک‌ستونه شوند */
-@media (max-width: 900px) {
-  .grid2 {
-    grid-template-columns: 1fr !important;
-  }
-}
-
-/* مرتب‌سازی نمودار دایره‌ای (پای) */
-.donut-wrap {
-  flex-wrap: wrap !important;
-  justify-content: center !important;
-  width: 100%;
-}
-
-/* مرتب‌سازی نقشه حرارتی و جدول مالی (اسکرول درون خودشان) */
-.heatmap-wrapper, #monthlyFinance {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: auto !important;
-  -webkit-overflow-scrolling: touch;
-}
+.grid, .grid2 { min-width: 0 !important; }
+.grid > *, .grid2 > * { min-width: 0 !important; max-width: 100% !important; overflow: hidden; }
+.donut-wrap { flex-wrap: wrap !important; justify-content: center !important; width: 100%; }
+.heatmap-wrapper, #monthlyFinance { width: 100%; max-width: 100%; overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
 </style>
 </head>
 <body>
@@ -370,7 +329,6 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
   </section>
 
   <main id="appPanel" class="hidden">
-    <div id="globalMessage" class="notice hidden"></div>
     <nav class="nav">
       <button class="active" data-tab="today">📓 امروز</button>
       <button data-tab="notebook">📖 دفترچه</button>
@@ -685,6 +643,21 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
   </div>
 </div>
 
+<!-- مودال اختصاصی برنامه برای تاییدیه و درخواست متن (جایگزین confirm و prompt مرورگر) -->
+<div id="uiDialog" class="modal-overlay hidden">
+  <div class="modal-content" style="max-width: 400px;">
+    <div class="modal-header">
+      <h3 id="uiDialogTitle">توجه</h3>
+    </div>
+    <p id="uiDialogMsg" style="margin-bottom: 20px; font-weight: 600; line-height: 1.6;"></p>
+    <input id="uiDialogInput" class="hidden" type="text" style="margin-bottom: 20px;">
+    <div style="display:flex; gap:10px; justify-content:flex-end">
+      <button id="uiDialogOk">تایید</button>
+      <button id="uiDialogCancel" class="secondary">لغو</button>
+    </div>
+  </div>
+</div>
+
 <script>
 (()=>{
 'use strict';
@@ -697,9 +670,66 @@ const dateISO=(d=new Date())=>{const x=new Date(d);return `${x.getFullYear()}-${
 const toFaDate=s=>{if(!s)return'';try{return new Intl.DateTimeFormat('fa-IR-u-ca-persian',{year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(s));}catch{return s;}};
 const todayFaLong=()=>new Intl.DateTimeFormat('fa-IR-u-ca-persian',{weekday:'long',year:'numeric',month:'long',day:'numeric'}).format(new Date());
 const show=(id,y=true)=>{const el=$(id);if(el)el.classList.toggle('hidden',!y);};
-const msg=(id,t,type='')=>{const el=$(id);if(!el)return;el.textContent=t;el.className='notice'+(type?' '+type:'');el.classList.remove('hidden');setTimeout(()=>el.classList.add('hidden'),4000);};
 const labels={priority:{urgent_important:'فوری و مهم',important:'مهم',normal:'عادی',low:'کم‌اهمیت'}};
 
+// ═══════════ سیستم پیام و دیالوگ سفارشی ═══════════
+function flash(t, type = '') {
+  let el = document.getElementById('toastMessage');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'toastMessage';
+    document.body.appendChild(el);
+  }
+  el.textContent = t;
+  el.className = 'notice' + (type ? ' ' + type : '');
+  el.classList.remove('hidden');
+  
+  // لغو تایمر قبلی اگر وجود دارد
+  if (window.toastTimeout) clearTimeout(window.toastTimeout);
+  
+  window.toastTimeout = setTimeout(() => {
+    el.classList.add('hidden');
+  }, 3000);
+}
+
+let dialogResolve = null;
+function showDialog(title, msg, isPrompt = false, defaultValue = '', isAlert = false) {
+  return new Promise(resolve => {
+    dialogResolve = resolve;
+    $('uiDialogTitle').textContent = title;
+    $('uiDialogMsg').textContent = msg;
+    $('uiDialogInput').classList.toggle('hidden', !isPrompt);
+    if (isPrompt) {
+      $('uiDialogInput').value = defaultValue;
+      setTimeout(() => $('uiDialogInput').focus(), 100);
+    }
+    $('uiDialogCancel').classList.toggle('hidden', isAlert);
+    $('uiDialog').classList.remove('hidden');
+  });
+}
+
+const customConfirm = (msg, title = 'تاییدیه') => showDialog(title, msg, false, '', false);
+const customAlert = (msg, title = 'پیام سیستم') => showDialog(title, msg, false, '', true);
+const customPrompt = (msg, defaultVal = '', title = 'درخواست ورودی') => showDialog(title, msg, true, defaultVal, false);
+
+// راه‌اندازی دکمه‌های دیالوگ
+$('uiDialogOk').addEventListener('click', () => {
+  if (dialogResolve) {
+    const isPrompt = !$('uiDialogInput').classList.contains('hidden');
+    dialogResolve(isPrompt ? $('uiDialogInput').value : true);
+    dialogResolve = null;
+  }
+  $('uiDialog').classList.add('hidden');
+});
+$('uiDialogCancel').addEventListener('click', () => {
+  if (dialogResolve) {
+    dialogResolve(false);
+    dialogResolve = null;
+  }
+  $('uiDialog').classList.add('hidden');
+});
+
+// ═══════════ تاریخ و ذخیره سازی ═══════════
 const nid=()=>'g'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 
 const getPersianDateValue = (id) => {
@@ -729,7 +759,6 @@ const setPersianDateValue = (id, isoDate) => {
   try { const pDate = new persianDate(new Date(isoDate)); $(id).value = pDate.format('YYYY/MM/DD'); } catch { $(id).value = ''; }
 };
 
-// ═══════════ ذخیره‌سازی ═══════════
 const API_URL='https://bj-api.mobin2112hasanzabh.workers.dev';
 const STORAGE_SESSION='bj_session_v6';
 const STORAGE_CACHE_PREFIX='bj_cache_v6_';
@@ -772,11 +801,9 @@ let session=null;
 let data=emptyData();
 let weeklyOffset=0;
 
-// ═══════════ تم ═══════════
 const initTheme=()=>document.documentElement.setAttribute('data-theme',localStorage.getItem('bj_theme')||'light');
 $('themeToggle').addEventListener('click',()=>{const c=document.documentElement.getAttribute('data-theme');const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('bj_theme',n);});
 
-// ═══════════ ورود ═══════════
 function switchPanel(w){
   show('authPanel',w==='auth');
   show('appPanel',w==='app');
@@ -805,10 +832,10 @@ $('authForm').addEventListener('submit',async e=>{
         body:JSON.stringify({email,password:pw})
       });
       json=await res.json();
-      if(!res.ok){ msg('authMessage',json.error||'خطا در ساخت حساب','error'); $('authSubmit').disabled=false; return; }
-      msg('authMessage','حساب ساخته شد! خوش آمدی 🌿');
+      if(!res.ok){ flash(json.error||'خطا در ساخت حساب', 'error'); $('authSubmit').disabled=false; return; }
+      flash('حساب ساخته شد! خوش آمدی 🌿');
     } else if(!res.ok){
-      msg('authMessage',json.error||'خطا در ورود','error');
+      flash(json.error||'خطا در ورود', 'error');
       $('authSubmit').disabled=false;
       return;
     }
@@ -816,7 +843,7 @@ $('authForm').addEventListener('submit',async e=>{
     localStorage.setItem(STORAGE_SESSION, JSON.stringify(session));
     await startApp();
   }catch(err){
-    msg('authMessage','خطای اتصال: '+err.message,'error');
+    flash('خطای اتصال: '+err.message, 'error');
   }
   $('authSubmit').disabled=false;
 });
@@ -828,7 +855,7 @@ function logout(){
   $('authForm').reset();
   $('authMessage').classList.add('hidden');
 }
-$('logoutBtn').addEventListener('click',()=>{if(confirm('از حساب خارج شوی؟'))logout();});
+$('logoutBtn').addEventListener('click',async()=>{if(await customConfirm('آیا از حساب کاربری خود خارج می‌شوید؟'))logout();});
 
 async function startApp(){
   data=await loadData(session.email);
@@ -847,7 +874,7 @@ async function startApp(){
   startLiveClock();
 }
 
-// ═══════════ هفته ═══════════
+// ═══════════ توابع دیگر (بدون تغییر) ═══════════
 function getWeekStart(offset=0){
   const now=new Date(); const dow=now.getDay(); const fromSat=(dow+1)%7;
   const start=new Date(now); start.setDate(now.getDate()-fromSat+offset*7); start.setHours(0,0,0,0);
@@ -861,7 +888,6 @@ function getWeekDays(offset=0){
 }
 const weekDayNames=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
 
-// ═══════════ محاسبه پیشرفت ═══════════
 function weeklyGoalSum(wgId){
   const sId=String(wgId);
   return data.weeklyTasks.filter(t=>String(t.weeklyGoalId)===sId).reduce((a,t)=>a+(Number(t.value)||0),0);
@@ -882,7 +908,6 @@ function monthlyGoalProgress(mgId){
   return Math.min(100,Math.round(monthlyGoalSum(mgId)/mg.target*100));
 }
 
-// ═══════════ برنامه‌های زمان‌دار (روتین‌ها) ═══════════
 function renderRoutines(){
   const el = $('routineList');
   if (!el) return;
@@ -923,7 +948,6 @@ function getRoutinesForDay(isoDate) {
   }).sort((a,b) => a.startTime.localeCompare(b.startTime));
 }
 
-// ═══════════ رندر همه ═══════════
 function renderAll(){
   $('todayBigDate').textContent=todayFaLong();
   $('todayLabel').textContent=todayFaLong();
@@ -941,7 +965,6 @@ function renderAll(){
   renderTimeline();
 }
 
-// ═══════════ نمودار زمانی و ساعت زنده ═══════════
 let clockInterval = null;
 function startLiveClock() {
   if (clockInterval) clearInterval(clockInterval);
@@ -1385,14 +1408,13 @@ function renderNotebook(){
 }
 
 function save(){saveData();renderAll();}
-function flash(t){const el=$('globalMessage');if(!el)return;el.textContent=t;el.className='notice';el.classList.remove('hidden');setTimeout(()=>el.classList.add('hidden'),2000);}
 
 // ═══════════ فرم‌ها و ثبت داده‌ها ═══════════
 $('monthlyGoalForm').addEventListener('submit',e=>{
   e.preventDefault();
   const t=$('mgTitle').value.trim();if(!t)return;
   const target=Number($('mgTarget').value);
-  if(!target||target<=0){flash('هدف کل باید بزرگ‌تر از صفر باشه');return;}
+  if(!target||target<=0){flash('هدف کل باید بزرگ‌تر از صفر باشه','error');return;}
   data.monthlyGoals.push({ id:nid(),title:t, unit:$('mgUnit').value, target, description:$('mgDesc').value.trim(), priority:$('mgPriority').value, due_date:getPersianDateValue('mgDue'), done:false,created:new Date().toISOString() });
   $('monthlyGoalForm').reset();$('mgDesc').value='';$('mgPriority').value='normal';setPersianDateValue('mgDue', dateISO());
   save();flash('هدف ماهانه ذخیره شد ✓');
@@ -1409,12 +1431,17 @@ $('monthlyGoalsList').addEventListener('click',e=>{
     return;
   }
   const del=e.target.dataset.delMg;
-  if(del&&confirm('حذف شود؟ همراه اهداف هفتگی و کارهای زیرمجموعه‌اش؟')){
-    const sDel=String(del); const childIds=data.weeklyGoals.filter(w=>String(w.monthlyGoalId)===sDel).map(w=>String(w.id));
-    data.monthlyGoals=data.monthlyGoals.filter(g=>String(g.id)!==sDel);
-    data.weeklyGoals=data.weeklyGoals.filter(w=>String(w.monthlyGoalId)!==sDel);
-    data.weeklyTasks=data.weeklyTasks.filter(t=>!childIds.includes(String(t.weeklyGoalId)));
-    save();return;
+  if(del){
+    customConfirm('آیا از حذف این هدف ماهانه و تمام زیرمجموعه‌های آن مطمئنید؟', 'حذف هدف').then(ok => {
+      if (ok) {
+        const sDel=String(del); const childIds=data.weeklyGoals.filter(w=>String(w.monthlyGoalId)===sDel).map(w=>String(w.id));
+        data.monthlyGoals=data.monthlyGoals.filter(g=>String(g.id)!==sDel);
+        data.weeklyGoals=data.weeklyGoals.filter(w=>String(w.monthlyGoalId)!==sDel);
+        data.weeklyTasks=data.weeklyTasks.filter(t=>!childIds.includes(String(t.weeklyGoalId)));
+        save();
+      }
+    });
+    return;
   }
   const tg=e.target.dataset.toggleMg;if(tg){const g=data.monthlyGoals.find(x=>String(x.id)===String(tg));if(g){g.done=!g.done;save();}}
 });
@@ -1423,8 +1450,8 @@ $('weeklyGoalForm').addEventListener('submit',e=>{
   e.preventDefault();
   const t=$('wgTitle').value.trim();if(!t)return;
   const parent=$('wgParent').value; const target=Number($('wgTarget').value);
-  if(!parent){flash('لطفاً یه هدف ماهانه انتخاب کن');return;}
-  if(!target||target<=0){flash('هدف این هفته باید بزرگ‌تر از صفر باشه');return;}
+  if(!parent){flash('لطفاً یه هدف ماهانه انتخاب کن','error');return;}
+  if(!target||target<=0){flash('هدف این هفته باید بزرگ‌تر از صفر باشه','error');return;}
   let selDateStr = getPersianDateValue('wgDue') || dateISO();
   let d = new Date(selDateStr); let dow = d.getDay(); let fromSat = (dow + 1) % 7;
   d.setDate(d.getDate() - fromSat);
@@ -1439,11 +1466,16 @@ document.querySelectorAll('[data-wgfilter]').forEach(b=>b.addEventListener('clic
 }));
 $('weeklyGoalsList').addEventListener('click',e=>{
   const del=e.target.dataset.delWg;
-  if(del&&confirm('حذف شود؟')){
-    const sDel=String(del);
-    data.weeklyGoals=data.weeklyGoals.filter(g=>String(g.id)!==sDel);
-    data.weeklyTasks.forEach(t=>{if(String(t.weeklyGoalId)===sDel)t.weeklyGoalId=null;});
-    save();return;
+  if(del){
+    customConfirm('آیا از حذف این هدف هفتگی مطمئنید؟', 'حذف هدف').then(ok => {
+      if (ok) {
+        const sDel=String(del);
+        data.weeklyGoals=data.weeklyGoals.filter(g=>String(g.id)!==sDel);
+        data.weeklyTasks.forEach(t=>{if(String(t.weeklyGoalId)===sDel)t.weeklyGoalId=null;});
+        save();
+      }
+    });
+    return;
   }
   const tg=e.target.dataset.toggleWg;if(tg){const g=data.weeklyGoals.find(x=>String(x.id)===String(tg));if(g){g.done=!g.done;save();}}
 });
@@ -1457,13 +1489,13 @@ $('weeklyTaskForm').addEventListener('submit',e=>{
   e.preventDefault();
   const t=$('wtTitle').value.trim();if(!t)return;
   const parent=$('wtGoal').value;
-  if(!parent){flash('لطفاً یه هدف هفتگی انتخاب کن');return;}
+  if(!parent){flash('لطفاً یه هدف هفتگی انتخاب کن','error');return;}
   const dayName=$('wtDay').value; const days=getWeekDays(weeklyOffset);
   const dayIdx=weekDayNames.indexOf(dayName); const dayDate=days[dayIdx>=0?dayIdx:0];
   const hasTime = $('wtHasTime').checked;
   const startTime = hasTime ? $('wtStartTime').value : null;
   const endTime = hasTime ? $('wtEndTime').value : null;
-  if (hasTime && (!isValidTime(startTime) || !isValidTime(endTime))) { flash('ساعت باید به فرمت ۲۴ ساعته باشد (مثال: 15:30)'); return; }
+  if (hasTime && (!isValidTime(startTime) || !isValidTime(endTime))) { flash('ساعت باید به فرمت ۲۴ ساعته باشد (مثال: 15:30)','error'); return; }
   data.weeklyTasks.push({ id:nid(),title:t, date:dateISO(dayDate), dayName, weeklyGoalId:String(parent), value:'', startTime, endTime, done:false,created:new Date().toISOString() });
   $('weeklyTaskForm').reset(); $('wtTimeFields').classList.add('hidden');
   save();flash('کار افزوده شد ✓');
@@ -1501,15 +1533,20 @@ document.addEventListener('change',e=>{
   });
 });
 
-$('weekColumns').addEventListener('click',e=>{
+$('weekColumns').addEventListener('click',async e=>{
   if (e.target.closest('[data-event-type]')) return;
   const tg=e.target.dataset.toggleWt;
   if(tg){ const t=data.weeklyTasks.find(x=>String(x.id)===String(tg)); if(t){t.done=!t.done;save();} return; }
   const del=e.target.dataset.delWt;
-  if(del&&confirm('حذف شود؟')){ data.weeklyTasks=data.weeklyTasks.filter(t=>String(t.id)!==String(del)); save();return; }
+  if(del){
+    const ok = await customConfirm('آیا از حذف این کار مطمئنید؟', 'حذف کار');
+    if(ok) { data.weeklyTasks=data.weeklyTasks.filter(t=>String(t.id)!==String(del)); save(); }
+    return;
+  }
   const add=e.target.dataset.addWtDay;
   if(add){
-    const title=prompt('عنوان کار جدید:'); if(!title)return;
+    const title = await customPrompt('عنوان کار جدید:', '', 'افزودن کار');
+    if(!title) return;
     data.weeklyTasks.push({ id:nid(),title, date:add, dayName:'', weeklyGoalId:null, value:'', done:false, created:new Date().toISOString() });
     save();
   }
@@ -1543,10 +1580,10 @@ $('routineForm').addEventListener('submit', e => {
   const endTime = $('rtEndTime').value;
   const startDate = getPersianDateValue('rtStartDate');
   const endDate = getPersianDateValue('rtEndDate');
-  if (!title || !startDate || !endDate || !startTime || !endTime) { flash('همهٔ فیلدها الزامی هستند'); return; }
-  if (!isValidTime(startTime) || !isValidTime(endTime)) { flash('ساعت باید به فرمت ۲۴ ساعته باشد (مثال: 15:30)'); return; }
-  if (startDate > endDate) { flash('تاریخ شروع باید قبل از پایان باشد'); return; }
-  if (endTime <= startTime) { flash('ساعت پایان باید بعد از شروع باشد'); return; }
+  if (!title || !startDate || !endDate || !startTime || !endTime) { flash('همهٔ فیلدها الزامی هستند','error'); return; }
+  if (!isValidTime(startTime) || !isValidTime(endTime)) { flash('ساعت باید به فرمت ۲۴ ساعته باشد (مثال: 15:30)','error'); return; }
+  if (startDate > endDate) { flash('تاریخ شروع باید قبل از پایان باشد','error'); return; }
+  if (endTime <= startTime) { flash('ساعت پایان باید بعد از شروع باشد','error'); return; }
   if (!data.routines) data.routines = [];
   data.routines.push({ id: nid(), title, dayOfWeek, startTime, endTime, startDate, endDate, created: new Date().toISOString() });
   $('routineForm').reset(); $('rtStartTime').value = '15:30'; $('rtEndTime').value = '17:30';
@@ -1568,8 +1605,8 @@ $('financeForm').addEventListener('submit', e => {
   e.preventDefault();
   const date = getPersianDateValue('finDate');
   const amount = Number($('finAmount').value);
-  if (!date) { flash('تاریخ نامعتبر'); return; }
-  if (!amount || amount <= 0) { flash('مبلغ باید بزرگ‌تر از صفر باشد'); return; }
+  if (!date) { flash('تاریخ نامعتبر','error'); return; }
+  if (!amount || amount <= 0) { flash('مبلغ باید بزرگ‌تر از صفر باشد','error'); return; }
   const month = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { year: 'numeric', month: 'long' }).format(new Date(date));
   data.finance.unshift({ id: nid(), date, month, type: $('finType').value, category: $('finCategory').value, description: $('finDesc').value.trim(), amount, created: new Date().toISOString() });
   $('financeForm').reset(); setPersianDateValue('finDate', dateISO());
@@ -1578,7 +1615,7 @@ $('financeForm').addEventListener('submit', e => {
 
 $('moodForm').addEventListener('submit', e => {
   e.preventDefault();
-  const date = getPersianDateValue('moodDate'); if (!date) { flash('تاریخ نامعتبر'); return; }
+  const date = getPersianDateValue('moodDate'); if (!date) { flash('تاریخ نامعتبر','error'); return; }
   const payload = { date, mood: $('moodMood').value, energy: Number($('moodEnergy').value) || null, sleep: Number($('moodSleep').value) || null, stress: Number($('moodStress').value) || null, created: new Date().toISOString() };
   const idx = data.mood.findIndex(m => m.date === date);
   if (idx >= 0) { payload.id = data.mood[idx].id; data.mood[idx] = payload; } 
@@ -1622,9 +1659,10 @@ document.addEventListener('click', e => {
   if (task) { task.done = !task.done; save(); }
 });
 
-document.addEventListener('click', e => {
+document.addEventListener('click',async e => {
   const t = e.target.closest('[data-del-wt-today]'); if (!t) return;
-  if (!confirm('حذف شود؟')) return;
+  const ok = await customConfirm('آیا از حذف این کار مطمئنید؟', 'حذف کار');
+  if(!ok) return;
   data.weeklyTasks = data.weeklyTasks.filter(x => String(x.id) !== String(t.dataset.delWtToday));
   if (data.routineLogs) data.routineLogs = data.routineLogs.filter(l => !(String(l.eventId) === String(t.dataset.delWtToday) && l.eventType === 'task'));
   save();
@@ -1648,15 +1686,17 @@ document.addEventListener('change', e => {
 });
 
 // حذف‌ها و عمومی
-document.addEventListener('click', e => {
+document.addEventListener('click',async e => {
   const table = e.target.dataset.del; if (!table) return;
   const id = e.target.dataset.id; if (!id) return;
-  if (!confirm('حذف شود؟')) return;
+  const ok = await customConfirm('آیا از حذف این مورد مطمئنید؟', 'حذف');
+  if(!ok) return;
   if (Array.isArray(data[table])) { data[table] = data[table].filter(x => String(x.id) !== String(id)); save(); }
 });
-document.addEventListener('click', e => {
+document.addEventListener('click',async e => {
   const delR = e.target.dataset.delRoutine; if (!delR) return;
-  if (!confirm('حذف شود؟')) return;
+  const ok = await customConfirm('آیا از حذف این برنامه زمان‌دار مطمئنید؟', 'حذف برنامه');
+  if(!ok) return;
   data.routines = data.routines.filter(r => String(r.id) !== String(delR));
   if (data.routineLogs) data.routineLogs = data.routineLogs.filter(l => String(l.eventId) !== String(delR));
   save();
@@ -1672,9 +1712,10 @@ document.addEventListener('click', e => {
   const note = data.daily.find(x => x.date === d);
   if (note) { $('morningNote').value = note.morning || ''; $('eveningNote').value = note.evening || ''; $('highlightToday').value = note.highlight || ''; $('gratitudeToday').value = note.gratitude || ''; window.scrollTo({ top: 0, behavior: 'smooth' }); }
 });
-document.addEventListener('click', e => {
+document.addEventListener('click',async e => {
   const d = e.target.dataset.delNotebook; if (!d) return;
-  if (!confirm('حذف شود؟')) return;
+  const ok = await customConfirm('آیا از حذف این یادداشت مطمئنید؟', 'حذف یادداشت');
+  if(!ok) return;
   data.daily = data.daily.filter(x => x.date !== d); save();
 });
 
@@ -1771,7 +1812,8 @@ function startPomo() {
     pomoRemaining--;
     if (pomoRemaining <= 0) {
       clearInterval(pomoTimer); pomoRunning = false; pomoRemaining = 0; updatePomoDisplay();
-      data.pomodoro.push({ id: nid(), date: dateISO(), minutes: 25 }); save(); alert('⏱️ زمان تمرکز تمام شد!');
+      data.pomodoro.push({ id: nid(), date: dateISO(), minutes: 25 }); save(); 
+      customAlert('⏱️ زمان تمرکز تمام شد!', 'پایان تایمر');
     } else { updatePomoDisplay(); }
   }, 1000);
 }
@@ -1796,13 +1838,13 @@ if ($('importFile')) $('importFile').addEventListener('change', async e => {
   const file = e.target.files[0]; if (!file) return;
   try {
     const parsed = JSON.parse(await file.text());
-    if (!confirm('داده‌های فعلی جایگزین می‌شوند. مطمئنی؟')) { e.target.value = ''; return; }
+    if (!await customConfirm('داده‌های فعلی جایگزین می‌شوند. مطمئنی؟', 'بازیابی داده')) { e.target.value = ''; return; }
     data = { ...emptyData(), ...parsed }; save(); flash('بازیابی شد ✓');
-  } catch { flash('فایل نامعتبر است'); }
+  } catch { flash('فایل نامعتبر است','error'); }
   e.target.value = '';
 });
-if ($('clearDataBtn')) $('clearDataBtn').addEventListener('click', () => {
-  if (!confirm('همهٔ داده‌ها پاک شود؟ این عمل بازگشت‌پذیر نیست.')) return;
+if ($('clearDataBtn')) $('clearDataBtn').addEventListener('click',async () => {
+  if (!await customConfirm('همهٔ داده‌ها پاک شود؟ این عمل بازگشت‌پذیر نیست.', 'پاک‌سازی داده‌ها')) return;
   data = emptyData(); save(); flash('پاک شد');
 });
 if ($('debugBtn')) $('debugBtn').addEventListener('click', () => { $('debugOutput').textContent = JSON.stringify(data, null, 2); });
@@ -1818,8 +1860,6 @@ function initDatepickers() {
         });
       }
     });
-    
-    // باز شدن تقویم با کلیک روی فیلد یا آیکون (بدون تداخل)
     jQuery(document).off('click', '.date-icon').on('click', '.date-icon', function(e) {
       e.preventDefault();
       let input = jQuery(this).siblings('input.persian-date');
