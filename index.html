@@ -306,50 +306,67 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .donut-wrap { flex-wrap: wrap !important; justify-content: center !important; width: 100%; }
 .heatmap-wrapper, #monthlyFinance { width: 100%; max-width: 100%; overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
 
-/* ═══════════ استایل‌های اختصاصی چاپ به PDF ═══════════ */
+/* ═══════════ استایل‌های اختصاصی چاپ به PDF (کاربرگ برنامه‌ریزی) ═══════════ */
 @media print {
-  body.printing-mode > * {
-    display: none !important;
-  }
-  body.printing-mode > #print-report {
-    display: block !important;
-  }
+  body.printing-mode > * { display: none !important; }
+  body.printing-mode > #print-report { display: block !important; }
+  
   #print-report {
     font-family: Vazirmatn, Tahoma, sans-serif;
     direction: rtl;
     color: #000;
     background: #fff;
-    padding: 20px;
+    padding: 10px;
   }
+  
   .print-header {
     text-align: center;
-    border-bottom: 2px solid #333;
+    border-bottom: 2px solid #4b3526;
     margin-bottom: 20px;
-    padding-bottom: 10px;
+    padding-bottom: 15px;
   }
-  .print-header h1 { margin: 0; font-size: 24px; }
+  .print-header h1 { margin: 0; font-size: 28px; color: #4b3526; }
   .print-header p { margin: 5px 0 0 0; font-size: 14px; color: #555; }
+  
   .print-section {
     margin-bottom: 30px;
     page-break-inside: avoid;
   }
   .print-section h2 {
-    font-size: 18px;
-    border-bottom: 1px solid #ccc;
+    font-size: 20px;
+    color: #4b3526;
+    border-bottom: 2px solid #4b3526;
     padding-bottom: 5px;
     margin-bottom: 15px;
-    color: #333;
   }
-  .print-subsection { margin-bottom: 15px; }
-  .print-subsection h3 { font-size: 15px; margin-bottom: 8px; color: #444; }
-  .print-section ul { margin: 0; padding-right: 20px; }
-  .print-section li { font-size: 14px; margin-bottom: 5px; }
-  .print-section p { font-size: 14px; margin-bottom: 5px; }
-  .print-week-grid { display: flex; flex-wrap: wrap; gap: 15px; }
-  .print-day { border: 1px solid #ddd; padding: 10px; border-radius: 8px; width: calc(50% - 8px); box-sizing: border-box; page-break-inside: avoid; }
-  .print-day h4 { margin: 0 0 10px 0; font-size: 14px; border-bottom: 1px dashed #ccc; padding-bottom: 5px; }
-  .print-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-  .print-table th, .print-table td { border: 1px solid #ccc; padding: 8px; text-align: right; }
+  
+  /* Checkboxes */
+  .print-checkbox { 
+    display:inline-block; width: 16px; height: 16px; border: 2px solid #555; border-radius: 4px; vertical-align: middle; margin-left: 8px; position: relative; 
+  }
+  .print-checkbox.checked { background: #4b3526; border-color: #4b3526; }
+  .print-checkbox.checked::after { content: '✓'; color: white; position: absolute; top: -4px; right: 2px; font-size: 13px; font-weight: bold; }
+  
+  /* Write Lines */
+  .write-line { border-bottom: 1px dashed #999; margin-bottom: 15px; height: 25px; width: 100%; }
+  
+  /* Habit Grid */
+  .habit-grid-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+  .habit-grid-table th, .habit-grid-table td { border: 1px solid #777; padding: 8px; text-align: center; font-size: 13px; }
+  .habit-grid-table th:first-child { text-align: right; width: 35%; font-weight: bold; color: #333; }
+  .habit-grid-table .cell-box { width: 20px; height: 20px; border: 1px solid #777; margin: 0 auto; border-radius: 4px; }
+  
+  /* Timeline Grid */
+  .timeline-grid { width: 100%; border-collapse: collapse; margin-top: 10px; }
+  .timeline-grid td { border-bottom: 1px dashed #999; height: 35px; font-size: 12px; color: #555; }
+  .timeline-grid td:first-child { width: 55px; text-align: left; font-weight: bold; }
+  
+  /* Progress Bars */
+  .progress-bar-print { width: 100%; height: 14px; border: 1px solid #777; border-radius: 7px; margin-top: 5px; position: relative; background: #fff; overflow: hidden; }
+  .progress-bar-print .fill { height: 100%; background: #a3b18a; opacity: 0.8; }
+  
+  .print-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 10px; }
+  .print-table th, .print-table td { border: 1px solid #777; padding: 10px; text-align: right; }
   .print-table th { background: #f0f0f0; }
 }
 </style>
@@ -615,9 +632,9 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
         </div>
       </div>
       <div class="panel" style="box-shadow:none">
-        <h3>🖨️ خروجی PDF</h3>
-        <p class="muted" style="margin-bottom:10px">گزارش کامل (برنامه روزانه، هفته و پیشرفت) را به PDF تبدیل کنید.</p>
-        <button id="printPdfBtn" class="secondary">📄 دانلود گزارش کامل PDF</button>
+        <h3>🖨️ خروجی PDF (کاربرگ برنامه‌ریزی)</h3>
+        <p class="muted" style="margin-bottom:10px">یک نسخه‌ی چاپی و تعاملی از برنامه‌هایتان (شامل جدول زمانی خالی، چک‌باکس‌ها، و ردیاب عادت) برای نوشتن با دست.</p>
+        <button id="printPdfBtn" class="secondary">📄 دانلود کاربرگ PDF</button>
       </div>
       <div class="panel" style="box-shadow:none"><h3>🗑️ پاک‌سازی</h3><button id="clearDataBtn" class="danger">پاک کردن همهٔ داده‌ها</button></div>
       <div class="panel" style="box-shadow:none"><h3>👤 حساب</h3><p class="muted">ایمیل: <b id="settingsEmail"></b></p><p class="muted">عضویت: <b id="settingsCreated"></b></p></div>
@@ -1466,95 +1483,143 @@ function renderNotebook(){
 
 function save(){saveData();renderAll();}
 
-// ═══════════ ساختار گزارش PDF ═══════════
+// ═══════════ کاربرگ برنامه‌ریزی PDF (Actionable Print View) ═══════════
 function generatePrintView() {
   const today = dateISO();
   const todayFa = todayFaLong();
 
-  // ۱. برنامه روزانه
-  const todayTasks = data.weeklyTasks.filter(t => t.date === today);
-  const todayRoutines = getRoutinesForDay(today);
+  // Data Prep
   const todayHabits = data.habits.map(h => {
     const log = data.logs.find(l => String(l.habit_id) === String(h.id) && l.date === today);
-    return { name: h.name, status: log?.status || 'ثبت نشده' };
+    return { name: h.name, status: log?.status || '' };
   });
-  const dailyNote = data.daily.find(d => d.date === today);
-
-  // ۲. برنامه کل هفته
+  
   const weekDays = getWeekDays(0);
-  const weekHtml = weekDays.map((d, i) => {
-    const iso = dateISO(d);
-    const tasks = data.weeklyTasks.filter(t => t.date === iso).sort((a,b) => (a.startTime || '99:99').localeCompare(b.startTime || '99:99'));
-    const routines = getRoutinesForDay(iso);
-    let items = [];
-    routines.forEach(r => items.push(`⏰ ${safe(r.title)} (${r.startTime} - ${r.endTime})`));
-    tasks.forEach(t => items.push(`${t.done ? '✅' : '⬜'} ${safe(t.title)} ${t.startTime ? `(${t.startTime} - ${t.endTime})` : ''}`));
-
-    return `
-      <div class="print-day">
-        <h4>${weekDayNames[i]} (${toFaDate(iso)})</h4>
-        ${items.length ? `<ul>${items.map(it => `<li>${it}</li>`).join('')}</ul>` : '<p style="font-size:12px; color:#888; margin:0;">برنامه‌ای ثبت نشده</p>'}
-      </div>
-    `;
-  }).join('');
-
-  // ۳. پیشرفت (داشبورد)
+  
   const activeMg = data.monthlyGoals.filter(g => !g.done).length;
   const income = data.finance.filter(f => f.type === 'درآمد').reduce((a, f) => a + Number(f.amount || 0), 0);
   const expense = data.finance.filter(f => f.type === 'هزینه').reduce((a, f) => a + Number(f.amount || 0), 0);
-  const habitDoneCount = data.logs.filter(l => l.date === today && l.status === 'done').length;
 
-  // ساخت HTML نهایی
+  const timeBlocks = ['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00'];
+
   const printHtml = `
+    <!-- HEADER -->
     <div class="print-header">
-      <h1>گزارش بولت ژورنال</h1>
+      <h1>کاربرگ بولت ژورنال</h1>
       <p>تاریخ گزارش: ${todayFa}</p>
     </div>
 
-    <div class="print-section">
-      <h2>۱. برنامه روزانه</h2>
-      <div class="print-subsection">
-        <h3>عادت‌ها:</h3>
-        <ul>${todayHabits.length ? todayHabits.map(h => `<li>${h.status === 'done' ? '✅' : h.status === 'rest' ? '☕' : '⬜'} ${safe(h.name)} (${h.status})</li>`).join('') : '<li>عادتی ثبت نشده است.</li>'}</ul>
+    <!-- PAGE 1: DAILY PLAN -->
+    <div class="print-section" style="page-break-after: always;">
+      <h2>📓 برنامه روزانه</h2>
+      
+      <div style="display: flex; gap: 30px;">
+        <!-- LEFT: Time Blocks -->
+        <div style="flex: 1;">
+          <h3 style="margin-bottom: 10px; font-size: 15px;">⏳ جدول زمانی (برای نوشتن)</h3>
+          <table class="timeline-grid">
+            ${timeBlocks.map(t => `<tr><td>${t}</td><td></td></tr>`).join('')}
+          </table>
+        </div>
+        
+        <!-- RIGHT: Tasks & Habits -->
+        <div style="flex: 1;">
+          <h3 style="margin-bottom: 10px; font-size: 15px;">🎯 ۳ اولویت اصلی امروز</h3>
+          <div style="margin-bottom: 30px;">
+            ${[1,2,3].map(i => `<div style="display:flex; align-items:flex-end; margin-bottom:15px;"><span class="print-checkbox"></span><span class="write-line" style="margin-left:10px;"></span></div>`).join('')}
+          </div>
+
+          <h3 style="margin-bottom: 10px; font-size: 15px;">🔥 عادت‌های امروز</h3>
+          <ul style="list-style: none; padding: 0;">
+            ${todayHabits.length ? todayHabits.map(h => `<li style="margin-bottom: 12px; font-size: 14px; display: flex; align-items: center;"><span class="print-checkbox ${h.status === 'done' ? 'checked' : ''}"></span> <span>${safe(h.name)}</span></li>`).join('') : '<li style="font-size:13px; color:#888;">عادتی ثبت نشده است.</li>'}
+          </ul>
+        </div>
       </div>
-      <div class="print-subsection">
-        <h3>برنامه‌های زمان‌دار امروز:</h3>
-        <ul>${todayRoutines.length ? todayRoutines.map(r => `<li>⏰ ${safe(r.title)} (${r.startTime} تا ${r.endTime})</li>`).join('') : '<li>برنامه‌ای ثبت نشده است.</li>'}</ul>
+
+      <!-- BOTTOM: NOTES -->
+      <div style="margin-top: 40px;">
+        <h3 style="margin-bottom: 15px; font-size: 15px;">💭 یادداشت‌ها و شکرگزاری</h3>
+        <div class="write-line"></div><div class="write-line"></div><div class="write-line"></div>
+        <div class="write-line"></div><div class="write-line"></div><div class="write-line"></div>
       </div>
-      <div class="print-subsection">
-        <h3>کارهای امروز:</h3>
-        <ul>${todayTasks.length ? todayTasks.map(t => `<li>${t.done ? '✅' : '⬜'} ${safe(t.title)} ${t.startTime ? `(${t.startTime} - ${t.endTime})` : ''}</li>`).join('') : '<li>کاری ثبت نشده است.</li>'}</ul>
-      </div>
-      ${dailyNote ? `
-      <div class="print-subsection">
-        <h3>یادداشت روز:</h3>
-        <p><strong>صبح:</strong> ${safe(dailyNote.morning || '-')}</p>
-        <p><strong>شب:</strong> ${safe(dailyNote.evening || '-')}</p>
-        <p><strong>بهترین اتفاق:</strong> ${safe(dailyNote.highlight || '-')}</p>
-        <p><strong>شکرگزاری:</strong> ${safe(dailyNote.gratitude || '-')}</p>
-      </div>` : ''}
     </div>
 
-    <div class="print-section" style="page-break-before: always;">
-      <h2>۲. برنامه کل هفته</h2>
-      <div class="print-week-grid">
-        ${weekHtml}
-      </div>
-    </div>
-
-    <div class="print-section" style="page-break-before: always;">
-      <h2>۳. پیشرفت و آمار</h2>
-      <table class="print-table">
-        <tr><th>عنوان</th><th>مقدار</th></tr>
-        <tr><td>عادت‌های انجام شده امروز</td><td>${habitDoneCount} از ${data.habits.length}</td></tr>
-        <tr><td>اهداف ماهانه فعال</td><td>${activeMg}</td></tr>
-        <tr><td>کل درآمد ثبت شده</td><td>${fa(income)} تومان</td></tr>
-        <tr><td>کل هزینه ثبت شده</td><td>${fa(expense)} تومان</td></tr>
+    <!-- PAGE 2: WEEKLY HABIT TRACKER & GOALS -->
+    <div class="print-section" style="page-break-after: always;">
+      <h2>🗓️ برنامه هفتگی</h2>
+      
+      <h3 style="margin-bottom: 10px; font-size: 15px;">🔥 ردیاب عادت‌های هفته (رنگ آمیزی کن)</h3>
+      <table class="habit-grid-table">
+        <thead>
+          <tr>
+            <th>عادت / روز</th>
+            ${weekDayNames.map(d => `<th>${d}</th>`).join('')}
+          </tr>
+        </thead>
+        <tbody>
+          ${data.habits.length ? data.habits.map(h => `
+            <tr>
+              <td>${safe(h.name)}</td>
+              ${[0,1,2,3,4,5,6].map(() => `<td><div class="cell-box"></div></td>`).join('')}
+            </tr>
+          `).join('') : '<tr><td colspan="8" style="text-align:center; color:#888;">عادتی ثبت نشده</td></tr>'}
+        </tbody>
       </table>
+
+      <div style="margin-top: 40px;">
+        <h3 style="margin-bottom: 15px; font-size: 15px;">🎯 اهداف هفته (نوار پیشرفت را رنگ کن)</h3>
+        ${data.weeklyGoals.length ? data.weeklyGoals.slice(0,5).map(g => `
+          <div style="margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 6px;">
+              <span>${safe(g.title)} (${fa(g.target)} ${safe(g.unit || '')})</span>
+              <span class="print-checkbox ${g.done ? 'checked' : ''}"></span>
+            </div>
+            <div class="progress-bar-print">
+              <div class="fill" style="width: ${weeklyGoalProgress(g.id)}%"></div>
+            </div>
+          </div>
+        `).join('') : '<p style="font-size:13px; color:#888;">هدفی ثبت نشده است.</p>'}
+      </div>
+    </div>
+    
+    <!-- PAGE 3: MONTHLY PROGRESS & REVIEW -->
+    <div class="print-section">
+      <h2>📊 مرور ماهانه و خودارزیابی</h2>
+      
+      <div style="display: flex; gap: 20px; margin-bottom: 40px;">
+        <div style="flex: 1; border: 1px solid #999; border-radius: 8px; padding: 15px;">
+          <h4 style="text-align: center; margin-bottom: 15px; color: #333;">💰 وضعیت مالی</h4>
+          <table style="width: 100%; font-size: 14px; border-collapse: collapse;">
+            <tr><td style="padding: 8px 0; border-bottom: 1px dashed #ccc;">درآمد:</td><td style="font-weight: bold; text-align: left; border-bottom: 1px dashed #ccc;">${fa(income)} تومان</td></tr>
+            <tr><td style="padding: 8px 0; border-bottom: 1px dashed #ccc;">هزینه:</td><td style="font-weight: bold; text-align: left; border-bottom: 1px dashed #ccc;">${fa(expense)} تومان</td></tr>
+            <tr><td style="padding: 8px 0;">موجودی خالص:</td><td style="font-weight: bold; text-align: left; color: ${income-expense>=0?'#333':'#b95042'};">${fa(income-expense)} تومان</td></tr>
+          </table>
+        </div>
+        
+        <div style="flex: 1; border: 1px solid #999; border-radius: 8px; padding: 15px;">
+          <h4 style="text-align: center; margin-bottom: 15px; color: #333;">🎯 اهداف ماهانه فعال (${activeMg})</h4>
+          ${data.monthlyGoals.slice(0,3).map(g => `
+            <div style="margin-bottom: 12px;">
+              <div style="font-size: 13px; margin-bottom: 4px; display:flex; justify-content:space-between;">${safe(g.title)} <span class="print-checkbox ${g.done?'checked':''}" style="width:12px; height:12px; margin:0;"></span></div>
+              <div class="progress-bar-print" style="height: 10px;">
+                <div class="fill" style="width: ${monthlyGoalProgress(g.id)}%"></div>
+              </div>
+            </div>
+          `).join('')}
+          ${data.monthlyGoals.length === 0 ? '<p style="font-size: 13px; color: #888; text-align: center;">هدفی ثبت نشده</p>' : ''}
+        </div>
+      </div>
+
+      <h3 style="margin-bottom: 15px; font-size: 15px;">📝 مرور و بازتاب ماه</h3>
+      <p style="font-size: 13px; color: #555; margin-bottom: 15px;">بهترین اتفاق ماه چه بود؟ چه درس‌هایی گرفتم؟ چه چیزهایی را می‌توانم بهتر انجام دهم؟</p>
+      <div class="write-line"></div><div class="write-line"></div>
+      <div class="write-line"></div><div class="write-line"></div>
+      <div class="write-line"></div><div class="write-line"></div>
+      <div class="write-line"></div><div class="write-line"></div>
     </div>
   `;
 
-  // ایجاد کانتینر چاپ و اعمال کلاس
+  // Create container and print
   const printContainer = document.createElement('div');
   printContainer.id = 'print-report';
   printContainer.innerHTML = printHtml;
@@ -1563,7 +1628,7 @@ function generatePrintView() {
   document.body.classList.add('printing-mode');
   window.print();
 
-  // پاک‌سازی پس از بستن پنجره چاپ
+  // Cleanup
   setTimeout(() => {
     document.body.classList.remove('printing-mode');
     printContainer.remove();
