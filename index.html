@@ -306,16 +306,51 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
 .donut-wrap { flex-wrap: wrap !important; justify-content: center !important; width: 100%; }
 .heatmap-wrapper, #monthlyFinance { width: 100%; max-width: 100%; overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
 
-/* ═══════════ استایل‌های مخصوص چاپ به PDF ═══════════ */
+/* ═══════════ استایل‌های اختصاصی چاپ به PDF ═══════════ */
 @media print {
-  body { background: white !important; color: black !important; }
-  body::before { display: none !important; }
-  .nav, .top-actions, .pomo-box, .footer, button, .date-icon, .item-actions, #uiDialog, .modal-overlay { display: none !important; }
-  .wrap { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
-  .panel { box-shadow: none !important; border: 1px solid #ddd !important; page-break-inside: avoid; margin-bottom: 10px !important; }
-  .tab { display: block !important; }
-  .tab.hidden { display: none !important; }
-  .tab.active-print { display: block !important; }
+  body.printing-mode > * {
+    display: none !important;
+  }
+  body.printing-mode > #print-report {
+    display: block !important;
+  }
+  #print-report {
+    font-family: Vazirmatn, Tahoma, sans-serif;
+    direction: rtl;
+    color: #000;
+    background: #fff;
+    padding: 20px;
+  }
+  .print-header {
+    text-align: center;
+    border-bottom: 2px solid #333;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+  }
+  .print-header h1 { margin: 0; font-size: 24px; }
+  .print-header p { margin: 5px 0 0 0; font-size: 14px; color: #555; }
+  .print-section {
+    margin-bottom: 30px;
+    page-break-inside: avoid;
+  }
+  .print-section h2 {
+    font-size: 18px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    color: #333;
+  }
+  .print-subsection { margin-bottom: 15px; }
+  .print-subsection h3 { font-size: 15px; margin-bottom: 8px; color: #444; }
+  .print-section ul { margin: 0; padding-right: 20px; }
+  .print-section li { font-size: 14px; margin-bottom: 5px; }
+  .print-section p { font-size: 14px; margin-bottom: 5px; }
+  .print-week-grid { display: flex; flex-wrap: wrap; gap: 15px; }
+  .print-day { border: 1px solid #ddd; padding: 10px; border-radius: 8px; width: calc(50% - 8px); box-sizing: border-box; page-break-inside: avoid; }
+  .print-day h4 { margin: 0 0 10px 0; font-size: 14px; border-bottom: 1px dashed #ccc; padding-bottom: 5px; }
+  .print-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .print-table th, .print-table td { border: 1px solid #ccc; padding: 8px; text-align: right; }
+  .print-table th { background: #f0f0f0; }
 }
 </style>
 </head>
@@ -408,7 +443,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
         <div><h2>داشبورد</h2></div>
         <div style="display:flex; gap:10px; align-items:center;">
           <span id="todayLabel" class="pill"></span>
-          <button id="printDashboardBtn" class="secondary small">🖨️ پرینت داشبورد</button>
+          <button id="printDashboardBtn" class="secondary small">🖨️ پرینت گزارش</button>
         </div>
       </div>
       <div class="grid" id="dashboardStats"></div>
@@ -581,8 +616,8 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
       </div>
       <div class="panel" style="box-shadow:none">
         <h3>🖨️ خروجی PDF</h3>
-        <p class="muted" style="margin-bottom:10px">گزارش‌ها و داده‌های فعلی صفحه را به PDF تبدیل کنید.</p>
-        <button id="printPdfBtn" class="secondary">📄 دانلود گزارش به صورت PDF</button>
+        <p class="muted" style="margin-bottom:10px">گزارش کامل (برنامه روزانه، هفته و پیشرفت) را به PDF تبدیل کنید.</p>
+        <button id="printPdfBtn" class="secondary">📄 دانلود گزارش کامل PDF</button>
       </div>
       <div class="panel" style="box-shadow:none"><h3>🗑️ پاک‌سازی</h3><button id="clearDataBtn" class="danger">پاک کردن همهٔ داده‌ها</button></div>
       <div class="panel" style="box-shadow:none"><h3>👤 حساب</h3><p class="muted">ایمیل: <b id="settingsEmail"></b></p><p class="muted">عضویت: <b id="settingsCreated"></b></p></div>
@@ -1431,6 +1466,110 @@ function renderNotebook(){
 
 function save(){saveData();renderAll();}
 
+// ═══════════ ساختار گزارش PDF ═══════════
+function generatePrintView() {
+  const today = dateISO();
+  const todayFa = todayFaLong();
+
+  // ۱. برنامه روزانه
+  const todayTasks = data.weeklyTasks.filter(t => t.date === today);
+  const todayRoutines = getRoutinesForDay(today);
+  const todayHabits = data.habits.map(h => {
+    const log = data.logs.find(l => String(l.habit_id) === String(h.id) && l.date === today);
+    return { name: h.name, status: log?.status || 'ثبت نشده' };
+  });
+  const dailyNote = data.daily.find(d => d.date === today);
+
+  // ۲. برنامه کل هفته
+  const weekDays = getWeekDays(0);
+  const weekHtml = weekDays.map((d, i) => {
+    const iso = dateISO(d);
+    const tasks = data.weeklyTasks.filter(t => t.date === iso).sort((a,b) => (a.startTime || '99:99').localeCompare(b.startTime || '99:99'));
+    const routines = getRoutinesForDay(iso);
+    let items = [];
+    routines.forEach(r => items.push(`⏰ ${safe(r.title)} (${r.startTime} - ${r.endTime})`));
+    tasks.forEach(t => items.push(`${t.done ? '✅' : '⬜'} ${safe(t.title)} ${t.startTime ? `(${t.startTime} - ${t.endTime})` : ''}`));
+
+    return `
+      <div class="print-day">
+        <h4>${weekDayNames[i]} (${toFaDate(iso)})</h4>
+        ${items.length ? `<ul>${items.map(it => `<li>${it}</li>`).join('')}</ul>` : '<p style="font-size:12px; color:#888; margin:0;">برنامه‌ای ثبت نشده</p>'}
+      </div>
+    `;
+  }).join('');
+
+  // ۳. پیشرفت (داشبورد)
+  const activeMg = data.monthlyGoals.filter(g => !g.done).length;
+  const income = data.finance.filter(f => f.type === 'درآمد').reduce((a, f) => a + Number(f.amount || 0), 0);
+  const expense = data.finance.filter(f => f.type === 'هزینه').reduce((a, f) => a + Number(f.amount || 0), 0);
+  const habitDoneCount = data.logs.filter(l => l.date === today && l.status === 'done').length;
+
+  // ساخت HTML نهایی
+  const printHtml = `
+    <div class="print-header">
+      <h1>گزارش بولت ژورنال</h1>
+      <p>تاریخ گزارش: ${todayFa}</p>
+    </div>
+
+    <div class="print-section">
+      <h2>۱. برنامه روزانه</h2>
+      <div class="print-subsection">
+        <h3>عادت‌ها:</h3>
+        <ul>${todayHabits.length ? todayHabits.map(h => `<li>${h.status === 'done' ? '✅' : h.status === 'rest' ? '☕' : '⬜'} ${safe(h.name)} (${h.status})</li>`).join('') : '<li>عادتی ثبت نشده است.</li>'}</ul>
+      </div>
+      <div class="print-subsection">
+        <h3>برنامه‌های زمان‌دار امروز:</h3>
+        <ul>${todayRoutines.length ? todayRoutines.map(r => `<li>⏰ ${safe(r.title)} (${r.startTime} تا ${r.endTime})</li>`).join('') : '<li>برنامه‌ای ثبت نشده است.</li>'}</ul>
+      </div>
+      <div class="print-subsection">
+        <h3>کارهای امروز:</h3>
+        <ul>${todayTasks.length ? todayTasks.map(t => `<li>${t.done ? '✅' : '⬜'} ${safe(t.title)} ${t.startTime ? `(${t.startTime} - ${t.endTime})` : ''}</li>`).join('') : '<li>کاری ثبت نشده است.</li>'}</ul>
+      </div>
+      ${dailyNote ? `
+      <div class="print-subsection">
+        <h3>یادداشت روز:</h3>
+        <p><strong>صبح:</strong> ${safe(dailyNote.morning || '-')}</p>
+        <p><strong>شب:</strong> ${safe(dailyNote.evening || '-')}</p>
+        <p><strong>بهترین اتفاق:</strong> ${safe(dailyNote.highlight || '-')}</p>
+        <p><strong>شکرگزاری:</strong> ${safe(dailyNote.gratitude || '-')}</p>
+      </div>` : ''}
+    </div>
+
+    <div class="print-section" style="page-break-before: always;">
+      <h2>۲. برنامه کل هفته</h2>
+      <div class="print-week-grid">
+        ${weekHtml}
+      </div>
+    </div>
+
+    <div class="print-section" style="page-break-before: always;">
+      <h2>۳. پیشرفت و آمار</h2>
+      <table class="print-table">
+        <tr><th>عنوان</th><th>مقدار</th></tr>
+        <tr><td>عادت‌های انجام شده امروز</td><td>${habitDoneCount} از ${data.habits.length}</td></tr>
+        <tr><td>اهداف ماهانه فعال</td><td>${activeMg}</td></tr>
+        <tr><td>کل درآمد ثبت شده</td><td>${fa(income)} تومان</td></tr>
+        <tr><td>کل هزینه ثبت شده</td><td>${fa(expense)} تومان</td></tr>
+      </table>
+    </div>
+  `;
+
+  // ایجاد کانتینر چاپ و اعمال کلاس
+  const printContainer = document.createElement('div');
+  printContainer.id = 'print-report';
+  printContainer.innerHTML = printHtml;
+  document.body.appendChild(printContainer);
+
+  document.body.classList.add('printing-mode');
+  window.print();
+
+  // پاک‌سازی پس از بستن پنجره چاپ
+  setTimeout(() => {
+    document.body.classList.remove('printing-mode');
+    printContainer.remove();
+  }, 1000);
+}
+
 // ═══════════ فرم‌ها و ثبت داده‌ها ═══════════
 $('monthlyGoalForm').addEventListener('submit',e=>{
   e.preventDefault();
@@ -1871,20 +2010,9 @@ if ($('clearDataBtn')) $('clearDataBtn').addEventListener('click',async () => {
 });
 if ($('debugBtn')) $('debugBtn').addEventListener('click', () => { $('debugOutput').textContent = JSON.stringify(data, null, 2); });
 
-// PDF و پرینت
-if ($('printPdfBtn')) {
-  $('printPdfBtn').addEventListener('click', () => {
-    window.print();
-  });
-}
-if ($('printDashboardBtn')) {
-  $('printDashboardBtn').addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active-print'));
-    $('tab-dashboard').classList.add('active-print');
-    window.print();
-    setTimeout(() => $('tab-dashboard').classList.remove('active-print'), 1000);
-  });
-}
+// دکمه‌های چاپ
+if ($('printPdfBtn')) $('printPdfBtn').addEventListener('click', generatePrintView);
+if ($('printDashboardBtn')) $('printDashboardBtn').addEventListener('click', generatePrintView);
 
 // راه‌اندازی تقویم شمسی
 function initDatepickers() {
