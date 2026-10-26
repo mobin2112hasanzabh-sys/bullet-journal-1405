@@ -1,8 +1,0 @@
-[{
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": "io.github.mobin2112hasanzabh_sys.twa.cafebazaar_twa",
-        "sha256_cert_fingerprints": ["D9:95:67:B0:75:3A:2E:2D:44:3C:02:69:3B:DB:2B:77:50:13:C5:D8:1D:63:FF:6E:1A:6C:61:22:FF:62:83:D8"]
-      }
-    }]
