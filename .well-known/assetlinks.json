@@ -1,8 +1,8 @@
 [{
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": "io.github.mobin2112hasanzabh_sys.twa.cafebazaar_twa",
-        "sha256_cert_fingerprints": ["49:1E:BA:E4:82:0A:88:89:7E:FB:67:89:7F:5E:7C:65:3E:E9:F8:9A:A7:F1:ED:6B:12:26:A5:06:4C:E9:19:57"]
-      }
-    }]
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "io.github.mobin2112hasanzabh_sys.twa.cafebazaar_twa",
+    "sha256_cert_fingerprints": ["49:1E:BA:E4:82:0A:88:89:7E:FB:67:89:7F:5E:7C:65:3E:F9:8A:A7:F1:ED:6B:12:26:A5:06:4C:E9:19:57"]
+  }
+}]
