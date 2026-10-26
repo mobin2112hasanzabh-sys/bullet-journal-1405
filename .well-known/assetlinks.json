@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.mobin2112hasanzabh_sys.twa",
+        "sha256_cert_fingerprints": ["38:D8:92:C7:A4:B6:EE:8C:D2:3B:9C:B2:F6:5F:13:01:23:74:E9:6C:CF:31:92:20:C3:DD:3A:A8:79:FE:FF:76"]
+      }
+    }]
