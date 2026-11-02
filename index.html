@@ -2162,7 +2162,7 @@ function renderNotebook(){
     const isToday = n.date === dateISO();
     if (n.type === 'daily') { return `<div class="panel notebook-card note-daily" data-notebook-date="${n.date}"><div class="sectionhead" style="margin-bottom:10px"><div><h3 style="margin:0">📅 ${toFaDate(n.date)} ${isToday ? '<span class="status gold" style="font-size:10px">امروز</span>' : ''}</h3></div>${actionsHtml('daily', '', n.date)}</div><div class="grid2" style="gap:10px">${n.data.morning ? `<div class="notebook-section"><div class="notebook-label">🌅 صبح</div><div class="notebook-text">${safe(n.data.morning)}</div></div>` : ''}${n.data.evening ? `<div class="notebook-section"><div class="notebook-label">🌙 شب</div><div class="notebook-text">${safe(n.data.evening)}</div></div>` : ''}</div>${n.data.highlight ? `<div class="notebook-section" style="margin-top:10px"><div class="notebook-label">✨ بهترین اتفاق</div><div class="notebook-text">${safe(n.data.highlight)}</div></div>` : ''}${n.data.gratitude ? `<div class="notebook-section" style="margin-top:10px"><div class="notebook-label">🙏 شکرگزاری</div><div class="notebook-text">${safe(n.data.gratitude)}</div></div>` : ''}</div>`; }
     if (n.type === 'habit') { const st = n.data.status === 'done' ? 'done' : n.data.status === 'rest' ? 'gold' : 'late'; const lbl = n.data.status === 'done' ? 'انجام شد' : n.data.status === 'rest' ? 'استراحت' : 'انجام نشد'; return `<div class="panel notebook-card note-habit"><div class="sectionhead" style="margin-bottom:10px"><div><h3 style="margin:0">🔥 ${safe(n.habitName)} — ${toFaDate(n.date)}</h3></div><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><span class="status ${st}">${lbl}</span>${actionsHtml('habit', n.data.habit_id, n.date)}</div></div><div class="notebook-section"><div class="notebook-label">📝 یادداشت عادت</div><div class="notebook-text">${safe(n.data.note)}</div></div></div>`; }
-    if (n.type === 'routine') { const st = n.data.status === 'done' ? 'done' : n.data.status === 'not_done' ? 'late' : ''; const lbl = n.data.status === 'done' ? 'انجام شد' : n.data.status === 'not_done' ? 'انجام نشد' : 'ثبت نشده'; return `<div class="panel notebook-card note-task" style="border-right-color:var(--blue)"><div class="sectionhead" style="margin-bottom:10px"><div><h3 style="margin:0">⏰ ${safe(n.taskName)} — ${toFaDate(n.date)}</h3></div><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><span class="status blue">برنامه</span>${st ? `<span class="status ${st}">${lbl}</span>` : ''}${actionsHtml('routine', n.data.routineId, n.date)}</div></div><div class="notebook-section"><div class="notebook-label">📝 یادداشت</div><div class="notebook-text">${safe(n.data.note)}</div></div></div>`; }
+    if (n.type === 'routine') { const st = n.data.status === 'done' ? 'done' : n.data.status === 'not_done' ? 'late' : ''; const lbl = n.data.status === 'done' ? 'انجام شد' : n.data.status === 'not_done' ? 'انجام نشد' : 'ثبت نشده'; return `<div class="panel notebook-card note-task" style="border-right-color:var(--blue)"><div class="sectionhead" style="margin-bottom:10px"><div><h3 style="margin:0">⏰ ${safe(n.taskName)} — ${toFaDate(n.date)}</h3></div><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><span class="status blue">برنامه</span>${st ? `<span class="status ${st}">${lbl}</span>` : ''}${actionsHtml('routine', n.data.routineId || n.data.eventId, n.date)}</div></div><div class="notebook-section"><div class="notebook-label">📝 یادداشت</div><div class="notebook-text">${safe(n.data.note)}</div></div></div>`; }
     return `<div class="panel notebook-card note-task"><div class="sectionhead" style="margin-bottom:10px"><div><h3 style="margin:0">✓ ${safe(n.taskName)} — ${toFaDate(n.date)}</h3></div><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><span class="status blue">کار</span>${n.data.eventStatus === 'done' ? '<span class="status done">انجام شد</span>' : ''}${actionsHtml('task', n.data.id, n.date)}</div></div><div class="notebook-section"><div class="notebook-label">📝 یادداشت</div><div class="notebook-text">${safe(n.data.note)}</div></div></div>`;
   }).join('');
 }
@@ -2201,7 +2201,7 @@ function openUniversalEditor(type, id, date) {
   else if (type === 'daily') { rec = data.daily.find(d => d.date === date); if (!rec) { rec = { date, morning:'', evening:'', highlight:'', gratitude:'' }; data.daily.push(rec); } }
   else if (type === 'habit') { rec = data.logs.find(l => String(l.habit_id)===String(id) && l.date===date); if (!rec) { rec = { habit_id:id, date, status:'', note:'' }; data.logs.push(rec); } }
   else if (type === 'task') { rec = data.weeklyTasks.find(t => String(t.id)===String(id)); if (!rec) return; rec._title = rec.title; }
-  else if (type === 'routine') { rec = (data.routineLogs||[]).find(l => String(l.routineId)===String(id) && l.date===date); if (!rec) { rec = { routineId:id, date, status:'', note:'' }; data.routineLogs = data.routineLogs||[]; data.routineLogs.push(rec); } const r = data.routines.find(x => String(x.id)===String(id)); rec._title = r?.title || ''; }
+  else if (type === 'routine') { rec = (data.routineLogs||[]).find(l => (String(l.routineId)===String(id) || String(l.eventId)===String(id)) && l.date===date); if (!rec) { rec = { routineId:id, date, status:'', note:'' }; data.routineLogs = data.routineLogs||[]; data.routineLogs.push(rec); } const r = data.routines.find(x => String(x.id)===String(id)); rec._title = r?.title || ''; }
   currentEdit = { type, id, date, rec }; $('ueTitle').textContent = `${cfg.icon} ${cfg.title(rec)}`; $('ueFields').innerHTML = cfg.fields.map(f => renderEditField(f, rec[f.key] || '')).join(''); $('universalEditModal').classList.remove('hidden');
 }
 
@@ -2225,7 +2225,7 @@ $('ueDeleteBtn').addEventListener('click', async () => {
   if (type === 'daily') { if (!(await customConfirm(`یادداشت روز ${toFaDate(date)} پاک شود؟`))) return; data.daily = data.daily.filter(d => d.date !== date); }
   else if (type === 'habit') { if (!(await customConfirm('یادداشت این عادت در این روز پاک شود؟'))) return; data.logs = data.logs.filter(l => !(String(l.habit_id)===String(id) && l.date===date)); }
   else if (type === 'task') { const delNote = await customConfirm('فقط یادداشت و وضعیت این تسک پاک شود؟'); if (delNote) { rec.note = ''; rec.eventStatus = ''; rec.done = false; } else { const delAll = await customConfirm('کل تسک حذف شود؟'); if (!delAll) return; data.weeklyTasks = data.weeklyTasks.filter(t => String(t.id) !== String(id)); } }
-  else if (type === 'routine') { if (!(await customConfirm('یادداشت این برنامه پاک شود؟'))) return; data.routineLogs = (data.routineLogs||[]).filter(l => !(String(l.routineId)===String(id) && l.date===date)); }
+  else if (type === 'routine') { if (!(await customConfirm('یادداشت این برنامه پاک شود؟'))) return; data.routineLogs = (data.routineLogs||[]).filter(l => !((String(l.routineId)===String(id) || String(l.eventId)===String(id)) && l.date===date)); }
   saveData(); renderNotebook(); renderToday(); renderHabits(); renderWeeklyTasks(); renderTodayPlan(); renderTimeline(); renderDashboard(); closeUniversalEditor(); flash('حذف شد');
 });
 
@@ -2515,7 +2515,40 @@ document.addEventListener('click', async e => {
   const ue = t.closest('[data-universal-edit]');
   if (ue) { openUniversalEditor(ue.dataset.universalEdit, ue.dataset.editId || '', ue.dataset.editDate); return; }
   const ud = t.closest('[data-universal-del]');
-  if (ud) { openUniversalEditor(ud.dataset.universalDel, ud.dataset.editId || '', ud.dataset.editDate); return; }
+  if (ud) {
+    const type = ud.dataset.universalDel;
+    const id = ud.dataset.editId;
+    const date = ud.dataset.editDate;
+    if (type === 'daily') {
+      if (await customConfirm(`یادداشت روز ${toFaDate(date)} پاک شود؟`)) {
+        data.daily = data.daily.filter(d => d.date !== date);
+        saveData(); renderNotebook(); renderToday(); renderDashboard(); flash('حذف شد');
+      }
+    } else if (type === 'habit') {
+      if (await customConfirm('یادداشت این عادت در این روز پاک شود؟')) {
+        data.logs = data.logs.filter(l => !(String(l.habit_id) === String(id) && l.date === date));
+        saveData(); renderNotebook(); renderToday(); renderHabits(); renderDashboard(); flash('حذف شد');
+      }
+    } else if (type === 'task') {
+      const delNote = await customConfirm('فقط یادداشت و وضعیت این تسک پاک شود؟ (برای حذف کل تسک، لغو کنید)');
+      if (delNote) {
+        const t = data.weeklyTasks.find(x => String(x.id) === String(id));
+        if (t) { t.note = ''; t.eventStatus = ''; t.done = false; }
+        saveData(); renderNotebook(); renderWeeklyTasks(); renderTodayPlan(); renderDashboard(); flash('یادداشت حذف شد');
+      } else {
+        if (await customConfirm('کل تسک حذف شود؟')) {
+          data.weeklyTasks = data.weeklyTasks.filter(t => String(t.id) !== String(id));
+          saveData(); renderNotebook(); renderWeeklyTasks(); renderTodayPlan(); renderTimeline(); renderDashboard(); flash('تسک حذف شد');
+        }
+      }
+    } else if (type === 'routine') {
+      if (await customConfirm('یادداشت این برنامه پاک شود؟')) {
+        data.routineLogs = (data.routineLogs || []).filter(l => !((String(l.routineId) === String(id) || String(l.eventId) === String(id)) && l.date === date));
+        saveData(); renderNotebook(); renderTimeline(); renderDashboard(); flash('یادداشت حذف شد');
+      }
+    }
+    return;
+  }
   const er = t.closest('[data-edit-routine]');
   if (er) { 
     const id = er.dataset.editRoutine; 
