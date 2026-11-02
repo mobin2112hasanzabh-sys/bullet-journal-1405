@@ -65,16 +65,12 @@
 [data-theme="dark"][data-accent="midnight"] { --accent: #8b8ed0; --accent-light: #24244a; }
 
 body { font-size: var(--font-size); }
-
 @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes pulseTimer { 0% { box-shadow: 0 0 0 0 rgba(120, 132, 91, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(120, 132, 91, 0); } 100% { box-shadow: 0 0 0 0 rgba(120, 132, 91, 0); } }
 @keyframes toastIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 @keyframes confetti-fall { 0% { transform: translateY(-100vh) rotate(0deg); } 100% { transform: translateY(100vh) rotate(720deg); } }
-@keyframes pageFlipIn {
-  0% { opacity: 0; transform: perspective(1200px) rotateY(-8deg) translateX(15px); }
-  100% { opacity: 1; transform: perspective(1200px) rotateY(0) translateX(0); }
-}
+@keyframes pageFlipIn { 0% { opacity: 0; transform: perspective(1200px) rotateY(-8deg) translateX(15px); } 100% { opacity: 1; transform: perspective(1200px) rotateY(0) translateX(0); } }
 
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: var(--cream); border-radius: 10px; }
@@ -300,14 +296,23 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent-light);bo
 .search-result-snippet { font-size: 12px; color: var(--text); margin-top: 5px; background: var(--paper); padding: 5px 8px; border-radius: 6px; }
 .search-highlight { background: var(--goldbg); color: var(--dark); font-weight: bold; padding: 0 2px; border-radius: 3px; }
 .badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; }
-.badge-card { background: var(--paper); border: 2px solid var(--line); border-radius: 16px; padding: 20px 10px; text-align: center; transition: all 0.3s; position: relative; overflow: hidden; }
-.badge-card.unlocked { border-color: var(--gold); background: linear-gradient(180deg, var(--white), var(--goldbg)); box-shadow: 0 5px 15px rgba(181, 142, 66, 0.2); }
-.badge-card.locked { opacity: 0.6; filter: grayscale(100%); }
-.badge-icon { font-size: 40px; margin-bottom: 10px; display: inline-block; }
-.badge-card.unlocked .badge-icon { animation: popIn 0.5s ease-out; }
-.badge-title { font-weight: 800; font-size: 14px; color: var(--dark); margin-bottom: 4px; }
-.badge-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
-.badge-progress { margin-top: 10px; font-size: 11px; font-weight: bold; color: var(--accent); }
+.badge-card { background: var(--paper); border: 2px solid var(--line); border-radius: 16px; padding: 20px 15px; text-align: center; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; }
+.badge-card.locked { opacity: 0.75; filter: grayscale(100%); }
+.badge-card.locked:hover { opacity: 0.9; filter: grayscale(30%); transform: translateY(-5px); }
+.badge-card.unlocked { border-color: var(--gold); background: linear-gradient(180deg, var(--white), var(--goldbg)); box-shadow: 0 5px 20px rgba(181, 142, 66, 0.25); animation: goldPulse 3s infinite alternate; }
+@keyframes goldPulse { 0% { box-shadow: 0 5px 15px rgba(181, 142, 66, 0.2); } 100% { box-shadow: 0 8px 30px rgba(181, 142, 66, 0.5); } }
+.badge-card.unlocked::before { content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent); transform: rotate(45deg); animation: shine 4s infinite; }
+@keyframes shine { 0% { top: -50%; left: -50%; } 100% { top: 150%; left: 150%; } }
+.badge-icon { font-size: 45px; margin-bottom: 12px; display: inline-block; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); transition: transform 0.3s; }
+.badge-card.unlocked:hover .badge-icon { transform: scale(1.2) rotate(5deg); }
+.badge-title { font-weight: 800; font-size: 15px; color: var(--dark); margin-bottom: 6px; }
+.badge-desc { font-size: 11px; color: var(--muted); line-height: 1.5; margin-bottom: 15px; flex-grow: 1; }
+.badge-progress-bar { width: 100%; height: 8px; background: var(--cream2); border-radius: 99px; overflow: hidden; margin-bottom: 6px; position: relative; }
+.badge-progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--gold)); border-radius: 99px; transition: width 0.8s ease-in-out; }
+.badge-progress-text { font-size: 11px; font-weight: 700; color: var(--muted); }
+.badge-card.unlocked .badge-progress-text { color: var(--green); }
+.badge-category-title { grid-column: 1 / -1; font-size: 18px; font-weight: 800; color: var(--brown); margin: 20px 0 10px; display: flex; align-items: center; gap: 10px; border-bottom: 2px dashed var(--line); padding-bottom: 8px; }
+.badge-category-title:first-child { margin-top: 0; }
 .confetti { position: fixed; width: 10px; height: 10px; z-index: 9999; top: -10px; animation: confetti-fall 3s linear forwards; }
 .quote-widget { background: linear-gradient(135deg, var(--white), var(--paper)); border: 1px solid var(--line); border-radius: 18px; padding: 24px 22px 18px; margin: 16px 0; position: relative; overflow: hidden; box-shadow: var(--shadow); }
 .quote-widget::before { content: '❝'; position: absolute; top: -25px; right: 15px; font-size: 100px; color: var(--gold); opacity: 0.12; font-family: Georgia, serif; line-height: 1; }
@@ -397,7 +402,6 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
 .mood-stat-card .icon { font-size: 28px; margin-bottom: 8px; }
 .mood-stat-card .value { font-size: 22px; font-weight: 800; color: var(--dark); }
 .mood-stat-card .label { font-size: 12px; color: var(--muted); margin-top: 4px; font-weight: 600; }
-
 .mood-history-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; margin-bottom: 10px; transition: all .2s; border-right: 4px solid var(--accent); }
 .mood-history-item:hover { transform: translateX(-3px); box-shadow: var(--shadow); }
 .mood-history-item.mood-excellent { border-right-color: var(--green); }
@@ -405,238 +409,23 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
 .mood-history-item.mood-normal { border-right-color: var(--gold); }
 .mood-history-item.mood-bad { border-right-color: var(--orange); }
 .mood-history-item.mood-terrible { border-right-color: var(--red); }
-
 .mood-history-left { display: flex; align-items: center; gap: 12px; }
 .mood-history-emoji { font-size: 28px; }
 .mood-history-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
 .mood-badge { font-size: 11px; padding: 2px 8px; border-radius: 6px; background: var(--cream2); color: var(--text); font-weight: 600; }
-/* --- استایل‌های خلاقانه برای دستاوردها --- */
-.badge-category-title {
-  grid-column: 1 / -1;
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--brown);
-  margin: 20px 0 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border-bottom: 2px dashed var(--line);
-  padding-bottom: 8px;
-}
-.badge-category-title:first-child { margin-top: 0; }
-
-.badge-card {
-  background: var(--paper);
-  border: 2px solid var(--line);
-  border-radius: 16px;
-  padding: 20px 15px;
-  text-align: center;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* --- حالت قفل شده (خاکستری و بی‌روح) --- */
-.badge-card.locked {
-  opacity: 0.5;
-  filter: grayscale(100%);
-}
-.badge-card.locked:hover {
-  opacity: 0.8;
-  filter: grayscale(30%);
-  transform: translateY(-3px);
-}
-
-/* --- حالت باز شده (درخشش، طلایی و جذاب) --- */
-.badge-card.unlocked {
-  border-color: var(--gold) !important;
-  background: linear-gradient(145deg, var(--white) 0%, var(--goldbg) 100%);
-  box-shadow: 0 0 15px rgba(181, 142, 66, 0.4), inset 0 0 15px rgba(181, 142, 66, 0.1);
-  transform: translateY(-4px);
-  animation: goldPulse 2.5s infinite alternate;
-}
-
-/* افکت درخشش در حالت تاریک (شبیه عکس شما) */
-[data-theme="dark"] .badge-card.unlocked {
-  background: linear-gradient(145deg, #3a2d17 0%, #1f1912 100%);
-  border-color: #d9b866 !important;
-  box-shadow: 0 0 20px rgba(217, 184, 102, 0.35), inset 0 0 10px rgba(217, 184, 102, 0.1);
-}
-
-/* افکت نور کشیده شده روی کارت (Shine) */
-.badge-card.unlocked::before {
-  content: "";
-  position: absolute;
-  top: -50%; left: -50%;
-  width: 200%; height: 200%;
-  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.15), transparent);
-  transform: rotate(45deg);
-  animation: shine 4s infinite;
-}
-
-@keyframes goldPulse {
-  0% { box-shadow: 0 0 10px rgba(181, 142, 66, 0.2), inset 0 0 5px rgba(181, 142, 66, 0.1); }
-  100% { box-shadow: 0 0 25px rgba(217, 184, 102, 0.6), inset 0 0 15px rgba(217, 184, 102, 0.3); }
-}
-
-@keyframes shine {
-  0% { top: -50%; left: -50%; }
-  100% { top: 150%; left: 150%; }
-}
-
-/* --- استایل نوار پیشرفت --- */
-.badge-progress-bar {
-  width: 100%;
-  height: 8px;
-  background: rgba(0,0,0,0.1);
-  border-radius: 99px;
-  overflow: hidden;
-  margin-bottom: 8px;
-  position: relative;
-}
-[data-theme="dark"] .badge-progress-bar {
-  background: rgba(255,255,255,0.1);
-}
-
-.badge-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--gold));
-  border-radius: 99px;
-  transition: width 0.8s ease-in-out;
-}
-
-/* نوار پیشرفت در حالت باز شده درخشش خاصی داره */
-.badge-card.unlocked .badge-progress-fill {
-  background: linear-gradient(90deg, #d9b866, #b58e42);
-  box-shadow: 0 0 10px rgba(217, 184, 102, 0.8);
-}
-
-.badge-progress-text {
-  font-size: 12px;
-  font-weight: 800;
-  color: var(--muted);
-  margin-top: 4px;
-}
-
-/* متن "دریافت شد" در حالت باز شده سبز و درخشان میشه */
-.badge-card.unlocked .badge-progress-text {
-  color: var(--green);
-  text-shadow: 0 0 8px rgba(69, 107, 63, 0.4);
-}
-[data-theme="dark"] .badge-card.unlocked .badge-progress-text {
-  color: #a4c47a;
-  text-shadow: 0 0 8px rgba(164, 196, 122, 0.5);
-}
-
-/* استایل آیکون در حالت باز شده (بزرگتر و درخشان‌تر) */
-.badge-card.unlocked .badge-icon {
-  transform: scale(1.15) translateY(-2px);
-  filter: drop-shadow(0 0 8px rgba(217, 184, 102, 0.6));
-  animation: floatIcon 3s ease-in-out infinite;
-}
-
-@keyframes floatIcon {
-  0% { transform: scale(1.15) translateY(-2px); }
-  50% { transform: scale(1.2) translateY(-6px); }
-  100% { transform: scale(1.15) translateY(-2px); }
-}
-@keyframes goldPulse {
-  0% { box-shadow: 0 5px 15px rgba(181, 142, 66, 0.2); }
-  100% { box-shadow: 0 8px 30px rgba(181, 142, 66, 0.5); }
-}
-
-.badge-card.unlocked::before {
-  content: "";
-  position: absolute;
-  top: -50%; left: -50%;
-  width: 200%; height: 200%;
-  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent);
-  transform: rotate(45deg);
-  animation: shine 4s infinite;
-}
-@keyframes shine {
-  0% { top: -50%; left: -50%; }
-  100% { top: 150%; left: 150%; }
-}
-
-.badge-icon {
-  font-size: 45px;
-  margin-bottom: 12px;
-  display: inline-block;
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
-  transition: transform 0.3s;
-}
-.badge-card.unlocked:hover .badge-icon {
-  transform: scale(1.2) rotate(5deg);
-}
-
-.badge-title { font-weight: 800; font-size: 15px; color: var(--dark); margin-bottom: 6px; }
-.badge-desc { font-size: 11px; color: var(--muted); line-height: 1.5; margin-bottom: 15px; flex-grow: 1; }
-
-/* نوار پیشرفت */
-.badge-progress-bar {
-  width: 100%;
-  height: 8px;
-  background: var(--cream2);
-  border-radius: 99px;
-  overflow: hidden;
-  margin-bottom: 6px;
-  position: relative;
-}
-.badge-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--gold));
-  border-radius: 99px;
-  transition: width 0.8s ease-in-out;
-}
-.badge-progress-text {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--muted);
-}
-.badge-card.unlocked .badge-progress-text {
-  color: var(--green);
-}
-/* --- استایل دستیار هوشمند --- */
-.ai-advisor-panel {
-  background: linear-gradient(135deg, #2a241d, #3a2d17);
-  color: #f0e5d0;
-  border: 1px solid var(--gold);
-  border-radius: 18px;
-  padding: 20px;
-  box-shadow: 0 10px 30px rgba(181, 142, 66, 0.15);
-  position: relative;
-  margin-bottom: 20px;
-  overflow: hidden;
-}
-.ai-advisor-panel::before {
-  content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-  background: radial-gradient(circle, rgba(217, 184, 102, 0.1) 0%, transparent 60%);
-  animation: rotateGlow 10s linear infinite; pointer-events: none;
-}
+.ai-advisor-panel { background: linear-gradient(135deg, #2a241d, #3a2d17); color: #f0e5d0; border: 1px solid var(--gold); border-radius: 18px; padding: 20px; box-shadow: 0 10px 30px rgba(181, 142, 66, 0.15); position: relative; margin-bottom: 20px; overflow: hidden; }
+.ai-advisor-panel::before { content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(217, 184, 102, 0.1) 0%, transparent 60%); animation: rotateGlow 10s linear infinite; pointer-events: none; }
 @keyframes rotateGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
 .ai-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; border-bottom: 1px solid rgba(217, 184, 102, 0.2); padding-bottom: 10px; }
 .ai-avatar { width: 40px; height: 40px; background: var(--gold); border-radius: 50%; display: grid; place-items: center; font-size: 20px; box-shadow: 0 0 15px rgba(217, 184, 102, 0.5); animation: pulseAI 2s infinite alternate; }
 @keyframes pulseAI { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
-
 .ai-body { font-size: 13px; line-height: 1.9; position: relative; z-index: 1; }
 .ai-body strong { color: var(--gold); }
 .ai-body .tag { background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 6px; font-size: 11px; margin-left: 5px; display: inline-block; margin-top: 5px; }
 [data-theme="light"] .ai-advisor-panel { background: linear-gradient(135deg, #fdfbf7, #f4ebd9); color: var(--text); border-color: var(--gold); }
 [data-theme="light"] .ai-body strong { color: var(--brown); }
 [data-theme="light"] .ai-body .tag { background: rgba(0,0,0,0.05); }
-/* --- استایل دستیار صوتی جارویس --- */
-.jarvis-orb {
-  width: 100px; height: 100px; border-radius: 50%;
-  background: radial-gradient(circle, #5b7a99, #1e3a47);
-  margin: 0 auto; display: grid; place-items: center;
-  box-shadow: 0 0 30px rgba(91, 122, 153, 0.6);
-  position: relative; cursor: pointer; transition: all 0.3s;
-}
+.jarvis-orb { width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, #5b7a99, #1e3a47); margin: 0 auto; display: grid; place-items: center; box-shadow: 0 0 30px rgba(91, 122, 153, 0.6); position: relative; cursor: pointer; transition: all 0.3s; }
 .jarvis-orb:hover { transform: scale(1.05); box-shadow: 0 0 50px rgba(91, 122, 153, 0.9); }
 .jarvis-orb.listening { animation: jarvisPulse 1.5s infinite; background: radial-gradient(circle, #b95042, #4a2a24); box-shadow: 0 0 50px rgba(185, 80, 66, 0.8); }
 .jarvis-icon { font-size: 40px; animation: floatIcon 2s infinite alternate; pointer-events: none; }
@@ -648,7 +437,7 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
   <header class="top">
     <div class="brand"><div class="logo">✦</div><div><h1>بولت ژورنال من</h1><p>نسخهٔ زنده · ۱۴۰۵</p></div></div>
     <div class="top-actions">
-            <button id="jarvisBtn" class="ghost small" style="font-size: 18px; padding: 6px 10px; color: var(--accent); border-color: var(--accent);" title="دستیار صوتی (جارویس)">🎙️</button>
+      <button id="jarvisBtn" class="ghost small" style="font-size: 18px; padding: 6px 10px; color: var(--accent); border-color: var(--accent);" title="دستیار صوتی (جارویس)">🎙️</button>
       <button id="globalSearchBtn" class="ghost small" style="font-size: 18px; padding: 6px 10px;">🔍</button>
       <div class="user-badge hidden" id="userBadge" onclick="document.querySelector('[data-tab=profile]').click()"><div class="avatar" id="userAvatar"></div><span id="userName"></span></div>
       <div class="theme-toggle" id="themeToggle" role="button" tabindex="0" aria-label="تغییر تم روشن و تاریک" title="تغییر تم روشن و تاریک"></div>
@@ -755,7 +544,8 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
           <button id="printDashboardBtn" class="secondary small">🖨️ پرینت کاربرگ</button>
         </div>
       </div>
-       <div class="panel ai-advisor-panel" id="aiInsightCard">
+      
+      <div class="panel ai-advisor-panel" id="aiInsightCard">
         <div class="ai-header">
           <div class="ai-avatar">🤖</div>
           <div>
@@ -763,10 +553,9 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
             <span style="font-size:11px; color:var(--muted);">تحلیل لحظه‌ای داده‌های شما</span>
           </div>
         </div>
-        <div class="ai-body" id="aiInsightText">
-          در حال تحلیل داده‌ها...
-        </div>
+        <div class="ai-body" id="aiInsightText">در حال تحلیل داده‌ها...</div>
       </div>
+
       <div class="grid" id="dashboardStats"></div>
       <div class="panel monthly-progress-panel">
         <div class="sectionhead" style="align-items:center;margin-bottom:8px">
@@ -1162,15 +951,33 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
     </div>
   </div>
 </div>
-<!-- مودال دستیار صوتی -->
+
 <div id="jarvisModal" class="modal-overlay hidden">
-  <div class="modal-content" style="text-align:center; max-width: 400px; background: linear-gradient(135deg, #1e3a47, #0f2027); border: 1px solid #5b7a99;">
-    <h3 style="color: #6fa8c4; margin-bottom: 20px;">🤖 دستیار صوتی شما</h3>
+  <div class="modal-content" style="text-align:center; max-width: 500px; background: linear-gradient(135deg, #1e3a47, #0f2027); border: 1px solid #5b7a99;">
+    <h3 style="color: #6fa8c4; margin-bottom: 5px;">🤖 دستیار هوشمند صوتی</h3>
+    <p style="font-size:11px; color:#8bb0d0; margin-bottom:15px;">مثال: «هدف ماهانه یادگیری زبان برای ۲۰ ساعت»، «تسک ورزش برای دوشنبه»، «هزینه ۵۰ هزار تومان»</p>
+    
+    <div style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 15px; min-height: 80px; text-align: right; margin-bottom: 15px; border: 1px dashed #5b7a99;">
+      <div style="font-size: 12px; color: #6fa8c4; margin-bottom: 5px;">شما گفتید:</div>
+      <div id="jarvisLiveText" style="font-size: 15px; color: #fff; font-weight: bold; line-height: 1.6;">در حال گوش دادن...</div>
+    </div>
+
+    <div id="jarvisParsedInfo" class="hidden" style="background: rgba(164, 196, 122, 0.1); border: 1px solid #a4c47a; border-radius: 12px; padding: 15px; text-align: right; margin-bottom: 15px; font-size: 13px; color: #a4c47a;">
+      <!-- اطلاعات استخراج شده اینجا نمایش داده می‌شود -->
+    </div>
+    
     <div id="jarvisOrb" class="jarvis-orb">
       <div class="jarvis-icon">🎙️</div>
     </div>
-    <p id="jarvisStatus" style="margin-top: 20px; color: #8bb0d0; font-size: 14px; min-height: 40px;">برای شروع صحبت، روی میکروفون کلیک کنید...</p>
-    <button id="jarvisCloseBtn" class="secondary small" style="margin-top: 15px; background: transparent; color: #8bb0d0; border-color: #8bb0d0;">بستن</button>
+    
+    <p id="jarvisStatus" style="margin-top: 15px; color: #8bb0d0; font-size: 13px; min-height: 20px; font-weight: bold;">برای شروع، روی میکروفون کلیک کنید و واضح صحبت کنید.</p>
+    
+    <div id="jarvisActions" class="hidden" style="display:flex; gap:10px; justify-content:center; margin-top:15px;">
+      <button id="jarvisConfirmBtn" class="small" style="background:#456b3f; color:white; padding:10px 20px;">✅ تایید و ثبت</button>
+      <button id="jarvisRetryBtn" class="small secondary" style="background:transparent; color:#8bb0d0; border-color:#8bb0d0; padding:10px 20px;">🔄 دوباره بگو</button>
+    </div>
+    
+    <button id="jarvisCloseBtn" class="ghost small" style="margin-top: 15px; color:#8bb0d0;">بستن</button>
   </div>
 </div>
 
@@ -1813,7 +1620,39 @@ function renderDashboard(){
     <div class="stat"><span class="icon">💎</span><div class="label">موجودی نقدی</div><div class="number" style="font-size:20px; color:var(--green);">${fa(currentAssets)}</div></div>
     <div class="stat"><span class="icon">🏦</span><div class="label">کل پس‌انداز</div><div class="number" style="font-size:20px; color:var(--blue);">${fa(totalSavings)}</div></div>
     <div class="stat"><span class="icon">⏱️</span><div class="label">تمرکز امروز</div><div class="number">${fa(pomos)}<small style="font-size:11px;color:var(--muted); margin-right:3px;">دقیقه</small></div></div>`;
-  renderMonthlyProgress(); renderMoodLine(); renderExpenseDonut(); renderMonthlyFinance(); renderHabitHeatmap(); generateAIInsight();
+  generateAIInsight(); renderMonthlyProgress(); renderMoodLine(); renderExpenseDonut(); renderMonthlyFinance(); renderHabitHeatmap();
+}
+
+function generateAIInsight() {
+  const el = $('aiInsightText'); if (!el) return;
+  const last7Days = [];
+  for (let i = 0; i < 7; i++) { const d = new Date(); d.setDate(d.getDate() - i); last7Days.push(dateISO(d)); }
+  const recentMoods = data.mood.filter(m => last7Days.includes(m.date));
+  const avgStress = recentMoods.length ? (recentMoods.reduce((a,m) => a + (Number(m.stress) || 0), 0) / recentMoods.length).toFixed(1) : 0;
+  const avgSleep = recentMoods.length ? (recentMoods.reduce((a,m) => a + (Number(m.sleep) || 0), 0) / recentMoods.length).toFixed(1) : 0;
+  const today = dateISO();
+  const todayFocus = data.pomodoro.filter(p => p.date === today).reduce((a,p) => a + (Number(p.minutes) || 0), 0);
+  const thisMonth = today.slice(0, 7);
+  const extraExpenses = data.finance.filter(f => f.month === thisMonth && f.type === 'خرج اضافی').reduce((a,f) => a + Number(f.amount), 0);
+  let message = '';
+
+  if (avgStress >= 3.5 && avgSleep <= 2.5) {
+    message = `سلام! متوجه شدم در چند روز اخیر <strong>استرس شما بالا</strong> بوده و <strong>خواب کافی</strong> نداشتید. پیشنهاد می‌کنم امشب یک جلسه تمرکز کوتاه (۱۰ دقیقه) برای آرامش ذهن انجام بدید و کمی زودتر بخوابید. سلامت روان شما اولویت اوله! 🌿 <span class="tag">پیشنهاد ویژه</span>`;
+  } else if (todayFocus >= 50) {
+    message = `عالی بود! امروز بیش از <strong>${fa(todayFocus)} دقیقه</strong> تمرکز عمیق داشتید. مغز شما در حال رشد و یادگیریه. فقط یادتون باشه بین جلسات تمرکز، حتماً استراحت کنید تا انرژی‌تون تحلیل نره. 🧠🔥`;
+  } else if (extraExpenses > 0 && extraExpenses > (calculateCurrentAssets() * 0.1)) {
+    message = `هشدار مالی! این ماه <strong>${fa(extraExpenses)} تومان</strong> خرج اضافی ثبت کردید. این یعنی حدود ۱۰٪ از موجودی نقدی شما. سعی کنید برای روزهای آینده یک بودجه‌ی سفت‌وسخت برای خریدهای غیرضروری تعیین کنید. 💰🛡️`;
+  } else if (data.habits.length > 0) {
+    const todayHabits = data.habits.filter(h => data.logs.some(l => String(l.habit_id) === String(h.id) && l.date === today && l.status === 'done')).length;
+    if (todayHabits === 0) {
+      message = `امروز هنوز هیچ عادتی رو تیک نزدی! شروع کردن سخت‌ترین بخشه. فقط یکی از عادت‌های آسون‌ترت رو انتخاب کن و انجامش بده تا حس و حال امروزت عوض بشه. من بهت ایمان دارم! 💪🔥`;
+    } else {
+      message = `شما امروز تا این لحظه <strong>${fa(todayHabits)} عادت</strong> رو با موفقیت انجام دادید. عالیه! با همین روند پیش برید تا در پایان ماه یک آدم کاملاً متفاوت بشید. ✨`;
+    }
+  } else {
+    message = `همه چیز آرومه! داده‌های شما در حال ثبت شدن هستن. هر چه بیشتر از بخش‌های مختلف برنامه (مثل خلق‌وخو، عادت‌ها و مالی) استفاده کنید، من می‌تونم تحلیل‌های دقیق‌تر و شخصی‌سازی شده‌تری براتون ارائه بدم. 🌱`;
+  }
+  el.innerHTML = message;
 }
 
 function renderTodayPlan(){
@@ -2482,58 +2321,7 @@ $('ueSaveBtn').addEventListener('click', () => {
   renderNotebook(); renderToday(); renderHabits(); renderWeeklyTasks(); renderTodayPlan(); renderTimeline(); renderDashboard(); renderFinance();
   closeUniversalEditor(); flash('ذخیره شد ✓');
 });
-function generateAIInsight() {
-  const el = $('aiInsightText'); if (!el) return;
 
-  // ۱. جمع‌آوری داده‌های ۷ روز اخیر
-  const last7Days = [];
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(); d.setDate(d.getDate() - i); last7Days.push(dateISO(d));
-  }
-
-  const recentMoods = data.mood.filter(m => last7Days.includes(m.date));
-  const avgStress = recentMoods.length ? (recentMoods.reduce((a,m) => a + (Number(m.stress) || 0), 0) / recentMoods.length).toFixed(1) : 0;
-  const avgSleep = recentMoods.length ? (recentMoods.reduce((a,m) => a + (Number(m.sleep) || 0), 0) / recentMoods.length).toFixed(1) : 0;
-  
-  const today = dateISO();
-  const todayFocus = data.pomodoro.filter(p => p.date === today).reduce((a,p) => a + (Number(p.minutes) || 0), 0);
-  
-  const thisMonth = today.slice(0, 7);
-  const extraExpenses = data.finance.filter(f => f.month === thisMonth && f.type === 'خرج اضافی').reduce((a,f) => a + Number(f.amount), 0);
-
-  let message = '';
-
-  // ۲. منطق تصمیم‌گیری (Rule-Based AI)
-  
-  // قانون اول: استرس بالا و خواب کم
-  if (avgStress >= 3.5 && avgSleep <= 2.5) {
-    message = `سلام! متوجه شدم در چند روز اخیر <strong>استرس شما بالا</strong> بوده و <strong>خواب کافی</strong> نداشتید. پیشنهاد می‌کنم امشب یک جلسه تمرکز کوتاه (۱۰ دقیقه) برای آرامش ذهن انجام بدید و کمی زودتر بخوابید. سلامت روان شما اولویت اوله! 🌿 <span class="tag">پیشنهاد ویژه</span>`;
-  } 
-  // قانون دوم: تمرکز عالی
-  else if (todayFocus >= 50) {
-    message = `عالی بود! امروز بیش از <strong>${fa(todayFocus)} دقیقه</strong> تمرکز عمیق داشتید. مغز شما در حال رشد و یادگیریه. فقط یادتون باشه بین جلسات تمرکز، حتماً استراحت کنید تا انرژی‌تون تحلیل نره. 🧠🔥`;
-  }
-  // قانون سوم: ولخرجی مالی
-  else if (extraExpenses > 0 && extraExpenses > (calculateCurrentAssets() * 0.1)) {
-    message = `هشدار مالی! این ماه <strong>${fa(extraExpenses)} تومان</strong> خرج اضافی ثبت کردید. این یعنی حدود ۱۰٪ از موجودی نقدی شما. سعی کنید برای روزهای آینده یک بودجه‌ی سفت‌وسخت برای خریدهای غیرضروری تعیین کنید. 💰🛡️`;
-  }
-  // قانون چهارم: عادت‌ها
-  else if (data.habits.length > 0) {
-    const todayHabits = data.habits.filter(h => data.logs.some(l => String(l.habit_id) === String(h.id) && l.date === today && l.status === 'done')).length;
-    if (todayHabits === 0) {
-      message = `امروز هنوز هیچ عادتی رو تیک نزدی! شروع کردن سخت‌ترین بخشه. فقط یکی از عادت‌های آسون‌ترت رو انتخاب کن و انجامش بده تا حس و حال امروزت عوض بشه. من بهت ایمان دارم! 💪🔥`;
-    } else {
-      message = `شما امروز تا این لحظه <strong>${fa(todayHabits)} عادت</strong> رو با موفقیت انجام دادید. عالیه! با همین روند پیش برید تا در پایان ماه یک آدم کاملاً متفاوت بشید. ✨`;
-    }
-  } 
-  // قانون پیش‌فرض (وقتی همه چیز آرومه)
-  else {
-    message = `همه چیز آرومه! داده‌های شما در حال ثبت شدن هستن. هر چه بیشتر از بخش‌های مختلف برنامه (مثل خلق‌وخو، عادت‌ها و مالی) استفاده کنید، من می‌تونم تحلیل‌های دقیق‌تر و شخصی‌سازی شده‌تری براتون ارائه بدم. 🌱`;
-  }
-
-  // ۳. نمایش پیام با انیمیشن تایپ (اختیاری - برای حس زنده بودن)
-  el.innerHTML = message;
-}
 $('ueDeleteBtn').addEventListener('click', async () => {
   if (!currentEdit) return; const { type, id, date, rec } = currentEdit;
   if (type === 'daily') { if (!(await customConfirm(`یادداشت روز ${toFaDate(date)} پاک شود؟`))) return; data.daily = data.daily.filter(d => d.date !== date); }
@@ -2688,7 +2476,6 @@ function updatePomoDisplay() {
   if (pomoObj.currentTaskTitle) $('pomoTitle').textContent = `⏱️ ${pomoObj.currentTaskTitle}`; 
   else $('pomoTitle').textContent = '⏱️ تایمر تمرکز';
 
-  // نمایش دقایق ثبت شده امروز در بج کنار تایمر
   if ($('pomoLiveBadge')) {
     const today = dateISO();
     const todayTotal = (data.pomodoro || []).filter(p => p.date === today).reduce((a,p) => a + (Number(p.minutes) || 0), 0);
@@ -2696,13 +2483,17 @@ function updatePomoDisplay() {
   }
 }
 
+function playTimerSound() {
+  const type = data.settings?.timerSound || 'beep'; if (type === 'none') return;
+  try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination); osc.type = type === 'nature' ? 'sine' : 'square'; osc.frequency.value = type === 'nature' ? 440 : 880; gain.gain.setValueAtTime(0.1, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8); osc.start(); osc.stop(ctx.currentTime + 0.8); setTimeout(() => { const osc2 = ctx.createOscillator(); const gain2 = ctx.createGain(); osc2.connect(gain2); gain2.connect(ctx.destination); osc2.type = type === 'nature' ? 'sine' : 'square'; osc2.frequency.value = type === 'nature' ? 554 : 1100; gain2.gain.setValueAtTime(0.1, ctx.currentTime); gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8); osc2.start(); osc2.stop(ctx.currentTime + 0.8); }, 400); } catch (e) { }
+}
+
 function startPomodoro(taskTitle = null, taskId = null) {
   $('pomoBox').classList.remove('hidden'); 
   if (pomoObj.running) return;
 
-  // اگر سشن جدید است
   if (pomoObj.remaining === (data.settings?.timerDuration || 25) * 60) {
-    pomoObj.sessionId = nid(); // ساخت یک شناسه یکتا برای این جلسه
+    pomoObj.sessionId = nid(); 
     pomoObj.elapsedSeconds = 0;
     pomoObj.recordedMinutes = 0;
   }
@@ -2716,15 +2507,13 @@ function startPomodoro(taskTitle = null, taskId = null) {
 
   pomoObj.interval = setInterval(() => {
     pomoObj.remaining--;
-    pomoObj.elapsedSeconds++; // شمارش ثانیه‌های سپری شده
+    pomoObj.elapsedSeconds++;
 
-    // هر ۶۰ ثانیه که گذشت، یک دقیقه ثبت کن
     if (pomoObj.elapsedSeconds > 0 && pomoObj.elapsedSeconds % 60 === 0) {
       const currentMin = Math.floor(pomoObj.elapsedSeconds / 60);
       if (currentMin > pomoObj.recordedMinutes) {
         pomoObj.recordedMinutes = currentMin;
         
-        // بروزرسانی دیتابیس محلی
         let rec = data.pomodoro.find(p => p.id === pomoObj.sessionId);
         if (rec) { 
           rec.minutes = currentMin; 
@@ -2736,8 +2525,8 @@ function startPomodoro(taskTitle = null, taskId = null) {
             taskId: pomoObj.currentTaskId 
           });
         }
-        saveData(); // ذخیره در کلود
-        renderDashboard(); // آپدیت زنده آمار داشبورد
+        saveData(); 
+        renderDashboard(); 
       }
     }
 
@@ -2748,7 +2537,6 @@ function startPomodoro(taskTitle = null, taskId = null) {
       updatePomoDisplay(); 
       playTimerSound();
       
-      // ثبت نهایی دقیقه آخر (چون بالای ۶۰ ثانیه بوده و پارت‌بندی دقیقه‌ای عقب‌تر بوده)
       const finalMins = Math.floor(pomoObj.elapsedSeconds / 60);
       let rec = data.pomodoro.find(p => p.id === pomoObj.sessionId);
       if (rec) rec.minutes = finalMins;
@@ -2783,7 +2571,6 @@ $('pomoToggle').addEventListener('click', () => {
     updatePomoDisplay(); 
     flash('تایمر متوقف شد. دقایقی که تمرکز کردی ذخیره شد.'); 
   } else {
-    // اگر کاربر روی ادامه کلیک کرد، سشن قبلی حفظ می‌شود
     startPomodoro(pomoObj.currentTaskTitle, pomoObj.currentTaskId); 
   } 
 });
@@ -2800,8 +2587,6 @@ $('pomoClose').addEventListener('click', () => {
   $('pomoBox').classList.add('hidden'); 
   updatePomoDisplay(); 
 });
-$('pomoToggle').addEventListener('click', () => { if (pomoObj.running) { clearInterval(pomoObj.interval); pomoObj.running = false; updatePomoDisplay(); } else startPomodoro(pomoObj.currentTaskTitle, pomoObj.currentTaskId); });
-$('pomoClose').addEventListener('click', () => { clearInterval(pomoObj.interval); pomoObj.running = false; pomoObj.remaining = (data.settings?.timerDuration || 25) * 60; pomoObj.currentTaskTitle = null; pomoObj.currentTaskId = null; $('pomoBox').classList.add('hidden'); updatePomoDisplay(); });
 
 $('globalSearchBtn')?.addEventListener('click', () => { $('searchModal').classList.remove('hidden'); $('globalSearchInput').value = ''; $('searchResults').innerHTML = '<p class="muted" style="text-align:center;">عبارتی برای جستجو بنویسید...</p>'; setTimeout(() => $('globalSearchInput').focus(), 100); });
 $('searchModalClose')?.addEventListener('click', () => $('searchModal').classList.add('hidden'));
@@ -2833,89 +2618,6 @@ const ACHIEVEMENTS_LIST = [
   { id: 'habit_7', category: 'قهرمان عادت‌ها', icon: '🌟', title: 'استریک طلایی', desc: '۷ روز پشت سر هم یک عادت', check: () => data.habits.some(h => calcStreak(h.id) >= 7), progress: () => ({ current: Math.max(0, ...data.habits.map(h => calcStreak(h.id))), target: 7 }) },
   { id: 'habit_30', category: 'قهرمان عادت‌ها', icon: '💎', title: 'الماس', desc: '۳۰ روز پشت سر هم یک عادت', check: () => data.habits.some(h => calcStreak(h.id) >= 30), progress: () => ({ current: Math.max(0, ...data.habits.map(h => calcStreak(h.id))), target: 30 }) },
   { id: 'habit_100', category: 'قهرمان عادت‌ها', icon: '🏅', title: 'افسانه‌ای', desc: '۱۰۰ روز پشت سر هم یک عادت', check: () => data.habits.some(h => calcStreak(h.id) >= 100), progress: () => ({ current: Math.max(0, ...data.habits.map(h => calcStreak(h.id))), target: 100 }) },
-
-  // ==================== 🎯 شکارچی اهداف ====================
-  { id: 'goal_1', category: 'شکارچی اهداف', icon: '🎯', title: 'هدف‌شناس', desc: 'اولین هدف ماهانه تکمیل شده', check: () => data.monthlyGoals.filter(g => g.done).length >= 1, progress: () => ({ current: data.monthlyGoals.filter(g => g.done).length, target: 1 }) },
-  { id: 'goal_5', category: 'شکارچی اهداف', icon: '🚀', title: 'پیشرو', desc: '۵ هدف ماهانه تکمیل شده', check: () => data.monthlyGoals.filter(g => g.done).length >= 5, progress: () => ({ current: data.monthlyGoals.filter(g => g.done).length, target: 5 }) },
-  { id: 'goal_10', category: 'شکارچی اهداف', icon: '👑', title: 'فاتح', desc: '۱۰ هدف ماهانه تکمیل شده', check: () => data.monthlyGoals.filter(g => g.done).length >= 10, progress: () => ({ current: data.monthlyGoals.filter(g => g.done).length, target: 10 }) },
-
-  // ==================== 💰 امپراتوری مالی ====================
-  { id: 'fin_5', category: 'امپراتوری مالی', icon: '💰', title: 'پس‌اندازکننده', desc: '۵ تراکنش پس‌انداز', check: () => data.finance.filter(f => f.type === 'پس‌انداز').length >= 5, progress: () => ({ current: data.finance.filter(f => f.type === 'پس‌انداز').length, target: 5 }) },
-  { id: 'fin_1', category: 'امپراتوری مالی', icon: '🛡️', title: 'مدیر بودجه', desc: 'بدون خرج اضافی در طول ثبت‌ها', check: () => data.finance.length > 0 && data.finance.filter(f => f.type === 'خرج اضافی').length === 0, progress: () => ({ current: data.finance.length > 0 ? 1 : 0, target: 1 }) },
-
-  // ==================== ⏱️ استاد تمرکز (بر اساس دقیقه) ====================
-  { id: 'pomo_min_1', category: 'استاد تمرکز', icon: '⏱️', title: 'شروع تمرکز', desc: 'حداقل ۱ دقیقه تمرکز کنید.', check: () => (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0) >= 1, progress: () => ({ current: (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 1 }) },
-  { id: 'pomo_min_25', category: 'استاد تمرکز', icon: '🧠', title: 'یک پومودورو', desc: 'به مدت ۲۵ دقیقه تمرکز کنید.', check: () => (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0) >= 25, progress: () => ({ current: (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 25 }) },
-  { id: 'pomo_min_60', category: 'استاد تمرکز', icon: '🎧', title: 'یک ساعت تمرکز', desc: 'به مدت ۶۰ دقیقه تمرکز کنید.', check: () => (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0) >= 60, progress: () => ({ current: (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 60 }) },
-  { id: 'pomo_min_180', category: 'استاد تمرکز', icon: '📚', title: 'تمرکز عمیق', desc: 'به مدت ۳ ساعت تمرکز کنید.', check: () => (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0) >= 180, progress: () => ({ current: (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 180 }) },
-  { id: 'pomo_min_600', category: 'استاد تمرکز', icon: '🕰️', title: 'غرق در کار', desc: 'به مدت ۱۰ ساعت تمرکز کنید.', check: () => (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0) >= 600, progress: () => ({ current: (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 600 }) },
-  { id: 'pomo_min_1500', category: 'استاد تمرکز', icon: '👑', title: 'استاد مطلق', desc: 'به مدت ۲۵ ساعت تمرکز کنید.', check: () => (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0) >= 1500, progress: () => ({ current: (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 1500 }) },
-
-  // ==================== ✍️ نویسنده خلاق ====================
-  { id: 'note_30', category: 'نویسنده خلاق', icon: '✍️', title: 'نویسنده', desc: '۳۰ یادداشت ثبت شده', check: () => data.daily.filter(n => (n.morning||'')+(n.evening||'')+(n.highlight||'')+(n.gratitude||'')).length >= 30, progress: () => ({ current: data.daily.filter(n => (n.morning||'')+(n.evening||'')+(n.highlight||'')+(n.gratitude||'')).length, target: 30 }) },
-  { id: 'note_100', category: 'نویسنده خلاق', icon: '📚', title: 'مورخ', desc: '۱۰۰ روز پیاپی یادداشت', check: () => { let streak = 0, d = new Date(); for (let i = 0; i < 100; i++) { const iso = dateISO(d); const note = data.daily.find(n => n.date === iso); if (note && ((note.morning||'') + (note.evening||'') + (note.highlight||'') + (note.gratitude||'')).trim()) streak++; else break; d.setDate(d.getDate() - 1); } return streak >= 100; }, progress: () => { let streak = 0, d = new Date(); for (let i = 0; i < 100; i++) { const iso = dateISO(d); const note = data.daily.find(n => n.date === iso); if (note && ((note.morning||'') + (note.evening||'') + (note.highlight||'') + (note.gratitude||'')).trim()) streak++; else break; d.setDate(d.getDate() - 1); } return { current: streak, target: 100 }; } },
-
-  // ==================== 😊 رهرو احساسات ====================
-  { id: 'mood_7', category: 'رهرو احساسات', icon: '😊', title: 'خودآگاه', desc: '۷ روز خلق‌وخوی خود را ثبت کنید.', check: () => data.mood.length >= 7, progress: () => ({ current: data.mood.length, target: 7 }) },
-  { id: 'mood_30', category: 'رهرو احساسات', icon: '🧘', title: 'درون‌نگر', desc: '۳۰ روز خلق‌وخو ثبت شده', check: () => data.mood.length >= 30, progress: () => ({ current: data.mood.length, target: 30 }) },
-
-  // ==================== 🎮 ویژگی‌های سیستم ====================
-  { id: 'sys_dark', category: 'ویژگی‌های سیستم', icon: '🌙', title: 'شب‌زنده‌دار', desc: 'از حالت تاریک استفاده کنید.', check: () => data.settings.themeMode === 'dark' || data.settings.themeMode === 'auto', progress: () => ({ current: (data.settings.themeMode === 'dark' || data.settings.themeMode === 'auto') ? 1 : 0, target: 1 }) },
-  { id: 'sys_3d', category: 'ویژگی‌های سیستم', icon: '🎭', title: 'بعد سوم', desc: 'حالت سه‌بعدی را فعال کنید.', check: () => data.settings.enable3D === true, progress: () => ({ current: data.settings.enable3D === true ? 1 : 0, target: 1 }) }
-];
-
-function renderAchievements() {
-  const grid = $('achievementsGrid'); 
-  if (!grid) return; 
-  const unlocked = data.achievements || [];
-  
-  // گروه‌بندی بر اساس دسته‌بندی
-  const categories = [...new Set(ACHIEVEMENTS_LIST.map(a => a.category))];
-  
-  let html = '';
-  
-  categories.forEach(cat => {
-    html += `<div class="badge-category-title">🔹 ${cat}</div>`;
-    
-    const items = ACHIEVEMENTS_LIST.filter(a => a.category === cat);
-    html += items.map(a => {
-      const isUnlocked = unlocked.includes(a.id);
-      const prog = a.progress ? a.progress() : { current: 0, target: 1 };
-      const percent = Math.min(100, Math.round((prog.current / prog.target) * 100));
-      
-      return `
-        <div class="badge-card ${isUnlocked ? 'unlocked' : 'locked'}">
-          <div class="badge-icon">${a.icon}</div>
-          <div class="badge-title">${a.title}</div>
-          <div class="badge-desc">${a.desc}</div>
-          
-          ${isUnlocked 
-            ? `<div class="badge-progress-bar"><div class="badge-progress-fill" style="width: 100%;"></div></div>
-               <div class="badge-progress-text">✓ دریافت شد</div>`
-            : `<div class="badge-progress-bar"><div class="badge-progress-fill" style="width: ${percent}%;"></div></div>
-               <div class="badge-progress-text">${fa(prog.current)} از ${fa(prog.target)}</div>`
-          }
-        </div>
-      `;
-    }).join('');
-  });
-  
-  grid.innerHTML = html;
-}
-
-function checkAchievements() {
-  if (!data.achievements) data.achievements = []; let newUnlocked = [];
- const ACHIEVEMENTS_LIST = [
-  // ==================== 📈 شروع و پایه‌گذاری ====================
-  { id: 'start_1', category: 'شروع و پایه‌گذاری', icon: '🌱', title: 'نخستین قدم', desc: 'اولین عادت خود را بسازید.', check: () => data.habits.length >= 1, progress: () => ({ current: data.habits.length, target: 1 }) },
-  { id: 'start_2', category: 'شروع و پایه‌گذاری', icon: '🎯', title: 'برنامه‌ریز', desc: 'اولین هدف ماهانه خود را ثبت کنید.', check: () => data.monthlyGoals.length >= 1, progress: () => ({ current: data.monthlyGoals.length, target: 1 }) },
-  { id: 'start_3', category: 'شروع و پایه‌گذاری', icon: '📝', title: 'روزنوشت', desc: 'اولین یادداشت روزانه خود را بنویسید.', check: () => data.daily.some(n => (n.morning||'')+(n.evening||'')+(n.highlight||'')+(n.gratitude||'')), progress: () => ({ current: data.daily.some(n => (n.morning||'')+(n.evening||'')+(n.highlight||'')+(n.gratitude||'')) ? 1 : 0, target: 1 }) },
-
-  // ==================== 🔥 قهرمان عادت‌ها ====================
-  { id: 'habit_3', category: 'قهرمان عادت‌ها', icon: '🔥', title: 'آتش‌نشان', desc: '۳ روز پشت سر هم یک عادت', check: () => data.habits.some(h => calcStreak(h.id) >= 3), progress: () => ({ current: Math.max(0, ...data.habits.map(h => calcStreak(h.id))), target: 3 }) },
-  { id: 'habit_7', category: 'قهرمان عادت‌ها', icon: '🌟', title: 'استریک طلایی', desc: '۷ روز پشت سر هم یک عادت', check: () => data.habits.some(h => calcStreak(h.id) >= 7), progress: () => ({ current: Math.max(0, ...data.habits.map(h => calcStreak(h.id))), target: 7 }) },
-  { id: 'habit_30', category: 'قهرمان عادت‌ها', icon: '💎', title: 'الماس', desc: '۳۰ روز پشت سر هم یک عادت', check: () => data.habits.some(h => calcStreak(h.id) >= 30), progress: () => ({ current: Math.max(0, ...data.habits.map(h => calcStreak(h.id))), target: 30 }) },
-  { id: 'habit_100', category: 'قهرمان عادت‌ها', icon: '🏅', title: 'افسانه‌ای', desc: '۱۰۰ روز پشت سر هم یک عادت', check: () => data.habits.some(h => calcStreak(h.id) >= 100), progress: () => ({ current: Math.max(0, ...data.habits.map(h => calcStreak(h.id))), target: 100 }) },
   { id: 'habit_5_total', category: 'قهرمان عادت‌ها', icon: '🏋️', title: 'چندکاره', desc: '۵ عادت همزمان در برنامه داشته باشید.', check: () => data.habits.length >= 5, progress: () => ({ current: data.habits.length, target: 5 }) },
 
   // ==================== 🎯 شکارچی اهداف ====================
@@ -2930,12 +2632,12 @@ function checkAchievements() {
   { id: 'fin_save_1m', category: 'امپراتوری مالی', icon: '💎', title: 'سرمایه‌گذار', desc: 'مجموع پس‌انداز شما به ۱ میلیون تومان برسد.', check: () => calculateTotalSavings() >= 1000000, progress: () => ({ current: calculateTotalSavings(), target: 1000000 }) },
 
   // ==================== ⏱️ استاد تمرکز (بر اساس دقیقه) ====================
-  { id: 'pomo_min_1', category: 'استاد تمرکز', icon: '⏱️', title: 'شروع تمرکز', desc: 'حداقل ۱ دقیقه تمرکز کنید.', check: () => (data.pomodoro.reduce((a,p) => a + (Number(p.minutes) || 0), 0)) >= 1, progress: () => ({ current: data.pomodoro.reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 1 }) },
-  { id: 'pomo_min_25', category: 'استاد تمرکز', icon: '🧠', title: 'یک پومودورو', desc: 'به مدت ۲۵ دقیقه تمرکز کنید.', check: () => (data.pomodoro.reduce((a,p) => a + (Number(p.minutes) || 0), 0)) >= 25, progress: () => ({ current: data.pomodoro.reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 25 }) },
-  { id: 'pomo_min_60', category: 'استاد تمرکز', icon: '🎧', title: 'یک ساعت تمرکز', desc: 'به مدت ۶۰ دقیقه تمرکز کنید.', check: () => (data.pomodoro.reduce((a,p) => a + (Number(p.minutes) || 0), 0)) >= 60, progress: () => ({ current: data.pomodoro.reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 60 }) },
-  { id: 'pomo_min_180', category: 'استاد تمرکز', icon: '📚', title: 'تمرکز عمیق', desc: 'به مدت ۳ ساعت تمرکز کنید.', check: () => (data.pomodoro.reduce((a,p) => a + (Number(p.minutes) || 0), 0)) >= 180, progress: () => ({ current: data.pomodoro.reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 180 }) },
-  { id: 'pomo_min_600', category: 'استاد تمرکز', icon: '🕰️', title: 'غرق در کار', desc: 'به مدت ۱۰ ساعت تمرکز کنید.', check: () => (data.pomodoro.reduce((a,p) => a + (Number(p.minutes) || 0), 0)) >= 600, progress: () => ({ current: data.pomodoro.reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 600 }) },
-  { id: 'pomo_min_1500', category: 'استاد تمرکز', icon: '👑', title: 'استاد مطلق', desc: 'به مدت ۲۵ ساعت تمرکز کنید.', check: () => (data.pomodoro.reduce((a,p) => a + (Number(p.minutes) || 0), 0)) >= 1500, progress: () => ({ current: data.pomodoro.reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 1500 }) },
+  { id: 'pomo_min_1', category: 'استاد تمرکز', icon: '⏱️', title: 'شروع تمرکز', desc: 'حداقل ۱ دقیقه تمرکز کنید.', check: () => (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0) >= 1, progress: () => ({ current: (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 1 }) },
+  { id: 'pomo_min_25', category: 'استاد تمرکز', icon: '🧠', title: 'یک پومودورو', desc: 'به مدت ۲۵ دقیقه تمرکز کنید.', check: () => (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0) >= 25, progress: () => ({ current: (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 25 }) },
+  { id: 'pomo_min_60', category: 'استاد تمرکز', icon: '🎧', title: 'یک ساعت تمرکز', desc: 'به مدت ۶۰ دقیقه تمرکز کنید.', check: () => (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0) >= 60, progress: () => ({ current: (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 60 }) },
+  { id: 'pomo_min_180', category: 'استاد تمرکز', icon: '📚', title: 'تمرکز عمیق', desc: 'به مدت ۳ ساعت تمرکز کنید.', check: () => (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0) >= 180, progress: () => ({ current: (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 180 }) },
+  { id: 'pomo_min_600', category: 'استاد تمرکز', icon: '🕰️', title: 'غرق در کار', desc: 'به مدت ۱۰ ساعت تمرکز کنید.', check: () => (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0) >= 600, progress: () => ({ current: (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 600 }) },
+  { id: 'pomo_min_1500', category: 'استاد تمرکز', icon: '👑', title: 'استاد مطلق', desc: 'به مدت ۲۵ ساعت تمرکز کنید.', check: () => (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0) >= 1500, progress: () => ({ current: (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 1500 }) },
 
   // ==================== ✍️ نویسنده خلاق ====================
   { id: 'note_30', category: 'نویسنده خلاق', icon: '✍️', title: 'نویسنده', desc: '۳۰ یادداشت ثبت شده', check: () => data.daily.filter(n => (n.morning||'')+(n.evening||'')+(n.highlight||'')+(n.gratitude||'')).length >= 30, progress: () => ({ current: data.daily.filter(n => (n.morning||'')+(n.evening||'')+(n.highlight||'')+(n.gratitude||'')).length, target: 30 }) },
@@ -2947,10 +2649,45 @@ function checkAchievements() {
   { id: 'mood_30', category: 'رهرو احساسات', icon: '🧘', title: 'درون‌نگر', desc: '۳۰ روز خلق‌وخو ثبت شده', check: () => data.mood.length >= 30, progress: () => ({ current: data.mood.length, target: 30 }) },
 
   // ==================== 🎮 ویژگی‌های سیستم ====================
-  { id: 'sys_dark', category: 'ویژگی‌های سیستم', icon: '🌙', title: 'شب‌زنده‌دار', desc: 'از حالت تاریک (Dark Mode) استفاده کنید.', check: () => data.settings.themeMode === 'dark' || data.settings.themeMode === 'auto', progress: () => ({ current: (data.settings.themeMode === 'dark' || data.settings.themeMode === 'auto') ? 1 : 0, target: 1 }) },
-  { id: 'sys_voice', category: 'ویژگی‌های سیستم', icon: '🎤', title: 'صدای من', desc: 'از قابلیت ثبت صوتی (میکروفون) استفاده کنید.', check: () => localStorage.getItem('bj_used_voice') === 'true', progress: () => ({ current: localStorage.getItem('bj_used_voice') === 'true' ? 1 : 0, target: 1 }) },
+  { id: 'sys_dark', category: 'ویژگی‌های سیستم', icon: '🌙', title: 'شب‌زنده‌دار', desc: 'از حالت تاریک استفاده کنید.', check: () => data.settings.themeMode === 'dark' || data.settings.themeMode === 'auto', progress: () => ({ current: (data.settings.themeMode === 'dark' || data.settings.themeMode === 'auto') ? 1 : 0, target: 1 }) },
   { id: 'sys_3d', category: 'ویژگی‌های سیستم', icon: '🎭', title: 'بعد سوم', desc: 'حالت سه‌بعدی را فعال کنید.', check: () => data.settings.enable3D === true, progress: () => ({ current: data.settings.enable3D === true ? 1 : 0, target: 1 }) }
 ];
+
+function renderAchievements() {
+  const grid = $('achievementsGrid'); 
+  if (!grid) return; 
+  const unlocked = data.achievements || [];
+  const categories = [...new Set(ACHIEVEMENTS_LIST.map(a => a.category))];
+  let html = '';
+  
+  categories.forEach(cat => {
+    html += `<div class="badge-category-title">🔹 ${cat}</div>`;
+    const items = ACHIEVEMENTS_LIST.filter(a => a.category === cat);
+    html += items.map(a => {
+      const isUnlocked = unlocked.includes(a.id);
+      const prog = a.progress ? a.progress() : { current: 0, target: 1 };
+      const percent = Math.min(100, Math.round((prog.current / prog.target) * 100));
+      return `
+        <div class="badge-card ${isUnlocked ? 'unlocked' : 'locked'}">
+          <div class="badge-icon">${a.icon}</div>
+          <div class="badge-title">${a.title}</div>
+          <div class="badge-desc">${a.desc}</div>
+          ${isUnlocked 
+            ? `<div class="badge-progress-bar"><div class="badge-progress-fill" style="width: 100%;"></div></div>
+               <div class="badge-progress-text">✓ دریافت شد</div>`
+            : `<div class="badge-progress-bar"><div class="badge-progress-fill" style="width: ${percent}%;"></div></div>
+               <div class="badge-progress-text">${fa(prog.current)} از ${fa(prog.target)}</div>`
+          }
+        </div>
+      `;
+    }).join('');
+  });
+  grid.innerHTML = html;
+}
+
+function checkAchievements() {
+  if (!data.achievements) data.achievements = []; let newUnlocked = [];
+  ACHIEVEMENTS_LIST.forEach(a => { if (!data.achievements.includes(a.id) && a.check()) { data.achievements.push(a.id); newUnlocked.push(a); } });
   if (newUnlocked.length) { saveData(); renderAchievements(); newUnlocked.forEach(a => { setTimeout(() => showConfettiAndToast(a), 100); }); } else renderAchievements();
 }
 
@@ -3141,145 +2878,257 @@ document.addEventListener('change', e => {
   if (!status) { if (idx >= 0) data.logs.splice(idx, 1); } else { const log = { habit_id: hid, date: today, status, note: data.logs[idx]?.note || '' }; if (idx >= 0) data.logs[idx] = log; else data.logs.push(log); }
   saveData(); renderHabits(); renderToday(); renderDashboard(); checkAchievements();
 });
-// ==================== دستیار صوتی (Jarvis Mode) ====================
+
+// ==================== دستیار صوتی هوشمند (Jarvis v3) ====================
 const jarvisBtn = $('jarvisBtn');
 const jarvisModal = $('jarvisModal');
 const jarvisOrb = $('jarvisOrb');
 const jarvisStatus = $('jarvisStatus');
+const jarvisActions = $('jarvisActions');
+const jarvisLiveText = $('jarvisLiveText');
+const jarvisParsedInfo = $('jarvisParsedInfo');
+
 let jarvisRecognition = null;
+let jarvisLastCommand = null; 
+let jarvisSilenceTimer = null;
+let jarvisFinalTranscript = '';
 
 jarvisBtn?.addEventListener('click', () => {
   if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-    customAlert('مرورگر شما از دستیار صوتی پشتیبانی نمی‌کند. لطفاً از کروم یا اج استفاده کنید.', 'خطا');
+    customAlert('مرورگر شما از دستیار صوتی پشتیبانی نمی‌کند. لطفاً از کروم استفاده کنید.', 'خطا');
     return;
   }
   jarvisModal.classList.remove('hidden');
-  jarvisStatus.textContent = 'برای شروع صحبت، روی میکروفون کلیک کنید...';
+  resetJarvisUI();
 });
 
 $('jarvisCloseBtn')?.addEventListener('click', () => {
   if (jarvisRecognition) jarvisRecognition.stop();
+  clearTimeout(jarvisSilenceTimer);
   jarvisModal.classList.add('hidden');
 });
 
 jarvisOrb?.addEventListener('click', () => {
-  if (jarvisRecognition && jarvisOrb.classList.contains('listening')) {
+  if (jarvisOrb.classList.contains('listening')) {
     jarvisRecognition.stop();
     return;
   }
   startJarvisListening();
 });
 
+$('jarvisRetryBtn')?.addEventListener('click', () => {
+  resetJarvisUI();
+  startJarvisListening();
+});
+
+$('jarvisConfirmBtn')?.addEventListener('click', () => {
+  if (jarvisLastCommand) {
+    executeJarvisCommand(jarvisLastCommand);
+    jarvisModal.classList.add('hidden');
+  }
+});
+
+function resetJarvisUI() {
+  jarvisLiveText.textContent = 'در حال گوش دادن...';
+  jarvisStatus.textContent = 'برای شروع، روی میکروفون کلیک کنید.';
+  jarvisActions.classList.add('hidden');
+  jarvisParsedInfo.classList.add('hidden');
+  jarvisLastCommand = null;
+  jarvisFinalTranscript = '';
+  jarvisOrb.classList.remove('listening');
+}
+
 function startJarvisListening() {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   jarvisRecognition = new SpeechRecognition();
   jarvisRecognition.lang = 'fa-IR';
-  jarvisRecognition.continuous = false;
-  jarvisRecognition.interimResults = false;
+  jarvisRecognition.continuous = true; 
+  jarvisRecognition.interimResults = true; 
 
   jarvisRecognition.onstart = () => {
     jarvisOrb.classList.add('listening');
-    jarvisStatus.textContent = 'در حال گوش دادن... (صحبت کنید)';
+    jarvisStatus.textContent = 'در حال گوش دادن... (بعد از پایان حرف، ۵ ثانیه صبر کنید)';
+    jarvisLiveText.textContent = '';
+    jarvisFinalTranscript = '';
   };
 
   jarvisRecognition.onresult = (event) => {
-    const transcript = event.results[0][0].transcript;
-    jarvisStatus.textContent = `شما گفتید: «${transcript}»`;
-    processJarvisCommand(transcript);
+    clearTimeout(jarvisSilenceTimer);
+    let interimTranscript = '';
+    let finalTranscript = '';
+
+    for (let i = event.resultIndex; i < event.results.length; ++i) {
+      if (event.results[i].isFinal) {
+        finalTranscript += event.results[i][0].transcript;
+      } else {
+        interimTranscript += event.results[i][0].transcript;
+      }
+    }
+
+    if (finalTranscript) jarvisFinalTranscript += finalTranscript;
+    jarvisLiveText.textContent = jarvisFinalTranscript + interimTranscript;
+
+    // تایمر 5 ثانیه سکوت
+    jarvisSilenceTimer = setTimeout(() => {
+      if (jarvisRecognition) jarvisRecognition.stop();
+    }, 5000);
   };
 
   jarvisRecognition.onerror = (event) => {
     jarvisOrb.classList.remove('listening');
-    jarvisStatus.textContent = 'خطا در تشخیص صدا. دوباره تلاش کنید.';
+    jarvisStatus.textContent = 'خطا در تشخیص صدا! لطفاً دوباره تلاش کنید.';
   };
 
   jarvisRecognition.onend = () => {
     jarvisOrb.classList.remove('listening');
+    if (jarvisFinalTranscript.trim() !== '') {
+      jarvisStatus.textContent = 'در حال تحلیل هوشمند متن...';
+      analyzeJarvisCommand(jarvisFinalTranscript);
+    }
   };
 
   jarvisRecognition.start();
 }
 
-// پردازش دستور (Local NLP)
-function processJarvisCommand(text) {
-  const t = text.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).toLowerCase();
+function parseJarvisNumber(text) {
+  let num = text.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
+  let multiplier = 1;
+  if (num.includes('هزار')) multiplier = 1000;
+  if (num.includes('میلیون')) multiplier = 1000000;
+  const match = num.match(/\d+/);
+  if (match) return parseInt(match[0]) * multiplier;
+  return 0;
+}
 
-  // 1. دستور ساخت تسک
-  if (t.includes('تسک') || t.includes('کار جدید') || t.includes('برنامه')) {
-    const titleMatch = t.match(/(?:تسک|کار|برنامه)\s+(.+?)\s+(?:برای|بساز|ثبت|در تاریخ)/);
-    const title = titleMatch ? titleMatch[1] : 'کار جدید صوتی';
+function analyzeJarvisCommand(text) {
+  const t = text.toLowerCase();
+  jarvisLastCommand = null;
+
+  // --- ۱. هدف ماهانه ---
+  if (t.includes('هدف ماهانه') || t.includes('ماهانه')) {
+    const titleMatch = t.match(/(?:هدف ماهانه|ماهانه)\s+(.+?)(?:\s+برای|\s+به مقدار|\s+با مقدار)/);
+    const amountMatch = t.match(/(?:برای|به مقدار|با مقدار)\s+(\d+)/);
+    const unitMatch = t.match(/(ساعت|دقیقه|بار|صفحه|کتاب|جلسه|کیلومتر)/);
     
-    // تاریخ پیش‌فرض فردا
-    const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
-    const dateStr = dateISO(tomorrow);
+    const title = titleMatch ? titleMatch[1].trim() : 'هدف ماهانه صوتی';
+    const target = amountMatch ? parseInt(amountMatch[1].replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))) : 10;
+    const unit = unitMatch ? unitMatch[1] : 'بار';
 
-    setTimeout(() => {
-      data.weeklyTasks.push({ 
-        id: nid(), title: title, day: 'بدون روز', date: dateStr, 
-        weeklyGoalId: '', startTime: '', endTime: '', value: 0, done: false, note: 'ساخته شده با دستیار صوتی' 
-      });
-      saveData(); renderWeeklyTasks(); renderTodayPlan(); renderDashboard();
-      flash(`تسک «${title}» برای فردا ساخته شد! ✅`);
-      jarvisModal.classList.add('hidden');
-    }, 1500);
+    jarvisLastCommand = { type: 'monthlyGoal', title, target, unit };
+    jarvisParsedInfo.innerHTML = `🎯 <strong>هدف ماهانه شناسایی شد:</strong><br>عنوان: ${title}<br>مقدار: ${fa(target)} ${unit}`;
+    jarvisParsedInfo.classList.remove('hidden');
+    jarvisActions.classList.remove('hidden');
+    jarvisStatus.textContent = 'اگر درست است، تایید کنید.';
     return;
   }
 
-  // 2. دستور ثبت هزینه/درآمد
-  if (t.includes('هزینه') || t.includes('خرج') || t.includes('درآمد') || t.includes('پول')) {
-    const amountMatch = t.match(/(\d+)/);
-    const amount = amountMatch ? parseInt(amountMatch[0]) : 0;
+  // --- ۲. هدف هفتگی ---
+  if (t.includes('هدف هفتگی') || t.includes('هفتگی')) {
+    const titleMatch = t.match(/(?:هدف هفتگی|هفتگی)\s+(.+?)(?:\s+برای|\s+به مقدار|\s+با مقدار)/);
+    const amountMatch = t.match(/(?:برای|به مقدار|با مقدار)\s+(\d+)/);
+    const unitMatch = t.match(/(ساعت|دقیقه|بار|صفحه|کتاب|جلسه|کیلومتر)/);
     
+    const title = titleMatch ? titleMatch[1].trim() : 'هدف هفتگی صوتی';
+    const target = amountMatch ? parseInt(amountMatch[1].replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))) : 5;
+    const unit = unitMatch ? unitMatch[1] : 'بار';
+
+    jarvisLastCommand = { type: 'weeklyGoal', title, target, unit };
+    jarvisParsedInfo.innerHTML = `🗓️ <strong>هدف هفتگی شناسایی شد:</strong><br>عنوان: ${title}<br>مقدار: ${fa(target)} ${unit}`;
+    jarvisParsedInfo.classList.remove('hidden');
+    jarvisActions.classList.remove('hidden');
+    jarvisStatus.textContent = 'اگر درست است، تایید کنید.';
+    return;
+  }
+
+  // --- ۳. تسک (کار هفتگی) ---
+  if (t.includes('تسک') || t.includes('کار') || t.includes('یادآوری')) {
+    const titleMatch = t.match(/(?:تسک|کار|یادآوری)\s+(.+?)(?:\s+برای|\s+در روز|\s+روز)/);
+    const dayMatch = t.match(/(شنبه|یکشنبه|دوشنبه|سه‌شنبه|چهارشنبه|پنجشنبه|جمعه)/);
+    
+    const title = titleMatch ? titleMatch[1].trim() : 'تسک جدید';
+    const dayName = dayMatch ? dayMatch[1] : 'شنبه';
+    
+    const dayIdx = weekDayNames.indexOf(dayName);
+    const days = getWeekDays(0);
+    const targetDate = dateISO(days[dayIdx >= 0 ? dayIdx : 0]);
+
+    jarvisLastCommand = { type: 'task', title, date: targetDate };
+    jarvisParsedInfo.innerHTML = `📋 <strong>تسک شناسایی شد:</strong><br>عنوان: ${title}<br>روز: ${dayName} (${toFaDate(targetDate)})`;
+    jarvisParsedInfo.classList.remove('hidden');
+    jarvisActions.classList.remove('hidden');
+    jarvisStatus.textContent = 'اگر درست است، تایید کنید.';
+    return;
+  }
+
+  // --- ۴. مالی ---
+  if (t.includes('هزینه') || t.includes('خرج') || t.includes('درآمد') || t.includes('دخل')) {
+    const amount = parseJarvisNumber(t);
     if (amount > 0) {
-      const isIncome = t.includes('درآمد');
-      setTimeout(() => {
-        data.finance.unshift({ 
-          id: nid(), date: dateISO(), month: dateISO().slice(0,7), 
-          type: isIncome ? 'درآمد' : 'هزینه', category: 'سایر', 
-          description: 'ثبت صوتی', amount: amount 
-        });
-        saveData(); renderFinance(); renderDashboard();
-        flash(`${isIncome ? 'درآمد' : 'هزینه'} ${fa(amount)} تومانی ثبت شد! 💰`);
-        jarvisModal.classList.add('hidden');
-      }, 1500);
+      const isIncome = t.includes('درآمد') || t.includes('دخل');
+      jarvisLastCommand = { type: 'finance', amount, isIncome };
+      jarvisParsedInfo.innerHTML = `💰 <strong>تراکنش مالی شناسایی شد:</strong><br>نوع: ${isIncome ? 'درآمد' : 'هزینه'}<br>مبلغ: ${fa(amount)} تومان`;
+      jarvisParsedInfo.classList.remove('hidden');
+      jarvisActions.classList.remove('hidden');
+      jarvisStatus.textContent = 'اگر درست است، تایید کنید.';
       return;
     }
   }
 
-  // 3. دستور ثبت خلق‌وخو
-  if (t.includes('حالم') || t.includes('خلق') || t.includes('روحیه')) {
-    let moodVal = '😐 معمولی';
-    if (t.includes('خوب') || t.includes('عالی')) moodVal = '😄 عالی';
-    else if (t.includes('بد') || t.includes('افتضاح')) moodVal = '😔 پایین';
-
-    setTimeout(() => {
-      const idx = data.mood.findIndex(m => m.date === dateISO());
-      const rec = { id: nid(), date: dateISO(), mood: moodVal, energy: 3, sleep: 3, stress: 3 };
-      if (idx >= 0) data.mood[idx] = rec; else data.mood.unshift(rec);
-      saveData(); renderMood(); renderDashboard();
-      flash(`حال و هوای امروز ثبت شد: ${moodVal} 😊`);
-      jarvisModal.classList.add('hidden');
-    }, 1500);
-    return;
-  }
-
-  // 4. دستور روشن کردن تایمر
-  if (t.includes('تمرکز') || t.includes('تایمر') || t.includes('پومودورو')) {
-    setTimeout(() => {
-      startPomodoro('تمرکز صوتی', null);
-      flash('تایمر تمرکز روشن شد! ⏱️');
-      jarvisModal.classList.add('hidden');
-    }, 1500);
-    return;
-  }
-
-  // اگر هیچ دستوری تشخیص داده نشد
-  jarvisStatus.textContent = 'متوجه نشدم! لطفاً واضح‌تر بگویید (مثلاً: "یک تسک برای فردا بساز")';
+  // اگر متوجه نشد
+  jarvisStatus.textContent = 'متوجه نشدم! لطفاً از کلمات کلیدی (هدف ماهانه، هدف هفتگی، تسک، هزینه) استفاده کنید.';
+  jarvisActions.classList.remove('hidden');
+  $('jarvisConfirmBtn').classList.add('hidden'); 
+  setTimeout(() => $('jarvisConfirmBtn').classList.remove('hidden'), 100); 
 }
+
+function executeJarvisCommand(cmd) {
+  if (cmd.type === 'monthlyGoal') {
+    data.monthlyGoals.push({ 
+      id: nid(), title: cmd.title, unit: cmd.unit, target: cmd.target, 
+      priority: 'normal', due_date: dateISO(new Date(new Date().setMonth(new Date().getMonth()+1))), 
+      description: 'ثبت با دستیار صوتی', done: false, created: dateISO() 
+    });
+    saveData(); refreshSelectors(); renderMonthlyGoals(); renderDashboard();
+    flash(`هدف ماهانه «${cmd.title}» ساخته شد! 🎯`);
+  
+  } else if (cmd.type === 'weeklyGoal') {
+    data.weeklyGoals.push({ 
+      id: nid(), title: cmd.title, monthlyGoalId: '', target: cmd.target, 
+      due_date: getWeekStartStr(0), done: false, created: dateISO() 
+    });
+    saveData(); refreshSelectors(); renderWeeklyGoals(); renderMonthlyGoals();
+    flash(`هدف هفتگی «${cmd.title}» ساخته شد! 🗓️`);
+  
+  } else if (cmd.type === 'task') {
+    data.weeklyTasks.push({ 
+      id: nid(), title: cmd.title, day: 'بدون روز', date: cmd.date, 
+      weeklyGoalId: '', startTime: '', endTime: '', value: 0, done: false, note: 'ثبت با دستیار صوتی' 
+    });
+    saveData(); renderWeeklyTasks(); renderTodayPlan(); renderDashboard();
+    flash(`تسک «${cmd.title}» ساخته شد! 📋`);
+  
+  } else if (cmd.type === 'finance') {
+    data.finance.unshift({ 
+      id: nid(), date: dateISO(), month: dateISO().slice(0,7), 
+      type: cmd.isIncome ? 'درآمد' : 'هزینه', category: 'سایر', 
+      description: 'ثبت صوتی', amount: cmd.amount 
+    });
+    saveData(); renderFinance(); renderDashboard();
+    flash(`تراکنش مالی ثبت شد! 💰`);
+  }
+}
+
 (async function init() {
   applySettings(); initDatepickers();
   const stored = localStorage.getItem(STORAGE_SESSION);
-  if (stored) { try { session = JSON.parse(stored); await startApp(); } catch (err) { localStorage.removeItem(STORAGE_SESSION); session = null; switchPanel('auth'); } } else switchPanel('auth');
+  if (stored) { 
+    try { 
+      session = JSON.parse(stored); 
+      await startApp(); 
+    } catch (err) { 
+      localStorage.removeItem(STORAGE_SESSION); session = null; switchPanel('auth'); 
+    } 
+  } else switchPanel('auth');
 })();
 
 })();
