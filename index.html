@@ -490,6 +490,78 @@ body.mode-3d .tab:not(.hidden) {
   .habit-grid-table th:first-child { text-align: right; width: 35%; font-weight: bold; background: #fafafa; }
   .habit-grid-table .cell-box { width: 18px; height: 18px; border: 1.5px solid #777; margin: 0 auto; border-radius: 4px; }
 }
+/* استایل انتخاب‌گر خلق و خو */
+.mood-selector {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background: var(--paper);
+  padding: 5px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  height: 100%;
+  min-height: 45px;
+}
+.mood-emoji {
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+  opacity: 0.4;
+  user-select: none;
+}
+.mood-emoji:hover {
+  transform: scale(1.2);
+  opacity: 0.8;
+}
+.mood-emoji.active {
+  transform: scale(1.3);
+  opacity: 1;
+  text-shadow: 0 0 10px rgba(120, 132, 91, 0.5);
+}
+
+/* استایل دکمه ثبت صوتی (میکروفون) */
+.voice-enabled-wrapper {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+.voice-enabled-wrapper textarea, 
+.voice-enabled-wrapper input {
+  padding-left: 40px !important;
+}
+.voice-btn {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  background: var(--cream2);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 10;
+}
+.voice-btn:hover {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+.voice-btn.listening {
+  background: var(--redbg);
+  color: var(--red);
+  animation: pulseTimer 1.5s infinite;
+}
+
+/* استایل دکمه شناور پایین صفحه (FAB) */
+#fabContainer { position: fixed; bottom: 30px; left: 30px; z-index: 1000; display: flex; flex-direction: column-reverse; align-items: center; gap: 10px; }
+#fabMain { width: 56px; height: 56px; border-radius: 50%; background: var(--accent); color: white; font-size: 28px; box-shadow: var(--shadow2); display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; transition: transform 0.3s, background 0.3s; }
+#fabMain.active { background: var(--dark); transform: rotate(45deg); }
+#fabOptions { display: none; flex-direction: column; gap: 10px; align-items: flex-end; }
+#fabOptions.active { display: flex; animation: fadeSlideIn 0.3s ease-out; }
 </style>
 </head>
 <body>
@@ -858,6 +930,16 @@ body.mode-3d .tab:not(.hidden) {
       </div>
     </section>
   </main>
+  <!-- دکمه شناور (FAB) -->
+<div id="fabContainer" class="hidden">
+  <button id="fabMain" title="افزودن سریع">+</button>
+  <div id="fabOptions">
+    <button data-fab-action="task" class="secondary small" style="border-radius:50px; padding:10px 15px;">📋 کار جدید</button>
+    <button data-fab-action="habit" class="secondary small" style="border-radius:50px; padding:10px 15px;">🔥 عادت جدید</button>
+    <button data-fab-action="finance" class="secondary small" style="border-radius:50px; padding:10px 15px;">💰 تراکنش</button>
+    <button data-fab-action="note" class="secondary small" style="border-radius:50px; padding:10px 15px;">📝 یادداشت</button>
+  </div>
+</div>
   <div class="footer">بولت ژورنال شخصی ۱۴۰۵ · نسخهٔ زنده</div>
 </div>
 
@@ -3236,7 +3318,7 @@ function addVoiceButton(textarea) {
 
 function initVoiceInputs() {
   if (!voiceSupported) return;
-  document.querySelectorAll('textarea#morningNote, textarea#eveningNote, textarea#mgDesc, textarea#modalNote, textarea#eventModalNote, textarea#finDesc').forEach(ta => {
+ document.querySelectorAll('#morningNote, #eveningNote, #mgDesc, #modalNote, #eventModalNote, #finDesc').forEach(ta => {
     addVoiceButton(ta);
   });
 }
