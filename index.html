@@ -600,6 +600,47 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
 .badge-card.unlocked .badge-progress-text {
   color: var(--green);
 }
+/* --- استایل دستیار هوشمند --- */
+.ai-advisor-panel {
+  background: linear-gradient(135deg, #2a241d, #3a2d17);
+  color: #f0e5d0;
+  border: 1px solid var(--gold);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(181, 142, 66, 0.15);
+  position: relative;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.ai-advisor-panel::before {
+  content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+  background: radial-gradient(circle, rgba(217, 184, 102, 0.1) 0%, transparent 60%);
+  animation: rotateGlow 10s linear infinite; pointer-events: none;
+}
+@keyframes rotateGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+.ai-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; border-bottom: 1px solid rgba(217, 184, 102, 0.2); padding-bottom: 10px; }
+.ai-avatar { width: 40px; height: 40px; background: var(--gold); border-radius: 50%; display: grid; place-items: center; font-size: 20px; box-shadow: 0 0 15px rgba(217, 184, 102, 0.5); animation: pulseAI 2s infinite alternate; }
+@keyframes pulseAI { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
+
+.ai-body { font-size: 13px; line-height: 1.9; position: relative; z-index: 1; }
+.ai-body strong { color: var(--gold); }
+.ai-body .tag { background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 6px; font-size: 11px; margin-left: 5px; display: inline-block; margin-top: 5px; }
+[data-theme="light"] .ai-advisor-panel { background: linear-gradient(135deg, #fdfbf7, #f4ebd9); color: var(--text); border-color: var(--gold); }
+[data-theme="light"] .ai-body strong { color: var(--brown); }
+[data-theme="light"] .ai-body .tag { background: rgba(0,0,0,0.05); }
+/* --- استایل دستیار صوتی جارویس --- */
+.jarvis-orb {
+  width: 100px; height: 100px; border-radius: 50%;
+  background: radial-gradient(circle, #5b7a99, #1e3a47);
+  margin: 0 auto; display: grid; place-items: center;
+  box-shadow: 0 0 30px rgba(91, 122, 153, 0.6);
+  position: relative; cursor: pointer; transition: all 0.3s;
+}
+.jarvis-orb:hover { transform: scale(1.05); box-shadow: 0 0 50px rgba(91, 122, 153, 0.9); }
+.jarvis-orb.listening { animation: jarvisPulse 1.5s infinite; background: radial-gradient(circle, #b95042, #4a2a24); box-shadow: 0 0 50px rgba(185, 80, 66, 0.8); }
+.jarvis-icon { font-size: 40px; animation: floatIcon 2s infinite alternate; pointer-events: none; }
+@keyframes jarvisPulse { 0% { box-shadow: 0 0 0 0 rgba(185, 80, 66, 0.7); } 70% { box-shadow: 0 0 0 30px rgba(185, 80, 66, 0); } 100% { box-shadow: 0 0 0 0 rgba(185, 80, 66, 0); } }
 </style>
 </head>
 <body>
@@ -607,6 +648,7 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
   <header class="top">
     <div class="brand"><div class="logo">✦</div><div><h1>بولت ژورنال من</h1><p>نسخهٔ زنده · ۱۴۰۵</p></div></div>
     <div class="top-actions">
+            <button id="jarvisBtn" class="ghost small" style="font-size: 18px; padding: 6px 10px; color: var(--accent); border-color: var(--accent);" title="دستیار صوتی (جارویس)">🎙️</button>
       <button id="globalSearchBtn" class="ghost small" style="font-size: 18px; padding: 6px 10px;">🔍</button>
       <div class="user-badge hidden" id="userBadge" onclick="document.querySelector('[data-tab=profile]').click()"><div class="avatar" id="userAvatar"></div><span id="userName"></span></div>
       <div class="theme-toggle" id="themeToggle" role="button" tabindex="0" aria-label="تغییر تم روشن و تاریک" title="تغییر تم روشن و تاریک"></div>
@@ -711,6 +753,18 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
         <div style="display:flex; gap:10px; align-items:center;">
           <span id="todayLabel" class="pill"></span>
           <button id="printDashboardBtn" class="secondary small">🖨️ پرینت کاربرگ</button>
+        </div>
+      </div>
+       <div class="panel ai-advisor-panel" id="aiInsightCard">
+        <div class="ai-header">
+          <div class="ai-avatar">🤖</div>
+          <div>
+            <h3 style="margin:0; color:var(--gold); font-size:16px;">دستیار هوشمند شما</h3>
+            <span style="font-size:11px; color:var(--muted);">تحلیل لحظه‌ای داده‌های شما</span>
+          </div>
+        </div>
+        <div class="ai-body" id="aiInsightText">
+          در حال تحلیل داده‌ها...
         </div>
       </div>
       <div class="grid" id="dashboardStats"></div>
@@ -1106,6 +1160,17 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
         <button id="ueCancelBtn" class="secondary">لغو</button>
       </div>
     </div>
+  </div>
+</div>
+<!-- مودال دستیار صوتی -->
+<div id="jarvisModal" class="modal-overlay hidden">
+  <div class="modal-content" style="text-align:center; max-width: 400px; background: linear-gradient(135deg, #1e3a47, #0f2027); border: 1px solid #5b7a99;">
+    <h3 style="color: #6fa8c4; margin-bottom: 20px;">🤖 دستیار صوتی شما</h3>
+    <div id="jarvisOrb" class="jarvis-orb">
+      <div class="jarvis-icon">🎙️</div>
+    </div>
+    <p id="jarvisStatus" style="margin-top: 20px; color: #8bb0d0; font-size: 14px; min-height: 40px;">برای شروع صحبت، روی میکروفون کلیک کنید...</p>
+    <button id="jarvisCloseBtn" class="secondary small" style="margin-top: 15px; background: transparent; color: #8bb0d0; border-color: #8bb0d0;">بستن</button>
   </div>
 </div>
 
@@ -1748,7 +1813,7 @@ function renderDashboard(){
     <div class="stat"><span class="icon">💎</span><div class="label">موجودی نقدی</div><div class="number" style="font-size:20px; color:var(--green);">${fa(currentAssets)}</div></div>
     <div class="stat"><span class="icon">🏦</span><div class="label">کل پس‌انداز</div><div class="number" style="font-size:20px; color:var(--blue);">${fa(totalSavings)}</div></div>
     <div class="stat"><span class="icon">⏱️</span><div class="label">تمرکز امروز</div><div class="number">${fa(pomos)}<small style="font-size:11px;color:var(--muted); margin-right:3px;">دقیقه</small></div></div>`;
-  renderMonthlyProgress(); renderMoodLine(); renderExpenseDonut(); renderMonthlyFinance(); renderHabitHeatmap();
+  renderMonthlyProgress(); renderMoodLine(); renderExpenseDonut(); renderMonthlyFinance(); renderHabitHeatmap(); generateAIInsight();
 }
 
 function renderTodayPlan(){
@@ -2417,7 +2482,58 @@ $('ueSaveBtn').addEventListener('click', () => {
   renderNotebook(); renderToday(); renderHabits(); renderWeeklyTasks(); renderTodayPlan(); renderTimeline(); renderDashboard(); renderFinance();
   closeUniversalEditor(); flash('ذخیره شد ✓');
 });
+function generateAIInsight() {
+  const el = $('aiInsightText'); if (!el) return;
 
+  // ۱. جمع‌آوری داده‌های ۷ روز اخیر
+  const last7Days = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(); d.setDate(d.getDate() - i); last7Days.push(dateISO(d));
+  }
+
+  const recentMoods = data.mood.filter(m => last7Days.includes(m.date));
+  const avgStress = recentMoods.length ? (recentMoods.reduce((a,m) => a + (Number(m.stress) || 0), 0) / recentMoods.length).toFixed(1) : 0;
+  const avgSleep = recentMoods.length ? (recentMoods.reduce((a,m) => a + (Number(m.sleep) || 0), 0) / recentMoods.length).toFixed(1) : 0;
+  
+  const today = dateISO();
+  const todayFocus = data.pomodoro.filter(p => p.date === today).reduce((a,p) => a + (Number(p.minutes) || 0), 0);
+  
+  const thisMonth = today.slice(0, 7);
+  const extraExpenses = data.finance.filter(f => f.month === thisMonth && f.type === 'خرج اضافی').reduce((a,f) => a + Number(f.amount), 0);
+
+  let message = '';
+
+  // ۲. منطق تصمیم‌گیری (Rule-Based AI)
+  
+  // قانون اول: استرس بالا و خواب کم
+  if (avgStress >= 3.5 && avgSleep <= 2.5) {
+    message = `سلام! متوجه شدم در چند روز اخیر <strong>استرس شما بالا</strong> بوده و <strong>خواب کافی</strong> نداشتید. پیشنهاد می‌کنم امشب یک جلسه تمرکز کوتاه (۱۰ دقیقه) برای آرامش ذهن انجام بدید و کمی زودتر بخوابید. سلامت روان شما اولویت اوله! 🌿 <span class="tag">پیشنهاد ویژه</span>`;
+  } 
+  // قانون دوم: تمرکز عالی
+  else if (todayFocus >= 50) {
+    message = `عالی بود! امروز بیش از <strong>${fa(todayFocus)} دقیقه</strong> تمرکز عمیق داشتید. مغز شما در حال رشد و یادگیریه. فقط یادتون باشه بین جلسات تمرکز، حتماً استراحت کنید تا انرژی‌تون تحلیل نره. 🧠🔥`;
+  }
+  // قانون سوم: ولخرجی مالی
+  else if (extraExpenses > 0 && extraExpenses > (calculateCurrentAssets() * 0.1)) {
+    message = `هشدار مالی! این ماه <strong>${fa(extraExpenses)} تومان</strong> خرج اضافی ثبت کردید. این یعنی حدود ۱۰٪ از موجودی نقدی شما. سعی کنید برای روزهای آینده یک بودجه‌ی سفت‌وسخت برای خریدهای غیرضروری تعیین کنید. 💰🛡️`;
+  }
+  // قانون چهارم: عادت‌ها
+  else if (data.habits.length > 0) {
+    const todayHabits = data.habits.filter(h => data.logs.some(l => String(l.habit_id) === String(h.id) && l.date === today && l.status === 'done')).length;
+    if (todayHabits === 0) {
+      message = `امروز هنوز هیچ عادتی رو تیک نزدی! شروع کردن سخت‌ترین بخشه. فقط یکی از عادت‌های آسون‌ترت رو انتخاب کن و انجامش بده تا حس و حال امروزت عوض بشه. من بهت ایمان دارم! 💪🔥`;
+    } else {
+      message = `شما امروز تا این لحظه <strong>${fa(todayHabits)} عادت</strong> رو با موفقیت انجام دادید. عالیه! با همین روند پیش برید تا در پایان ماه یک آدم کاملاً متفاوت بشید. ✨`;
+    }
+  } 
+  // قانون پیش‌فرض (وقتی همه چیز آرومه)
+  else {
+    message = `همه چیز آرومه! داده‌های شما در حال ثبت شدن هستن. هر چه بیشتر از بخش‌های مختلف برنامه (مثل خلق‌وخو، عادت‌ها و مالی) استفاده کنید، من می‌تونم تحلیل‌های دقیق‌تر و شخصی‌سازی شده‌تری براتون ارائه بدم. 🌱`;
+  }
+
+  // ۳. نمایش پیام با انیمیشن تایپ (اختیاری - برای حس زنده بودن)
+  el.innerHTML = message;
+}
 $('ueDeleteBtn').addEventListener('click', async () => {
   if (!currentEdit) return; const { type, id, date, rec } = currentEdit;
   if (type === 'daily') { if (!(await customConfirm(`یادداشت روز ${toFaDate(date)} پاک شود؟`))) return; data.daily = data.daily.filter(d => d.date !== date); }
@@ -3025,7 +3141,141 @@ document.addEventListener('change', e => {
   if (!status) { if (idx >= 0) data.logs.splice(idx, 1); } else { const log = { habit_id: hid, date: today, status, note: data.logs[idx]?.note || '' }; if (idx >= 0) data.logs[idx] = log; else data.logs.push(log); }
   saveData(); renderHabits(); renderToday(); renderDashboard(); checkAchievements();
 });
+// ==================== دستیار صوتی (Jarvis Mode) ====================
+const jarvisBtn = $('jarvisBtn');
+const jarvisModal = $('jarvisModal');
+const jarvisOrb = $('jarvisOrb');
+const jarvisStatus = $('jarvisStatus');
+let jarvisRecognition = null;
 
+jarvisBtn?.addEventListener('click', () => {
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    customAlert('مرورگر شما از دستیار صوتی پشتیبانی نمی‌کند. لطفاً از کروم یا اج استفاده کنید.', 'خطا');
+    return;
+  }
+  jarvisModal.classList.remove('hidden');
+  jarvisStatus.textContent = 'برای شروع صحبت، روی میکروفون کلیک کنید...';
+});
+
+$('jarvisCloseBtn')?.addEventListener('click', () => {
+  if (jarvisRecognition) jarvisRecognition.stop();
+  jarvisModal.classList.add('hidden');
+});
+
+jarvisOrb?.addEventListener('click', () => {
+  if (jarvisRecognition && jarvisOrb.classList.contains('listening')) {
+    jarvisRecognition.stop();
+    return;
+  }
+  startJarvisListening();
+});
+
+function startJarvisListening() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  jarvisRecognition = new SpeechRecognition();
+  jarvisRecognition.lang = 'fa-IR';
+  jarvisRecognition.continuous = false;
+  jarvisRecognition.interimResults = false;
+
+  jarvisRecognition.onstart = () => {
+    jarvisOrb.classList.add('listening');
+    jarvisStatus.textContent = 'در حال گوش دادن... (صحبت کنید)';
+  };
+
+  jarvisRecognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    jarvisStatus.textContent = `شما گفتید: «${transcript}»`;
+    processJarvisCommand(transcript);
+  };
+
+  jarvisRecognition.onerror = (event) => {
+    jarvisOrb.classList.remove('listening');
+    jarvisStatus.textContent = 'خطا در تشخیص صدا. دوباره تلاش کنید.';
+  };
+
+  jarvisRecognition.onend = () => {
+    jarvisOrb.classList.remove('listening');
+  };
+
+  jarvisRecognition.start();
+}
+
+// پردازش دستور (Local NLP)
+function processJarvisCommand(text) {
+  const t = text.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).toLowerCase();
+
+  // 1. دستور ساخت تسک
+  if (t.includes('تسک') || t.includes('کار جدید') || t.includes('برنامه')) {
+    const titleMatch = t.match(/(?:تسک|کار|برنامه)\s+(.+?)\s+(?:برای|بساز|ثبت|در تاریخ)/);
+    const title = titleMatch ? titleMatch[1] : 'کار جدید صوتی';
+    
+    // تاریخ پیش‌فرض فردا
+    const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+    const dateStr = dateISO(tomorrow);
+
+    setTimeout(() => {
+      data.weeklyTasks.push({ 
+        id: nid(), title: title, day: 'بدون روز', date: dateStr, 
+        weeklyGoalId: '', startTime: '', endTime: '', value: 0, done: false, note: 'ساخته شده با دستیار صوتی' 
+      });
+      saveData(); renderWeeklyTasks(); renderTodayPlan(); renderDashboard();
+      flash(`تسک «${title}» برای فردا ساخته شد! ✅`);
+      jarvisModal.classList.add('hidden');
+    }, 1500);
+    return;
+  }
+
+  // 2. دستور ثبت هزینه/درآمد
+  if (t.includes('هزینه') || t.includes('خرج') || t.includes('درآمد') || t.includes('پول')) {
+    const amountMatch = t.match(/(\d+)/);
+    const amount = amountMatch ? parseInt(amountMatch[0]) : 0;
+    
+    if (amount > 0) {
+      const isIncome = t.includes('درآمد');
+      setTimeout(() => {
+        data.finance.unshift({ 
+          id: nid(), date: dateISO(), month: dateISO().slice(0,7), 
+          type: isIncome ? 'درآمد' : 'هزینه', category: 'سایر', 
+          description: 'ثبت صوتی', amount: amount 
+        });
+        saveData(); renderFinance(); renderDashboard();
+        flash(`${isIncome ? 'درآمد' : 'هزینه'} ${fa(amount)} تومانی ثبت شد! 💰`);
+        jarvisModal.classList.add('hidden');
+      }, 1500);
+      return;
+    }
+  }
+
+  // 3. دستور ثبت خلق‌وخو
+  if (t.includes('حالم') || t.includes('خلق') || t.includes('روحیه')) {
+    let moodVal = '😐 معمولی';
+    if (t.includes('خوب') || t.includes('عالی')) moodVal = '😄 عالی';
+    else if (t.includes('بد') || t.includes('افتضاح')) moodVal = '😔 پایین';
+
+    setTimeout(() => {
+      const idx = data.mood.findIndex(m => m.date === dateISO());
+      const rec = { id: nid(), date: dateISO(), mood: moodVal, energy: 3, sleep: 3, stress: 3 };
+      if (idx >= 0) data.mood[idx] = rec; else data.mood.unshift(rec);
+      saveData(); renderMood(); renderDashboard();
+      flash(`حال و هوای امروز ثبت شد: ${moodVal} 😊`);
+      jarvisModal.classList.add('hidden');
+    }, 1500);
+    return;
+  }
+
+  // 4. دستور روشن کردن تایمر
+  if (t.includes('تمرکز') || t.includes('تایمر') || t.includes('پومودورو')) {
+    setTimeout(() => {
+      startPomodoro('تمرکز صوتی', null);
+      flash('تایمر تمرکز روشن شد! ⏱️');
+      jarvisModal.classList.add('hidden');
+    }, 1500);
+    return;
+  }
+
+  // اگر هیچ دستوری تشخیص داده نشد
+  jarvisStatus.textContent = 'متوجه نشدم! لطفاً واضح‌تر بگویید (مثلاً: "یک تسک برای فردا بساز")';
+}
 (async function init() {
   applySettings(); initDatepickers();
   const stored = localStorage.getItem(STORAGE_SESSION);
