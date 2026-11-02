@@ -322,41 +322,73 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent-light);bo
 
 .confetti { position: fixed; width: 10px; height: 10px; z-index: 9999; top: -10px; animation: confetti-fall 3s linear forwards; }
 
+/* حالت سه‌بعدی ایمن: فقط کارت‌ها عمق بصری می‌گیرند؛ کنترل‌ها و متن بدون چرخش می‌مانند. */
 body.mode-3d .panel,
 body.mode-3d .stat,
 body.mode-3d .goal-card,
 body.mode-3d .week-day,
 body.mode-3d .item,
 body.mode-3d .notebook-card {
-  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.35s ease;
-  transform-style: preserve-3d;
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+  transform: translateZ(0);
+  backface-visibility: visible;
 }
 body.mode-3d .panel:hover,
 body.mode-3d .stat:hover,
-body.mode-3d .goal-card:hover {
-  transform: translateY(-6px) rotateX(2deg) rotateY(-2deg) scale(1.01);
-  box-shadow: 0 20px 45px rgba(75, 53, 38, 0.18);
+body.mode-3d .goal-card:hover,
+body.mode-3d .week-day:hover,
+body.mode-3d .item:hover,
+body.mode-3d .notebook-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow2);
 }
-body.mode-3d .week-day:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 15px 35px rgba(75, 53, 38, 0.15);
+body.mode-3d .tab:not(.hidden) { animation: fadeSlideIn .18s ease-out; }
+body.mode-3d button,
+body.mode-3d a,
+body.mode-3d input,
+body.mode-3d select,
+body.mode-3d textarea,
+body.mode-3d [data-event-type],
+body.mode-3d [data-toggle-wt],
+body.mode-3d [data-toggle-wt-today],
+body.mode-3d .theme-toggle {
+  transform: none !important;
+  filter: none;
+  backface-visibility: visible;
+  pointer-events: auto;
 }
-body.mode-3d .checklist-item:hover,
-body.mode-3d .item:hover {
-  transform: translateX(-3px) translateY(-2px) scale(1.01);
-}
-body.mode-3d button:not(.ghost):hover {
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-body.mode-3d .tab:not(.hidden) {
-  animation: pageFlipIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-[data-theme="dark"] body.mode-3d .panel:hover,
-[data-theme="dark"] body.mode-3d .stat:hover,
-[data-theme="dark"] body.mode-3d .goal-card:hover {
-  box-shadow: 0 20px 45px rgba(0,0,0,0.5);
+body.mode-3d button:hover,
+body.mode-3d button:focus-visible,
+body.mode-3d button:active,
+body.mode-3d .theme-toggle:hover,
+body.mode-3d .theme-toggle:focus-visible,
+body.mode-3d .theme-toggle:active { transform: none !important; }
+body.mode-3d .panel,
+body.mode-3d .stat,
+body.mode-3d .goal-card,
+body.mode-3d .week-day,
+body.mode-3d .item { perspective: none; }
+body.mode-3d .panel * ,
+body.mode-3d .stat * ,
+body.mode-3d .goal-card * ,
+body.mode-3d .week-day * ,
+body.mode-3d .item * { backface-visibility: visible; }
+@media (prefers-reduced-motion: reduce) {
+  body.mode-3d *, body.mode-3d *::before, body.mode-3d *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
 }
 
+
+.month-progress-summary{display:grid;grid-template-columns:120px 1fr;gap:18px;align-items:center}
+.month-progress-ring{width:112px;height:112px;display:block}
+.month-progress-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.month-progress-meta span{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:7px 10px;font-size:12px;color:var(--muted)}
+.month-chart{width:100%;min-height:190px;display:block;overflow:visible}
+.month-chart-label{font:11px Vazirmatn,Tahoma,sans-serif;fill:var(--muted)}
+.month-chart-value{font:11px Vazirmatn,Tahoma,sans-serif;fill:var(--dark);font-weight:700}
+@media(max-width:650px){.month-progress-summary{grid-template-columns:1fr;text-align:center;justify-items:center}.month-progress-meta{justify-content:center}}
 .quote-widget {
   background: linear-gradient(135deg, var(--white), var(--paper));
   border: 1px solid var(--line);
@@ -712,7 +744,15 @@ body.mode-3d .authbox button:active {
         </div>
       </div>
       <div class="grid" id="dashboardStats"></div>
-      <div class="grid2" style="margin-top:20px">
+      <div class="panel monthly-progress-panel">
+        <div class="sectionhead" style="align-items:center;margin-bottom:8px">
+          <div><h3>📅 پیشرفت ماهانه</h3><p class="muted">بر اساس تعداد دفعات برنامه‌ریزی‌شده در بازه واقعی هر ماه</p></div>
+          <span class="pill" id="monthlyProgressCurrentLabel">—</span>
+        </div>
+        <div id="monthlyProgressCurrent"></div>
+      </div>
+      <div class="panel"><h3>📈 نمودار پیشرفت ماه‌به‌ماه</h3><div id="monthlyProgressChart"></div></div>
+      <div class="grid2">
         <div class="panel"><h3>📈 روند خلق‌وخو (۳۰ روز)</h3><div id="moodLineChart"></div></div>
         <div class="panel"><h3>💰 توزیع هزینه‌ها</h3><div id="expenseDonut"></div></div>
       </div>
@@ -1223,6 +1263,7 @@ const emptyData=()=>({
   habits:[], logs:[], monthlyGoals:[], weeklyGoals:[], weeklyTasks:[],
   finance:[], mood:[], daily:[], pomodoro:[], routines:[], routineLogs:[],
   achievements: [],
+  monthlyProgressSnapshots: {},
   customQuotes: [],
   savedQuotes: [],
   quoteHistory: [],
@@ -1810,6 +1851,101 @@ function refreshSelectors(){
   }
 }
 
+// ═══════════ Monthly Progress Engine ═══════════
+function jalaliParts(iso){
+  const d=new Date(iso+'T12:00:00');
+  const parts=new Intl.DateTimeFormat('en-US-u-ca-persian',{year:'numeric',month:'numeric',day:'numeric'}).formatToParts(d);
+  const get=t=>Number(parts.find(x=>x.type===t)?.value||0);
+  return {year:get('year'),month:get('month'),day:get('day')};
+}
+function jalaliMonthKey(iso){const p=jalaliParts(iso);return `${p.year}-${String(p.month).padStart(2,'0')}`;}
+function jalaliMonthBounds(key){
+  const [jy,jm]=key.split('-').map(Number);
+  const first=new persianDate([jy,jm,1,12,0,0]).toCalendar('gregorian');
+  const next=jm===12?new persianDate([jy+1,1,1,12,0,0]).toCalendar('gregorian'):new persianDate([jy,jm+1,1,12,0,0]).toCalendar('gregorian');
+  const iso=(x)=>`${x.year()}-${String(x.month()).padStart(2,'0')}-${String(x.date()).padStart(2,'0')}`;
+  const start=iso(first), nextStart=iso(next);
+  const endDate=new Date(nextStart+'T12:00:00');endDate.setDate(endDate.getDate()-1);
+  return {start,end:dateISO(endDate)};
+}
+function monthlyScheduledProgress(key){
+  const {start,end}=jalaliMonthBounds(key);
+  const planned=[];
+  (data.weeklyTasks||[]).forEach(t=>{if(t.date>=start&&t.date<=end)planned.push({type:'task',id:t.id,date:t.date,done:!!(t.done||t.eventStatus==='done')});});
+  (data.routines||[]).forEach(r=>{
+    if(!r.startDate||!r.endDate)return;
+    const from=r.startDate>start?r.startDate:start;
+    const to=r.endDate<end?r.endDate:end;
+    if(from>to)return;
+    const d=new Date(from+'T12:00:00'), last=new Date(to+'T12:00:00');
+    while(d<=last){
+      if(d.getDay()===Number(r.dayOfWeek)){
+        const iso=dateISO(d);
+        const log=(data.routineLogs||[]).find(x=>String(x.routineId)===String(r.id)&&x.date===iso);
+        planned.push({type:'routine',id:r.id,date:iso,done:log?.status==='done'});
+      }
+      d.setDate(d.getDate()+1);
+    }
+  });
+  const total=planned.length, done=planned.filter(x=>x.done).length;
+  return {key,start,end,total,done,percent:total?Math.round(done/total*100):0};
+}
+function getRecentJalaliMonths(count=12){
+  const now=jalaliParts(dateISO());let y=now.year,m=now.month;const out=[];
+  for(let i=0;i<count;i++){
+    out.unshift(`${y}-${String(m).padStart(2,'0')}`);
+    m--;if(m<1){m=12;y--;}
+  }
+  return out;
+}
+function saveMonthlyProgressSnapshot(){
+  data.monthlyProgressSnapshots=data.monthlyProgressSnapshots||{};
+  const key=jalaliMonthKey(dateISO());
+  const current=monthlyScheduledProgress(key);
+  const previous=data.monthlyProgressSnapshots[key];
+  const next={...current,updatedAt:new Date().toISOString()};
+  if(!previous || previous.total!==next.total || previous.done!==next.done || previous.percent!==next.percent){
+    data.monthlyProgressSnapshots[key]=next;
+    saveData();
+  }
+  return current;
+}
+function renderMonthlyProgress(){
+  const current=saveMonthlyProgressSnapshot();
+  const label=new Intl.DateTimeFormat('fa-IR-u-ca-persian',{month:'long',year:'numeric'}).format(new Date());
+  const lab=$('monthlyProgressCurrentLabel');if(lab)lab.textContent=label;
+  const p=current.percent,r=47,c=2*Math.PI*r,off=c*(1-p/100);
+  const box=$('monthlyProgressCurrent');
+  if(box)box.innerHTML=`<div class="month-progress-summary">
+    <svg class="month-progress-ring" viewBox="0 0 112 112" role="img" aria-label="${fa(p)} درصد پیشرفت ماه">
+      <circle cx="56" cy="56" r="47" fill="none" stroke="var(--cream2)" stroke-width="9"/>
+      <circle cx="56" cy="56" r="47" fill="none" stroke="var(--accent)" stroke-width="9" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 56 56)"/>
+      <text x="56" y="62" text-anchor="middle" font-size="23" font-weight="800" fill="var(--dark)">${fa(p)}٪</text>
+    </svg>
+    <div><div class="goal-stat-big">${fa(current.done)} از ${fa(current.total)} برنامه انجام شده</div>
+      <div class="progress" style="height:12px;margin-top:12px"><span style="width:${p}%"></span></div>
+      <div class="month-progress-meta"><span>شروع: ${toFaDate(current.start)}</span><span>پایان: ${toFaDate(current.end)}</span><span>باقی‌مانده: ${fa(Math.max(0,current.total-current.done))}</span></div>
+    </div></div>`;
+  const months=getRecentJalaliMonths(12);
+  const values=months.map(k=>{
+    const live=monthlyScheduledProgress(k);
+    const snap=data.monthlyProgressSnapshots?.[k];
+    return {...live,percent:live.total?live.percent:(snap?.percent??0)};
+  });
+  const chart=$('monthlyProgressChart');if(!chart)return;
+  const W=760,H=230,L=38,R=18,T=18,B=48,plotW=W-L-R,plotH=H-T-B;
+  const x=i=>L+(months.length===1?plotW/2:i*plotW/(months.length-1));
+  const y=v=>T+plotH-(Math.max(0,Math.min(100,v))/100)*plotH;
+  const grid=[0,25,50,75,100].map(v=>`<line x1="${L}" y1="${y(v)}" x2="${W-R}" y2="${y(v)}" stroke="var(--line)" stroke-dasharray="3 4"/><text class="month-chart-label" x="${L-8}" y="${y(v)+4}" text-anchor="end">${v}٪</text>`).join('');
+  const pts=values.map((v,i)=>`${x(i)},${y(v.percent)}`).join(' ');
+  const dots=values.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v.percent)}" r="4.5" fill="var(--accent)" stroke="var(--white)" stroke-width="2"><title>${v.key}: ${v.percent}% (${v.done}/${v.total})</title></circle><text class="month-chart-value" x="${x(i)}" y="${Math.max(12,y(v.percent)-11)}" text-anchor="middle">${fa(v.percent)}٪</text><text class="month-chart-label" x="${x(i)}" y="${H-17}" text-anchor="middle">${Number(v.key.split('-')[1])}</text>`).join('');
+  chart.innerHTML=`<svg class="month-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="نمودار پیشرفت ماهانه">${grid}<polyline points="${pts}" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${dots}<text class="month-chart-label" x="${W/2}" y="${H-2}" text-anchor="middle">ماه‌های سال شمسی (۱۲ ماه اخیر)</text></svg>`;
+  const cache=data.monthlyProgressSnapshots||{};
+  let changed=false;
+  months.forEach(k=>{if(k!==jalaliMonthKey(dateISO())&&!cache[k]){cache[k]=monthlyScheduledProgress(k);changed=true;}});
+  if(changed){data.monthlyProgressSnapshots=cache;saveData();}
+}
+
 // ═══════════ Dashboard ═══════════
 function renderDashboard(){
   const activeMg = data.monthlyGoals.filter(g => !g.done).length;
@@ -1826,6 +1962,7 @@ function renderDashboard(){
     <div class="stat"><span class="icon">💎</span><div class="label">دارایی فعلی</div><div class="number" style="font-size:20px; color:var(--green);">${fa(currentAssets)}</div></div>
     <div class="stat"><span class="icon">⏱️</span><div class="label">تمرکز امروز</div><div class="number">${fa(pomos)}<small style="font-size:11px;color:var(--muted); margin-right:3px;">دقیقه</small></div></div>`;
 
+  renderMonthlyProgress();
   renderMoodLine();
   renderExpenseDonut();
   renderMonthlyFinance();
@@ -2761,7 +2898,7 @@ $('routineForm').addEventListener('submit', e => {
     flash('لطفاً همهٔ فیلدها را پر کن', 'error'); return;
   }
   data.routines.push(r);
-  saveData(); renderRoutines(); renderTodayPlan(); renderTimeline();
+  saveData(); renderRoutines(); renderTodayPlan(); renderTimeline(); renderDashboard();
   e.target.reset();
   if ($('rtStartDate')) setPersianDateValue('rtStartDate', dateISO());
   if ($('rtEndDate')) { const nm = new Date(); nm.setMonth(nm.getMonth() + 1); setPersianDateValue('rtEndDate', dateISO(nm)); }
@@ -2903,7 +3040,7 @@ $('eventModalSaveBtn').addEventListener('click', () => {
     if (idx >= 0) data.routineLogs[idx] = entry; else data.routineLogs.push(entry);
   }
   saveData();
-  renderWeeklyTasks(); renderTodayPlan(); renderTimeline(); renderNotebook();
+  renderWeeklyTasks(); renderTodayPlan(); renderTimeline(); renderNotebook(); renderDashboard();
   closeEventModal(); flash('ذخیره شد');
 });
 $('eventStartTimerBtn').addEventListener('click', () => {
@@ -3321,6 +3458,7 @@ $('importFile').addEventListener('change', async e => {
       data = { ...emptyData(), ...imported };
       if (!data.settings) data.settings = emptyData().settings;
       if (!data.achievements) data.achievements = [];
+      if (!data.monthlyProgressSnapshots) data.monthlyProgressSnapshots = {};
       if (!Array.isArray(data.customQuotes)) data.customQuotes = [];
       if (!Array.isArray(data.savedQuotes)) data.savedQuotes = [];
       data.settings = { ...emptyData().settings, ...(data.settings || {}) };
@@ -3661,14 +3799,14 @@ document.addEventListener('click', async e => {
   if (delWt) {
     const id = delWt.dataset.delWt || delWt.dataset.delWtToday;
     data.weeklyTasks = data.weeklyTasks.filter(x => String(x.id) !== String(id));
-    saveData(); renderWeeklyTasks(); renderTodayPlan(); renderTimeline(); flash('حذف شد'); return;
+    saveData(); renderWeeklyTasks(); renderTodayPlan(); renderTimeline(); renderDashboard(); flash('حذف شد'); return;
   }
   const delRoutine = t.closest('[data-del-routine]');
   if (delRoutine) {
     if (!(await customConfirm('این برنامه پاک شود؟'))) return;
     data.routines = data.routines.filter(r => String(r.id) !== String(delRoutine.dataset.delRoutine));
     data.routineLogs = (data.routineLogs || []).filter(l => String(l.routineId) !== String(delRoutine.dataset.delRoutine));
-    saveData(); renderRoutines(); renderTodayPlan(); renderTimeline(); flash('حذف شد'); return;
+    saveData(); renderRoutines(); renderTodayPlan(); renderTimeline(); renderDashboard(); flash('حذف شد'); return;
   }
 
   const toggleMg = t.closest('[data-toggle-mg]');
@@ -3708,7 +3846,7 @@ document.addEventListener('input', e => {
   if (v) {
     const id = v.dataset.valueWt || v.dataset.valueWtToday;
     const task = data.weeklyTasks.find(x => String(x.id) === String(id));
-    if (task) { task.value = Number(v.value) || 0; saveData(); }
+    if (task) { task.value = Number(v.value) || 0; saveData(); renderDashboard(); }
   }
 });
 
