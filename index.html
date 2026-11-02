@@ -679,7 +679,7 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
         <div class="field"><label>استرس (۱-۵)</label><input id="moodStress" type="number" min="1" max="5"></div>
         <button type="submit">ثبت</button>
       </form>
-            <div class="grid" id="moodStatsGrid" style="margin-bottom:20px;"></div>
+      <div class="grid" id="moodStatsGrid" style="margin-bottom:20px;"></div>
 
       <div class="panel">
         <h3>📊 توزیع حال و هوای شما</h3>
@@ -1792,6 +1792,21 @@ function renderHabitHeatmap(){
   if (dashEl) { if (!data.habits.length) dashEl.innerHTML = '<p class="muted">هنوز عادتی نیست.</p>'; else dashEl.innerHTML = data.habits.slice(0, 3).map(h => `<div class="habit-heatmap-row" style="padding: 10px; margin-bottom: 10px;"><div class="habit-heatmap-title" style="font-size:12px; margin-bottom:4px;">${safe(h.name)}</div>${generateHeatmapForHabit(h)}</div>`).join(''); }
 }
 
+function renderRoutines(){
+  const el = $('routineList'); if (!el) return;
+  if (!data.routines || data.routines.length === 0) { el.innerHTML = '<p class="muted" style="text-align:center;padding:20px">هنوز برنامه زمان‌داری ثبت نکردی.</p>'; return; }
+  el.innerHTML = data.routines.map(r => {
+    const dayName = ['یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه','شنبه'][r.dayOfWeek];
+    return `<article class="item" style="border-right:4px solid var(--blue)">
+      <div class="item-main"><div class="item-title">⏰ ${safe(r.title)}</div><div class="item-meta"><span class="status blue">${dayName}</span><span>🕒 ${r.startTime} تا ${r.endTime}</span><span>از ${toFaDate(r.startDate)} تا ${toFaDate(r.endDate)}</span></div></div>
+      <div class="item-actions">
+        <button class="ghost small" data-edit-routine="${r.id}">✏️</button>
+        <button class="danger small" data-del-routine="${r.id}">×</button>
+      </div>
+    </article>`;
+  }).join('');
+}
+
 function renderFinance(){
   const currentAssets = calculateCurrentAssets();
   const totalSavings = calculateTotalSavings();
@@ -1924,7 +1939,6 @@ function renderExpenseDonut(){
 function renderMood(){
   const moods = data.mood || [];
   
-  // محاسبه آمار
   let totalEnergy = 0, totalSleep = 0, totalStress = 0;
   const moodCounts = { '😄 عالی': 0, '🙂 خوب': 0, '😐 معمولی': 0, '😔 پایین': 0, '😣 سخت': 0 };
   let validCount = 0;
@@ -1941,14 +1955,12 @@ function renderMood(){
   const avgSleep = validCount ? (totalSleep / validCount).toFixed(1) : '0';
   const avgStress = validCount ? (totalStress / validCount).toFixed(1) : '0';
 
-  // پیدا کردن حالت غالب
   let dominantMood = '—';
   let maxCount = 0;
   for (const [key, count] of Object.entries(moodCounts)) {
     if (count > maxCount) { maxCount = count; dominantMood = key; }
   }
 
-  // نمایش کارت‌های آماری
   if ($('moodStatsGrid')) {
     $('moodStatsGrid').innerHTML = `
       <div class="mood-stat-card">
@@ -1973,7 +1985,6 @@ function renderMood(){
       </div>`;
   }
 
-  // رسم نمودار دایره‌ای (توزیع خلق‌وخو)
   if ($('moodDistributionChart')) {
     if (!moods.length) {
       $('moodDistributionChart').innerHTML = '<p class="muted" style="text-align:center;">هنوز داده‌ای ثبت نشده است.</p>';
@@ -1998,7 +2009,6 @@ function renderMood(){
     }
   }
 
-  // نمایش لیست تاریخچه (رنگ‌بندی شده)
   const moodClassMap = {
     '😄 عالی': 'mood-excellent',
     '🙂 خوب': 'mood-good',
@@ -2040,7 +2050,6 @@ function renderMoodLine(){
     days.push(dateISO(d));
   }
 
-  // استخراج داده‌ها همراه با جزییات برای Tooltip
   const eData = days.map(d => {
     const m = data.mood.find(x => x.date === d);
     return m && m.energy ? { v: Number(m.energy), mood: m.mood || 'ثبت نشده', date: d } : null;
@@ -2053,7 +2062,6 @@ function renderMoodLine(){
   const e = eData.map(d => d ? d.v : null);
   const s = sData.map(d => d ? d.v : null);
 
-  // محاسبه میانگین
   const validE = e.filter(v => v !== null);
   const validS = s.filter(v => v !== null);
   const avgE = validE.length ? (validE.reduce((a,b)=>a+b,0) / validE.length).toFixed(1) : null;
@@ -2063,7 +2071,6 @@ function renderMoodLine(){
   const x = i => p + (i / (days.length - 1)) * (w - 2 * p);
   const y = v => h - p - (v / 5) * (h - 2 * p);
 
-  // تولید مسیر خطوط
   const line = arr => {
     let path = ''; let st = false;
     arr.forEach((v, i) => {
@@ -2074,7 +2081,6 @@ function renderMoodLine(){
     return path;
   };
 
-  // ساخت نقاط با Tooltip
   const points = (arr, dataArr, color) => arr.map((v, i) => {
     if (v == null) return '';
     const d = dataArr[i];
@@ -2092,7 +2098,6 @@ function renderMoodLine(){
     return;
   }
 
-  // تعریف گرادیانت برای سایه زیر نمودار
   const defs = `
     <defs>
       <linearGradient id="energyGrad" x1="0" y1="0" x2="0" y2="1">
@@ -2109,35 +2114,27 @@ function renderMoodLine(){
   $('moodLineChart').innerHTML = `
     <svg class="svg-chart" viewBox="0 0 ${w} ${h}" style="width:100%; height:auto; overflow:visible;">
       ${defs}
-      <!-- خطوط افقی و اعداد محور Y -->
       ${[1,2,3,4,5].map(v => `
         <line x1="${p}" y1="${y(v)}" x2="${w - p}" y2="${y(v)}" stroke="var(--line)" stroke-dasharray="4,4"/>
         <text x="${p - 10}" y="${y(v) + 4}" text-anchor="end" font-size="11" fill="var(--muted)" font-weight="700">${v}</text>
       `).join('')}
 
-      <!-- خطوط میانگین -->
       ${avgE !== null ? `<line x1="${p}" y1="${y(avgE)}" x2="${w - p}" y2="${y(avgE)}" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="8,4" opacity="0.6"/><text x="${w - p + 5}" y="${y(avgE) + 4}" font-size="10" fill="var(--accent)" font-weight="700">میانگین ${avgE}</text>` : ''}
       ${avgS !== null ? `<line x1="${p}" y1="${y(avgS)}" x2="${w - p}" y2="${y(avgS)}" stroke="var(--red)" stroke-width="1.5" stroke-dasharray="8,4" opacity="0.6"/><text x="${w - p + 5}" y="${y(avgS) + 4}" font-size="10" fill="var(--red)" font-weight="700">میانگین ${avgS}</text>` : ''}
 
-      <!-- تاریخ‌های محور X -->
       ${days.map((d, i) => (i % 5 === 0 || i === 29) ? `<text x="${x(i)}" y="${h - 10}" text-anchor="middle" font-size="10" fill="var(--muted)">${toFaDate(d).substring(5)}</text>` : '').join('')}
 
-      <!-- سایه زیر نمودار انرژی -->
       ${e.some(v => v !== null) ? `<path d="${line(e)} L${x(days.length-1)},${y(0)} L${x(0)},${y(0)} Z" fill="url(#energyGrad)" stroke="none"/>` : ''}
       
-      <!-- سایه زیر نمودار استرس -->
       ${s.some(v => v !== null) ? `<path d="${line(s)} L${x(days.length-1)},${y(0)} L${x(0)},${y(0)} Z" fill="url(#stressGrad)" stroke="none"/>` : ''}
 
-      <!-- خط انرژی -->
       <path d="${line(e)}" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
       ${points(e, eData, 'var(--accent)')}
 
-      <!-- خط استرس -->
       <path d="${line(s)}" fill="none" stroke="var(--red)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6,4"/>
       ${points(s, sData, 'var(--red)')}
     </svg>
     
-    <!-- راهنمای رنگ‌ها در پایین نمودار -->
     <div style="display:flex; justify-content:center; gap:24px; margin-top:16px; font-size:13px; font-weight:700; flex-wrap:wrap;">
       <div style="display:flex; align-items:center; gap:8px;"><span style="display:inline-block; width:20px; height:3px; background:var(--accent); border-radius:2px;"></span> انرژی ${avgE ? `(میانگین: ${avgE})` : ''}</div>
       <div style="display:flex; align-items:center; gap:8px;"><span style="display:inline-block; width:20px; height:3px; background:var(--red); border-radius:2px;"></span> استرس ${avgS ? `(میانگین: ${avgS})` : ''}</div>
