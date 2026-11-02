@@ -294,6 +294,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
       <button id="logoutBtn" class="secondary small hidden">خروج</button>
     </div>
   </header>
+
   <section id="authPanel" class="panel authbox hidden">
     <h2>ورود یا ساخت حساب</h2>
     <p class="muted">ایمیل و رمزت رو وارد کن.</p>
@@ -304,6 +305,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
     </form>
     <div id="authMessage" class="notice hidden"></div>
   </section>
+
   <main id="appPanel" class="hidden">
     <nav class="nav">
       <button class="active" data-tab="today">📓 امروز</button>
@@ -315,6 +317,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
       <button data-tab="mood">😊 خلق‌وخو</button>
       <button data-tab="settings">⚙️ تنظیمات</button>
     </nav>
+
     <section id="tab-today" class="tab">
       <div class="today-hero">
         <h2>سلام، امروز چه خبر؟ 🌿</h2>
@@ -345,8 +348,12 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
       </div>
       <div class="panel"><h3>📊 نگاهی به امروز</h3><div class="grid" id="todayStats"></div></div>
     </section>
+
     <section id="tab-notebook" class="tab hidden">
-      <div class="sectionhead"><div><h2>📝 یادداشت‌ها</h2><p class="muted">همهٔ یادداشت‌های شما، با رنگ‌بندی تفکیک‌شده</p></div><span class="pill" id="notebookCount">—</span></div>
+      <div class="sectionhead">
+        <div><h2>📝 یادداشت‌ها</h2><p class="muted">همهٔ یادداشت‌های شما، قابل ویرایش و حذف</p></div>
+        <span class="pill" id="notebookCount">—</span>
+      </div>
       <div class="panel" style="box-shadow:none">
         <div class="formgrid2">
           <div class="field"><label>🔍 جستجو</label><input id="notebookSearch" placeholder="مثلاً: کتاب، ورزش، خرید..."></div>
@@ -355,8 +362,15 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
       </div>
       <div id="notebookList"></div>
     </section>
+
     <section id="tab-dashboard" class="tab hidden">
-      <div class="sectionhead"><div><h2>داشبورد</h2></div><div style="display:flex; gap:10px; align-items:center;"><span id="todayLabel" class="pill"></span><button id="printDashboardBtn" class="secondary small">🖨️ پرینت کاربرگ</button></div></div>
+      <div class="sectionhead">
+        <div><h2>داشبورد</h2></div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <span id="todayLabel" class="pill"></span>
+          <button id="printDashboardBtn" class="secondary small">🖨️ پرینت کاربرگ</button>
+        </div>
+      </div>
       <div class="grid" id="dashboardStats"></div>
       <div class="grid2" style="margin-top:20px">
         <div class="panel"><h3>📈 روند خلق‌وخو (۳۰ روز)</h3><div id="moodLineChart"></div></div>
@@ -367,6 +381,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
         <div class="panel"><h3>📈 نمودار عادت‌ها</h3><div id="habitHeatmap"></div></div>
       </div>
     </section>
+
     <section id="tab-planner" class="tab hidden">
       <div class="subnav">
         <button class="active" data-sub="monthly">🎯 اهداف ماهانه</button>
@@ -389,6 +404,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
         </div>
         <div id="monthlyGoalsList" class="grid2"></div>
       </div>
+
       <div id="sub-weekly-goals" class="subtab hidden">
         <div class="sectionhead"><div><h2>🗓️ اهداف هفتگی</h2><p class="muted">هر هدف هفتگی به یک هدف ماهانه وصل می‌شه.</p></div></div>
         <div class="panel" style="box-shadow:none"><h3>افزودن</h3>
@@ -411,6 +427,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
         </div>
         <div id="weeklyGoalsList" class="list"></div>
       </div>
+
       <div id="sub-weekly-tasks" class="subtab hidden">
         <div class="sectionhead"><div><h2>📋 کارهای هفتگی</h2><p class="muted">مقدار اجرا رو روی هر کار دستی وارد کن.</p></div><span class="pill" id="weeklyTasksProgress">—</span></div>
         <div class="week-toolbar">
@@ -429,6 +446,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
         </div>
         <div class="week-columns" id="weekColumns"></div>
       </div>
+
       <div id="sub-routines" class="subtab hidden">
         <div class="sectionhead"><div><h2>⏰ برنامه‌های زمان‌دار</h2><p class="muted">کلاس‌ها یا کارهای تکرارشونده با بازه زمانی مشخص.</p></div></div>
         <div class="panel" style="box-shadow:none"><h3>افزودن برنامه جدید</h3>
@@ -445,12 +463,14 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
         <div id="routineList" class="list"></div>
       </div>
     </section>
+
     <section id="tab-habits" class="tab hidden">
       <div class="sectionhead"><div><h2>🔥 ردیاب عادت‌ها</h2></div></div>
       <form id="habitForm" class="formgrid2"><div class="field"><label>نام عادت</label><input id="habitName" required maxlength="120"></div><button type="submit">افزودن</button></form>
       <div id="habitList" class="grid2" style="margin-top:16px"></div>
       <div class="panel" style="margin-top:20px"><h3>📈 نمودار عادت‌ها (۱۲ هفته اخیر)</h3><div id="habitHeatmapTab"></div></div>
     </section>
+
     <section id="tab-finance" class="tab hidden">
       <div class="sectionhead"><div><h2>💰 مالی</h2></div></div>
       <div class="panel" style="background: linear-gradient(135deg, var(--dark), var(--brown)); color: var(--cream); margin-bottom: 20px;">
@@ -469,6 +489,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
       </form>
       <div id="financeList" class="list"></div>
     </section>
+
     <section id="tab-mood" class="tab hidden">
       <div class="sectionhead"><div><h2>😊 خلق‌وخو</h2></div></div>
       <form id="moodForm" class="formgrid">
@@ -490,6 +511,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
       </form>
       <div id="moodList" class="list"></div>
     </section>
+
     <section id="tab-settings" class="tab hidden">
       <h2>⚙️ تنظیمات</h2>
       <p class="muted">اطلاعات شما روی همین مرورگر ذخیره می‌شود.</p>
@@ -512,11 +534,13 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
   </main>
   <div class="footer">بولت ژورنال شخصی ۱۴۰۵ · نسخهٔ زنده</div>
 </div>
+
 <div id="pomoBox" class="pomo-box hidden">
   <div><div class="pomo-label" id="pomoTitle">⏱️ تایمر تمرکز</div><div class="pomo-time" id="pomoTime">25:00</div></div>
   <button class="small secondary" id="pomoToggle">شروع</button>
   <button class="small ghost" id="pomoClose">×</button>
 </div>
+
 <div id="habitNoteModal" class="modal-overlay hidden">
   <div class="modal-content">
     <div class="modal-header"><h3 id="modalTitle">جزئیات روز</h3><button id="modalClose" class="ghost small">×</button></div>
@@ -526,6 +550,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
     <div style="display:flex; gap:10px; justify-content:flex-end"><button id="modalSaveBtn">💾 ذخیره</button><button id="modalCancelBtn" class="secondary">لغو</button></div>
   </div>
 </div>
+
 <div id="eventNoteModal" class="modal-overlay hidden">
   <div class="modal-content">
     <div class="modal-header"><h3 id="eventModalTitle">جزئیات برنامه</h3><button id="eventModalClose" class="ghost small">×</button></div>
@@ -535,12 +560,30 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--olive2);border-c
     <div style="display:flex; gap:10px; justify-content:space-between; align-items:center;"><button id="eventStartTimerBtn" class="secondary small">⏱️ شروع تایمر</button><div style="display:flex; gap:10px;"><button id="eventModalSaveBtn">💾 ذخیره</button><button id="eventModalCancelBtn" class="ghost">لغو</button></div></div>
   </div>
 </div>
+
 <div id="uiDialog" class="modal-overlay hidden">
   <div class="modal-content" style="max-width: 400px;">
     <div class="modal-header"><h3 id="uiDialogTitle">توجه</h3></div>
     <p id="uiDialogMsg" style="margin-bottom: 20px; font-weight: 600; line-height: 1.6;"></p>
     <input id="uiDialogInput" class="hidden" type="text" style="margin-bottom: 20px;">
     <div style="display:flex; gap:10px; justify-content:flex-end"><button id="uiDialogOk">تایید</button><button id="uiDialogCancel" class="secondary">لغو</button></div>
+  </div>
+</div>
+
+<div id="universalEditModal" class="modal-overlay hidden">
+  <div class="modal-content" style="max-width:600px; max-height:90vh; overflow-y:auto;">
+    <div class="modal-header">
+      <h3 id="ueTitle">ویرایش یادداشت</h3>
+      <button id="ueClose" class="ghost small">×</button>
+    </div>
+    <div id="ueFields"></div>
+    <div style="display:flex; gap:10px; justify-content:space-between; margin-top:20px; padding-top:15px; border-top:1px solid var(--line); flex-wrap:wrap;">
+      <button id="ueDeleteBtn" class="danger small">🗑️ حذف</button>
+      <div style="display:flex; gap:10px;">
+        <button id="ueSaveBtn">💾 ذخیره</button>
+        <button id="ueCancelBtn" class="secondary">لغو</button>
+      </div>
+    </div>
   </div>
 </div>
 <script>
@@ -578,20 +621,33 @@ function flash(t, type = '') {
 let dialogResolve = null;
 function showDialog(title, msg, isPrompt = false, defaultValue = '', isAlert = false) {
   return new Promise(resolve => {
-    dialogResolve = resolve; $('uiDialogTitle').textContent = title; $('uiDialogMsg').textContent = msg;
+    dialogResolve = resolve;
+    $('uiDialogTitle').textContent = title;
+    $('uiDialogMsg').textContent = msg;
     $('uiDialogInput').classList.toggle('hidden', !isPrompt);
     if (isPrompt) { $('uiDialogInput').value = defaultValue; setTimeout(() => $('uiDialogInput').focus(), 100); }
-    $('uiDialogCancel').classList.toggle('hidden', isAlert); $('uiDialog').classList.remove('hidden');
+    $('uiDialogCancel').classList.toggle('hidden', isAlert);
+    $('uiDialog').classList.remove('hidden');
   });
 }
 const customConfirm = (msg, title = 'تاییدیه') => showDialog(title, msg, false, '', false);
 const customAlert = (msg, title = 'پیام سیستم') => showDialog(title, msg, false, '', true);
 const customPrompt = (msg, defaultVal = '', title = 'درخواست ورودی') => showDialog(title, msg, true, defaultVal, false);
-$('uiDialogOk').addEventListener('click', () => { if (dialogResolve) { dialogResolve(!$('uiDialogInput').classList.contains('hidden') ? $('uiDialogInput').value : true); dialogResolve = null; } $('uiDialog').classList.add('hidden'); });
-$('uiDialogCancel').addEventListener('click', () => { if (dialogResolve) { dialogResolve(false); dialogResolve = null; } $('uiDialog').classList.add('hidden'); });
+$('uiDialogOk').addEventListener('click', () => {
+  if (dialogResolve) {
+    dialogResolve(!$('uiDialogInput').classList.contains('hidden') ? $('uiDialogInput').value : true);
+    dialogResolve = null;
+  }
+  $('uiDialog').classList.add('hidden');
+});
+$('uiDialogCancel').addEventListener('click', () => {
+  if (dialogResolve) { dialogResolve(false); dialogResolve = null; }
+  $('uiDialog').classList.add('hidden');
+});
 
 // ═══════════ Date & Storage ═══════════
 const nid=()=>'g'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+
 const getPersianDateValue = (id) => {
   const el = $(id); if (!el) return null;
   let val = el.value.trim(); if (!val) return null;
@@ -603,14 +659,31 @@ const getPersianDateValue = (id) => {
   else {
     y = parseInt(parts[0], 10); m = parseInt(parts[1], 10); d = parseInt(parts[2], 10);
     if (y < 1300 || y > 1500 || m < 1 || m > 12 || d < 1 || d > 31) return null;
-    try { const safeDate = new persianDate([y, m, d, 12, 0, 0]); const gDate = safeDate.toCalendar('gregorian'); return `${gDate.year()}-${String(gDate.month()).padStart(2,'0')}-${String(gDate.date()).padStart(2,'0')}`; } catch (e) { return null; }
+    try {
+      const safeDate = new persianDate([y, m, d, 12, 0, 0]);
+      const gDate = safeDate.toCalendar('gregorian');
+      return `${gDate.year()}-${String(gDate.month()).padStart(2,'0')}-${String(gDate.date()).padStart(2,'0')}`;
+    } catch (e) { return null; }
   }
 };
-const setPersianDateValue = (id, isoDate) => { if (!$(id)) return; try { const pDate = new persianDate(new Date(isoDate+'T12:00:00')); $(id).value = pDate.format('YYYY/MM/DD'); } catch { $(id).value = ''; } };
+const setPersianDateValue = (id, isoDate) => {
+  if (!$(id)) return;
+  try {
+    const pDate = new persianDate(new Date(isoDate+'T12:00:00'));
+    $(id).value = pDate.format('YYYY/MM/DD');
+  } catch { $(id).value = ''; }
+};
+
 const API_URL='https://bj-api.mobin2112hasanzabh.workers.dev';
 const STORAGE_SESSION='bj_session_v6';
 const STORAGE_CACHE_PREFIX='bj_cache_v6_';
-const emptyData=()=>({habits:[],logs:[],monthlyGoals:[],weeklyGoals:[],weeklyTasks:[],finance:[],mood:[],daily:[],pomodoro:[],routines:[],routineLogs:[],settings:{initialAssets:0}});
+
+const emptyData=()=>({
+  habits:[], logs:[], monthlyGoals:[], weeklyGoals:[], weeklyTasks:[],
+  finance:[], mood:[], daily:[], pomodoro:[], routines:[], routineLogs:[],
+  settings:{initialAssets:0}
+});
+
 const loadData=async(email)=>{
   try{
     const res=await fetch(`${API_URL}/data/${encodeURIComponent(email)}`, {headers: { 'Authorization': `Bearer ${session.token}` }});
@@ -622,32 +695,56 @@ const loadData=async(email)=>{
     return {...emptyData(),...serverData};
   }catch(e){
     console.error('Server load failed, using cache:',e);
-    try{ const cached=JSON.parse(localStorage.getItem(STORAGE_CACHE_PREFIX+email)||'null'); return {...emptyData(),...(cached||{})}; }catch{return emptyData();}
+    try{
+      const cached=JSON.parse(localStorage.getItem(STORAGE_CACHE_PREFIX+email)||'null');
+      return {...emptyData(),...(cached||{})};
+    }catch{return emptyData();}
   }
 };
+
 let saveTimer=null;
 const saveData=()=>{
   if(!session)return;
   localStorage.setItem(STORAGE_CACHE_PREFIX+session.email,JSON.stringify(data));
   clearTimeout(saveTimer);
   saveTimer=setTimeout(async()=>{
-    try{ await fetch(`${API_URL}/data/${encodeURIComponent(session.email)}`,{ method:'PUT', headers:{ 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.token}` }, body:JSON.stringify({data}) }); }catch(e){console.error('Server save failed:',e);}
+    try{
+      await fetch(`${API_URL}/data/${encodeURIComponent(session.email)}`,{
+        method:'PUT',
+        headers:{ 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.token}` },
+        body:JSON.stringify({data})
+      });
+    }catch(e){console.error('Server save failed:',e);}
   },800);
 };
+
 let session=null;
 let data=emptyData();
 let weeklyOffset=0;
 
 // ═══════════ Theme ═══════════
 const initTheme=()=>document.documentElement.setAttribute('data-theme',localStorage.getItem('bj_theme')||'light');
-$('themeToggle').addEventListener('click',()=>{const c=document.documentElement.getAttribute('data-theme');const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('bj_theme',n);});
+$('themeToggle').addEventListener('click',()=>{
+  const c=document.documentElement.getAttribute('data-theme');
+  const n=c==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',n);
+  localStorage.setItem('bj_theme',n);
+});
 
-function switchPanel(w){ show('authPanel',w==='auth'); show('appPanel',w==='app'); show('logoutBtn',w==='app'); show('userBadge',w==='app'); }
+function switchPanel(w){
+  show('authPanel',w==='auth');
+  show('appPanel',w==='app');
+  show('logoutBtn',w==='app');
+  show('userBadge',w==='app');
+}
 
 // ═══════════ Auth ═══════════
 $('authForm').addEventListener('submit',async e=>{
-  e.preventDefault(); $('authMessage').classList.add('hidden'); $('authSubmit').disabled=true;
-  const email=$('email').value.trim().toLowerCase(); const pw=$('password').value;
+  e.preventDefault();
+  $('authMessage').classList.add('hidden');
+  $('authSubmit').disabled=true;
+  const email=$('email').value.trim().toLowerCase();
+  const pw=$('password').value;
   if(!email||!pw){$('authSubmit').disabled=false;return;}
   try{
     let res=await fetch(API_URL+'/login',{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email,password:pw}) });
@@ -657,37 +754,91 @@ $('authForm').addEventListener('submit',async e=>{
       json=await res.json();
       if(!res.ok){ flash(json.error||'خطا در ساخت حساب', 'error'); $('authSubmit').disabled=false; return; }
       flash('حساب ساخته شد! خوش آمدی 🌿');
-    } else if(!res.ok){ flash(json.error||'خطا در ورود', 'error'); $('authSubmit').disabled=false; return; }
+    } else if(!res.ok){
+      flash(json.error||'خطا در ورود', 'error');
+      $('authSubmit').disabled=false;
+      return;
+    }
     session = { email: json.email, name: json.email.split('@')[0], token: json.token };
-    localStorage.setItem(STORAGE_SESSION, JSON.stringify(session)); await startApp();
-  }catch(err){ flash('خطای اتصال: '+err.message, 'error'); }
+    localStorage.setItem(STORAGE_SESSION, JSON.stringify(session));
+    await startApp();
+  }catch(err){
+    flash('خطای اتصال: '+err.message, 'error');
+  }
   $('authSubmit').disabled=false;
 });
-function logout(){ localStorage.removeItem(STORAGE_SESSION); session=null;data=emptyData(); switchPanel('auth'); $('authForm').reset(); $('authMessage').classList.add('hidden'); }
-$('logoutBtn').addEventListener('click',async()=>{if(await customConfirm('آیا از حساب کاربری خود خارج می‌شوید؟'))logout();});
+
+function logout(){
+  localStorage.removeItem(STORAGE_SESSION);
+  session=null;
+  data=emptyData();
+  switchPanel('auth');
+  $('authForm').reset();
+  $('authMessage').classList.add('hidden');
+}
+$('logoutBtn').addEventListener('click',async()=>{
+  if(await customConfirm('آیا از حساب کاربری خود خارج می‌شوید؟'))logout();
+});
 
 async function startApp(){
   data=await loadData(session.email);
-  $('userName').textContent=session.name; $('userAvatar').textContent=(session.name||'?').charAt(0).toUpperCase();
-  $('settingsEmail').textContent=session.email; $('settingsCreated').textContent=toFaDate(dateISO())||'—';
+  $('userName').textContent=session.name;
+  $('userAvatar').textContent=(session.name||'?').charAt(0).toUpperCase();
+  $('settingsEmail').textContent=session.email;
+  $('settingsCreated').textContent=toFaDate(dateISO())||'—';
   $('initialAssetsInput').value = data.settings?.initialAssets || 0;
   ['moodDate','finDate','mgDue'].forEach(id=>{if($(id))setPersianDateValue(id, dateISO());});
   if($('wgDue')) setPersianDateValue('wgDue', getWeekStartStr(0));
   if($('rtStartDate')) setPersianDateValue('rtStartDate', dateISO());
-  if($('rtEndDate')) { const nextMonth = new Date(); nextMonth.setMonth(nextMonth.getMonth() + 1); setPersianDateValue('rtEndDate', dateISO(nextMonth)); }
-  switchPanel('app'); renderAll(); startLiveClock(); initDatepickers();
+  if($('rtEndDate')) {
+    const nextMonth = new Date();
+    nextMonth.setMonth(nextMonth.getMonth() + 1);
+    setPersianDateValue('rtEndDate', dateISO(nextMonth));
+  }
+  switchPanel('app');
+  renderAll();
+  startLiveClock();
+  initDatepickers();
 }
 
 // ═══════════ Helpers ═══════════
-function getWeekStart(offset=0){ const now=new Date(); const dow=now.getDay(); const fromSat=(dow+1)%7; const start=new Date(now); start.setDate(now.getDate()-fromSat+offset*7); start.setHours(0,0,0,0); return start; }
+function getWeekStart(offset=0){
+  const now=new Date();
+  const dow=now.getDay();
+  const fromSat=(dow+1)%7;
+  const start=new Date(now);
+  start.setDate(now.getDate()-fromSat+offset*7);
+  start.setHours(0,0,0,0);
+  return start;
+}
 function getWeekStartStr(offset=0) { return dateISO(getWeekStart(offset)); }
-function getWeekDays(offset=0){ const start=getWeekStart(offset); const days=[]; for(let i=0;i<7;i++){const d=new Date(start);d.setDate(start.getDate()+i);days.push(d);} return days; }
+function getWeekDays(offset=0){
+  const start=getWeekStart(offset);
+  const days=[];
+  for(let i=0;i<7;i++){const d=new Date(start);d.setDate(start.getDate()+i);days.push(d);}
+  return days;
+}
 const weekDayNames=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
 
-function weeklyGoalSum(wgId){ const sId=String(wgId); return data.weeklyTasks.filter(t=>String(t.weeklyGoalId)===sId).reduce((a,t)=>a+(Number(t.value)||0),0); }
-function weeklyGoalProgress(wgId){ const wg=data.weeklyGoals.find(g=>String(g.id)===String(wgId)); if(!wg||!wg.target||wg.target<=0)return 0; return Math.min(100,Math.round(weeklyGoalSum(wgId)/wg.target*100)); }
-function monthlyGoalSum(mgId){ const sId=String(mgId); const childIds=data.weeklyGoals.filter(w=>String(w.monthlyGoalId)===sId).map(w=>String(w.id)); return data.weeklyTasks.filter(t=>childIds.includes(String(t.weeklyGoalId))).reduce((a,t)=>a+(Number(t.value)||0),0); }
-function monthlyGoalProgress(mgId){ const mg=data.monthlyGoals.find(g=>String(g.id)===String(mgId)); if(!mg||!mg.target||mg.target<=0)return 0; return Math.min(100,Math.round(monthlyGoalSum(mgId)/mg.target*100)); }
+function weeklyGoalSum(wgId){
+  const sId=String(wgId);
+  return data.weeklyTasks.filter(t=>String(t.weeklyGoalId)===sId).reduce((a,t)=>a+(Number(t.value)||0),0);
+}
+function weeklyGoalProgress(wgId){
+  const wg=data.weeklyGoals.find(g=>String(g.id)===String(wgId));
+  if(!wg||!wg.target||wg.target<=0)return 0;
+  return Math.min(100,Math.round(weeklyGoalSum(wgId)/wg.target*100));
+}
+function monthlyGoalSum(mgId){
+  const sId=String(mgId);
+  const childIds=data.weeklyGoals.filter(w=>String(w.monthlyGoalId)===sId).map(w=>String(w.id));
+  return data.weeklyTasks.filter(t=>childIds.includes(String(t.weeklyGoalId))).reduce((a,t)=>a+(Number(t.value)||0),0);
+}
+function monthlyGoalProgress(mgId){
+  const mg=data.monthlyGoals.find(g=>String(g.id)===String(mgId));
+  if(!mg||!mg.target||mg.target<=0)return 0;
+  return Math.min(100,Math.round(monthlyGoalSum(mgId)/mg.target*100));
+}
 
 function calculateCurrentAssets() {
   let assets = Number(data.settings?.initialAssets) || 0;
@@ -701,10 +852,23 @@ function calculateCurrentAssets() {
 
 function renderRoutines(){
   const el = $('routineList'); if (!el) return;
-  if (!data.routines || data.routines.length === 0) { el.innerHTML = '<p class="muted" style="text-align:center;padding:20px">هنوز برنامه زمان‌داری ثبت نکردی.</p>'; return; }
+  if (!data.routines || data.routines.length === 0) {
+    el.innerHTML = '<p class="muted" style="text-align:center;padding:20px">هنوز برنامه زمان‌داری ثبت نکردی.</p>';
+    return;
+  }
   el.innerHTML = data.routines.map(r => {
     const dayName = ['یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه','شنبه'][r.dayOfWeek];
-    return `<article class="item" style="border-right:4px solid var(--blue)"><div class="item-main"><div class="item-title">⏰ ${safe(r.title)}</div><div class="item-meta"><span class="status blue">${dayName}</span><span>🕒 ${r.startTime} تا ${r.endTime}</span><span>از ${toFaDate(r.startDate)} تا ${toFaDate(r.endDate)}</span></div></div><div class="item-actions"><button class="danger small" data-del-routine="${r.id}">×</button></div></article>`;
+    return `<article class="item" style="border-right:4px solid var(--blue)">
+      <div class="item-main">
+        <div class="item-title">⏰ ${safe(r.title)}</div>
+        <div class="item-meta">
+          <span class="status blue">${dayName}</span>
+          <span>🕒 ${r.startTime} تا ${r.endTime}</span>
+          <span>از ${toFaDate(r.startDate)} تا ${toFaDate(r.endDate)}</span>
+        </div>
+      </div>
+      <div class="item-actions"><button class="danger small" data-del-routine="${r.id}">×</button></div>
+    </article>`;
   }).join('');
 }
 
@@ -716,23 +880,38 @@ function getRoutinesForDay(isoDate) {
   return data.routines.filter(r => {
     if (!r.startDate || !r.endDate) return false;
     const dayMatches = parseInt(r.dayOfWeek) === dow;
-    const rStart = new Date(r.startDate + 'T00:00:00'); const rEnd = new Date(r.endDate + 'T23:59:59'); const current = new Date(isoDate + 'T12:00:00');
+    const rStart = new Date(r.startDate + 'T00:00:00');
+    const rEnd = new Date(r.endDate + 'T23:59:59');
+    const current = new Date(isoDate + 'T12:00:00');
     return dayMatches && current >= rStart && current <= rEnd;
   }).sort((a,b) => a.startTime.localeCompare(b.startTime));
 }
 
 // ═══════════ Master Render ═══════════
 function renderAll(){
-  $('todayBigDate').textContent=todayFaLong(); $('todayLabel').textContent=todayFaLong();
+  $('todayBigDate').textContent=todayFaLong();
+  $('todayLabel').textContent=todayFaLong();
   $('dailyQuote').textContent = quotes[Math.floor(Math.random() * quotes.length)];
-  refreshSelectors(); renderDashboard(); renderToday(); renderNotebook(); renderMonthlyGoals(); renderWeeklyGoals(); renderWeeklyTasks(); renderHabits(); renderFinance(); renderMood(); renderRoutines(); renderTimeline();
+  refreshSelectors();
+  renderDashboard();
+  renderToday();
+  renderNotebook();
+  renderMonthlyGoals();
+  renderWeeklyGoals();
+  renderWeeklyTasks();
+  renderHabits();
+  renderFinance();
+  renderMood();
+  renderRoutines();
+  renderTimeline();
 }
 
 let clockInterval = null;
 function startLiveClock() {
   if (clockInterval) clearInterval(clockInterval);
   clockInterval = setInterval(() => {
-    const now = new Date(); const timeStr = now.toLocaleTimeString('fa-IR', { hour12: false });
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString('fa-IR', { hour12: false });
     const clockEl = $('liveClock'); if (clockEl) clockEl.textContent = timeStr;
     const line = document.querySelector('.current-time-line');
     if (line) { line.style.top = `${(now.getHours() * 60) + now.getMinutes() + (now.getSeconds() / 60)}px`; }
@@ -741,84 +920,171 @@ function startLiveClock() {
 
 function renderTimeline() {
   const container = $('dailyTimeline'); if (!container) return;
-  const today = dateISO(); let html = '';
-  for (let i = 0; i <= 24; i++) { html += `<div class="timeline-hour" id="hour-${i}"><span class="timeline-hour-label">${String(i).padStart(2,'0')}:00</span></div>`; }
-  const now = new Date(); const currentTotalMinutes = (now.getHours() * 60) + now.getMinutes() + (now.getSeconds()/60);
+  const today = dateISO();
+  let html = '';
+  for (let i = 0; i <= 24; i++) {
+    html += `<div class="timeline-hour" id="hour-${i}"><span class="timeline-hour-label">${String(i).padStart(2,'0')}:00</span></div>`;
+  }
+  const now = new Date();
+  const currentTotalMinutes = (now.getHours() * 60) + now.getMinutes() + (now.getSeconds()/60);
   html += `<div class="current-time-line" style="top: ${currentTotalMinutes}px;"><div class="current-time-dot"></div></div>`;
   container.innerHTML = html;
+
   const routines = getRoutinesForDay(today);
   routines.forEach(r => {
     const startP = r.startTime.split(':'), endP = r.endTime.split(':');
-    const startM = (parseInt(startP[0]) * 60) + parseInt(startP[1]); const endM = (parseInt(endP[0]) * 60) + parseInt(endP[1]);
+    const startM = (parseInt(startP[0]) * 60) + parseInt(startP[1]);
+    const endM = (parseInt(endP[0]) * 60) + parseInt(endP[1]);
     const top = startM, height = Math.max(endM - startM, 20);
-    const el = document.createElement('div'); el.className = 'timeline-event routine'; el.style.top = `${top}px`; el.style.height = `${height}px`; el.dataset.eventType = 'routine'; el.dataset.eventId = r.id; el.dataset.eventDate = today;
-    el.innerHTML = `<span>⏰ ${r.startTime} - ${r.endTime}</span><br><strong>${safe(r.title)}</strong>`; container.appendChild(el);
+    const el = document.createElement('div');
+    el.className = 'timeline-event routine';
+    el.style.top = `${top}px`;
+    el.style.height = `${height}px`;
+    el.dataset.eventType = 'routine';
+    el.dataset.eventId = r.id;
+    el.dataset.eventDate = today;
+    el.innerHTML = `<span>⏰ ${r.startTime} - ${r.endTime}</span><br><strong>${safe(r.title)}</strong>`;
+    container.appendChild(el);
   });
+
   const todayTimedTasks = data.weeklyTasks.filter(t => t.date === today && t.startTime && t.endTime);
   todayTimedTasks.forEach(t => {
     const startP = t.startTime.split(':'), endP = t.endTime.split(':');
-    const startM = (parseInt(startP[0]) * 60) + parseInt(startP[1]); const endM = (parseInt(endP[0]) * 60) + parseInt(endP[1]);
+    const startM = (parseInt(startP[0]) * 60) + parseInt(startP[1]);
+    const endM = (parseInt(endP[0]) * 60) + parseInt(endP[1]);
     const top = startM, height = Math.max(endM - startM, 20);
-    const el = document.createElement('div'); el.className = 'timeline-event task'; el.style.top = `${top}px`; el.style.height = `${height}px`; el.dataset.eventType = 'task'; el.dataset.eventId = t.id; el.dataset.eventDate = today;
-    el.innerHTML = `<span>✓ ${t.startTime} - ${t.endTime}</span><br><strong>${safe(t.title)}</strong>`; container.appendChild(el);
+    const el = document.createElement('div');
+    el.className = 'timeline-event task';
+    el.style.top = `${top}px`;
+    el.style.height = `${height}px`;
+    el.dataset.eventType = 'task';
+    el.dataset.eventId = t.id;
+    el.dataset.eventDate = today;
+    el.innerHTML = `<span>✓ ${t.startTime} - ${t.endTime}</span><br><strong>${safe(t.title)}</strong>`;
+    container.appendChild(el);
   });
   container.scrollTop = Math.max(currentTotalMinutes - 100, 0);
 }
 
 function refreshSelectors(){
-  const mgSel=$('wgParent'); if(mgSel){ const cur=mgSel.value; const opts=data.monthlyGoals.filter(g=>!g.done); mgSel.innerHTML='<option value="">— انتخاب کن —</option>'+opts.map(g=>`<option value="${g.id}">${safe(g.title)}</option>`).join(''); if(cur && opts.some(g=>String(g.id)===String(cur))) mgSel.value=cur; }
-  const wgSel=$('wtGoal'); if(wgSel){ const cur=wgSel.value; const opts=data.weeklyGoals.filter(g=>!g.done); wgSel.innerHTML='<option value="">— انتخاب کن —</option>'+opts.map(g=>{ const parent=data.monthlyGoals.find(m=>String(m.id)===String(g.monthlyGoalId)); const label=parent?`${g.title} (${parent.title})`:g.title; return `<option value="${g.id}">${safe(label)}</option>`; }).join(''); if(cur && opts.some(g=>String(g.id)===String(cur))) wgSel.value=cur; }
+  const mgSel=$('wgParent');
+  if(mgSel){
+    const cur=mgSel.value;
+    const opts=data.monthlyGoals.filter(g=>!g.done);
+    mgSel.innerHTML='<option value="">— انتخاب کن —</option>'+opts.map(g=>`<option value="${g.id}">${safe(g.title)}</option>`).join('');
+    if(cur && opts.some(g=>String(g.id)===String(cur))) mgSel.value=cur;
+  }
+  const wgSel=$('wtGoal');
+  if(wgSel){
+    const cur=wgSel.value;
+    const opts=data.weeklyGoals.filter(g=>!g.done);
+    wgSel.innerHTML='<option value="">— انتخاب کن —</option>'+opts.map(g=>{
+      const parent=data.monthlyGoals.find(m=>String(m.id)===String(g.monthlyGoalId));
+      const label=parent?`${g.title} (${parent.title})`:g.title;
+      return `<option value="${g.id}">${safe(label)}</option>`;
+    }).join('');
+    if(cur && opts.some(g=>String(g.id)===String(cur))) wgSel.value=cur;
+  }
 }
-
 // ═══════════ Dashboard ═══════════
 function renderDashboard(){
-  const activeMg=data.monthlyGoals.filter(g=>!g.done).length;
-  const mgAvg=data.monthlyGoals.length?Math.round(data.monthlyGoals.reduce((a,g)=>a+monthlyGoalProgress(g.id),0)/data.monthlyGoals.length):0;
+  const activeMg = data.monthlyGoals.filter(g => !g.done).length;
+  const mgAvg = data.monthlyGoals.length
+    ? Math.round(data.monthlyGoals.reduce((a,g) => a + monthlyGoalProgress(g.id), 0) / data.monthlyGoals.length)
+    : 0;
   const currentAssets = calculateCurrentAssets();
-  const habitDone=data.logs.filter(l=>l.date===dateISO()&&l.status==='done').length;
-  $('dashboardStats').innerHTML=`
+  const habitDone = data.logs.filter(l => l.date === dateISO() && l.status === 'done').length;
+
+  $('dashboardStats').innerHTML = `
     <div class="stat"><span class="icon">🔥</span><div class="label">عادت امروز</div><div class="number">${fa(habitDone)}</div></div>
     <div class="stat"><span class="icon">🎯</span><div class="label">اهداف فعال</div><div class="number">${fa(activeMg)}</div></div>
     <div class="stat"><span class="icon">💎</span><div class="label">دارایی فعلی</div><div class="number" style="font-size:20px; color:var(--green);">${fa(currentAssets)}</div></div>
     <div class="stat"><span class="icon">📈</span><div class="label">میانگین پیشرفت</div><div class="number">${fa(mgAvg)}٪</div></div>`;
-  renderMoodLine(); renderExpenseDonut(); renderMonthlyFinance(); renderHabitHeatmap();
+
+  renderMoodLine();
+  renderExpenseDonut();
+  renderMonthlyFinance();
+  renderHabitHeatmap();
 }
 
 // ═══════════ Today ═══════════
 function renderTodayPlan(){
-  const today=dateISO(); const list=data.weeklyTasks.filter(t=>t.date===today); const todayRoutines = getRoutinesForDay(today);
-  const doneTasksCount = list.filter(t=>t.done).length;
-  $('todayPlanCount').textContent=list.length ? `${fa(doneTasksCount)} / ${fa(list.length)}` : '—';
-  const el=$('todayPlanTasks'); if(!el)return;
+  const today = dateISO();
+  const list = data.weeklyTasks.filter(t => t.date === today);
+  const todayRoutines = getRoutinesForDay(today);
+  const doneTasksCount = list.filter(t => t.done).length;
+  $('todayPlanCount').textContent = list.length ? `${fa(doneTasksCount)} / ${fa(list.length)}` : '—';
+  const el = $('todayPlanTasks'); if (!el) return;
   let html = '';
-  if(todayRoutines.length) { html += `<div style="margin-bottom:12px">${todayRoutines.map(r => `<div style="background:var(--bluebg);color:var(--blue);padding:8px 12px;border-radius:8px;margin-bottom:6px;font-size:13px;font-weight:600;cursor:pointer;" data-event-type="routine" data-event-id="${r.id}" data-event-date="${today}">⏰ ${r.startTime} - ${r.endTime} | ${safe(r.title)}</div>`).join('')}</div>`; }
-  if(list.length) {
-    html += list.map(t=>{
-      const goal=data.weeklyGoals.find(g=>String(g.id)===String(t.weeklyGoalId)); const parent=goal?data.monthlyGoals.find(m=>String(m.id)===String(goal.monthlyGoalId)):null;
-      const unit=parent?.unit||'';
-      return `<div class="week-task ${t.done?'done':''}" style="margin-bottom:8px"><div class="wt-top"><div class="wt-check ${t.done?'checked':''}" data-toggle-wt-today="${t.id}">✓</div>
-          <div class="wt-body" ${t.startTime ? `style="cursor:pointer" data-event-type="task" data-event-id="${t.id}" data-event-date="${today}"` : ''}><div class="wt-title">${safe(t.title)} ${t.startTime ? `<small style="color:var(--blue)">(${t.startTime})</small>`:''}</div>${goal?`<div class="wt-tag">🎯 ${safe(goal.title.substring(0,25))}${parent?' • '+safe(parent.title.substring(0,20)):''}</div>`:''}</div>
-          <button class="ghost small" data-del-wt-today="${t.id}" style="padding:2px 6px;font-size:10px">×</button></div>
-        <div class="wt-input-row"><input type="number" class="wt-input" min="0" step="0.25" value="${t.value||''}" placeholder="0" data-value-wt-today="${t.id}"><span class="wt-unit">${safe(unit)}</span></div></div>`;
+
+  if (todayRoutines.length) {
+    html += `<div style="margin-bottom:12px">${todayRoutines.map(r => `
+      <div style="background:var(--bluebg);color:var(--blue);padding:8px 12px;border-radius:8px;margin-bottom:6px;font-size:13px;font-weight:600;cursor:pointer;" data-event-type="routine" data-event-id="${r.id}" data-event-date="${today}">
+        ⏰ ${r.startTime} - ${r.endTime} | ${safe(r.title)}
+      </div>`).join('')}</div>`;
+  }
+
+  if (list.length) {
+    html += list.map(t => {
+      const goal = data.weeklyGoals.find(g => String(g.id) === String(t.weeklyGoalId));
+      const parent = goal ? data.monthlyGoals.find(m => String(m.id) === String(goal.monthlyGoalId)) : null;
+      const unit = parent?.unit || '';
+      return `<div class="week-task ${t.done ? 'done' : ''}" style="margin-bottom:8px">
+        <div class="wt-top">
+          <div class="wt-check ${t.done ? 'checked' : ''}" data-toggle-wt-today="${t.id}">✓</div>
+          <div class="wt-body" ${t.startTime ? `style="cursor:pointer" data-event-type="task" data-event-id="${t.id}" data-event-date="${today}"` : ''}>
+            <div class="wt-title">${safe(t.title)} ${t.startTime ? `<small style="color:var(--blue)">(${t.startTime})</small>` : ''}</div>
+            ${goal ? `<div class="wt-tag">🎯 ${safe(goal.title.substring(0,25))}${parent ? ' • ' + safe(parent.title.substring(0,20)) : ''}</div>` : ''}
+          </div>
+          <button class="ghost small" data-del-wt-today="${t.id}" style="padding:2px 6px;font-size:10px">×</button>
+        </div>
+        <div class="wt-input-row">
+          <input type="number" class="wt-input" min="0" step="0.25" value="${t.value || ''}" placeholder="0" data-value-wt-today="${t.id}">
+          <span class="wt-unit">${safe(unit)}</span>
+        </div>
+      </div>`;
     }).join('');
   }
+
   el.innerHTML = html || '<p class="muted">هنوز کاری برای امروز برنامه‌ریزی نکردی.</p>';
 }
 
 function renderToday(){
-  const today=dateISO(); renderTodayPlan();
-  const habitToday=data.habits.map(h=>({h,s:data.logs.find(l=>String(l.habit_id)===String(h.id)&&l.date===today)?.status||''}));
-  const doneH=habitToday.filter(x=>x.s==='done').length;
-  $('habitTodayCount').textContent=`${fa(doneH)} / ${fa(habitToday.length)}`;
-  $('todayHabits').innerHTML=habitToday.length?habitToday.map(({h,s})=>{
-    const c=s==='done'; const streak=calcStreak(h.id);
-    return `<div class="checklist-item ${c?'checked':''}"><div class="check-box" data-toggle-habit="${h.id}">${c?'✓':''}</div>
-      <div class="check-title" data-toggle-habit="${h.id}">${safe(h.name)} ${streak>=3?`<span class="status gold" style="margin-right:5px;">🔥 ${fa(streak)}</span>`:''}</div>
-      ${s==='rest'?'<span class="status gold">استراحت</span>':''}<button class="ghost small" data-open-note="${h.id}" data-date="${today}" style="padding:2px 8px;font-size:11px">📝</button></div>`;
-  }).join(''):'<p class="muted">هنوز عادتی اضافه نکردی.</p>';
-  const note=data.daily.find(d=>d.date===today); $('morningNote').value=note?.morning||''; $('eveningNote').value=note?.evening||''; $('highlightToday').value=note?.highlight||''; $('gratitudeToday').value=note?.gratitude||'';
-  const pomos=data.pomodoro.filter(p=>p.date===today).reduce((a,p)=>a+(p.minutes||0),0); const todayWeekly=data.weeklyTasks.filter(t=>t.date===today); const doneWeekly=todayWeekly.filter(t=>t.done).length; const weeklySum=todayWeekly.reduce((a,t)=>a+(Number(t.value)||0),0);
-  $('todayStats').innerHTML=`
+  const today = dateISO();
+  renderTodayPlan();
+
+  const habitToday = data.habits.map(h => ({
+    h,
+    s: data.logs.find(l => String(l.habit_id) === String(h.id) && l.date === today)?.status || ''
+  }));
+  const doneH = habitToday.filter(x => x.s === 'done').length;
+  $('habitTodayCount').textContent = `${fa(doneH)} / ${fa(habitToday.length)}`;
+
+  $('todayHabits').innerHTML = habitToday.length
+    ? habitToday.map(({h, s}) => {
+        const c = s === 'done';
+        const streak = calcStreak(h.id);
+        return `<div class="checklist-item ${c ? 'checked' : ''}">
+          <div class="check-box" data-toggle-habit="${h.id}">${c ? '✓' : ''}</div>
+          <div class="check-title" data-toggle-habit="${h.id}">${safe(h.name)} ${streak >= 3 ? `<span class="status gold" style="margin-right:5px;">🔥 ${fa(streak)}</span>` : ''}</div>
+          ${s === 'rest' ? '<span class="status gold">استراحت</span>' : ''}
+          <button class="ghost small" data-open-note="${h.id}" data-date="${today}" style="padding:2px 8px;font-size:11px">📝</button>
+        </div>`;
+      }).join('')
+    : '<p class="muted">هنوز عادتی اضافه نکردی.</p>';
+
+  const note = data.daily.find(d => d.date === today);
+  $('morningNote').value = note?.morning || '';
+  $('eveningNote').value = note?.evening || '';
+  $('highlightToday').value = note?.highlight || '';
+  $('gratitudeToday').value = note?.gratitude || '';
+
+  const pomos = data.pomodoro.filter(p => p.date === today).reduce((a,p) => a + (p.minutes || 0), 0);
+  const todayWeekly = data.weeklyTasks.filter(t => t.date === today);
+  const doneWeekly = todayWeekly.filter(t => t.done).length;
+  const weeklySum = todayWeekly.reduce((a,t) => a + (Number(t.value) || 0), 0);
+
+  $('todayStats').innerHTML = `
     <div class="stat"><div class="label">عادت انجام‌شده</div><div class="number">${fa(doneH)}</div></div>
     <div class="stat"><div class="label">دقایق تمرکز</div><div class="number">${fa(pomos)}</div></div>
     <div class="stat"><div class="label">برنامه‌ریزی امروز</div><div class="number">${fa(doneWeekly)}/${fa(todayWeekly.length)}</div></div>
@@ -827,93 +1093,262 @@ function renderToday(){
 
 // ═══════════ Monthly Goals ═══════════
 function renderMonthlyGoals(){
-  const monthName=new Intl.DateTimeFormat('fa-IR-u-ca-persian',{month:'long',year:'numeric'}).format(new Date()); $('monthlySubtitle').textContent=`ماه جاری: ${monthName}`;
-  const total=data.monthlyGoals.length; const doneCount=data.monthlyGoals.filter(g=>g.done).length; $('monthlyProgressPill').textContent=total?`${fa(doneCount)} از ${fa(total)} تکمیل`:'—';
-  const el=$('monthlyGoalsList'); if(!data.monthlyGoals.length){el.innerHTML='<p class="muted" style="grid-column:1/-1;text-align:center;padding:20px">هنوز هدف ماهانه‌ای نداری.</p>';return;}
-  el.innerHTML=data.monthlyGoals.map(g=>{
-    const p=monthlyGoalProgress(g.id); const sum=monthlyGoalSum(g.id); const childCount=data.weeklyGoals.filter(w=>String(w.monthlyGoalId)===String(g.id)).length; const daysLeft=g.due_date?Math.ceil((new Date(g.due_date)-new Date())/86400000):null;
-    const priorityClass=g.priority==='urgent_important'?'priority-urgent':g.priority==='important'?'priority-important':''; const r=45,c=2*Math.PI*r,off=c*(1-p/100);
-    return `<div class="goal-card ${priorityClass} ${g.done?'done':''}"><div class="goal-header"><div class="goal-title">${g.done?'✓ ':''}${safe(g.title)}</div><button class="ghost small" data-del-mg="${g.id}">×</button></div>
-      ${g.description?`<div class="goal-desc">${safe(g.description)}</div>`:''}
-      <div class="goal-progress-row"><svg class="goal-ring" viewBox="0 0 100 100"><circle cx="50" cy="50" r="${r}" fill="none" stroke="var(--cream2)" stroke-width="8"/><circle cx="50" cy="50" r="${r}" fill="none" stroke="var(--olive)" stroke-width="8" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 50 50)" style="transition:.6s"/><text x="50" y="56" text-anchor="middle" font-size="18" font-weight="800" fill="var(--dark)">${fa(p)}٪</text></svg>
-        <div style="flex:1"><div class="goal-stat-big">${fa(sum)} <span style="font-size:13px;color:var(--muted)">از ${fa(g.target)} ${safe(g.unit||'')}</span></div><div class="goal-stat-lbl">${childCount?`${fa(childCount)} هدف هفتگی متصل`:'بدون هدف هفتگی'}</div><div class="progress" style="margin-top:6px"><span style="width:${p}%"></span></div></div></div>
-      <div class="goal-meta"><span class="status">${labels.priority[g.priority]||''}</span>${g.due_date?`<span>${toFaDate(g.due_date)}</span>`:''}${daysLeft!==null?`<span class="${daysLeft<0?'status late':daysLeft<7?'status gold':'status blue'}">${daysLeft<0?`${fa(-daysLeft)} روز گذشت`:`${fa(daysLeft)} روز مانده`}</span>`:''}</div>
-      <div class="goal-actions"><button class="ghost small" data-toggle-mg="${g.id}">${g.done?'برگردان':'تکمیل'}</button><button class="ghost small" data-add-wg-for="${g.id}">+ هدف هفتگی</button></div></div>`;
+  const monthName = new Intl.DateTimeFormat('fa-IR-u-ca-persian',{month:'long',year:'numeric'}).format(new Date());
+  $('monthlySubtitle').textContent = `ماه جاری: ${monthName}`;
+  const total = data.monthlyGoals.length;
+  const doneCount = data.monthlyGoals.filter(g => g.done).length;
+  $('monthlyProgressPill').textContent = total ? `${fa(doneCount)} از ${fa(total)} تکمیل` : '—';
+
+  const el = $('monthlyGoalsList');
+  if (!data.monthlyGoals.length) {
+    el.innerHTML = '<p class="muted" style="grid-column:1/-1;text-align:center;padding:20px">هنوز هدف ماهانه‌ای نداری.</p>';
+    return;
+  }
+
+  el.innerHTML = data.monthlyGoals.map(g => {
+    const p = monthlyGoalProgress(g.id);
+    const sum = monthlyGoalSum(g.id);
+    const childCount = data.weeklyGoals.filter(w => String(w.monthlyGoalId) === String(g.id)).length;
+    const daysLeft = g.due_date ? Math.ceil((new Date(g.due_date) - new Date()) / 86400000) : null;
+    const priorityClass = g.priority === 'urgent_important' ? 'priority-urgent' : g.priority === 'important' ? 'priority-important' : '';
+    const r = 45, c = 2 * Math.PI * r, off = c * (1 - p/100);
+
+    return `<div class="goal-card ${priorityClass} ${g.done ? 'done' : ''}">
+      <div class="goal-header">
+        <div class="goal-title">${g.done ? '✓ ' : ''}${safe(g.title)}</div>
+        <button class="ghost small" data-del-mg="${g.id}">×</button>
+      </div>
+      ${g.description ? `<div class="goal-desc">${safe(g.description)}</div>` : ''}
+      <div class="goal-progress-row">
+        <svg class="goal-ring" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="${r}" fill="none" stroke="var(--cream2)" stroke-width="8"/>
+          <circle cx="50" cy="50" r="${r}" fill="none" stroke="var(--olive)" stroke-width="8" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 50 50)" style="transition:.6s"/>
+          <text x="50" y="56" text-anchor="middle" font-size="18" font-weight="800" fill="var(--dark)">${fa(p)}٪</text>
+        </svg>
+        <div style="flex:1">
+          <div class="goal-stat-big">${fa(sum)} <span style="font-size:13px;color:var(--muted)">از ${fa(g.target)} ${safe(g.unit||'')}</span></div>
+          <div class="goal-stat-lbl">${childCount ? `${fa(childCount)} هدف هفتگی متصل` : 'بدون هدف هفتگی'}</div>
+          <div class="progress" style="margin-top:6px"><span style="width:${p}%"></span></div>
+        </div>
+      </div>
+      <div class="goal-meta">
+        <span class="status">${labels.priority[g.priority] || ''}</span>
+        ${g.due_date ? `<span>${toFaDate(g.due_date)}</span>` : ''}
+        ${daysLeft !== null ? `<span class="${daysLeft < 0 ? 'status late' : daysLeft < 7 ? 'status gold' : 'status blue'}">${daysLeft < 0 ? `${fa(-daysLeft)} روز گذشت` : `${fa(daysLeft)} روز مانده`}</span>` : ''}
+      </div>
+      <div class="goal-actions">
+        <button class="ghost small" data-toggle-mg="${g.id}">${g.done ? 'برگردان' : 'تکمیل'}</button>
+        <button class="ghost small" data-add-wg-for="${g.id}">+ هدف هفتگی</button>
+      </div>
+    </div>`;
   }).join('');
 }
 
 // ═══════════ Weekly Goals ═══════════
 function renderWeeklyGoals(){
-  const filter=document.querySelector('[data-wgfilter].active')?.dataset.wgfilter||'current';
-  const lastWeekStart = getWeekStart(-1); const lastWeekEnd = new Date(lastWeekStart); lastWeekEnd.setDate(lastWeekEnd.getDate()+6);
-  const weekStart = getWeekStart(0); const weekEnd = new Date(weekStart); weekEnd.setDate(weekEnd.getDate()+6);
-  const nextWeekStart = getWeekStart(1); const nextWeekEnd = new Date(nextWeekStart); nextWeekEnd.setDate(nextWeekEnd.getDate()+6);
-  let arr=[...data.weeklyGoals];
-  if(filter==='last') arr=arr.filter(g=>{if(!g.due_date)return false;const d=new Date(g.due_date+'T12:00:00');return d>=lastWeekStart&&d<=lastWeekEnd;});
-  if(filter==='current') arr=arr.filter(g=>{if(!g.due_date)return true;const d=new Date(g.due_date+'T12:00:00');return d>=weekStart&&d<=weekEnd;});
-  if(filter==='next') arr=arr.filter(g=>{if(!g.due_date)return false;const d=new Date(g.due_date+'T12:00:00');return d>=nextWeekStart&&d<=nextWeekEnd;});
-  if(filter==='done') arr=arr.filter(g=>g.done);
-  const el=$('weeklyGoalsList'); if(!arr.length){el.innerHTML='<p class="muted" style="text-align:center;padding:20px">هدفی برای نمایش در این هفته نیست.</p>';return;}
-  el.innerHTML=arr.map(g=>{
-    const p=weeklyGoalProgress(g.id); const sum=weeklyGoalSum(g.id); const parent=data.monthlyGoals.find(m=>String(m.id)===String(g.monthlyGoalId)); const unit=parent?.unit||''; const taskCount=data.weeklyTasks.filter(t=>String(t.weeklyGoalId)===String(g.id)).length;
-    return `<article class="item ${g.done?'done':''}"><div class="item-main"><div class="wg-row"><div class="wg-info"><div class="wg-title">${g.done?'✓ ':''}${safe(g.title)}</div>${parent?`<span class="wg-parent">🎯 ${safe(parent.title)}</span>`:'<span class="status late">بدون والد</span>'}<div class="wg-progress"><span style="width:${p}%"></span></div><div class="wg-stats"><span>📊 ${fa(sum)} از ${fa(g.target)} ${safe(unit)}</span><span>📋 ${fa(taskCount)} کار</span><span>✨ ${fa(p)}٪</span></div></div><div style="text-align:center"><div style="font-size:20px;font-weight:800;color:var(--olive)">${fa(p)}٪</div></div></div>${g.due_date?`<div class="item-meta"><span>شروع: ${toFaDate(g.due_date)}</span></div>`:''}</div><div class="item-actions"><button class="ghost small" data-toggle-wg="${g.id}">${g.done?'برگردان':'تکمیل'}</button><button class="danger small" data-del-wg="${g.id}">×</button></div></article>`;
+  const filter = document.querySelector('[data-wgfilter].active')?.dataset.wgfilter || 'current';
+  const lastWeekStart = getWeekStart(-1);
+  const lastWeekEnd = new Date(lastWeekStart); lastWeekEnd.setDate(lastWeekEnd.getDate() + 6);
+  const weekStart = getWeekStart(0);
+  const weekEnd = new Date(weekStart); weekEnd.setDate(weekEnd.getDate() + 6);
+  const nextWeekStart = getWeekStart(1);
+  const nextWeekEnd = new Date(nextWeekStart); nextWeekEnd.setDate(nextWeekEnd.getDate() + 6);
+
+  let arr = [...data.weeklyGoals];
+  if (filter === 'last')    arr = arr.filter(g => { if(!g.due_date) return false; const d = new Date(g.due_date + 'T12:00:00'); return d >= lastWeekStart && d <= lastWeekEnd; });
+  if (filter === 'current') arr = arr.filter(g => { if(!g.due_date) return true; const d = new Date(g.due_date + 'T12:00:00'); return d >= weekStart && d <= weekEnd; });
+  if (filter === 'next')    arr = arr.filter(g => { if(!g.due_date) return false; const d = new Date(g.due_date + 'T12:00:00'); return d >= nextWeekStart && d <= nextWeekEnd; });
+  if (filter === 'done')    arr = arr.filter(g => g.done);
+
+  const el = $('weeklyGoalsList');
+  if (!arr.length) {
+    el.innerHTML = '<p class="muted" style="text-align:center;padding:20px">هدفی برای نمایش در این هفته نیست.</p>';
+    return;
+  }
+
+  el.innerHTML = arr.map(g => {
+    const p = weeklyGoalProgress(g.id);
+    const sum = weeklyGoalSum(g.id);
+    const parent = data.monthlyGoals.find(m => String(m.id) === String(g.monthlyGoalId));
+    const unit = parent?.unit || '';
+    const taskCount = data.weeklyTasks.filter(t => String(t.weeklyGoalId) === String(g.id)).length;
+
+    return `<article class="item ${g.done ? 'done' : ''}">
+      <div class="item-main">
+        <div class="wg-row">
+          <div class="wg-info">
+            <div class="wg-title">${g.done ? '✓ ' : ''}${safe(g.title)}</div>
+            ${parent ? `<span class="wg-parent">🎯 ${safe(parent.title)}</span>` : '<span class="status late">بدون والد</span>'}
+            <div class="wg-progress"><span style="width:${p}%"></span></div>
+            <div class="wg-stats">
+              <span>📊 ${fa(sum)} از ${fa(g.target)} ${safe(unit)}</span>
+              <span>📋 ${fa(taskCount)} کار</span>
+              <span>✨ ${fa(p)}٪</span>
+            </div>
+          </div>
+          <div style="text-align:center"><div style="font-size:20px;font-weight:800;color:var(--olive)">${fa(p)}٪</div></div>
+        </div>
+        ${g.due_date ? `<div class="item-meta"><span>شروع: ${toFaDate(g.due_date)}</span></div>` : ''}
+      </div>
+      <div class="item-actions">
+        <button class="ghost small" data-toggle-wg="${g.id}">${g.done ? 'برگردان' : 'تکمیل'}</button>
+        <button class="danger small" data-del-wg="${g.id}">×</button>
+      </div>
+    </article>`;
   }).join('');
 }
 
 // ═══════════ Weekly Tasks ═══════════
 function renderWeeklyTasks(){
-  const days=getWeekDays(weeklyOffset); const range=`${toFaDate(dateISO(days[0]))} — ${toFaDate(dateISO(days[6]))}`; $('wtWeekRange').textContent=range;
-  const weekTasks=data.weeklyTasks.filter(t=>{const d=new Date(t.date+'T12:00:00');return d>=days[0]&&d<=days[6];}); const doneCount=weekTasks.filter(t=>t.done).length; $('weeklyTasksProgress').textContent=weekTasks.length?`${fa(doneCount)} / ${fa(weekTasks.length)} انجام‌شده`:'—';
-  $('weekColumns').innerHTML=days.map((d,i)=>{
-    const iso=dateISO(d); const isToday=iso===dateISO(); const dayTasks=data.weeklyTasks.filter(t=>t.date===iso); const dayRoutines = getRoutinesForDay(iso); const daySum=dayTasks.reduce((a,t)=>a+(Number(t.value)||0),0);
-    return `<div class="week-day ${isToday?'today':''}"><div class="week-day-header"><span class="name">${weekDayNames[i]}</span><span class="date">${toFaDate(iso)}</span>${daySum>0?`<span class="day-total">📊 ${fa(daySum)}</span>`:''}</div>
-      ${dayRoutines.map(r => `<div style="background:var(--bluebg);color:var(--blue);padding:6px;border-radius:8px;font-size:10px;font-weight:700;margin-bottom:4px;border:1px solid #c0d4e6; cursor:pointer;" data-event-type="routine" data-event-id="${r.id}" data-event-date="${iso}">⏰ ${r.startTime} - ${r.endTime}<br>${safe(r.title)}</div>`).join('')}
-      ${dayTasks.length?dayTasks.map(t=>{
-        const goal=data.weeklyGoals.find(g=>String(g.id)===String(t.weeklyGoalId)); const parent=goal?data.monthlyGoals.find(m=>String(m.id)===String(goal.monthlyGoalId)):null; const unit=parent?.unit||''; const isTimed = t.startTime && t.endTime;
-        return `<div class="week-task ${t.done?'done':''}"><div class="wt-top"><div class="wt-check ${t.done?'checked':''}" data-toggle-wt="${t.id}">✓</div><div class="wt-body" ${isTimed ? `style="cursor:pointer;" data-event-type="task" data-event-id="${t.id}" data-event-date="${iso}"` : ''}><div class="wt-title">${safe(t.title)} ${isTimed ? `<small style="color:var(--blue)">(${t.startTime})</small>`:''}</div>${goal?`<div class="wt-tag">🎯 ${safe(goal.title.substring(0,20))}</div>`:'<div class="wt-tag" style="background:var(--redbg);color:var(--red)">⚠ بدون هدف</div>'}</div><button class="ghost small" data-del-wt="${t.id}" style="padding:2px 6px;font-size:10px">×</button></div><div class="wt-input-row"><input type="number" class="wt-input" min="0" step="0.25" value="${t.value||''}" placeholder="0" data-value-wt="${t.id}"><span class="wt-unit">${safe(unit)}</span></div></div>`;
-      }).join(''):'<div class="week-day-empty">خالی</div>'}<button class="week-day-add" data-add-wt-day="${iso}">+ افزودن</button></div>`;
+  const days = getWeekDays(weeklyOffset);
+  const range = `${toFaDate(dateISO(days[0]))} — ${toFaDate(dateISO(days[6]))}`;
+  $('wtWeekRange').textContent = range;
+
+  const weekTasks = data.weeklyTasks.filter(t => {
+    const d = new Date(t.date + 'T12:00:00');
+    return d >= days[0] && d <= days[6];
+  });
+  const doneCount = weekTasks.filter(t => t.done).length;
+  $('weeklyTasksProgress').textContent = weekTasks.length ? `${fa(doneCount)} / ${fa(weekTasks.length)} انجام‌شده` : '—';
+
+  $('weekColumns').innerHTML = days.map((d, i) => {
+    const iso = dateISO(d);
+    const isToday = iso === dateISO();
+    const dayTasks = data.weeklyTasks.filter(t => t.date === iso);
+    const dayRoutines = getRoutinesForDay(iso);
+    const daySum = dayTasks.reduce((a,t) => a + (Number(t.value) || 0), 0);
+
+    return `<div class="week-day ${isToday ? 'today' : ''}">
+      <div class="week-day-header">
+        <span class="name">${weekDayNames[i]}</span>
+        <span class="date">${toFaDate(iso)}</span>
+        ${daySum > 0 ? `<span class="day-total">📊 ${fa(daySum)}</span>` : ''}
+      </div>
+      ${dayRoutines.map(r => `
+        <div style="background:var(--bluebg);color:var(--blue);padding:6px;border-radius:8px;font-size:10px;font-weight:700;margin-bottom:4px;border:1px solid #c0d4e6; cursor:pointer;" data-event-type="routine" data-event-id="${r.id}" data-event-date="${iso}">
+          ⏰ ${r.startTime} - ${r.endTime}<br>${safe(r.title)}
+        </div>`).join('')}
+      ${dayTasks.length ? dayTasks.map(t => {
+        const goal = data.weeklyGoals.find(g => String(g.id) === String(t.weeklyGoalId));
+        const parent = goal ? data.monthlyGoals.find(m => String(m.id) === String(goal.monthlyGoalId)) : null;
+        const unit = parent?.unit || '';
+        const isTimed = t.startTime && t.endTime;
+        return `<div class="week-task ${t.done ? 'done' : ''}">
+          <div class="wt-top">
+            <div class="wt-check ${t.done ? 'checked' : ''}" data-toggle-wt="${t.id}">✓</div>
+            <div class="wt-body" ${isTimed ? `style="cursor:pointer;" data-event-type="task" data-event-id="${t.id}" data-event-date="${iso}"` : ''}>
+              <div class="wt-title">${safe(t.title)} ${isTimed ? `<small style="color:var(--blue)">(${t.startTime})</small>` : ''}</div>
+              ${goal ? `<div class="wt-tag">🎯 ${safe(goal.title.substring(0,20))}</div>` : '<div class="wt-tag" style="background:var(--redbg);color:var(--red)">⚠ بدون هدف</div>'}
+            </div>
+            <button class="ghost small" data-del-wt="${t.id}" style="padding:2px 6px;font-size:10px">×</button>
+          </div>
+          <div class="wt-input-row">
+            <input type="number" class="wt-input" min="0" step="0.25" value="${t.value || ''}" placeholder="0" data-value-wt="${t.id}">
+            <span class="wt-unit">${safe(unit)}</span>
+          </div>
+        </div>`;
+      }).join('') : '<div class="week-day-empty">خالی</div>'}
+      <button class="week-day-add" data-add-wt-day="${iso}">+ افزودن</button>
+    </div>`;
   }).join('');
 }
 
 // ═══════════ Habits ═══════════
 function calcStreak(hid){
-  let s=0;const d=new Date();
-  for(let i=0;i<365;i++){ const iso=dateISO(d); const log=data.logs.find(l=>String(l.habit_id)===String(hid)&&l.date===iso); if(log?.status==='done'){s++;d.setDate(d.getDate()-1);} else if(i===0){d.setDate(d.getDate()-1);} else break; }
+  let s = 0;
+  const d = new Date();
+  for (let i = 0; i < 365; i++) {
+    const iso = dateISO(d);
+    const log = data.logs.find(l => String(l.habit_id) === String(hid) && l.date === iso);
+    if (log?.status === 'done') { s++; d.setDate(d.getDate() - 1); }
+    else if (i === 0) { d.setDate(d.getDate() - 1); }
+    else break;
+  }
   return s;
 }
+
 function renderHabits(){
-  const sl={done:'انجام شد',not_done:'انجام نشد',rest:'استراحت'};
-  $('habitList').innerHTML=data.habits.length?data.habits.map(h=>{
-    const log=data.logs.find(l=>String(l.habit_id)===String(h.id)&&l.date===dateISO());const s=log?.status||''; const streak=calcStreak(h.id);
-    return `<article class="habit" style="background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
-      <span style="font-weight:700">${safe(h.name)} ${streak>0?`<span class="status gold">🔥 ${fa(streak)}</span>`:''}</span>
-      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><button class="ghost small" data-open-note="${h.id}" data-date="${dateISO()}">📝 یادداشت</button><select data-habit-status="${h.id}" style="width:auto"><option value="" ${!s?'selected':''}>ثبت نشده</option>${Object.entries(sl).map(([v,l])=>`<option value="${v}" ${s===v?'selected':''}>${l}</option>`).join('')}</select><button class="danger small" data-del="habits" data-id="${h.id}">×</button></div></article>`;
-  }).join(''):'<p class="muted">هنوز عادتی اضافه نشده.</p>';
+  const sl = { done: 'انجام شد', not_done: 'انجام نشد', rest: 'استراحت' };
+  $('habitList').innerHTML = data.habits.length
+    ? data.habits.map(h => {
+        const log = data.logs.find(l => String(l.habit_id) === String(h.id) && l.date === dateISO());
+        const s = log?.status || '';
+        const streak = calcStreak(h.id);
+        return `<article class="habit" style="background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+          <span style="font-weight:700">${safe(h.name)} ${streak > 0 ? `<span class="status gold">🔥 ${fa(streak)}</span>` : ''}</span>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+            <button class="ghost small" data-open-note="${h.id}" data-date="${dateISO()}">📝 یادداشت</button>
+            <select data-habit-status="${h.id}" style="width:auto">
+              <option value="" ${!s ? 'selected' : ''}>ثبت نشده</option>
+              ${Object.entries(sl).map(([v,l]) => `<option value="${v}" ${s === v ? 'selected' : ''}>${l}</option>`).join('')}
+            </select>
+            <button class="danger small" data-del="habits" data-id="${h.id}">×</button>
+          </div>
+        </article>`;
+      }).join('')
+    : '<p class="muted">هنوز عادتی اضافه نشده.</p>';
   renderHabitHeatmap();
 }
+
 function renderHabitHeatmap(){
-  const weeks = 12; const today = new Date(); const todayStr = dateISO(today); const start = new Date(today); start.setDate(today.getDate() - (weeks * 7 - 1));
-  const startDay = start.getDay(); const fromSat = (startDay + 1) % 7; start.setDate(start.getDate() - fromSat);
+  const weeks = 12;
+  const today = new Date();
+  const todayStr = dateISO(today);
+  const start = new Date(today);
+  start.setDate(today.getDate() - (weeks * 7 - 1));
+  const startDay = start.getDay();
+  const fromSat = (startDay + 1) % 7;
+  start.setDate(start.getDate() - fromSat);
+
   const generateHeatmapForHabit = (habit) => {
-    let cells = []; let xLabels = []; let lastMonth = -1;
+    let cells = [];
+    let xLabels = [];
+    let lastMonth = -1;
     for (let i = 0; i < (weeks * 7) + 7; i++) {
-      const d = new Date(start); d.setDate(start.getDate() + i); const iso = dateISO(d);
-      const faDateObj = new Intl.DateTimeFormat('fa-IR-u-ca-persian', {month:'long', day:'numeric'}).formatToParts(d);
-      const monthName = faDateObj.find(p => p.type === 'month')?.value; const dayNum = parseInt(faDateObj.find(p => p.type === 'day')?.value, 10);
-      if (monthName && monthName !== lastMonth && dayNum <= 7) { xLabels.push({ col: i, name: monthName }); lastMonth = monthName; }
+      const d = new Date(start);
+      d.setDate(start.getDate() + i);
+      const iso = dateISO(d);
+      const faDateObj = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { month:'long', day:'numeric' }).formatToParts(d);
+      const monthName = faDateObj.find(p => p.type === 'month')?.value;
+      const dayNum = parseInt(faDateObj.find(p => p.type === 'day')?.value, 10);
+      if (monthName && monthName !== lastMonth && dayNum <= 7) {
+        xLabels.push({ col: i, name: monthName });
+        lastMonth = monthName;
+      }
       const log = data.logs.find(l => String(l.habit_id) === String(habit.id) && l.date === iso);
-      let cls = ''; if (log) { if (log.status === 'done') cls = 'done'; else if (log.status === 'rest') cls = 'rest'; else if (log.status === 'not_done') cls = 'not_done'; }
+      let cls = '';
+      if (log) {
+        if (log.status === 'done') cls = 'done';
+        else if (log.status === 'rest') cls = 'rest';
+        else if (log.status === 'not_done') cls = 'not_done';
+      }
       if (log && log.note) cls += ' has-note';
-      const isFuture = iso > todayStr; const isToday = iso === todayStr; const futureStyle = isFuture ? 'opacity: 0.3;' : ''; const todayClass = isToday ? 'today-cell' : '';
+      const isFuture = iso > todayStr;
+      const isToday = iso === todayStr;
+      const futureStyle = isFuture ? 'opacity: 0.3;' : '';
+      const todayClass = isToday ? 'today-cell' : '';
       cells.push(`<div class="cell ${cls} ${todayClass}" style="${futureStyle}" data-heatmap-cell="1" data-habit-id="${habit.id}" data-date="${iso}" title="${isToday ? '🌟 امروز - ' : ''}${toFaDate(iso)} ${log?.note ? '- ' + safe(log.note) : ''}"></div>`);
     }
     const xAxisHtml = xLabels.map(l => `<span class="heatmap-x-label" style="right: ${(l.col * 17) + 20}px;">${l.name}</span>`).join('');
-    return `<div class="heatmap-wrapper"><div class="heatmap-y-axis"><span>شنبه</span><span></span><span>دوشنبه</span><span></span><span>چهارشنبه</span><span></span><span>جمعه</span></div><div class="heatmap-main"><div class="heatmap-x-axis">${xAxisHtml}</div><div class="heatmap heatmap-grid">${cells.join('')}</div></div></div>`;
+    return `<div class="heatmap-wrapper">
+      <div class="heatmap-y-axis"><span>شنبه</span><span></span><span>دوشنبه</span><span></span><span>چهارشنبه</span><span></span><span>جمعه</span></div>
+      <div class="heatmap-main">
+        <div class="heatmap-x-axis">${xAxisHtml}</div>
+        <div class="heatmap heatmap-grid">${cells.join('')}</div>
+      </div>
+    </div>`;
   };
+
   const tabEl = $('habitHeatmapTab');
-  if (tabEl) { if (!data.habits.length) tabEl.innerHTML = '<p class="muted">هنوز عادتی اضافه نکردی.</p>'; else tabEl.innerHTML = data.habits.map(h => `<div class="habit-heatmap-row"><div class="habit-heatmap-title"><span>${safe(h.name)}</span></div>${generateHeatmapForHabit(h)}</div>`).join(''); }
+  if (tabEl) {
+    if (!data.habits.length) tabEl.innerHTML = '<p class="muted">هنوز عادتی اضافه نکردی.</p>';
+    else tabEl.innerHTML = data.habits.map(h => `<div class="habit-heatmap-row"><div class="habit-heatmap-title"><span>${safe(h.name)}</span></div>${generateHeatmapForHabit(h)}</div>`).join('');
+  }
   const dashEl = $('habitHeatmap');
-  if (dashEl) { if (!data.habits.length) dashEl.innerHTML = '<p class="muted">هنوز عادتی نیست.</p>'; else dashEl.innerHTML = data.habits.slice(0, 3).map(h => `<div class="habit-heatmap-row" style="padding: 10px; margin-bottom: 10px;"><div class="habit-heatmap-title" style="font-size:12px; margin-bottom:4px;">${safe(h.name)}</div>${generateHeatmapForHabit(h)}</div>`).join(''); }
+  if (dashEl) {
+    if (!data.habits.length) dashEl.innerHTML = '<p class="muted">هنوز عادتی نیست.</p>';
+    else dashEl.innerHTML = data.habits.slice(0, 3).map(h => `<div class="habit-heatmap-row" style="padding: 10px; margin-bottom: 10px;"><div class="habit-heatmap-title" style="font-size:12px; margin-bottom:4px;">${safe(h.name)}</div>${generateHeatmapForHabit(h)}</div>`).join('');
+  }
 }
 
 // ═══════════ Finance ═══════════
@@ -959,9 +1394,9 @@ function renderMonthlyFinance(){
   }
   const months = allMonths.slice(-3);
   const rows = months.map(m => {
-    const inc = data.finance.filter(f => f.month === m && (f.type === 'درآمد' || f.type === 'خرج نکرده (صرفه‌جویی)')).reduce((a, f) => a + Number(f.amount || 0), 0);
-    const exp = data.finance.filter(f => f.month === m && (f.type === 'هزینه' || f.type === 'خرج اضافی')).reduce((a, f) => a + Number(f.amount || 0), 0);
-    const sav = data.finance.filter(f => f.month === m && f.type === 'پس‌انداز').reduce((a, f) => a + Number(f.amount || 0), 0);
+    const inc = data.finance.filter(f => f.month === m && (f.type === 'درآمد' || f.type === 'خرج نکرده (صرفه‌جویی)')).reduce((a,f) => a + Number(f.amount || 0), 0);
+    const exp = data.finance.filter(f => f.month === m && (f.type === 'هزینه' || f.type === 'خرج اضافی')).reduce((a,f) => a + Number(f.amount || 0), 0);
+    const sav = data.finance.filter(f => f.month === m && f.type === 'پس‌انداز').reduce((a,f) => a + Number(f.amount || 0), 0);
     return `<tr>
       <td style="padding:10px;border-bottom:1px solid var(--line)">${m}</td>
       <td style="padding:10px;border-bottom:1px solid var(--line)" class="money-pos">${fa(inc)}</td>
@@ -969,6 +1404,7 @@ function renderMonthlyFinance(){
       <td style="padding:10px;border-bottom:1px solid var(--line)">${fa(sav)}</td>
     </tr>`;
   }).join('');
+
   $('monthlyFinance').innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:13px">
     <thead><tr style="background:var(--cream2)">
       <th style="padding:10px;text-align:right">ماه</th>
@@ -984,11 +1420,12 @@ function renderExpenseDonut(){
   const cats = {};
   data.finance.filter(f => f.type === 'هزینه' || f.type === 'خرج اضافی')
     .forEach(f => { cats[f.category || 'سایر'] = (cats[f.category || 'سایر'] || 0) + Number(f.amount || 0); });
-  const entries = Object.entries(cats).sort((a, b) => b[1] - a[1]).slice(0, 6);
-  const total = entries.reduce((a, e) => a + e[1], 0);
+  const entries = Object.entries(cats).sort((a,b) => b[1] - a[1]).slice(0, 6);
+  const total = entries.reduce((a,e) => a + e[1], 0);
   const el = $('expenseDonut');
   if (!total) { el.innerHTML = '<p class="muted">هنوز هزینه‌ای ثبت نشده.</p>'; return; }
-  const colors = ['#78845b', '#b58e42', '#76543a', '#5b7a99', '#b95042', '#4b3526'];
+
+  const colors = ['#78845b','#b58e42','#76543a','#5b7a99','#b95042','#4b3526'];
   let acc = 0;
   const paths = entries.map((e, i) => {
     const pct = e[1] / total;
@@ -999,6 +1436,7 @@ function renderExpenseDonut(){
     const x2 = 80 + 60 * Math.cos(er), y2 = 80 + 60 * Math.sin(er);
     return `<path d="M80,80 L${x1},${y1} A60,60 0 ${lg} 1 ${x2},${y2} Z" fill="${colors[i]}" stroke="var(--white)" stroke-width="2"/>`;
   }).join('');
+
   el.innerHTML = `<div class="donut-wrap">
     <svg width="160" height="160" viewBox="0 0 160 160">
       ${paths}
@@ -1030,7 +1468,11 @@ function renderMood(){
 
 function renderMoodLine(){
   const days = [];
-  for (let i = 29; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); days.push(dateISO(d)); }
+  for (let i = 29; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    days.push(dateISO(d));
+  }
   const e = days.map(d => data.mood.find(m => m.date === d)?.energy || null);
   const s = days.map(d => data.mood.find(m => m.date === d)?.stress || null);
   const w = 600, h = 180, p = 30;
@@ -1046,26 +1488,22 @@ function renderMoodLine(){
     return path;
   };
   $('moodLineChart').innerHTML = `<svg class="svg-chart" viewBox="0 0 ${w} ${h}">
-    ${[1, 2, 3, 4, 5].map(v => `<line x1="${p}" y1="${y(v)}" x2="${w - p}" y2="${y(v)}" stroke="var(--line)" stroke-dasharray="2,4"/>`).join('')}
+    ${[1,2,3,4,5].map(v => `<line x1="${p}" y1="${y(v)}" x2="${w - p}" y2="${y(v)}" stroke="var(--line)" stroke-dasharray="2,4"/>`).join('')}
     <path d="${line(e)}" fill="none" stroke="var(--olive)" stroke-width="3" stroke-linecap="round"/>
     <path d="${line(s)}" fill="none" stroke="var(--red)" stroke-width="3" stroke-linecap="round" stroke-dasharray="4,4"/>
     <text x="${w - 8}" y="${y(5) - 2}" text-anchor="end" font-size="10" fill="var(--olive)" font-weight="700">● انرژی</text>
     <text x="${w - 8}" y="${y(5) + 12}" text-anchor="end" font-size="10" fill="var(--red)" font-weight="700">● استرس</text>
   </svg>`;
-}
-
-// ═══════════ Notebook (نسخهٔ اصلاح‌شده) ═══════════
+}// ═══════════ Notebook ═══════════
 function renderNotebook(){
   const el = $('notebookList'); if (!el) return;
   const search = ($('notebookSearch')?.value || '').trim().toLowerCase();
   const filter = $('notebookFilter')?.value || 'all';
 
-  // فقط یادداشت‌های غیرخالی روزانه
   const dailyNotes = data.daily
-    .filter(n => (n.morning || '').trim() || (n.evening || '').trim() || (n.highlight || '').trim() || (n.gratitude || '').trim())
+    .filter(n => (n.morning||'').trim() || (n.evening||'').trim() || (n.highlight||'').trim() || (n.gratitude||'').trim())
     .map(n => ({ type: 'daily', date: n.date, data: n }));
 
-  // یادداشت‌های عادت
   const habitNotes = data.logs
     .filter(l => l.note && l.note.trim() !== '')
     .map(l => {
@@ -1073,12 +1511,10 @@ function renderNotebook(){
       return { type: 'habit', date: l.date, data: l, habitName: habit ? habit.name : 'عادت حذف‌شده' };
     });
 
-  // یادداشت تسک‌ها — منبع اصلی: خود تسک
   const taskNotes = (data.weeklyTasks || [])
     .filter(t => t.note && t.note.trim() !== '')
     .map(t => ({ type: 'task', date: t.date, data: t, taskName: t.title }));
 
-  // یادداشت روتین‌ها — از routineLogs با فیلد صحیح routineId
   const routineNotes = (data.routineLogs || [])
     .filter(l => l.note && l.note.trim() !== '')
     .map(l => {
@@ -1088,34 +1524,24 @@ function renderNotebook(){
     });
 
   let arr = [...dailyNotes, ...habitNotes, ...taskNotes, ...routineNotes]
-    .sort((a, b) => String(b.date).localeCompare(String(a.date)));
+    .sort((a,b) => String(b.date).localeCompare(String(a.date)));
 
-  // فیلتر زمانی — با نیمه‌روز محلی
   const localNoon = iso => new Date(iso + 'T12:00:00');
   if (filter === '7' || filter === '30') {
     const days = parseInt(filter, 10);
-    const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - days); cutoff.setHours(0, 0, 0, 0);
+    const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - days); cutoff.setHours(0,0,0,0);
     arr = arr.filter(n => n.date && localNoon(n.date) >= cutoff);
   }
   if (filter === 'this_month') {
-    const faMonth = d => new Intl.DateTimeFormat('fa-IR-u-ca-persian', { year: 'numeric', month: 'numeric' }).format(d);
+    const faMonth = d => new Intl.DateTimeFormat('fa-IR-u-ca-persian', { year:'numeric', month:'numeric' }).format(d);
     const nowFa = faMonth(new Date());
     arr = arr.filter(n => n.date && faMonth(localNoon(n.date)) === nowFa);
   }
-
-  // جستجو
   if (search) {
     arr = arr.filter(n => {
-      if (n.type === 'daily') {
-        return ['morning', 'evening', 'highlight', 'gratitude']
-          .some(k => String(n.data[k] || '').toLowerCase().includes(search));
-      }
-      if (n.type === 'habit') {
-        return String(n.data.note || '').toLowerCase().includes(search)
-            || String(n.habitName || '').toLowerCase().includes(search);
-      }
-      return String(n.data.note || '').toLowerCase().includes(search)
-          || String(n.taskName || '').toLowerCase().includes(search);
+      if (n.type === 'daily') return ['morning','evening','highlight','gratitude'].some(k => String(n.data[k]||'').toLowerCase().includes(search));
+      if (n.type === 'habit') return String(n.data.note||'').toLowerCase().includes(search) || String(n.habitName||'').toLowerCase().includes(search);
+      return String(n.data.note||'').toLowerCase().includes(search) || String(n.taskName||'').toLowerCase().includes(search);
     });
   }
 
@@ -1125,6 +1551,12 @@ function renderNotebook(){
     return;
   }
 
+  const actionsHtml = (type, id, date) => `
+    <div style="display:flex;gap:6px">
+      <button class="ghost small" data-universal-edit="${type}" data-edit-id="${id||''}" data-edit-date="${date}" title="ویرایش">✏️</button>
+      <button class="danger small" data-universal-del="${type}" data-edit-id="${id||''}" data-edit-date="${date}" title="حذف">🗑️</button>
+    </div>`;
+
   el.innerHTML = arr.map(n => {
     const isToday = n.date === dateISO();
 
@@ -1132,10 +1564,7 @@ function renderNotebook(){
       return `<div class="panel notebook-card note-daily" data-notebook-date="${n.date}">
         <div class="sectionhead" style="margin-bottom:10px">
           <div><h3 style="margin:0">📅 ${toFaDate(n.date)} ${isToday ? '<span class="status gold" style="font-size:10px">امروز</span>' : ''}</h3></div>
-          <div style="display:flex;gap:6px">
-            <button class="ghost small" data-edit-notebook="${n.date}">✏️ ویرایش</button>
-            <button class="danger small" data-del-notebook="${n.date}">×</button>
-          </div>
+          ${actionsHtml('daily', '', n.date)}
         </div>
         <div class="grid2" style="gap:10px">
           ${n.data.morning ? `<div class="notebook-section"><div class="notebook-label">🌅 صبح</div><div class="notebook-text">${safe(n.data.morning)}</div></div>` : ''}
@@ -1152,7 +1581,10 @@ function renderNotebook(){
       return `<div class="panel notebook-card note-habit">
         <div class="sectionhead" style="margin-bottom:10px">
           <div><h3 style="margin:0">🔥 ${safe(n.habitName)} — ${toFaDate(n.date)}</h3></div>
-          <span class="status ${st}">${lbl}</span>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+            <span class="status ${st}">${lbl}</span>
+            ${actionsHtml('habit', n.data.habit_id, n.date)}
+          </div>
         </div>
         <div class="notebook-section"><div class="notebook-label">📝 یادداشت عادت</div><div class="notebook-text">${safe(n.data.note)}</div></div>
       </div>`;
@@ -1164,26 +1596,179 @@ function renderNotebook(){
       return `<div class="panel notebook-card note-task" style="border-right-color:var(--blue)">
         <div class="sectionhead" style="margin-bottom:10px">
           <div><h3 style="margin:0">⏰ ${safe(n.taskName)} — ${toFaDate(n.date)}</h3></div>
-          <span class="status blue">برنامه</span>
-          ${st ? `<span class="status ${st}">${lbl}</span>` : ''}
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+            <span class="status blue">برنامه</span>
+            ${st ? `<span class="status ${st}">${lbl}</span>` : ''}
+            ${actionsHtml('routine', n.data.routineId, n.date)}
+          </div>
         </div>
         <div class="notebook-section"><div class="notebook-label">📝 یادداشت</div><div class="notebook-text">${safe(n.data.note)}</div></div>
       </div>`;
     }
 
-    // task
     return `<div class="panel notebook-card note-task">
       <div class="sectionhead" style="margin-bottom:10px">
         <div><h3 style="margin:0">✓ ${safe(n.taskName)} — ${toFaDate(n.date)}</h3></div>
-        <span class="status blue">کار</span>
-        ${n.data.eventStatus === 'done' ? '<span class="status done">انجام شد</span>' : ''}
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+          <span class="status blue">کار</span>
+          ${n.data.eventStatus === 'done' ? '<span class="status done">انجام شد</span>' : ''}
+          ${actionsHtml('task', n.data.id, n.date)}
+        </div>
       </div>
       <div class="notebook-section"><div class="notebook-label">📝 یادداشت</div><div class="notebook-text">${safe(n.data.note)}</div></div>
     </div>`;
   }).join('');
 }
 
-// ═══════════ Mood Selector (گلوبال) ═══════════
+// ═══════════ Universal Editor ═══════════
+let currentEdit = null;
+
+const NoteTypes = {
+  daily: {
+    icon: '📅',
+    title: rec => `یادداشت روز ${toFaDate(rec.date)}`,
+    fields: [
+      { key:'morning',   label:'🌅 صبح',        type:'textarea', rows:3 },
+      { key:'evening',   label:'🌙 شب',         type:'textarea', rows:3 },
+      { key:'highlight', label:'✨ بهترین اتفاق', type:'text' },
+      { key:'gratitude', label:'🙏 شکرگزاری',    type:'text' }
+    ]
+  },
+  habit: {
+    icon: '🔥',
+    title: rec => `یادداشت عادت ${toFaDate(rec.date)}`,
+    fields: [
+      { key:'status', label:'وضعیت', type:'select', options:[
+        { v:'',         t:'ثبت نشده' },
+        { v:'done',     t:'✅ انجام شد' },
+        { v:'not_done', t:'❌ انجام نشد' },
+        { v:'rest',     t:'☕ استراحت' }
+      ]},
+      { key:'note', label:'📝 یادداشت', type:'textarea', rows:4 }
+    ]
+  },
+  task: {
+    icon: '📋',
+    title: rec => `کار: ${rec._title || ''} — ${toFaDate(rec.date)}`,
+    fields: [
+      { key:'title',       label:'عنوان',        type:'text' },
+      { key:'eventStatus', label:'وضعیت انجام',  type:'select', options:[
+        { v:'',         t:'ثبت نشده' },
+        { v:'done',     t:'✅ انجام شد' },
+        { v:'not_done', t:'❌ انجام نشد' }
+      ]},
+      { key:'value',     label:'مقدار',       type:'number' },
+      { key:'startTime', label:'ساعت شروع',   type:'text' },
+      { key:'endTime',   label:'ساعت پایان',  type:'text' },
+      { key:'note',      label:'📝 یادداشت',   type:'textarea', rows:4 }
+    ]
+  },
+  routine: {
+    icon: '⏰',
+    title: rec => `برنامه: ${rec._title || ''} — ${toFaDate(rec.date)}`,
+    fields: [
+      { key:'status', label:'وضعیت انجام', type:'select', options:[
+        { v:'',         t:'ثبت نشده' },
+        { v:'done',     t:'✅ انجام شد' },
+        { v:'not_done', t:'❌ انجام نشد' }
+      ]},
+      { key:'note', label:'📝 یادداشت', type:'textarea', rows:4 }
+    ]
+  }
+};
+
+function renderEditField(field, currentValue) {
+  const id = `ue_field_${field.key}`;
+  let inputHtml = '';
+  if (field.type === 'textarea') {
+    inputHtml = `<textarea id="${id}" rows="${field.rows||3}">${safe(currentValue)}</textarea>`;
+  } else if (field.type === 'select') {
+    inputHtml = `<select id="${id}">${field.options.map(o => `<option value="${o.v}" ${String(currentValue)===String(o.v)?'selected':''}>${o.t}</option>`).join('')}</select>`;
+  } else if (field.type === 'number') {
+    inputHtml = `<input id="${id}" type="number" value="${safe(currentValue)}">`;
+  } else {
+    inputHtml = `<input id="${id}" type="text" value="${safe(currentValue)}">`;
+  }
+  return `<div class="field" style="margin-bottom:12px"><label>${field.label}</label>${inputHtml}</div>`;
+}
+
+function openUniversalEditor(type, id, date) {
+  const cfg = NoteTypes[type]; if (!cfg) return;
+
+  let rec = null;
+  if (type === 'daily') {
+    rec = data.daily.find(d => d.date === date);
+    if (!rec) { rec = { date, morning:'', evening:'', highlight:'', gratitude:'' }; data.daily.push(rec); }
+  } else if (type === 'habit') {
+    rec = data.logs.find(l => String(l.habit_id)===String(id) && l.date===date);
+    if (!rec) { rec = { habit_id:id, date, status:'', note:'' }; data.logs.push(rec); }
+  } else if (type === 'task') {
+    rec = data.weeklyTasks.find(t => String(t.id)===String(id)); if (!rec) return;
+    rec._title = rec.title;
+  } else if (type === 'routine') {
+    rec = (data.routineLogs||[]).find(l => String(l.routineId)===String(id) && l.date===date);
+    if (!rec) { rec = { routineId:id, date, status:'', note:'' }; data.routineLogs = data.routineLogs||[]; data.routineLogs.push(rec); }
+    const r = data.routines.find(x => String(x.id)===String(id)); rec._title = r?.title || '';
+  }
+
+  currentEdit = { type, id, date, rec };
+  $('ueTitle').textContent = `${cfg.icon} ${cfg.title(rec)}`;
+  $('ueFields').innerHTML = cfg.fields.map(f => renderEditField(f, rec[f.key] || '')).join('');
+  $('universalEditModal').classList.remove('hidden');
+}
+
+const closeUniversalEditor = () => { $('universalEditModal').classList.add('hidden'); currentEdit = null; };
+$('ueClose').addEventListener('click', closeUniversalEditor);
+$('ueCancelBtn').addEventListener('click', closeUniversalEditor);
+
+$('ueSaveBtn').addEventListener('click', () => {
+  if (!currentEdit) return;
+  const { type, rec } = currentEdit;
+  const cfg = NoteTypes[type];
+  cfg.fields.forEach(f => {
+    const el = $(`ue_field_${f.key}`); if (!el) return;
+    if (f.type === 'number') rec[f.key] = Number(el.value) || 0;
+    else rec[f.key] = el.value.trim ? el.value.trim() : el.value;
+  });
+  if (type === 'task') {
+    if (rec.eventStatus === 'done') rec.done = true;
+    if (rec.eventStatus === 'not_done') rec.done = false;
+  }
+  delete rec._title;
+  saveData();
+  renderNotebook(); renderToday(); renderHabits(); renderWeeklyTasks(); renderTodayPlan(); renderTimeline(); renderDashboard();
+  closeUniversalEditor(); flash('ذخیره شد ✓');
+});
+
+$('ueDeleteBtn').addEventListener('click', async () => {
+  if (!currentEdit) return;
+  const { type, id, date, rec } = currentEdit;
+
+  if (type === 'daily') {
+    if (!(await customConfirm(`یادداشت روز ${toFaDate(date)} پاک شود؟`))) return;
+    data.daily = data.daily.filter(d => d.date !== date);
+  } else if (type === 'habit') {
+    if (!(await customConfirm('یادداشت این عادت در این روز پاک شود؟ (خود عادت باقی می‌ماند)'))) return;
+    data.logs = data.logs.filter(l => !(String(l.habit_id)===String(id) && l.date===date));
+  } else if (type === 'task') {
+    const delNote = await customConfirm('فقط یادداشت و وضعیت این تسک پاک شود؟ (اگر «لغو» بزنی، گزینهٔ حذف کل تسک می‌آید)');
+    if (delNote) { rec.note = ''; rec.eventStatus = ''; rec.done = false; }
+    else {
+      const delAll = await customConfirm('کل تسک حذف شود؟');
+      if (!delAll) return;
+      data.weeklyTasks = data.weeklyTasks.filter(t => String(t.id) !== String(id));
+    }
+  } else if (type === 'routine') {
+    if (!(await customConfirm('یادداشت این برنامه پاک شود؟ (خود برنامه باقی می‌ماند)'))) return;
+    data.routineLogs = (data.routineLogs||[]).filter(l => !(String(l.routineId)===String(id) && l.date===date));
+  }
+
+  saveData();
+  renderNotebook(); renderToday(); renderHabits(); renderWeeklyTasks(); renderTodayPlan(); renderTimeline(); renderDashboard();
+  closeUniversalEditor(); flash('حذف شد');
+});
+
+// ═══════════ Mood Selector ═══════════
 window.selectMood = function(el, val) {
   document.querySelectorAll('#moodEmojiSelector .mood-emoji').forEach(e => e.classList.remove('active'));
   el.classList.add('active');
@@ -1398,8 +1983,7 @@ $('saveDailyBtn').addEventListener('click', () => {
 
 $('notebookSearch')?.addEventListener('input', renderNotebook);
 $('notebookFilter')?.addEventListener('change', renderNotebook);
-
-// ═══════════ Modals ═══════════
+// ═══════════ Habit Note Modal ═══════════
 function openHabitModal(habitId, date) {
   const log = data.logs.find(l => String(l.habit_id) === String(habitId) && l.date === date);
   const habit = data.habits.find(h => String(h.id) === String(habitId));
@@ -1425,10 +2009,12 @@ $('modalSaveBtn').addEventListener('click', () => {
     const log = { habit_id: habitId, date, status, note };
     if (idx >= 0) data.logs[idx] = log; else data.logs.push(log);
   }
-  saveData(); renderHabits(); renderToday(); renderDashboard(); renderNotebook();
+  saveData();
+  renderHabits(); renderToday(); renderDashboard(); renderNotebook();
   closeHabitModal(); flash('ذخیره شد');
 });
 
+// ═══════════ Event Note Modal ═══════════
 function openEventModal(type, id, date) {
   $('eventModalType').value = type;
   $('eventModalId').value = id;
@@ -1458,7 +2044,8 @@ $('eventModalSaveBtn').addEventListener('click', () => {
   const note = $('eventModalNote').value.trim();
   if (type === 'task') {
     const t = data.weeklyTasks.find(x => String(x.id) === String(id)); if (!t) return;
-    t.eventStatus = status; t.note = note;
+    t.eventStatus = status;
+    t.note = note;
     if (status === 'done') t.done = true;
     if (status === 'not_done') t.done = false;
   } else {
@@ -1467,7 +2054,8 @@ $('eventModalSaveBtn').addEventListener('click', () => {
     const entry = { routineId: id, date, status, note };
     if (idx >= 0) data.routineLogs[idx] = entry; else data.routineLogs.push(entry);
   }
-  saveData(); renderWeeklyTasks(); renderTodayPlan(); renderTimeline(); renderNotebook();
+  saveData();
+  renderWeeklyTasks(); renderTodayPlan(); renderTimeline(); renderNotebook();
   closeEventModal(); flash('ذخیره شد');
 });
 $('eventStartTimerBtn').addEventListener('click', () => { closeEventModal(); startPomodoro(); });
@@ -1476,7 +2064,7 @@ $('eventStartTimerBtn').addEventListener('click', () => { closeEventModal(); sta
 const pomo = { total: 25 * 60, remaining: 25 * 60, running: false, interval: null };
 function updatePomoDisplay() {
   const m = Math.floor(pomo.remaining / 60), s = pomo.remaining % 60;
-  $('pomoTime').textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  $('pomoTime').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
 function startPomodoro() {
   $('pomoBox').classList.remove('hidden');
@@ -1522,6 +2110,7 @@ $('initialAssetsInput')?.addEventListener('change', e => {
   data.settings.initialAssets = Number(e.target.value) || 0;
   saveData(); renderFinance(); renderDashboard(); flash('سرمایه ذخیره شد');
 });
+
 $('exportBtn').addEventListener('click', () => {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
@@ -1531,6 +2120,7 @@ $('exportBtn').addEventListener('click', () => {
   setTimeout(() => URL.revokeObjectURL(a.href), 500);
   flash('پشتیبان دانلود شد');
 });
+
 $('importBtn').addEventListener('click', () => $('importFile').click());
 $('importFile').addEventListener('change', async e => {
   const file = e.target.files[0]; if (!file) return;
@@ -1543,11 +2133,13 @@ $('importFile').addEventListener('change', async e => {
   } catch (err) { flash('فایل نامعتبر است', 'error'); }
   e.target.value = '';
 });
+
 $('clearDataBtn').addEventListener('click', async () => {
   if (await customConfirm('همهٔ داده‌ها پاک می‌شود. مطمئنی؟')) {
     data = emptyData(); saveData(); renderAll(); flash('پاک شد');
   }
 });
+
 $('debugBtn').addEventListener('click', () => {
   $('debugOutput').textContent = JSON.stringify(data, null, 2);
 });
@@ -1563,7 +2155,7 @@ function buildPrintReport() {
   html += `<div class="print-page">
     <div class="print-header"><h1>📓 کاربرگ برنامه‌ریزی روزانه</h1><p>${toFaDate(today)} — ${todayFaLong()}</p></div>
     <div class="print-section-title">🎯 اولویت‌های امروز</div>
-    ${[1, 2, 3].map(n => `<div class="priority-box"><span>${n}.</span><div class="write-line" style="flex:1;margin-right:10px;"></div></div>`).join('')}
+    ${[1,2,3].map(n => `<div class="priority-box"><span>${n}.</span><div class="write-line" style="flex:1;margin-right:10px;"></div></div>`).join('')}
     <div class="print-section-title">🔥 عادت‌های امروز</div>
     ${data.habits.length ? data.habits.map(h => `<div style="margin-bottom:8px"><span class="print-checkbox"></span>${safe(h.name)}</div>`).join('') : '<p style="color:#888">عادتی ثبت نشده</p>'}
     <div class="print-section-title">⏰ برنامه‌های زمان‌دار</div>
@@ -1572,7 +2164,7 @@ function buildPrintReport() {
         .map(x => `<tr><td>${x.t}</td><td>${safe(x.title)}</td></tr>`).join('') || '<tr><td colspan="2" style="color:#888">برنامه زمان‌داری نیست</td></tr>'}
     </tbody></table>
     <div class="print-section-title">😊 حال و هوای امروز</div>
-    <div class="mood-tracker-print">${['عالی', 'خوب', 'معمولی', 'پایین', 'سخت'].map(m => `<div class="mood-item-print"><div class="mood-circle"></div><div class="mood-label">${m}</div></div>`).join('')}</div>
+    <div class="mood-tracker-print">${['عالی','خوب','معمولی','پایین','سخت'].map(m => `<div class="mood-item-print"><div class="mood-circle"></div><div class="mood-label">${m}</div></div>`).join('')}</div>
     <div class="print-section-title">💭 یادداشت‌های صبح</div><div class="write-line" style="height:80px"></div>
     <div class="print-section-title">🌙 یادداشت‌های شب</div><div class="write-line" style="height:80px"></div>
     <div class="print-section-title">🙏 شکرگزاری</div><div class="write-line" style="height:60px"></div>
@@ -1608,40 +2200,23 @@ function doPrint() {
 $('printPdfBtn').addEventListener('click', doPrint);
 $('printDashboardBtn').addEventListener('click', doPrint);
 
-// ═══════════ Event delegation ═══════════
+// ═══════════ Event Delegation ═══════════
 document.addEventListener('click', async e => {
   const t = e.target;
 
-  // --- ویرایش یادداشت روزانه ---
-  const editNb = t.closest('[data-edit-notebook]');
-  if (editNb) {
-    const date = editNb.dataset.editNotebook;
-    const note = data.daily.find(d => d.date === date);
-    if (!note) return;
-    const morning   = await customPrompt('🌅 یادداشت صبح:', note.morning   || '', `ویرایش ${toFaDate(date)}`);
-    if (morning === false) return;
-    const evening   = await customPrompt('🌙 یادداشت شب:', note.evening   || '');
-    if (evening === false) return;
-    const highlight = await customPrompt('✨ بهترین اتفاق:', note.highlight || '');
-    if (highlight === false) return;
-    const gratitude = await customPrompt('🙏 شکرگزاری:', note.gratitude || '');
-    if (gratitude === false) return;
-    Object.assign(note, { morning, evening, highlight, gratitude });
-    saveData(); renderNotebook(); renderToday(); flash('ویرایش شد');
+  // Universal Edit / Delete (از تب یادداشت‌ها)
+  const ue = t.closest('[data-universal-edit]');
+  if (ue) {
+    openUniversalEditor(ue.dataset.universalEdit, ue.dataset.editId || '', ue.dataset.editDate);
+    return;
+  }
+  const ud = t.closest('[data-universal-del]');
+  if (ud) {
+    openUniversalEditor(ud.dataset.universalDel, ud.dataset.editId || '', ud.dataset.editDate);
     return;
   }
 
-  // --- حذف یادداشت روزانه ---
-  const delNb = t.closest('[data-del-notebook]');
-  if (delNb) {
-    const date = delNb.dataset.delNotebook;
-    if (!(await customConfirm(`یادداشت روز ${toFaDate(date)} پاک شود؟`))) return;
-    data.daily = data.daily.filter(d => d.date !== date);
-    saveData(); renderNotebook(); renderToday(); flash('حذف شد');
-    return;
-  }
-
-  // heatmap
+  // heatmap cell
   const cell = t.closest('[data-heatmap-cell]');
   if (cell) { openHabitModal(cell.dataset.habitId, cell.dataset.date); return; }
 
@@ -1649,7 +2224,7 @@ document.addEventListener('click', async e => {
   const openNote = t.closest('[data-open-note]');
   if (openNote) { openHabitModal(openNote.dataset.openNote, openNote.dataset.date); return; }
 
-  // event (task/routine)
+  // event (task/routine) modal
   const evtEl = t.closest('[data-event-type][data-event-id]');
   if (evtEl) {
     let eventDate = evtEl.dataset.eventDate || '';
