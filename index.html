@@ -431,7 +431,7 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
   border-radius: 16px;
   padding: 20px 15px;
   text-align: center;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
   overflow: hidden;
   display: flex;
@@ -439,21 +439,109 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
   align-items: center;
 }
 
+/* --- حالت قفل شده (خاکستری و بی‌روح) --- */
 .badge-card.locked {
-  opacity: 0.75;
+  opacity: 0.5;
   filter: grayscale(100%);
 }
 .badge-card.locked:hover {
-  opacity: 0.9;
+  opacity: 0.8;
   filter: grayscale(30%);
-  transform: translateY(-5px);
+  transform: translateY(-3px);
 }
 
+/* --- حالت باز شده (درخشش، طلایی و جذاب) --- */
 .badge-card.unlocked {
-  border-color: var(--gold);
-  background: linear-gradient(180deg, var(--white), var(--goldbg));
-  box-shadow: 0 5px 20px rgba(181, 142, 66, 0.25);
-  animation: goldPulse 3s infinite alternate;
+  border-color: var(--gold) !important;
+  background: linear-gradient(145deg, var(--white) 0%, var(--goldbg) 100%);
+  box-shadow: 0 0 15px rgba(181, 142, 66, 0.4), inset 0 0 15px rgba(181, 142, 66, 0.1);
+  transform: translateY(-4px);
+  animation: goldPulse 2.5s infinite alternate;
+}
+
+/* افکت درخشش در حالت تاریک (شبیه عکس شما) */
+[data-theme="dark"] .badge-card.unlocked {
+  background: linear-gradient(145deg, #3a2d17 0%, #1f1912 100%);
+  border-color: #d9b866 !important;
+  box-shadow: 0 0 20px rgba(217, 184, 102, 0.35), inset 0 0 10px rgba(217, 184, 102, 0.1);
+}
+
+/* افکت نور کشیده شده روی کارت (Shine) */
+.badge-card.unlocked::before {
+  content: "";
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.15), transparent);
+  transform: rotate(45deg);
+  animation: shine 4s infinite;
+}
+
+@keyframes goldPulse {
+  0% { box-shadow: 0 0 10px rgba(181, 142, 66, 0.2), inset 0 0 5px rgba(181, 142, 66, 0.1); }
+  100% { box-shadow: 0 0 25px rgba(217, 184, 102, 0.6), inset 0 0 15px rgba(217, 184, 102, 0.3); }
+}
+
+@keyframes shine {
+  0% { top: -50%; left: -50%; }
+  100% { top: 150%; left: 150%; }
+}
+
+/* --- استایل نوار پیشرفت --- */
+.badge-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(0,0,0,0.1);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  position: relative;
+}
+[data-theme="dark"] .badge-progress-bar {
+  background: rgba(255,255,255,0.1);
+}
+
+.badge-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  border-radius: 99px;
+  transition: width 0.8s ease-in-out;
+}
+
+/* نوار پیشرفت در حالت باز شده درخشش خاصی داره */
+.badge-card.unlocked .badge-progress-fill {
+  background: linear-gradient(90deg, #d9b866, #b58e42);
+  box-shadow: 0 0 10px rgba(217, 184, 102, 0.8);
+}
+
+.badge-progress-text {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* متن "دریافت شد" در حالت باز شده سبز و درخشان میشه */
+.badge-card.unlocked .badge-progress-text {
+  color: var(--green);
+  text-shadow: 0 0 8px rgba(69, 107, 63, 0.4);
+}
+[data-theme="dark"] .badge-card.unlocked .badge-progress-text {
+  color: #a4c47a;
+  text-shadow: 0 0 8px rgba(164, 196, 122, 0.5);
+}
+
+/* استایل آیکون در حالت باز شده (بزرگتر و درخشان‌تر) */
+.badge-card.unlocked .badge-icon {
+  transform: scale(1.15) translateY(-2px);
+  filter: drop-shadow(0 0 8px rgba(217, 184, 102, 0.6));
+  animation: floatIcon 3s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+  0% { transform: scale(1.15) translateY(-2px); }
+  50% { transform: scale(1.2) translateY(-6px); }
+  100% { transform: scale(1.15) translateY(-2px); }
 }
 @keyframes goldPulse {
   0% { box-shadow: 0 5px 15px rgba(181, 142, 66, 0.2); }
