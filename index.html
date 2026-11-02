@@ -410,6 +410,108 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
 .mood-history-emoji { font-size: 28px; }
 .mood-history-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
 .mood-badge { font-size: 11px; padding: 2px 8px; border-radius: 6px; background: var(--cream2); color: var(--text); font-weight: 600; }
+/* --- استایل‌های خلاقانه برای دستاوردها --- */
+.badge-category-title {
+  grid-column: 1 / -1;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--brown);
+  margin: 20px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 2px dashed var(--line);
+  padding-bottom: 8px;
+}
+.badge-category-title:first-child { margin-top: 0; }
+
+.badge-card {
+  background: var(--paper);
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  padding: 20px 15px;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.badge-card.locked {
+  opacity: 0.75;
+  filter: grayscale(100%);
+}
+.badge-card.locked:hover {
+  opacity: 0.9;
+  filter: grayscale(30%);
+  transform: translateY(-5px);
+}
+
+.badge-card.unlocked {
+  border-color: var(--gold);
+  background: linear-gradient(180deg, var(--white), var(--goldbg));
+  box-shadow: 0 5px 20px rgba(181, 142, 66, 0.25);
+  animation: goldPulse 3s infinite alternate;
+}
+@keyframes goldPulse {
+  0% { box-shadow: 0 5px 15px rgba(181, 142, 66, 0.2); }
+  100% { box-shadow: 0 8px 30px rgba(181, 142, 66, 0.5); }
+}
+
+.badge-card.unlocked::before {
+  content: "";
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent);
+  transform: rotate(45deg);
+  animation: shine 4s infinite;
+}
+@keyframes shine {
+  0% { top: -50%; left: -50%; }
+  100% { top: 150%; left: 150%; }
+}
+
+.badge-icon {
+  font-size: 45px;
+  margin-bottom: 12px;
+  display: inline-block;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+  transition: transform 0.3s;
+}
+.badge-card.unlocked:hover .badge-icon {
+  transform: scale(1.2) rotate(5deg);
+}
+
+.badge-title { font-weight: 800; font-size: 15px; color: var(--dark); margin-bottom: 6px; }
+.badge-desc { font-size: 11px; color: var(--muted); line-height: 1.5; margin-bottom: 15px; flex-grow: 1; }
+
+/* نوار پیشرفت */
+.badge-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--cream2);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 6px;
+  position: relative;
+}
+.badge-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  border-radius: 99px;
+  transition: width 0.8s ease-in-out;
+}
+.badge-progress-text {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.badge-card.unlocked .badge-progress-text {
+  color: var(--green);
+}
 </style>
 </head>
 <body>
@@ -2407,28 +2509,114 @@ $('globalSearchInput')?.addEventListener('input', e => {
 });
 
 const ACHIEVEMENTS_LIST = [
-  { id: 'habit_3', icon: '🔥', title: 'آتش‌نشان', desc: '۳ روز پشت سر هم یک عادت', check: () => data.habits.some(h => calcStreak(h.id) >= 3) },
-  { id: 'habit_7', icon: '🌟', title: 'استریک طلایی', desc: '۷ روز پشت سر هم یک عادت', check: () => data.habits.some(h => calcStreak(h.id) >= 7) },
-  { id: 'habit_30', icon: '💎', title: 'الماس', desc: '۳۰ روز پشت سر هم یک عادت', check: () => data.habits.some(h => calcStreak(h.id) >= 30) },
-  { id: 'habit_100', icon: '🏅', title: 'افسانه‌ای', desc: '۱۰۰ روز پشت سر هم یک عادت', check: () => data.habits.some(h => calcStreak(h.id) >= 100) },
-  { id: 'goal_1', icon: '🎯', title: 'هدف‌شناس', desc: 'اولین هدف ماهانه تکمیل شده', check: () => data.monthlyGoals.filter(g => g.done).length >= 1 },
-  { id: 'goal_5', icon: '🚀', title: 'پیشرو', desc: '۵ هدف ماهانه تکمیل شده', check: () => data.monthlyGoals.filter(g => g.done).length >= 5 },
-  { id: 'fin_5', icon: '💰', title: 'پس‌اندازکننده', desc: '۵ تراکنش پس‌انداز', check: () => data.finance.filter(f => f.type === 'پس‌انداز').length >= 5 },
-  { id: 'fin_1', icon: '🛡️', title: 'مدیر بودجه', desc: 'بدون خرج اضافی در طول ثبت‌ها', check: () => data.finance.length > 0 && data.finance.filter(f => f.type === 'خرج اضافی').length === 0 },
-  { id: 'note_30', icon: '✍️', title: 'نویسنده', desc: '۳۰ یادداشت ثبت شده', check: () => data.daily.filter(n => (n.morning||'')+(n.evening||'')+(n.highlight||'')+(n.gratitude||'')).length >= 30 },
-  { id: 'note_100', icon: '📚', title: 'مورخ', desc: '۱۰۰ روز پیاپی یادداشت', check: () => { let streak = 0, d = new Date(); for (let i = 0; i < 100; i++) { const iso = dateISO(d); const note = data.daily.find(n => n.date === iso); if (note && ((note.morning||'') + (note.evening||'') + (note.highlight||'') + (note.gratitude||'')).trim()) streak++; else break; d.setDate(d.getDate() - 1); } return streak >= 100; } },
-  { id: 'pomo_1', icon: '⏱️', title: 'تمرکز اول', desc: 'اولین جلسه تمرکز', check: () => (data.pomodoro || []).length >= 1 },
-  { id: 'pomo_10', icon: '🧠', title: 'تمرکزگر', desc: '۱۰ جلسه تمرکز', check: () => (data.pomodoro || []).length >= 10 }
+  // --- عادت‌ها ---
+  { id: 'habit_3', category: 'عادت‌ها', icon: '🔥', title: 'آتش‌نشان', desc: '۳ روز پشت سر هم یک عادت', check: () => data.habits.some(h => calcStreak(h.id) >= 3), progress: () => ({ current: Math.max(0, ...data.habits.map(h => calcStreak(h.id))), target: 3 }) },
+  { id: 'habit_7', category: 'عادت‌ها', icon: '🌟', title: 'استریک طلایی', desc: '۷ روز پشت سر هم یک عادت', check: () => data.habits.some(h => calcStreak(h.id) >= 7), progress: () => ({ current: Math.max(0, ...data.habits.map(h => calcStreak(h.id))), target: 7 }) },
+  { id: 'habit_30', category: 'عادت‌ها', icon: '💎', title: 'الماس', desc: '۳۰ روز پشت سر هم یک عادت', check: () => data.habits.some(h => calcStreak(h.id) >= 30), progress: () => ({ current: Math.max(0, ...data.habits.map(h => calcStreak(h.id))), target: 30 }) },
+  { id: 'habit_100', category: 'عادت‌ها', icon: '🏅', title: 'افسانه‌ای', desc: '۱۰۰ روز پشت سر هم یک عادت', check: () => data.habits.some(h => calcStreak(h.id) >= 100), progress: () => ({ current: Math.max(0, ...data.habits.map(h => calcStreak(h.id))), target: 100 }) },
+  
+  // --- اهداف ---
+  { id: 'goal_1', category: 'اهداف', icon: '🎯', title: 'هدف‌شناس', desc: 'اولین هدف ماهانه تکمیل شده', check: () => data.monthlyGoals.filter(g => g.done).length >= 1, progress: () => ({ current: data.monthlyGoals.filter(g => g.done).length, target: 1 }) },
+  { id: 'goal_5', category: 'اهداف', icon: '🚀', title: 'پیشرو', desc: '۵ هدف ماهانه تکمیل شده', check: () => data.monthlyGoals.filter(g => g.done).length >= 5, progress: () => ({ current: data.monthlyGoals.filter(g => g.done).length, target: 5 }) },
+  
+  // --- مالی ---
+  { id: 'fin_5', category: 'مالی', icon: '💰', title: 'پس‌اندازکننده', desc: '۵ تراکنش پس‌انداز', check: () => data.finance.filter(f => f.type === 'پس‌انداز').length >= 5, progress: () => ({ current: data.finance.filter(f => f.type === 'پس‌انداز').length, target: 5 }) },
+  { id: 'fin_1', category: 'مالی', icon: '🛡️', title: 'مدیر بودجه', desc: 'بدون خرج اضافی در طول ثبت‌ها', check: () => data.finance.length > 0 && data.finance.filter(f => f.type === 'خرج اضافی').length === 0, progress: () => ({ current: data.finance.length > 0 ? 1 : 0, target: 1 }) },
+
+  // --- تمرکز ---
+  { id: 'pomo_1', category: 'تمرکز', icon: '⏱️', title: 'تمرکز اول', desc: 'اولین جلسه تمرکز', check: () => (data.pomodoro || []).length >= 1, progress: () => ({ current: (data.pomodoro || []).length, target: 1 }) },
+  { id: 'pomo_10', category: 'تمرکز', icon: '🧠', title: 'تمرکزگر', desc: '۱۰ جلسه تمرکز', check: () => (data.pomodoro || []).length >= 10, progress: () => ({ current: (data.pomodoro || []).length, target: 10 }) },
+
+  // --- یادداشت‌ها ---
+  { id: 'note_30', category: 'یادداشت‌ها', icon: '✍️', title: 'نویسنده', desc: '۳۰ یادداشت ثبت شده', check: () => data.daily.filter(n => (n.morning||'')+(n.evening||'')+(n.highlight||'')+(n.gratitude||'')).length >= 30, progress: () => ({ current: data.daily.filter(n => (n.morning||'')+(n.evening||'')+(n.highlight||'')+(n.gratitude||'')).length, target: 30 }) },
+  { id: 'note_100', category: 'یادداشت‌ها', icon: '📚', title: 'مورخ', desc: '۱۰۰ روز پیاپی یادداشت', check: () => { let streak = 0, d = new Date(); for (let i = 0; i < 100; i++) { const iso = dateISO(d); const note = data.daily.find(n => n.date === iso); if (note && ((note.morning||'') + (note.evening||'') + (note.highlight||'') + (note.gratitude||'')).trim()) streak++; else break; d.setDate(d.getDate() - 1); } return streak >= 100; }, progress: () => { let streak = 0, d = new Date(); for (let i = 0; i < 100; i++) { const iso = dateISO(d); const note = data.daily.find(n => n.date === iso); if (note && ((note.morning||'') + (note.evening||'') + (note.highlight||'') + (note.gratitude||'')).trim()) streak++; else break; d.setDate(d.getDate() - 1); } return { current: streak, target: 100 }; } }
 ];
 
 function renderAchievements() {
-  const grid = $('achievementsGrid'); if (!grid) return; const unlocked = data.achievements || [];
-  grid.innerHTML = ACHIEVEMENTS_LIST.map(a => { const isUnlocked = unlocked.includes(a.id); return `<div class="badge-card ${isUnlocked ? 'unlocked' : 'locked'}"><div class="badge-icon">${a.icon}</div><div class="badge-title">${a.title}</div><div class="badge-desc">${a.desc}</div>${isUnlocked ? '<div class="badge-progress" style="color:var(--green)">✓ دریافت شد</div>' : '<div class="badge-progress">در انتظار...</div>'}</div>`; }).join('');
+  const grid = $('achievementsGrid'); 
+  if (!grid) return; 
+  const unlocked = data.achievements || [];
+  
+  // گروه‌بندی بر اساس دسته‌بندی
+  const categories = [...new Set(ACHIEVEMENTS_LIST.map(a => a.category))];
+  
+  let html = '';
+  
+  categories.forEach(cat => {
+    html += `<div class="badge-category-title">🔹 ${cat}</div>`;
+    
+    const items = ACHIEVEMENTS_LIST.filter(a => a.category === cat);
+    html += items.map(a => {
+      const isUnlocked = unlocked.includes(a.id);
+      const prog = a.progress ? a.progress() : { current: 0, target: 1 };
+      const percent = Math.min(100, Math.round((prog.current / prog.target) * 100));
+      
+      return `
+        <div class="badge-card ${isUnlocked ? 'unlocked' : 'locked'}">
+          <div class="badge-icon">${a.icon}</div>
+          <div class="badge-title">${a.title}</div>
+          <div class="badge-desc">${a.desc}</div>
+          
+          ${isUnlocked 
+            ? `<div class="badge-progress-bar"><div class="badge-progress-fill" style="width: 100%;"></div></div>
+               <div class="badge-progress-text">✓ دریافت شد</div>`
+            : `<div class="badge-progress-bar"><div class="badge-progress-fill" style="width: ${percent}%;"></div></div>
+               <div class="badge-progress-text">${fa(prog.current)} از ${fa(prog.target)}</div>`
+          }
+        </div>
+      `;
+    }).join('');
+  });
+  
+  grid.innerHTML = html;
 }
 
 function checkAchievements() {
   if (!data.achievements) data.achievements = []; let newUnlocked = [];
-  ACHIEVEMENTS_LIST.forEach(a => { if (!data.achievements.includes(a.id) && a.check()) { data.achievements.push(a.id); newUnlocked.push(a); } });
+ const ACHIEVEMENTS_LIST = [
+  // ==================== 📈 شروع و پایه‌گذاری ====================
+  { id: 'start_1', category: 'شروع و پایه‌گذاری', icon: '🌱', title: 'نخستین قدم', desc: 'اولین عادت خود را بسازید.', check: () => data.habits.length >= 1, progress: () => ({ current: data.habits.length, target: 1 }) },
+  { id: 'start_2', category: 'شروع و پایه‌گذاری', icon: '🎯', title: 'برنامه‌ریز', desc: 'اولین هدف ماهانه خود را ثبت کنید.', check: () => data.monthlyGoals.length >= 1, progress: () => ({ current: data.monthlyGoals.length, target: 1 }) },
+  { id: 'start_3', category: 'شروع و پایه‌گذاری', icon: '📝', title: 'روزنوشت', desc: 'اولین یادداشت روزانه خود را بنویسید.', check: () => data.daily.some(n => (n.morning||'')+(n.evening||'')+(n.highlight||'')+(n.gratitude||'')), progress: () => ({ current: data.daily.some(n => (n.morning||'')+(n.evening||'')+(n.highlight||'')+(n.gratitude||'')) ? 1 : 0, target: 1 }) },
+
+  // ==================== 🔥 قهرمان عادت‌ها ====================
+  { id: 'habit_3', category: 'قهرمان عادت‌ها', icon: '🔥', title: 'آتش‌نشان', desc: '۳ روز پشت سر هم یک عادت', check: () => data.habits.some(h => calcStreak(h.id) >= 3), progress: () => ({ current: Math.max(0, ...data.habits.map(h => calcStreak(h.id))), target: 3 }) },
+  { id: 'habit_7', category: 'قهرمان عادت‌ها', icon: '🌟', title: 'استریک طلایی', desc: '۷ روز پشت سر هم یک عادت', check: () => data.habits.some(h => calcStreak(h.id) >= 7), progress: () => ({ current: Math.max(0, ...data.habits.map(h => calcStreak(h.id))), target: 7 }) },
+  { id: 'habit_30', category: 'قهرمان عادت‌ها', icon: '💎', title: 'الماس', desc: '۳۰ روز پشت سر هم یک عادت', check: () => data.habits.some(h => calcStreak(h.id) >= 30), progress: () => ({ current: Math.max(0, ...data.habits.map(h => calcStreak(h.id))), target: 30 }) },
+  { id: 'habit_100', category: 'قهرمان عادت‌ها', icon: '🏅', title: 'افسانه‌ای', desc: '۱۰۰ روز پشت سر هم یک عادت', check: () => data.habits.some(h => calcStreak(h.id) >= 100), progress: () => ({ current: Math.max(0, ...data.habits.map(h => calcStreak(h.id))), target: 100 }) },
+  { id: 'habit_5_total', category: 'قهرمان عادت‌ها', icon: '🏋️', title: 'چندکاره', desc: '۵ عادت همزمان در برنامه داشته باشید.', check: () => data.habits.length >= 5, progress: () => ({ current: data.habits.length, target: 5 }) },
+
+  // ==================== 🎯 شکارچی اهداف ====================
+  { id: 'goal_1', category: 'شکارچی اهداف', icon: '🎯', title: 'هدف‌شناس', desc: 'اولین هدف ماهانه تکمیل شده', check: () => data.monthlyGoals.filter(g => g.done).length >= 1, progress: () => ({ current: data.monthlyGoals.filter(g => g.done).length, target: 1 }) },
+  { id: 'goal_5', category: 'شکارچی اهداف', icon: '🚀', title: 'پیشرو', desc: '۵ هدف ماهانه تکمیل شده', check: () => data.monthlyGoals.filter(g => g.done).length >= 5, progress: () => ({ current: data.monthlyGoals.filter(g => g.done).length, target: 5 }) },
+  { id: 'goal_10', category: 'شکارچی اهداف', icon: '👑', title: 'فاتح', desc: '۱۰ هدف ماهانه تکمیل شده', check: () => data.monthlyGoals.filter(g => g.done).length >= 10, progress: () => ({ current: data.monthlyGoals.filter(g => g.done).length, target: 10 }) },
+
+  // ==================== 💰 امپراتوری مالی ====================
+  { id: 'fin_5', category: 'امپراتوری مالی', icon: '💰', title: 'پس‌اندازکننده', desc: '۵ تراکنش پس‌انداز', check: () => data.finance.filter(f => f.type === 'پس‌انداز').length >= 5, progress: () => ({ current: data.finance.filter(f => f.type === 'پس‌انداز').length, target: 5 }) },
+  { id: 'fin_1', category: 'امپراتوری مالی', icon: '🛡️', title: 'مدیر بودجه', desc: 'بدون خرج اضافی در طول ثبت‌ها', check: () => data.finance.length > 0 && data.finance.filter(f => f.type === 'خرج اضافی').length === 0, progress: () => ({ current: data.finance.length > 0 ? 1 : 0, target: 1 }) },
+  { id: 'fin_log_10', category: 'امپراتوری مالی', icon: '📊', title: 'حسابدار', desc: '۱۰ تراکنش مالی ثبت کنید.', check: () => data.finance.length >= 10, progress: () => ({ current: data.finance.length, target: 10 }) },
+  { id: 'fin_save_1m', category: 'امپراتوری مالی', icon: '💎', title: 'سرمایه‌گذار', desc: 'مجموع پس‌انداز شما به ۱ میلیون تومان برسد.', check: () => calculateTotalSavings() >= 1000000, progress: () => ({ current: calculateTotalSavings(), target: 1000000 }) },
+
+  // ==================== ⏱️ استاد تمرکز ====================
+  { id: 'pomo_1', category: 'استاد تمرکز', icon: '⏱️', title: 'تمرکز اول', desc: 'اولین جلسه تمرکز', check: () => (data.pomodoro || []).length >= 1, progress: () => ({ current: (data.pomodoro || []).length, target: 1 }) },
+  { id: 'pomo_10', category: 'استاد تمرکز', icon: '🧠', title: 'تمرکزگر', desc: '۱۰ جلسه تمرکز', check: () => (data.pomodoro || []).length >= 10, progress: () => ({ current: (data.pomodoro || []).length, target: 10 }) },
+  { id: 'pomo_600_min', category: 'استاد تمرکز', icon: '🕰️', title: 'غرق در کار', desc: 'مجموعاً ۱۰ ساعت تمرکز کنید.', check: () => data.pomodoro.reduce((a,p) => a + (p.minutes || 0), 0) >= 600, progress: () => ({ current: data.pomodoro.reduce((a,p) => a + (p.minutes || 0), 0), target: 600 }) },
+  { id: 'pomo_daily_5', category: 'استاد تمرکز', icon: '🎧', title: 'دیوانه تمرکز', desc: 'در یک روز ۵ جلسه تمرکز داشته باشید.', check: () => { const today = dateISO(); return data.pomodoro.filter(p => p.date === today).length >= 5; }, progress: () => { const today = dateISO(); return { current: data.pomodoro.filter(p => p.date === today).length, target: 5 }; } },
+
+  // ==================== ✍️ نویسنده خلاق ====================
+  { id: 'note_30', category: 'نویسنده خلاق', icon: '✍️', title: 'نویسنده', desc: '۳۰ یادداشت ثبت شده', check: () => data.daily.filter(n => (n.morning||'')+(n.evening||'')+(n.highlight||'')+(n.gratitude||'')).length >= 30, progress: () => ({ current: data.daily.filter(n => (n.morning||'')+(n.evening||'')+(n.highlight||'')+(n.gratitude||'')).length, target: 30 }) },
+  { id: 'note_100', category: 'نویسنده خلاق', icon: '📚', title: 'مورخ', desc: '۱۰۰ روز پیاپی یادداشت', check: () => { let streak = 0, d = new Date(); for (let i = 0; i < 100; i++) { const iso = dateISO(d); const note = data.daily.find(n => n.date === iso); if (note && ((note.morning||'') + (note.evening||'') + (note.highlight||'') + (note.gratitude||'')).trim()) streak++; else break; d.setDate(d.getDate() - 1); } return streak >= 100; }, progress: () => { let streak = 0, d = new Date(); for (let i = 0; i < 100; i++) { const iso = dateISO(d); const note = data.daily.find(n => n.date === iso); if (note && ((note.morning||'') + (note.evening||'') + (note.highlight||'') + (note.gratitude||'')).trim()) streak++; else break; d.setDate(d.getDate() - 1); } return { current: streak, target: 100 }; } },
+  { id: 'note_streak_7', category: 'نویسنده خلاق', icon: '📖', title: 'عادت‌نویس', desc: '۷ روز پیاپی یادداشت بنویسید.', check: () => { let streak = 0, d = new Date(); for (let i = 0; i < 7; i++) { const iso = dateISO(d); const note = data.daily.find(n => n.date === iso); if (note && ((note.morning||'') + (note.evening||'') + (note.highlight||'') + (note.gratitude||'')).trim()) streak++; else break; d.setDate(d.getDate() - 1); } return streak >= 7; }, progress: () => { let streak = 0, d = new Date(); for (let i = 0; i < 7; i++) { const iso = dateISO(d); const note = data.daily.find(n => n.date === iso); if (note && ((note.morning||'') + (note.evening||'') + (note.highlight||'') + (note.gratitude||'')).trim()) streak++; else break; d.setDate(d.getDate() - 1); } return { current: streak, target: 7 }; } },
+
+  // ==================== 😊 رهرو احساسات ====================
+  { id: 'mood_7', category: 'رهرو احساسات', icon: '😊', title: 'خودآگاه', desc: '۷ روز خلق‌وخوی خود را ثبت کنید.', check: () => data.mood.length >= 7, progress: () => ({ current: data.mood.length, target: 7 }) },
+  { id: 'mood_30', category: 'رهرو احساسات', icon: '🧘', title: 'درون‌نگر', desc: '۳۰ روز خلق‌وخو ثبت شده', check: () => data.mood.length >= 30, progress: () => ({ current: data.mood.length, target: 30 }) },
+
+  // ==================== 🎮 ویژگی‌های سیستم ====================
+  { id: 'sys_dark', category: 'ویژگی‌های سیستم', icon: '🌙', title: 'شب‌زنده‌دار', desc: 'از حالت تاریک (Dark Mode) استفاده کنید.', check: () => data.settings.themeMode === 'dark' || data.settings.themeMode === 'auto', progress: () => ({ current: (data.settings.themeMode === 'dark' || data.settings.themeMode === 'auto') ? 1 : 0, target: 1 }) },
+  { id: 'sys_voice', category: 'ویژگی‌های سیستم', icon: '🎤', title: 'صدای من', desc: 'از قابلیت ثبت صوتی (میکروفون) استفاده کنید.', check: () => localStorage.getItem('bj_used_voice') === 'true', progress: () => ({ current: localStorage.getItem('bj_used_voice') === 'true' ? 1 : 0, target: 1 }) },
+  { id: 'sys_3d', category: 'ویژگی‌های سیستم', icon: '🎭', title: 'بعد سوم', desc: 'حالت سه‌بعدی را فعال کنید.', check: () => data.settings.enable3D === true, progress: () => ({ current: data.settings.enable3D === true ? 1 : 0, target: 1 }) }
+];
   if (newUnlocked.length) { saveData(); renderAchievements(); newUnlocked.forEach(a => { setTimeout(() => showConfettiAndToast(a), 100); }); } else renderAchievements();
 }
 
@@ -2498,7 +2686,7 @@ function addVoiceButton(textarea) {
     try {
       recognition = new SpeechRecognition(); recognition.lang = 'fa-IR'; recognition.continuous = false; recognition.interimResults = false;
       recognition.onstart = () => { listening = true; btn.classList.add('listening'); btn.innerHTML = '⏹'; };
-      recognition.onresult = (event) => { const transcript = event.results[0][0].transcript; textarea.value = (textarea.value ? textarea.value + ' ' : '') + transcript; textarea.dispatchEvent(new Event('input', { bubbles: true })); };
+      recognition.onresult = (event) => { const transcript = event.results[0][0].transcript; textarea.value = (textarea.value ? textarea.value + ' ' : '') + transcript; textarea.dispatchEvent(new Event('input', { bubbles: true })); localStorage.setItem('bj_used_voice', 'true'); checkAchievements(); };
       recognition.onerror = (event) => { listening = false; btn.classList.remove('listening'); btn.innerHTML = '🎤'; if (event.error === 'not-allowed') flash('اجازه دسترسی به میکروفون داده نشد', 'error'); else if (event.error !== 'no-speech') flash('خطا در ثبت صوتی: ' + event.error, 'error'); };
       recognition.onend = () => { listening = false; btn.classList.remove('listening'); btn.innerHTML = '🎤'; };
       recognition.start();
