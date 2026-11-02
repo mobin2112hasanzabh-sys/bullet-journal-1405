@@ -944,10 +944,18 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
   <div class="footer">بولت ژورنال شخصی ۱۴۰۵ · نسخهٔ زنده</div>
 </div>
 
-<div id="pomoBox" class="pomo-box hidden">
-  <div><div class="pomo-label" id="pomoTitle">⏱️ تایمر تمرکز</div><div class="pomo-time" id="pomoTime">25:00</div></div>
-  <button class="small secondary" id="pomoToggle">شروع</button>
-  <button class="small ghost" id="pomoClose">×</button>
+<div id="pomoBox" class="pomo-box hidden" style="display:flex; flex-direction:column; align-items:flex-start; gap:10px; min-width:200px;">
+  <div style="display:flex; width:100%; justify-content:space-between; align-items:center;">
+    <div class="pomo-label" id="pomoTitle">⏱️ تایمر تمرکز</div>
+    <div id="pomoLiveBadge" style="font-size:11px; background:rgba(0,0,0,0.15); padding:2px 8px; border-radius:12px; font-weight:700;">۰ دقیقه امروز</div>
+  </div>
+  <div style="display:flex; width:100%; justify-content:space-between; align-items:center;">
+    <div class="pomo-time" id="pomoTime" style="font-size:24px; font-weight:900;">25:00</div>
+    <div style="display:flex; gap:6px;">
+      <button class="small secondary" id="pomoToggle">شروع</button>
+      <button class="small ghost" id="pomoClose">×</button>
+    </div>
+  </div>
 </div>
 
 <div id="searchModal" class="modal-overlay hidden">
@@ -2459,33 +2467,135 @@ $('eventStartTimerBtn').addEventListener('click', () => {
   closeEventModal(); startPomodoro(title, id);
 });
 
-const pomoObj = { remaining: 25 * 60, running: false, interval: null, currentTaskTitle: null, currentTaskId: null };
+const pomoObj = { remaining: 25 * 60, running: false, interval: null, currentTaskTitle: null, currentTaskId: null, sessionId: null, elapsedSeconds: 0, recordedMinutes: 0 };
 function updatePomoDisplay() {
-  const m = Math.floor(pomoObj.remaining / 60); const s = pomoObj.remaining % 60; $('pomoTime').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  if (pomoObj.running) { $('pomoBox').classList.add('running'); $('pomoToggle').textContent = 'توقف'; } else { $('pomoBox').classList.remove('running'); $('pomoToggle').textContent = pomoObj.remaining === (data.settings?.timerDuration || 25) * 60 ? 'شروع' : 'ادامه'; }
-  if (pomoObj.currentTaskTitle) $('pomoTitle').textContent = `⏱️ ${pomoObj.currentTaskTitle}`; else $('pomoTitle').textContent = '⏱️ تایمر تمرکز';
+  const m = Math.floor(pomoObj.remaining / 60); 
+  const s = pomoObj.remaining % 60; 
+  $('pomoTime').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  
+  if (pomoObj.running) { 
+    $('pomoBox').classList.add('running'); 
+    $('pomoToggle').textContent = 'توقف'; 
+  } else { 
+    $('pomoBox').classList.remove('running'); 
+    $('pomoToggle').textContent = pomoObj.remaining === (data.settings?.timerDuration || 25) * 60 ? 'شروع' : 'ادامه'; 
+  }
+  
+  if (pomoObj.currentTaskTitle) $('pomoTitle').textContent = `⏱️ ${pomoObj.currentTaskTitle}`; 
+  else $('pomoTitle').textContent = '⏱️ تایمر تمرکز';
+
+  // نمایش دقایق ثبت شده امروز در بج کنار تایمر
+  if ($('pomoLiveBadge')) {
+    const today = dateISO();
+    const todayTotal = (data.pomodoro || []).filter(p => p.date === today).reduce((a,p) => a + (Number(p.minutes) || 0), 0);
+    $('pomoLiveBadge').textContent = `🧠 ${fa(todayTotal)} دقیقه امروز`;
+  }
 }
-function playTimerSound() {
-  const type = data.settings?.timerSound || 'beep'; if (type === 'none') return;
-  try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination); osc.type = type === 'nature' ? 'sine' : 'square'; osc.frequency.value = type === 'nature' ? 440 : 880; gain.gain.setValueAtTime(0.1, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8); osc.start(); osc.stop(ctx.currentTime + 0.8); setTimeout(() => { const osc2 = ctx.createOscillator(); const gain2 = ctx.createGain(); osc2.connect(gain2); gain2.connect(ctx.destination); osc2.type = type === 'nature' ? 'sine' : 'square'; osc2.frequency.value = type === 'nature' ? 554 : 1100; gain2.gain.setValueAtTime(0.1, ctx.currentTime); gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8); osc2.start(); osc2.stop(ctx.currentTime + 0.8); }, 400); } catch (e) { }
-}
+
 function startPomodoro(taskTitle = null, taskId = null) {
-  $('pomoBox').classList.remove('hidden'); if (pomoObj.running) return;
-  pomoObj.currentTaskTitle = taskTitle; pomoObj.currentTaskId = taskId; if (!pomoObj.currentTaskTitle) { pomoObj.currentTaskTitle = null; pomoObj.currentTaskId = null; }
-  if (pomoObj.remaining === (data.settings?.timerDuration || 25) * 60) pomoObj.remaining = (data.settings?.timerDuration || 25) * 60;
-  pomoObj.running = true; updatePomoDisplay();
+  $('pomoBox').classList.remove('hidden'); 
+  if (pomoObj.running) return;
+
+  // اگر سشن جدید است
+  if (pomoObj.remaining === (data.settings?.timerDuration || 25) * 60) {
+    pomoObj.sessionId = nid(); // ساخت یک شناسه یکتا برای این جلسه
+    pomoObj.elapsedSeconds = 0;
+    pomoObj.recordedMinutes = 0;
+  }
+
+  pomoObj.currentTaskTitle = taskTitle; 
+  pomoObj.currentTaskId = taskId;
+  if (!pomoObj.currentTaskTitle) { pomoObj.currentTaskTitle = null; pomoObj.currentTaskId = null; }
+  
+  pomoObj.running = true; 
+  updatePomoDisplay();
+
   pomoObj.interval = setInterval(() => {
     pomoObj.remaining--;
+    pomoObj.elapsedSeconds++; // شمارش ثانیه‌های سپری شده
+
+    // هر ۶۰ ثانیه که گذشت، یک دقیقه ثبت کن
+    if (pomoObj.elapsedSeconds > 0 && pomoObj.elapsedSeconds % 60 === 0) {
+      const currentMin = Math.floor(pomoObj.elapsedSeconds / 60);
+      if (currentMin > pomoObj.recordedMinutes) {
+        pomoObj.recordedMinutes = currentMin;
+        
+        // بروزرسانی دیتابیس محلی
+        let rec = data.pomodoro.find(p => p.id === pomoObj.sessionId);
+        if (rec) { 
+          rec.minutes = currentMin; 
+        } else {
+          data.pomodoro.push({ 
+            id: pomoObj.sessionId, 
+            date: dateISO(), 
+            minutes: currentMin, 
+            taskId: pomoObj.currentTaskId 
+          });
+        }
+        saveData(); // ذخیره در کلود
+        renderDashboard(); // آپدیت زنده آمار داشبورد
+      }
+    }
+
     if (pomoObj.remaining <= 0) {
-      clearInterval(pomoObj.interval); pomoObj.running = false; pomoObj.remaining = 0; updatePomoDisplay(); playTimerSound();
-      const mins = data.settings?.timerDuration || 25; data.pomodoro.push({ date: dateISO(), minutes: mins, taskId: pomoObj.currentTaskId }); saveData();
-      if (pomoObj.currentTaskId) { customConfirm(`آیا کار «${pomoObj.currentTaskTitle}» را انجام شده تیک بزنیم؟`, 'پایان تایمر').then(ok => { if (ok) { const t = data.weeklyTasks.find(x => String(x.id) === String(pomoObj.currentTaskId)); if (t) { t.done = true; saveData(); renderWeeklyTasks(); renderTodayPlan(); renderDashboard(); } } }); }
-      else customAlert(`🎉 تایمر ${mins} دقیقه‌ای تمام شد!`, 'پایان تایمر');
-      pomoObj.currentTaskTitle = null; pomoObj.currentTaskId = null; setTimeout(() => { pomoObj.remaining = (data.settings?.timerDuration || 25) * 60; updatePomoDisplay(); }, 2000);
+      clearInterval(pomoObj.interval); 
+      pomoObj.running = false; 
+      pomoObj.remaining = 0; 
+      updatePomoDisplay(); 
+      playTimerSound();
+      
+      // ثبت نهایی دقیقه آخر (چون بالای ۶۰ ثانیه بوده و پارت‌بندی دقیقه‌ای عقب‌تر بوده)
+      const finalMins = Math.floor(pomoObj.elapsedSeconds / 60);
+      let rec = data.pomodoro.find(p => p.id === pomoObj.sessionId);
+      if (rec) rec.minutes = finalMins;
+
+      if (pomoObj.currentTaskId) { 
+        customConfirm(`آیا کار «${pomoObj.currentTaskTitle}» را انجام شده تیک بزنیم؟`, 'پایان تایمر').then(ok => { 
+          if (ok) { 
+            const t = data.weeklyTasks.find(x => String(x.id) === String(pomoObj.currentTaskId)); 
+            if (t) { t.done = true; saveData(); renderWeeklyTasks(); renderTodayPlan(); renderDashboard(); } 
+          } 
+        }); 
+      } else {
+        customAlert(`🎉 تایمر ${(data.settings?.timerDuration || 25)} دقیقه‌ای تمام شد!`, 'پایان تایمر');
+      }
+      
+      pomoObj.currentTaskTitle = null; 
+      pomoObj.currentTaskId = null; 
+      setTimeout(() => { 
+        pomoObj.remaining = (data.settings?.timerDuration || 25) * 60; 
+        pomoObj.sessionId = null;
+        updatePomoDisplay(); 
+      }, 2000);
     }
     updatePomoDisplay();
   }, 1000);
 }
+
+$('pomoToggle').addEventListener('click', () => { 
+  if (pomoObj.running) { 
+    clearInterval(pomoObj.interval); 
+    pomoObj.running = false; 
+    updatePomoDisplay(); 
+    flash('تایمر متوقف شد. دقایقی که تمرکز کردی ذخیره شد.'); 
+  } else {
+    // اگر کاربر روی ادامه کلیک کرد، سشن قبلی حفظ می‌شود
+    startPomodoro(pomoObj.currentTaskTitle, pomoObj.currentTaskId); 
+  } 
+});
+
+$('pomoClose').addEventListener('click', () => { 
+  clearInterval(pomoObj.interval); 
+  pomoObj.running = false; 
+  pomoObj.remaining = (data.settings?.timerDuration || 25) * 60; 
+  pomoObj.currentTaskTitle = null; 
+  pomoObj.currentTaskId = null; 
+  pomoObj.sessionId = null;
+  pomoObj.elapsedSeconds = 0;
+  pomoObj.recordedMinutes = 0;
+  $('pomoBox').classList.add('hidden'); 
+  updatePomoDisplay(); 
+});
 $('pomoToggle').addEventListener('click', () => { if (pomoObj.running) { clearInterval(pomoObj.interval); pomoObj.running = false; updatePomoDisplay(); } else startPomodoro(pomoObj.currentTaskTitle, pomoObj.currentTaskId); });
 $('pomoClose').addEventListener('click', () => { clearInterval(pomoObj.interval); pomoObj.running = false; pomoObj.remaining = (data.settings?.timerDuration || 25) * 60; pomoObj.currentTaskTitle = null; pomoObj.currentTaskId = null; $('pomoBox').classList.add('hidden'); updatePomoDisplay(); });
 
