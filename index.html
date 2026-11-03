@@ -878,7 +878,12 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
 <div id="pomoBox" class="pomo-box hidden" style="display:flex; flex-direction:column; align-items:flex-start; gap:10px; min-width:200px;">
   <div style="display:flex; width:100%; justify-content:space-between; align-items:center;">
     <div class="pomo-label" id="pomoTitle">⏱️ تایمر تمرکز</div>
-    <div id="pomoLiveBadge" style="font-size:11px; background:rgba(0,0,0,0.15); padding:2px 8px; border-radius:12px; font-weight:700; white-space:nowrap;">مجموع کل: ۰۰:۰۰:۰۰</div>
+    <div id="pomoLiveBadge" style="font-size:11px; background:rgba(0,0,0,0.15); padding:2px 8px; border-radius:12px; font-weight:700;">۰ دقیقه امروز</div>
+  </div>
+  <div id="pomoDurationControls" style="display:flex;width:100%;align-items:center;gap:8px;justify-content:flex-start;">
+    <label for="pomoDurationInput" style="font-size:11px;color:var(--muted);white-space:nowrap;">مدت تمرکز:</label>
+    <input id="pomoDurationInput" type="number" min="1" max="1440" step="1" value="25" inputmode="numeric" aria-label="مدت زمان تایمر به دقیقه" style="width:82px;padding:5px 7px;text-align:center;direction:ltr;font-size:13px;">
+    <span style="font-size:11px;color:var(--muted);">دقیقه</span>
   </div>
   <div style="display:flex; width:100%; justify-content:space-between; align-items:center;">
     <div class="pomo-time" id="pomoTime" style="font-size:24px; font-weight:900;">25:00</div>
@@ -1245,6 +1250,7 @@ $('authForm').addEventListener('submit',async e=>{
 function logout(){
   localStorage.removeItem(STORAGE_SESSION);
   session=null; data=emptyData(); switchPanel('auth');
+  $('pomoBox')?.classList.add('hidden');
   $('authForm').reset(); $('authMessage').classList.add('hidden');
 }
 $('logoutBtn').addEventListener('click',async()=>{ if(await customConfirm('آیا از حساب کاربری خود خارج می‌شوید؟'))logout(); });
@@ -1263,6 +1269,11 @@ async function startApp(){
   $('profileAvatar').textContent=(session.name||'?').charAt(0).toUpperCase();
   $('initialAssetsInput').value = data.settings?.initialAssets || 0;
   applySettings();
+  pomoObj.remaining = (Number(data.settings?.timerDuration) || 25) * 60;
+  pomoObj.elapsedSeconds = 0;
+  $('pomoBox')?.classList.remove('hidden');
+  updatePomoDisplay();
+  updateLiveFocusDashboard();
   ['moodDate','finDate','mgDue'].forEach(id=>{if($(id))setPersianDateValue(id, dateISO());});
   if($('wgDue')) setPersianDateValue('wgDue', getWeekStartStr(0));
   if($('rtStartDate')) setPersianDateValue('rtStartDate', dateISO());
@@ -1613,12 +1624,12 @@ function renderDashboard(){
   const currentAssets = calculateCurrentAssets();
   const totalSavings = calculateTotalSavings();
   const habitDone = data.logs.filter(l => l.date === dateISO() && l.status === 'done').length;
-  const focusSeconds = getPomodoroSecondsForDate(dateISO());
+  const focusSeconds = getPomodoroSecondsForMonth(jalaliMonthKey(dateISO()));
   $('dashboardStats').innerHTML = `
     <div class="stat"><span class="icon">🔥</span><div class="label">عادت امروز</div><div class="number">${fa(habitDone)}</div></div>
     <div class="stat"><span class="icon">💎</span><div class="label">موجودی نقدی</div><div class="number" style="font-size:20px; color:var(--green);">${fa(currentAssets)}</div></div>
     <div class="stat"><span class="icon">🏦</span><div class="label">کل پس‌انداز</div><div class="number" style="font-size:20px; color:var(--blue);">${fa(totalSavings)}</div></div>
-    <div class="stat"><span class="icon">⏱️</span><div class="label">زمان تمرکز امروز</div><div class="number" id="dashboardFocusCount" style="font-size:21px;direction:ltr;text-align:right;white-space:nowrap;">${formatFocusDuration(focusSeconds)}</div><small style="font-size:10px;color:var(--muted);">ساعت : دقیقه : ثانیه</small></div>`;
+    <div class="stat"><span class="icon">⏱️</span><div class="label">زمان تمرکز این ماه</div><div class="number" id="dashboardFocusCount" style="font-size:21px;direction:ltr;text-align:right;white-space:nowrap;">${formatFocusDuration(focusSeconds)}</div><small style="font-size:10px;color:var(--muted);">مجموع روزهای ماه شمسی جاری · ساعت : دقیقه : ثانیه</small></div>`;
   generateAIInsight(); renderMonthlyProgress(); renderMoodLine(); renderExpenseDonut(); renderMonthlyFinance(); renderHabitHeatmap();
   updateLiveFocusDashboard();
 }
@@ -2473,6 +2484,17 @@ function getPomodoroSecondsForDate(date) {
     .reduce((total, p) => total + pomodoroEntrySeconds(p), 0);
 }
 
+function getPomodoroSecondsForMonth(monthKey = jalaliMonthKey(dateISO())) {
+  return (data.pomodoro || [])
+    .filter(p => p.date && jalaliMonthKey(p.date) === monthKey)
+    .reduce((total, p) => total + pomodoroEntrySeconds(p), 0);
+}
+
+function getPomodoroSecondsAllTime() {
+  return (data.pomodoro || [])
+    .reduce((total, p) => total + pomodoroEntrySeconds(p), 0);
+}
+
 function formatFocusDuration(totalSeconds) {
   const value = Math.max(0, Math.floor(Number(totalSeconds) || 0));
   const hours = Math.floor(value / 3600);
@@ -2499,12 +2521,20 @@ function updatePomoDisplay() {
   const s = pomoObj.remaining % 60;
   $('pomoTime').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 
+  const configuredMinutes = Math.max(1, Number(data.settings?.timerDuration) || 25);
+  const durationInput = $('pomoDurationInput');
+  if (durationInput) {
+    if (document.activeElement !== durationInput) durationInput.value = configuredMinutes;
+    durationInput.disabled = pomoObj.running || pomoObj.elapsedSeconds > 0;
+    durationInput.title = durationInput.disabled ? 'برای تغییر مدت، تایمر را ببندید و دوباره باز کنید.' : 'مدت دلخواه تمرکز را به دقیقه وارد کنید.';
+  }
+
   if (pomoObj.running) {
     $('pomoBox').classList.add('running');
     $('pomoToggle').textContent = 'توقف';
   } else {
     $('pomoBox').classList.remove('running');
-    $('pomoToggle').textContent = pomoObj.remaining === (data.settings?.timerDuration || 25) * 60 ? 'شروع' : 'ادامه';
+    $('pomoToggle').textContent = pomoObj.remaining === configuredMinutes * 60 ? 'شروع' : 'ادامه';
   }
 
   if (pomoObj.currentTaskTitle) $('pomoTitle').textContent = `⏱️ ${pomoObj.currentTaskTitle}`;
@@ -2513,29 +2543,18 @@ function updatePomoDisplay() {
 
 function updateLiveFocusDashboard() {
   const today = dateISO();
-
-  // زمان تمرکز امروز
   const todaySeconds = getPomodoroSecondsForDate(today);
-  const todayFormatted = formatFocusDuration(todaySeconds);
+  const monthSeconds = getPomodoroSecondsForMonth(jalaliMonthKey(today));
+  const allTimeSeconds = getPomodoroSecondsAllTime();
 
-  // مجموع تمام روزها
-  const allDaysSeconds = (data.pomodoro || [])
-    .reduce((total, entry) => total + pomodoroEntrySeconds(entry), 0);
-
-  const totalFormatted = formatFocusDuration(allDaysSeconds);
-
-  // نمایش زمان تمرکز امروز
   const todayEl = $('todayFocusCount');
-  if (todayEl) todayEl.textContent = todayFormatted;
+  if (todayEl) todayEl.textContent = formatFocusDuration(todaySeconds);
 
   const dashEl = $('dashboardFocusCount');
-  if (dashEl) dashEl.textContent = todayFormatted;
+  if (dashEl) dashEl.textContent = formatFocusDuration(monthSeconds);
 
-  // نمایش مجموع کل زمان تمرکز در تایمر شناور
   const badge = $('pomoLiveBadge');
-  if (badge) {
-    badge.textContent = `🧠 مجموع کل: ${totalFormatted}`;
-  }
+  if (badge) badge.textContent = `🧠 مجموع کل: ${formatFocusDuration(allTimeSeconds)}`;
 }
 
 function persistPomodoroProgress() {
@@ -2562,7 +2581,7 @@ function persistPomodoroProgress() {
 
 function syncPomodoroClock(persist = true) {
   if (!pomoObj.running || !pomoObj.startTimestamp) return;
-  const totalSeconds = Math.max(1, Number(data.settings?.timerDuration || 25) * 60);
+  const totalSeconds = Math.max(1, (Number(data.settings?.timerDuration) || 25) * 60);
   pomoObj.elapsedSeconds = Math.min(totalSeconds, Math.max(0, Math.floor((Date.now() - pomoObj.startTimestamp) / 1000)));
   pomoObj.remaining = Math.max(0, totalSeconds - pomoObj.elapsedSeconds);
   if (persist) persistPomodoroProgress();
@@ -2638,6 +2657,25 @@ function startPomodoro(taskTitle = null, taskId = null) {
     if (pomoObj.remaining <= 0) finishPomodoro();
   }, 1000);
 }
+
+$('pomoDurationInput')?.addEventListener('change', e => {
+  if (pomoObj.running || pomoObj.elapsedSeconds > 0) {
+    e.target.value = data.settings?.timerDuration || 25;
+    return;
+  }
+  const value = Math.floor(Number(e.target.value));
+  if (!Number.isFinite(value) || value < 1 || value > 1440) {
+    e.target.value = data.settings?.timerDuration || 25;
+    flash('مدت تمرکز باید بین ۱ تا ۱۴۴۰ دقیقه باشد.', 'error');
+    return;
+  }
+  data.settings.timerDuration = value;
+  pomoObj.remaining = value * 60;
+  const settingsInput = $('setTimerDuration');
+  if (settingsInput) settingsInput.value = value;
+  saveData();
+  updatePomoDisplay();
+});
 
 $('pomoToggle').addEventListener('click', () => {
   if (pomoObj.running) {
@@ -2808,7 +2846,7 @@ function showConfettiAndToast(achievement) {
 
 $('setThemeMode')?.addEventListener('change', e => { const mode = ['light', 'dark', 'auto'].includes(e.target.value) ? e.target.value : 'light'; data.settings.themeMode = mode; saveData(); applySettings(); });
 $('setFontSize')?.addEventListener('change', e => { data.settings.fontSize = e.target.value; saveData(); applySettings(); });
-$('setTimerDuration')?.addEventListener('change', e => { const val = parseInt(e.target.value, 10); if (val > 0) { data.settings.timerDuration = val; saveData(); if (!pomoObj.running) { pomoObj.remaining = val * 60; updatePomoDisplay(); } } });
+$('setTimerDuration')?.addEventListener('change', e => { const val = Math.floor(Number(e.target.value)); if (val >= 1 && val <= 1440) { data.settings.timerDuration = val; saveData(); if (!pomoObj.running && pomoObj.elapsedSeconds === 0) { pomoObj.remaining = val * 60; updatePomoDisplay(); } if ($('pomoDurationInput')) $('pomoDurationInput').value = val; } else { e.target.value = data.settings?.timerDuration || 25; flash('مدت تمرکز باید بین ۱ تا ۱۴۴۰ دقیقه باشد.', 'error'); } });
 $('setTimerSound')?.addEventListener('change', e => { data.settings.timerSound = e.target.value; saveData(); });
 $('setReminderNote')?.addEventListener('change', e => { data.settings.reminderNote = e.target.value; saveData(); });
 $('setEnable3D')?.addEventListener('change', e => { data.settings.enable3D = e.target.checked; saveData(); applySettings(); flash(e.target.checked ? 'حالت سه‌بعدی فعال شد ✨' : 'حالت سه‌بعدی غیرفعال شد'); });
