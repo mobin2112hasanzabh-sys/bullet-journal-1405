@@ -963,7 +963,6 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
     </div>
 
     <div id="jarvisParsedInfo" class="hidden" style="background: rgba(164, 196, 122, 0.1); border: 1px solid #a4c47a; border-radius: 12px; padding: 15px; text-align: right; margin-bottom: 15px; font-size: 13px; color: #a4c47a;">
-      <!-- اطلاعات استخراج شده اینجا نمایش داده می‌شود -->
     </div>
     
     <div id="jarvisOrb" class="jarvis-orb">
@@ -1619,7 +1618,7 @@ function renderDashboard(){
     <div class="stat"><span class="icon">🔥</span><div class="label">عادت امروز</div><div class="number">${fa(habitDone)}</div></div>
     <div class="stat"><span class="icon">💎</span><div class="label">موجودی نقدی</div><div class="number" style="font-size:20px; color:var(--green);">${fa(currentAssets)}</div></div>
     <div class="stat"><span class="icon">🏦</span><div class="label">کل پس‌انداز</div><div class="number" style="font-size:20px; color:var(--blue);">${fa(totalSavings)}</div></div>
-    <div class="stat"><span class="icon">⏱️</span><div class="label">تمرکز امروز</div><div class="number">${fa(pomos)}<small style="font-size:11px;color:var(--muted); margin-right:3px;">دقیقه</small></div></div>`;
+    <div class="stat"><span class="icon">⏱️</span><div class="label">تمرکز امروز</div><div class="number" id="dashboardFocusCount">${fa(pomos)}<small style="font-size:11px;color:var(--muted); margin-right:3px;">دقیقه</small></div></div>`;
   generateAIInsight(); renderMonthlyProgress(); renderMoodLine(); renderExpenseDonut(); renderMonthlyFinance(); renderHabitHeatmap();
 }
 
@@ -1723,7 +1722,7 @@ function renderToday(){
   const weeklySum = todayWeekly.reduce((a,t) => a + (Number(t.value) || 0), 0);
   $('todayStats').innerHTML = `
     <div class="stat"><div class="label">عادت انجام‌شده</div><div class="number">${fa(doneH)}</div></div>
-    <div class="stat"><div class="label">دقایق تمرکز</div><div class="number">${fa(pomos)}</div></div>
+    <div class="stat"><div class="label">دقایق تمرکز</div><div class="number" id="todayFocusCount">${fa(pomos)}</div></div>
     <div class="stat"><div class="label">برنامه‌ریزی امروز</div><div class="number">${fa(doneWeekly)}/${fa(todayWeekly.length)}</div></div>
     <div class="stat"><div class="label">مجموع اجرا شده</div><div class="number">${fa(weeklySum)}</div></div>`;
 }
@@ -2460,6 +2459,7 @@ $('eventStartTimerBtn').addEventListener('click', () => {
 });
 
 const pomoObj = { remaining: 25 * 60, running: false, interval: null, currentTaskTitle: null, currentTaskId: null, sessionId: null, elapsedSeconds: 0, recordedMinutes: 0, startTimestamp: null };
+
 function updatePomoDisplay() {
   const m = Math.floor(pomoObj.remaining / 60); 
   const s = pomoObj.remaining % 60; 
@@ -2475,15 +2475,26 @@ function updatePomoDisplay() {
   
   if (pomoObj.currentTaskTitle) $('pomoTitle').textContent = `⏱️ ${pomoObj.currentTaskTitle}`; 
   else $('pomoTitle').textContent = '⏱️ تایمر تمرکز';
+}
 
-  if ($('pomoLiveBadge')) {
-    const today = dateISO();
-    let totalMins = (data.pomodoro || []).filter(p => p.date === today).reduce((a,p) => a + (Number(p.minutes) || 0), 0);
-    // اگر ثانیه‌هایی سپری شده که هنوز ثبت نشده، در نمایش لحظه‌ای بهش اضافه میشه
+function updateLiveFocusDashboard() {
+  const today = dateISO();
+  let totalMins = (data.pomodoro || []).filter(p => p.date === today).reduce((a,p) => a + (Number(p.minutes) || 0), 0);
+  
+  if (pomoObj.elapsedSeconds > 0) {
     const currentUnsaveMins = Math.floor(pomoObj.elapsedSeconds / 60);
     if (currentUnsaveMins > pomoObj.recordedMinutes) {
       totalMins += (currentUnsaveMins - pomoObj.recordedMinutes);
     }
+  }
+  
+  const todayEl = $('todayFocusCount');
+  if (todayEl) todayEl.innerHTML = fa(totalMins);
+  
+  const dashEl = $('dashboardFocusCount');
+  if (dashEl) dashEl.innerHTML = `${fa(totalMins)}<small style="font-size:11px;color:var(--muted); margin-right:3px;">دقیقه</small>`;
+
+  if ($('pomoLiveBadge')) {
     $('pomoLiveBadge').textContent = `🧠 ${fa(totalMins)} دقیقه امروز`;
   }
 }
@@ -2497,7 +2508,6 @@ function startPomodoro(taskTitle = null, taskId = null) {
   $('pomoBox').classList.remove('hidden'); 
   if (pomoObj.running) return;
 
-  // اگر از ابتدا شروع میشه
   if (pomoObj.remaining === (data.settings?.timerDuration || 25) * 60 && pomoObj.elapsedSeconds === 0) {
     pomoObj.sessionId = nid(); 
     pomoObj.elapsedSeconds = 0;
@@ -2509,17 +2519,16 @@ function startPomodoro(taskTitle = null, taskId = null) {
   if (!pomoObj.currentTaskTitle) { pomoObj.currentTaskTitle = null; pomoObj.currentTaskId = null; }
   
   pomoObj.running = true; 
-  pomoObj.startTimestamp = Date.now() - (pomoObj.elapsedSeconds * 1000); // ثبت زمان دقیق شروع
+  pomoObj.startTimestamp = Date.now() - (pomoObj.elapsedSeconds * 1000);
   updatePomoDisplay();
+  updateLiveFocusDashboard();
 
   pomoObj.interval = setInterval(() => {
     const now = Date.now();
-    // محاسبه زمان دقیق سپری شده بر اساس تایم استمپ
     pomoObj.elapsedSeconds = Math.floor((now - pomoObj.startTimestamp) / 1000);
     const totalSeconds = (data.settings?.timerDuration || 25) * 60;
     pomoObj.remaining = totalSeconds - pomoObj.elapsedSeconds;
 
-    // هر دقیقه که گذشت، توی دیتابیس ثبت کن
     const currentMin = Math.floor(pomoObj.elapsedSeconds / 60);
     if (currentMin > pomoObj.recordedMinutes) {
       pomoObj.recordedMinutes = currentMin;
@@ -2544,6 +2553,7 @@ function startPomodoro(taskTitle = null, taskId = null) {
       pomoObj.running = false; 
       pomoObj.remaining = 0; 
       updatePomoDisplay(); 
+      updateLiveFocusDashboard();
       playTimerSound();
       
       const finalMins = Math.floor(pomoObj.elapsedSeconds / 60);
@@ -2569,9 +2579,12 @@ function startPomodoro(taskTitle = null, taskId = null) {
         pomoObj.elapsedSeconds = 0;
         pomoObj.recordedMinutes = 0;
         updatePomoDisplay(); 
+        updateLiveFocusDashboard();
       }, 2000);
+    } else {
+      updatePomoDisplay();
+      updateLiveFocusDashboard();
     }
-    updatePomoDisplay();
   }, 1000);
 }
 
@@ -2580,6 +2593,7 @@ $('pomoToggle').addEventListener('click', () => {
     clearInterval(pomoObj.interval); 
     pomoObj.running = false; 
     updatePomoDisplay(); 
+    updateLiveFocusDashboard();
     flash('تایمر متوقف شد. دقایقی که تمرکز کردی ذخیره شد.'); 
   } else {
     startPomodoro(pomoObj.currentTaskTitle, pomoObj.currentTaskId); 
@@ -2595,8 +2609,10 @@ $('pomoClose').addEventListener('click', () => {
   pomoObj.sessionId = null;
   pomoObj.elapsedSeconds = 0;
   pomoObj.recordedMinutes = 0;
+  renderDashboard(); 
   $('pomoBox').classList.add('hidden'); 
   updatePomoDisplay(); 
+  updateLiveFocusDashboard();
 });
 
 $('globalSearchBtn')?.addEventListener('click', () => { $('searchModal').classList.remove('hidden'); $('globalSearchInput').value = ''; $('searchResults').innerHTML = '<p class="muted" style="text-align:center;">عبارتی برای جستجو بنویسید...</p>'; setTimeout(() => $('globalSearchInput').focus(), 100); });
@@ -2979,7 +2995,6 @@ function startJarvisListening() {
     if (finalTranscript) jarvisFinalTranscript += finalTranscript;
     jarvisLiveText.textContent = jarvisFinalTranscript + interimTranscript;
 
-    // تایمر 5 ثانیه سکوت
     jarvisSilenceTimer = setTimeout(() => {
       if (jarvisRecognition) jarvisRecognition.stop();
     }, 5000);
@@ -3015,7 +3030,6 @@ function analyzeJarvisCommand(text) {
   const t = text.toLowerCase();
   jarvisLastCommand = null;
 
-  // --- ۱. هدف ماهانه ---
   if (t.includes('هدف ماهانه') || t.includes('ماهانه')) {
     const titleMatch = t.match(/(?:هدف ماهانه|ماهانه)\s+(.+?)(?:\s+برای|\s+به مقدار|\s+با مقدار)/);
     const amountMatch = t.match(/(?:برای|به مقدار|با مقدار)\s+(\d+)/);
@@ -3033,7 +3047,6 @@ function analyzeJarvisCommand(text) {
     return;
   }
 
-  // --- ۲. هدف هفتگی ---
   if (t.includes('هدف هفتگی') || t.includes('هفتگی')) {
     const titleMatch = t.match(/(?:هدف هفتگی|هفتگی)\s+(.+?)(?:\s+برای|\s+به مقدار|\s+با مقدار)/);
     const amountMatch = t.match(/(?:برای|به مقدار|با مقدار)\s+(\d+)/);
@@ -3051,7 +3064,6 @@ function analyzeJarvisCommand(text) {
     return;
   }
 
-  // --- ۳. تسک (کار هفتگی) ---
   if (t.includes('تسک') || t.includes('کار') || t.includes('یادآوری')) {
     const titleMatch = t.match(/(?:تسک|کار|یادآوری)\s+(.+?)(?:\s+برای|\s+در روز|\s+روز)/);
     const dayMatch = t.match(/(شنبه|یکشنبه|دوشنبه|سه‌شنبه|چهارشنبه|پنجشنبه|جمعه)/);
@@ -3071,7 +3083,6 @@ function analyzeJarvisCommand(text) {
     return;
   }
 
-  // --- ۴. مالی ---
   if (t.includes('هزینه') || t.includes('خرج') || t.includes('درآمد') || t.includes('دخل')) {
     const amount = parseJarvisNumber(t);
     if (amount > 0) {
@@ -3085,7 +3096,6 @@ function analyzeJarvisCommand(text) {
     }
   }
 
-  // اگر متوجه نشد
   jarvisStatus.textContent = 'متوجه نشدم! لطفاً از کلمات کلیدی (هدف ماهانه، هدف هفتگی، تسک، هزینه) استفاده کنید.';
   jarvisActions.classList.remove('hidden');
   $('jarvisConfirmBtn').classList.add('hidden'); 
