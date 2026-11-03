@@ -1271,7 +1271,6 @@ async function startApp(){
   applySettings();
   pomoObj.remaining = (Number(data.settings?.timerDuration) || 25) * 60;
   pomoObj.elapsedSeconds = 0;
-  $('pomoBox')?.classList.remove('hidden');
   updatePomoDisplay();
   updateLiveFocusDashboard();
   ['moodDate','finDate','mgDue'].forEach(id=>{if($(id))setPersianDateValue(id, dateISO());});
