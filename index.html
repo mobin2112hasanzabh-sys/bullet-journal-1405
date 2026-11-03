@@ -878,7 +878,7 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
 <div id="pomoBox" class="pomo-box hidden" style="display:flex; flex-direction:column; align-items:flex-start; gap:10px; min-width:200px;">
   <div style="display:flex; width:100%; justify-content:space-between; align-items:center;">
     <div class="pomo-label" id="pomoTitle">⏱️ تایمر تمرکز</div>
-    <div id="pomoLiveBadge" style="font-size:11px; background:rgba(0,0,0,0.15); padding:2px 8px; border-radius:12px; font-weight:700;">۰ دقیقه امروز</div>
+    <div id="pomoLiveBadge" style="font-size:11px; background:rgba(0,0,0,0.15); padding:2px 8px; border-radius:12px; font-weight:700; white-space:nowrap;">مجموع کل: ۰۰:۰۰:۰۰</div>
   </div>
   <div style="display:flex; width:100%; justify-content:space-between; align-items:center;">
     <div class="pomo-time" id="pomoTime" style="font-size:24px; font-weight:900;">25:00</div>
@@ -2513,17 +2513,29 @@ function updatePomoDisplay() {
 
 function updateLiveFocusDashboard() {
   const today = dateISO();
-  const totalSeconds = getPomodoroSecondsForDate(today);
-  const formatted = formatFocusDuration(totalSeconds);
 
+  // زمان تمرکز امروز
+  const todaySeconds = getPomodoroSecondsForDate(today);
+  const todayFormatted = formatFocusDuration(todaySeconds);
+
+  // مجموع تمام روزها
+  const allDaysSeconds = (data.pomodoro || [])
+    .reduce((total, entry) => total + pomodoroEntrySeconds(entry), 0);
+
+  const totalFormatted = formatFocusDuration(allDaysSeconds);
+
+  // نمایش زمان تمرکز امروز
   const todayEl = $('todayFocusCount');
-  if (todayEl) todayEl.textContent = formatted;
+  if (todayEl) todayEl.textContent = todayFormatted;
 
   const dashEl = $('dashboardFocusCount');
-  if (dashEl) dashEl.textContent = formatted;
+  if (dashEl) dashEl.textContent = todayFormatted;
 
+  // نمایش مجموع کل زمان تمرکز در تایمر شناور
   const badge = $('pomoLiveBadge');
-  if (badge) badge.textContent = `🧠 ${formatted} امروز`;
+  if (badge) {
+    badge.textContent = `🧠 مجموع کل: ${totalFormatted}`;
+  }
 }
 
 function persistPomodoroProgress() {
