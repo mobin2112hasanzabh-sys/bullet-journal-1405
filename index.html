@@ -2459,7 +2459,7 @@ $('eventStartTimerBtn').addEventListener('click', () => {
   closeEventModal(); startPomodoro(title, id);
 });
 
-const pomoObj = { remaining: 25 * 60, running: false, interval: null, currentTaskTitle: null, currentTaskId: null, sessionId: null, elapsedSeconds: 0, recordedMinutes: 0 };
+const pomoObj = { remaining: 25 * 60, running: false, interval: null, currentTaskTitle: null, currentTaskId: null, sessionId: null, elapsedSeconds: 0, recordedMinutes: 0, startTimestamp: null };
 function updatePomoDisplay() {
   const m = Math.floor(pomoObj.remaining / 60); 
   const s = pomoObj.remaining % 60; 
@@ -2478,8 +2478,13 @@ function updatePomoDisplay() {
 
   if ($('pomoLiveBadge')) {
     const today = dateISO();
-    const todayTotal = (data.pomodoro || []).filter(p => p.date === today).reduce((a,p) => a + (Number(p.minutes) || 0), 0);
-    $('pomoLiveBadge').textContent = `🧠 ${fa(todayTotal)} دقیقه امروز`;
+    let totalMins = (data.pomodoro || []).filter(p => p.date === today).reduce((a,p) => a + (Number(p.minutes) || 0), 0);
+    // اگر ثانیه‌هایی سپری شده که هنوز ثبت نشده، در نمایش لحظه‌ای بهش اضافه میشه
+    const currentUnsaveMins = Math.floor(pomoObj.elapsedSeconds / 60);
+    if (currentUnsaveMins > pomoObj.recordedMinutes) {
+      totalMins += (currentUnsaveMins - pomoObj.recordedMinutes);
+    }
+    $('pomoLiveBadge').textContent = `🧠 ${fa(totalMins)} دقیقه امروز`;
   }
 }
 
@@ -2492,7 +2497,8 @@ function startPomodoro(taskTitle = null, taskId = null) {
   $('pomoBox').classList.remove('hidden'); 
   if (pomoObj.running) return;
 
-  if (pomoObj.remaining === (data.settings?.timerDuration || 25) * 60) {
+  // اگر از ابتدا شروع میشه
+  if (pomoObj.remaining === (data.settings?.timerDuration || 25) * 60 && pomoObj.elapsedSeconds === 0) {
     pomoObj.sessionId = nid(); 
     pomoObj.elapsedSeconds = 0;
     pomoObj.recordedMinutes = 0;
@@ -2503,31 +2509,34 @@ function startPomodoro(taskTitle = null, taskId = null) {
   if (!pomoObj.currentTaskTitle) { pomoObj.currentTaskTitle = null; pomoObj.currentTaskId = null; }
   
   pomoObj.running = true; 
+  pomoObj.startTimestamp = Date.now() - (pomoObj.elapsedSeconds * 1000); // ثبت زمان دقیق شروع
   updatePomoDisplay();
 
   pomoObj.interval = setInterval(() => {
-    pomoObj.remaining--;
-    pomoObj.elapsedSeconds++;
+    const now = Date.now();
+    // محاسبه زمان دقیق سپری شده بر اساس تایم استمپ
+    pomoObj.elapsedSeconds = Math.floor((now - pomoObj.startTimestamp) / 1000);
+    const totalSeconds = (data.settings?.timerDuration || 25) * 60;
+    pomoObj.remaining = totalSeconds - pomoObj.elapsedSeconds;
 
-    if (pomoObj.elapsedSeconds > 0 && pomoObj.elapsedSeconds % 60 === 0) {
-      const currentMin = Math.floor(pomoObj.elapsedSeconds / 60);
-      if (currentMin > pomoObj.recordedMinutes) {
-        pomoObj.recordedMinutes = currentMin;
-        
-        let rec = data.pomodoro.find(p => p.id === pomoObj.sessionId);
-        if (rec) { 
-          rec.minutes = currentMin; 
-        } else {
-          data.pomodoro.push({ 
-            id: pomoObj.sessionId, 
-            date: dateISO(), 
-            minutes: currentMin, 
-            taskId: pomoObj.currentTaskId 
-          });
-        }
-        saveData(); 
-        renderDashboard(); 
+    // هر دقیقه که گذشت، توی دیتابیس ثبت کن
+    const currentMin = Math.floor(pomoObj.elapsedSeconds / 60);
+    if (currentMin > pomoObj.recordedMinutes) {
+      pomoObj.recordedMinutes = currentMin;
+      
+      let rec = data.pomodoro.find(p => p.id === pomoObj.sessionId);
+      if (rec) { 
+        rec.minutes = currentMin; 
+      } else {
+        data.pomodoro.push({ 
+          id: pomoObj.sessionId, 
+          date: dateISO(), 
+          minutes: currentMin, 
+          taskId: pomoObj.currentTaskId 
+        });
       }
+      saveData(); 
+      renderDashboard(); 
     }
 
     if (pomoObj.remaining <= 0) {
@@ -2557,6 +2566,8 @@ function startPomodoro(taskTitle = null, taskId = null) {
       setTimeout(() => { 
         pomoObj.remaining = (data.settings?.timerDuration || 25) * 60; 
         pomoObj.sessionId = null;
+        pomoObj.elapsedSeconds = 0;
+        pomoObj.recordedMinutes = 0;
         updatePomoDisplay(); 
       }, 2000);
     }
