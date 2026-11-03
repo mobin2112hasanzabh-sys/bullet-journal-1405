@@ -1613,13 +1613,14 @@ function renderDashboard(){
   const currentAssets = calculateCurrentAssets();
   const totalSavings = calculateTotalSavings();
   const habitDone = data.logs.filter(l => l.date === dateISO() && l.status === 'done').length;
-  const pomos = data.pomodoro.filter(p => p.date === dateISO()).reduce((a,p) => a + (p.minutes || 0), 0);
+  const focusSeconds = getPomodoroSecondsForDate(dateISO());
   $('dashboardStats').innerHTML = `
     <div class="stat"><span class="icon">🔥</span><div class="label">عادت امروز</div><div class="number">${fa(habitDone)}</div></div>
     <div class="stat"><span class="icon">💎</span><div class="label">موجودی نقدی</div><div class="number" style="font-size:20px; color:var(--green);">${fa(currentAssets)}</div></div>
     <div class="stat"><span class="icon">🏦</span><div class="label">کل پس‌انداز</div><div class="number" style="font-size:20px; color:var(--blue);">${fa(totalSavings)}</div></div>
-    <div class="stat"><span class="icon">⏱️</span><div class="label">تمرکز امروز</div><div class="number" id="dashboardFocusCount">${fa(pomos)}<small style="font-size:11px;color:var(--muted); margin-right:3px;">دقیقه</small></div></div>`;
+    <div class="stat"><span class="icon">⏱️</span><div class="label">زمان تمرکز امروز</div><div class="number" id="dashboardFocusCount" style="font-size:21px;direction:ltr;text-align:right;white-space:nowrap;">${formatFocusDuration(focusSeconds)}</div><small style="font-size:10px;color:var(--muted);">ساعت : دقیقه : ثانیه</small></div>`;
   generateAIInsight(); renderMonthlyProgress(); renderMoodLine(); renderExpenseDonut(); renderMonthlyFinance(); renderHabitHeatmap();
+  updateLiveFocusDashboard();
 }
 
 function generateAIInsight() {
@@ -1716,15 +1717,16 @@ function renderToday(){
   const note = data.daily.find(d => d.date === today);
   $('morningNote').value = note?.morning || ''; $('eveningNote').value = note?.evening || '';
   $('highlightToday').value = note?.highlight || ''; $('gratitudeToday').value = note?.gratitude || '';
-  const pomos = data.pomodoro.filter(p => p.date === today).reduce((a,p) => a + (p.minutes || 0), 0);
+  const focusSeconds = getPomodoroSecondsForDate(today);
   const todayWeekly = data.weeklyTasks.filter(t => t.date === today);
   const doneWeekly = todayWeekly.filter(t => t.done).length;
   const weeklySum = todayWeekly.reduce((a,t) => a + (Number(t.value) || 0), 0);
   $('todayStats').innerHTML = `
     <div class="stat"><div class="label">عادت انجام‌شده</div><div class="number">${fa(doneH)}</div></div>
-    <div class="stat"><div class="label">دقایق تمرکز</div><div class="number" id="todayFocusCount">${fa(pomos)}</div></div>
+    <div class="stat"><div class="label">زمان تمرکز</div><div class="number" id="todayFocusCount" style="font-size:21px;direction:ltr;text-align:right;white-space:nowrap;">${formatFocusDuration(focusSeconds)}</div><small style="font-size:10px;color:var(--muted);">ساعت : دقیقه : ثانیه</small></div>
     <div class="stat"><div class="label">برنامه‌ریزی امروز</div><div class="number">${fa(doneWeekly)}/${fa(todayWeekly.length)}</div></div>
     <div class="stat"><div class="label">مجموع اجرا شده</div><div class="number">${fa(weeklySum)}</div></div>`;
+  updateLiveFocusDashboard();
 }
 
 function renderMonthlyGoals(){
@@ -2458,45 +2460,101 @@ $('eventStartTimerBtn').addEventListener('click', () => {
   closeEventModal(); startPomodoro(title, id);
 });
 
-const pomoObj = { remaining: 25 * 60, running: false, interval: null, currentTaskTitle: null, currentTaskId: null, sessionId: null, elapsedSeconds: 0, recordedMinutes: 0, startTimestamp: null };
+function pomodoroEntrySeconds(entry) {
+  if (entry && entry.seconds !== undefined && entry.seconds !== null) {
+    return Math.max(0, Math.floor(Number(entry.seconds) || 0));
+  }
+  return Math.max(0, Math.floor((Number(entry?.minutes) || 0) * 60));
+}
+
+function getPomodoroSecondsForDate(date) {
+  return (data.pomodoro || [])
+    .filter(p => p.date === date)
+    .reduce((total, p) => total + pomodoroEntrySeconds(p), 0);
+}
+
+function formatFocusDuration(totalSeconds) {
+  const value = Math.max(0, Math.floor(Number(totalSeconds) || 0));
+  const hours = Math.floor(value / 3600);
+  const minutes = Math.floor((value % 3600) / 60);
+  const seconds = value % 60;
+  return [hours, minutes, seconds].map(n => fa(n).padStart(2, '۰')).join(':');
+}
+
+const pomoObj = {
+  remaining: 25 * 60,
+  running: false,
+  interval: null,
+  currentTaskTitle: null,
+  currentTaskId: null,
+  sessionId: null,
+  elapsedSeconds: 0,
+  recordedMinutes: 0,
+  startTimestamp: null,
+  sessionDate: null
+};
 
 function updatePomoDisplay() {
-  const m = Math.floor(pomoObj.remaining / 60); 
-  const s = pomoObj.remaining % 60; 
+  const m = Math.floor(pomoObj.remaining / 60);
+  const s = pomoObj.remaining % 60;
   $('pomoTime').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  
-  if (pomoObj.running) { 
-    $('pomoBox').classList.add('running'); 
-    $('pomoToggle').textContent = 'توقف'; 
-  } else { 
-    $('pomoBox').classList.remove('running'); 
-    $('pomoToggle').textContent = pomoObj.remaining === (data.settings?.timerDuration || 25) * 60 ? 'شروع' : 'ادامه'; 
+
+  if (pomoObj.running) {
+    $('pomoBox').classList.add('running');
+    $('pomoToggle').textContent = 'توقف';
+  } else {
+    $('pomoBox').classList.remove('running');
+    $('pomoToggle').textContent = pomoObj.remaining === (data.settings?.timerDuration || 25) * 60 ? 'شروع' : 'ادامه';
   }
-  
-  if (pomoObj.currentTaskTitle) $('pomoTitle').textContent = `⏱️ ${pomoObj.currentTaskTitle}`; 
+
+  if (pomoObj.currentTaskTitle) $('pomoTitle').textContent = `⏱️ ${pomoObj.currentTaskTitle}`;
   else $('pomoTitle').textContent = '⏱️ تایمر تمرکز';
 }
 
 function updateLiveFocusDashboard() {
   const today = dateISO();
-  let totalMins = (data.pomodoro || []).filter(p => p.date === today).reduce((a,p) => a + (Number(p.minutes) || 0), 0);
-  
-  if (pomoObj.elapsedSeconds > 0) {
-    const currentUnsaveMins = Math.floor(pomoObj.elapsedSeconds / 60);
-    if (currentUnsaveMins > pomoObj.recordedMinutes) {
-      totalMins += (currentUnsaveMins - pomoObj.recordedMinutes);
-    }
-  }
-  
-  const todayEl = $('todayFocusCount');
-  if (todayEl) todayEl.innerHTML = fa(totalMins);
-  
-  const dashEl = $('dashboardFocusCount');
-  if (dashEl) dashEl.innerHTML = `${fa(totalMins)}<small style="font-size:11px;color:var(--muted); margin-right:3px;">دقیقه</small>`;
+  const totalSeconds = getPomodoroSecondsForDate(today);
+  const formatted = formatFocusDuration(totalSeconds);
 
-  if ($('pomoLiveBadge')) {
-    $('pomoLiveBadge').textContent = `🧠 ${fa(totalMins)} دقیقه امروز`;
+  const todayEl = $('todayFocusCount');
+  if (todayEl) todayEl.textContent = formatted;
+
+  const dashEl = $('dashboardFocusCount');
+  if (dashEl) dashEl.textContent = formatted;
+
+  const badge = $('pomoLiveBadge');
+  if (badge) badge.textContent = `🧠 ${formatted} امروز`;
+}
+
+function persistPomodoroProgress() {
+  if (!pomoObj.sessionId || pomoObj.elapsedSeconds <= 0) return;
+
+  let record = (data.pomodoro || []).find(p => p.id === pomoObj.sessionId);
+  if (!record) {
+    record = {
+      id: pomoObj.sessionId,
+      date: pomoObj.sessionDate || dateISO(),
+      seconds: 0,
+      minutes: 0,
+      taskId: pomoObj.currentTaskId || null
+    };
+    data.pomodoro.push(record);
   }
+
+  record.seconds = Math.max(0, Math.floor(pomoObj.elapsedSeconds));
+  record.minutes = Math.floor(record.seconds / 60);
+  record.taskId = pomoObj.currentTaskId || record.taskId || null;
+  saveData();
+  updateLiveFocusDashboard();
+}
+
+function syncPomodoroClock(persist = true) {
+  if (!pomoObj.running || !pomoObj.startTimestamp) return;
+  const totalSeconds = Math.max(1, Number(data.settings?.timerDuration || 25) * 60);
+  pomoObj.elapsedSeconds = Math.min(totalSeconds, Math.max(0, Math.floor((Date.now() - pomoObj.startTimestamp) / 1000)));
+  pomoObj.remaining = Math.max(0, totalSeconds - pomoObj.elapsedSeconds);
+  if (persist) persistPomodoroProgress();
+  updatePomoDisplay();
 }
 
 function playTimerSound() {
@@ -2504,115 +2562,128 @@ function playTimerSound() {
   try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination); osc.type = type === 'nature' ? 'sine' : 'square'; osc.frequency.value = type === 'nature' ? 440 : 880; gain.gain.setValueAtTime(0.1, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8); osc.start(); osc.stop(ctx.currentTime + 0.8); setTimeout(() => { const osc2 = ctx.createOscillator(); const gain2 = ctx.createGain(); osc2.connect(gain2); gain2.connect(ctx.destination); osc2.type = type === 'nature' ? 'sine' : 'square'; osc2.frequency.value = type === 'nature' ? 554 : 1100; gain2.gain.setValueAtTime(0.1, ctx.currentTime); gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8); osc2.start(); osc2.stop(ctx.currentTime + 0.8); }, 400); } catch (e) { }
 }
 
-function startPomodoro(taskTitle = null, taskId = null) {
-  $('pomoBox').classList.remove('hidden'); 
-  if (pomoObj.running) return;
+function finishPomodoro() {
+  syncPomodoroClock(true);
+  clearInterval(pomoObj.interval);
+  pomoObj.interval = null;
+  pomoObj.running = false;
+  pomoObj.remaining = 0;
+  persistPomodoroProgress();
+  updatePomoDisplay();
+  updateLiveFocusDashboard();
+  playTimerSound();
 
-  if (pomoObj.remaining === (data.settings?.timerDuration || 25) * 60 && pomoObj.elapsedSeconds === 0) {
-    pomoObj.sessionId = nid(); 
-    pomoObj.elapsedSeconds = 0;
-    pomoObj.recordedMinutes = 0;
+  const taskId = pomoObj.currentTaskId;
+  const taskTitle = pomoObj.currentTaskTitle;
+  if (taskId) {
+    customConfirm(`آیا کار «${taskTitle}» را انجام شده تیک بزنیم؟`, 'پایان تایمر').then(ok => {
+      if (ok) {
+        const task = data.weeklyTasks.find(x => String(x.id) === String(taskId));
+        if (task) { task.done = true; saveData(); renderWeeklyTasks(); renderTodayPlan(); renderDashboard(); }
+      }
+    });
+  } else {
+    customAlert(`🎉 تایمر ${(data.settings?.timerDuration || 25)} دقیقه‌ای تمام شد!`, 'پایان تایمر');
   }
 
-  pomoObj.currentTaskTitle = taskTitle; 
-  pomoObj.currentTaskId = taskId;
+  pomoObj.currentTaskTitle = null;
+  pomoObj.currentTaskId = null;
+  pomoObj.startTimestamp = null;
+  pomoObj.sessionDate = null;
+  pomoObj.sessionId = null;
+  setTimeout(() => {
+    pomoObj.remaining = (data.settings?.timerDuration || 25) * 60;
+    pomoObj.sessionId = null;
+    pomoObj.elapsedSeconds = 0;
+    pomoObj.recordedMinutes = 0;
+    updatePomoDisplay();
+    updateLiveFocusDashboard();
+  }, 2000);
+}
+
+function startPomodoro(taskTitle = null, taskId = null) {
+  $('pomoBox').classList.remove('hidden');
+  if (pomoObj.running) return;
+
+  if (!pomoObj.sessionId || (pomoObj.remaining === (data.settings?.timerDuration || 25) * 60 && pomoObj.elapsedSeconds === 0)) {
+    pomoObj.sessionId = nid();
+    pomoObj.elapsedSeconds = 0;
+    pomoObj.recordedMinutes = 0;
+    pomoObj.sessionDate = dateISO();
+  }
+
+  if (taskTitle) pomoObj.currentTaskTitle = taskTitle;
+  if (taskId) pomoObj.currentTaskId = taskId;
   if (!pomoObj.currentTaskTitle) { pomoObj.currentTaskTitle = null; pomoObj.currentTaskId = null; }
-  
-  pomoObj.running = true; 
+
+  pomoObj.running = true;
   pomoObj.startTimestamp = Date.now() - (pomoObj.elapsedSeconds * 1000);
   updatePomoDisplay();
   updateLiveFocusDashboard();
 
   pomoObj.interval = setInterval(() => {
-    const now = Date.now();
-    pomoObj.elapsedSeconds = Math.floor((now - pomoObj.startTimestamp) / 1000);
-    const totalSeconds = (data.settings?.timerDuration || 25) * 60;
-    pomoObj.remaining = totalSeconds - pomoObj.elapsedSeconds;
-
-    const currentMin = Math.floor(pomoObj.elapsedSeconds / 60);
-    if (currentMin > pomoObj.recordedMinutes) {
-      pomoObj.recordedMinutes = currentMin;
-      
-      let rec = data.pomodoro.find(p => p.id === pomoObj.sessionId);
-      if (rec) { 
-        rec.minutes = currentMin; 
-      } else {
-        data.pomodoro.push({ 
-          id: pomoObj.sessionId, 
-          date: dateISO(), 
-          minutes: currentMin, 
-          taskId: pomoObj.currentTaskId 
-        });
-      }
-      saveData(); 
-      renderDashboard(); 
-    }
-
-    if (pomoObj.remaining <= 0) {
-      clearInterval(pomoObj.interval); 
-      pomoObj.running = false; 
-      pomoObj.remaining = 0; 
-      updatePomoDisplay(); 
-      updateLiveFocusDashboard();
-      playTimerSound();
-      
-      const finalMins = Math.floor(pomoObj.elapsedSeconds / 60);
-      let rec = data.pomodoro.find(p => p.id === pomoObj.sessionId);
-      if (rec) rec.minutes = finalMins;
-
-      if (pomoObj.currentTaskId) { 
-        customConfirm(`آیا کار «${pomoObj.currentTaskTitle}» را انجام شده تیک بزنیم؟`, 'پایان تایمر').then(ok => { 
-          if (ok) { 
-            const t = data.weeklyTasks.find(x => String(x.id) === String(pomoObj.currentTaskId)); 
-            if (t) { t.done = true; saveData(); renderWeeklyTasks(); renderTodayPlan(); renderDashboard(); } 
-          } 
-        }); 
-      } else {
-        customAlert(`🎉 تایمر ${(data.settings?.timerDuration || 25)} دقیقه‌ای تمام شد!`, 'پایان تایمر');
-      }
-      
-      pomoObj.currentTaskTitle = null; 
-      pomoObj.currentTaskId = null; 
-      setTimeout(() => { 
-        pomoObj.remaining = (data.settings?.timerDuration || 25) * 60; 
-        pomoObj.sessionId = null;
-        pomoObj.elapsedSeconds = 0;
-        pomoObj.recordedMinutes = 0;
-        updatePomoDisplay(); 
-        updateLiveFocusDashboard();
-      }, 2000);
-    } else {
-      updatePomoDisplay();
-      updateLiveFocusDashboard();
-    }
+    syncPomodoroClock(true);
+    if (pomoObj.remaining <= 0) finishPomodoro();
   }, 1000);
 }
 
-$('pomoToggle').addEventListener('click', () => { 
-  if (pomoObj.running) { 
-    clearInterval(pomoObj.interval); 
-    pomoObj.running = false; 
-    updatePomoDisplay(); 
+$('pomoToggle').addEventListener('click', () => {
+  if (pomoObj.running) {
+    syncPomodoroClock(true);
+    clearInterval(pomoObj.interval);
+    pomoObj.interval = null;
+    pomoObj.running = false;
+    pomoObj.startTimestamp = null;
+    updatePomoDisplay();
     updateLiveFocusDashboard();
-    flash('تایمر متوقف شد. دقایقی که تمرکز کردی ذخیره شد.'); 
+    flash('تایمر متوقف شد. زمان تمرکز تا همین ثانیه ذخیره شد.');
   } else {
-    startPomodoro(pomoObj.currentTaskTitle, pomoObj.currentTaskId); 
-  } 
+    startPomodoro(pomoObj.currentTaskTitle, pomoObj.currentTaskId);
+  }
 });
 
-$('pomoClose').addEventListener('click', () => { 
-  clearInterval(pomoObj.interval); 
-  pomoObj.running = false; 
-  pomoObj.remaining = (data.settings?.timerDuration || 25) * 60; 
-  pomoObj.currentTaskTitle = null; 
-  pomoObj.currentTaskId = null; 
+$('pomoClose').addEventListener('click', () => {
+  if (pomoObj.running) syncPomodoroClock(true);
+  clearInterval(pomoObj.interval);
+  pomoObj.interval = null;
+  pomoObj.running = false;
+  pomoObj.remaining = (data.settings?.timerDuration || 25) * 60;
+  pomoObj.currentTaskTitle = null;
+  pomoObj.currentTaskId = null;
   pomoObj.sessionId = null;
+  pomoObj.sessionDate = null;
+  pomoObj.startTimestamp = null;
   pomoObj.elapsedSeconds = 0;
   pomoObj.recordedMinutes = 0;
-  renderDashboard(); 
-  $('pomoBox').classList.add('hidden'); 
-  updatePomoDisplay(); 
+  renderDashboard();
+  $('pomoBox').classList.add('hidden');
+  updatePomoDisplay();
   updateLiveFocusDashboard();
+});
+
+window.addEventListener('pagehide', () => {
+  if (pomoObj.running) {
+    syncPomodoroClock(true);
+    try {
+      if (session) {
+        localStorage.setItem(STORAGE_CACHE_PREFIX + session.email, JSON.stringify(data));
+        clearTimeout(saveTimer);
+        fetch(`${API_URL}/data/${encodeURIComponent(session.email)}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.token}` },
+          body: JSON.stringify({ data }),
+          keepalive: true
+        }).catch(() => {});
+      }
+    } catch (e) {}
+  }
+});
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && pomoObj.running) {
+    syncPomodoroClock(true);
+    if (pomoObj.remaining <= 0) finishPomodoro();
+  }
 });
 
 $('globalSearchBtn')?.addEventListener('click', () => { $('searchModal').classList.remove('hidden'); $('globalSearchInput').value = ''; $('searchResults').innerHTML = '<p class="muted" style="text-align:center;">عبارتی برای جستجو بنویسید...</p>'; setTimeout(() => $('globalSearchInput').focus(), 100); });
