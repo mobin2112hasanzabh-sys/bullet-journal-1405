@@ -19,6 +19,9 @@
 <script src="./libs/persian-date.min.js"></script>
 <script src="./libs/persian-datepicker.min.js"></script>
 
+<!-- کتابخانه Appwrite -->
+<script src="https://cdn.jsdelivr.net/npm/appwrite@13.0.1"></script>
+
 <style>
 /* فونت وزیرمتن لوکال */
 @font-face { font-family: 'Vazirmatn'; src: url('./fonts/Vazirmatn-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
@@ -444,7 +447,7 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
   <header class="top">
     <div class="brand"><div class="logo">✦</div><div><h1>بولت ژورنال من</h1><p>نسخهٔ زنده · ۱۴۰۵</p></div></div>
     <div class="top-actions">
-      <div id="syncStatus" class="sync-badge" title="وضعیت همگام‌سازی">☁️ در حال اتصال...</div>
+      <div id="syncStatus" class="sync-badge" title="وضعیت همگام‌سازی">☁️ سیستم آماده</div>
       <button id="jarvisBtn" class="ghost small" style="font-size: 18px; padding: 6px 10px; color: var(--accent); border-color: var(--accent);" title="دستیار صوتی (جارویس)">🎙️</button>
       <button id="globalSearchBtn" class="ghost small" style="font-size: 18px; padding: 6px 10px;">🔍</button>
       <div class="user-badge hidden" id="userBadge" onclick="document.querySelector('[data-tab=profile]').click()"><div class="avatar" id="userAvatar"></div><span id="userName"></span></div>
@@ -458,7 +461,7 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
     <p class="muted">ایمیل و رمزت رو وارد کن.</p>
     <form id="authForm" class="auth-form">
       <div class="field"><label>ایمیل</label><input id="email" type="email" required placeholder="name@example.com"></div>
-      <div class="field"><label>رمز عبور</label><input id="password" type="password" required minlength="4" placeholder="حداقل ۴ نویسه"></div>
+      <div class="field"><label>رمز عبور</label><input id="password" type="password" required minlength="8" placeholder="حداقل ۸ نویسه"></div>
       <button id="authSubmit" type="submit">ورود / ثبت‌نام</button>
     </form>
     <div id="authMessage" class="notice hidden"></div>
@@ -1013,6 +1016,18 @@ const todayFaLong=()=>new Intl.DateTimeFormat('fa-IR-u-ca-persian',{weekday:'lon
 const show=(id,y=true)=>{const el=$(id);if(el)el.classList.toggle('hidden',!y);};
 const labels={priority:{urgent_important:'فوری و مهم',important:'مهم',normal:'عادی',low:'کم‌اهمیت'}};
 
+// ==================== تنظیمات Appwrite ====================
+const { Client, Account, Databases, ID, Query } = Appwrite;
+const client = new Client()
+    .setEndpoint('https://fra.cloud.appwrite.io/v1') // آدرس Endpoint شما
+    .setProject('6aeb38b4000e5130ed67'); // Project ID شما
+
+const account = new Account(client);
+const databases = new Databases(client);
+
+const STORAGE_SESSION='bj_session_appwrite';
+const STORAGE_CACHE_PREFIX='bj_cache_v9_';
+
 const QUOTES_LIBRARY = [
   { text: "امروز بهترین روز برای شروع است.", author: "ناشناس" },
   { text: "قطره قطره جمع گردد، وانگهی دریا شود.", author: "سعدی" },
@@ -1131,10 +1146,6 @@ const setPersianDateValue = (id, isoDate) => {
   } catch { $(id).value = ''; }
 };
 
-const API_URL='https://bj-api.mobin2112hasanzabh.workers.dev';
-const STORAGE_SESSION='bj_session_v6';
-const STORAGE_CACHE_PREFIX='bj_cache_v6_';
-
 const emptyData=()=>({ 
   archive: [], habits:[], logs:[], monthlyGoals:[], weeklyGoals:[], weeklyTasks:[],
   finance:[], mood:[], daily:[], pomodoro:[], routines:[], routineLogs:[],
@@ -1146,16 +1157,18 @@ const emptyData=()=>({
   }
 });
 
-const loadData=async(email)=>{
+const loadData=async(userId, email)=>{
   try{
-    const res=await fetch(`${API_URL}/data/${encodeURIComponent(email)}`, {headers: { 'Authorization': `Bearer ${session.token}` }});
-    if (res.status === 401) { logout(); throw new Error('نشست منقضی شده'); }
-    if(!res.ok)throw new Error('Server load failed');
-    const json=await res.json();
-    const serverData=json.data||{};
-    localStorage.setItem(STORAGE_CACHE_PREFIX+email,JSON.stringify(serverData));
-    return {...emptyData(),...serverData};
+    // گرفتن اطلاعات از Appwrite
+    const res = await databases.listDocuments('main_db', 'journals', [Query.equal('userId', userId)]);
+    if (res.documents.length > 0) {
+      const parsed = JSON.parse(res.documents[0].data);
+      localStorage.setItem(STORAGE_CACHE_PREFIX+email,JSON.stringify(parsed));
+      return {...emptyData(), ...parsed};
+    }
+    return emptyData();
   }catch(e){
+    console.error("خطا در دریافت دیتا، استفاده از کش:", e);
     try{
       const cached=JSON.parse(localStorage.getItem(STORAGE_CACHE_PREFIX+email)||'null');
       return {...emptyData(),...(cached||{})};
@@ -1174,31 +1187,30 @@ const saveData=()=>{
   if (syncEl) { syncEl.className = 'sync-badge saving'; syncEl.textContent = '☁️ در حال ذخیره...'; }
 
   saveTimer=setTimeout(async()=>{
-    // ساخت کنترلر برای جلوگیری از هنگ کردن
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 8000); // ۸ ثانیه فرصت
-
     try{
-      const res = await fetch(`${API_URL}/data/${encodeURIComponent(session.email)}`,{
-        method:'PUT',
-        headers:{ 
-          'Content-Type': 'application/json', 
-          'Authorization': `Bearer ${session.token}` 
-        },
-        body:JSON.stringify({data}),
-        signal: controller.signal
-      });
+      // چک کردن اینکه آیا کاربر قبلا داکیومنت داشته یا نه
+      const res = await databases.listDocuments('main_db', 'journals', [Query.equal('userId', session.userId)]);
       
-      clearTimeout(timeoutId);
+      if (res.documents.length > 0) {
+        // اگر داشته، آپدیت کن
+        await databases.updateDocument('main_db', 'journals', res.documents[0].$id, {
+          data: JSON.stringify(data)
+        });
+      } else {
+        // اگر نداشته، بساز
+        await databases.createDocument('main_db', 'journals', ID.unique(), {
+          userId: session.userId,
+          data: JSON.stringify(data)
+        });
+      }
 
-      if (!res.ok) throw new Error('Server error');
-      
       if (syncEl) { syncEl.className = 'sync-badge saved'; syncEl.textContent = '☁️ ذخیره شد'; }
       setTimeout(() => { if (syncEl && syncEl.classList.contains('saved')) { syncEl.className = 'sync-badge'; syncEl.textContent = '☁️'; } }, 3000);
     }catch(e){
+      console.error("Save error:", e);
       if (syncEl) { syncEl.className = 'sync-badge error'; syncEl.textContent = '☁️ خطای اتصال!'; }
     }
-  },800);
+  }, 1000);
 };
 
 let session=null;
@@ -1264,7 +1276,7 @@ function switchPanel(w){
 
 $('authForm').addEventListener('submit', async e => {
   e.preventDefault();
-  if ($('authSubmit').disabled) return; // جلوگیری از کلیک چندباره
+  if ($('authSubmit').disabled) return; 
   
   $('authMessage').classList.add('hidden'); 
   $('authSubmit').disabled = true;
@@ -1279,50 +1291,38 @@ $('authForm').addEventListener('submit', async e => {
   }
 
   try {
-    let res = await fetch(API_URL + '/login', { 
-      method: 'POST', 
-      headers: { 'Content-Type': 'application/json' }, 
-      body: JSON.stringify({ email, password: pw }) 
-    });
-    let json = await res.json();
-
-    if (res.status === 404) {
-      // اگر کاربر وجود نداشت، ثبت‌نام کن
-      res = await fetch(API_URL + '/signup', { 
-        method: 'POST', 
-        headers: { 'Content-Type': 'application/json' }, 
-        body: JSON.stringify({ email, password: pw }) 
-      });
-      json = await res.json();
-      if (!res.ok) throw new Error(json.error || 'خطا در ساخت حساب');
-      flash('حساب ساخته شد! خوش آمدی 🌿');
-    } else if (!res.ok) {
-      // اگر خطای رمز یا سرور بود
-      throw new Error(json.error || 'ایمیل یا رمز عبور اشتباه است');
+    try {
+      // تلاش برای ورود
+      await account.createEmailSession(email, pw);
+    } catch (loginErr) {
+      // اگر کاربر نبود (خطای 401)، ثبت‌نام می‌کنیم
+      if (loginErr.code === 401) {
+        await account.create(ID.unique(), email, pw);
+        await account.createEmailSession(email, pw);
+        flash('حساب ساخته شد! خوش آمدی 🌿');
+      } else {
+        throw loginErr;
+      }
     }
 
-    // 🚨 بررسی اینکه آیا سرور واقعا اطلاعات رو فرستاده یا نه
-    if (!json || !json.email || !json.token) {
-      console.error("پاسخ سرور ناقص است:", json);
-      throw new Error(json.error || 'پاسخ نامعتبر از سرور. لطفا بعدا تلاش کنید.');
-    }
-
-    // اگر همه چیز اوکی بود، لاگین کن
-    session = { email: json.email, name: json.email.split('@')[0], token: json.token };
+    // گرفتن اطلاعات کاربر پس از ورود
+    const user = await account.get();
+    session = { email: user.email, name: user.name || user.email.split('@')[0], userId: user.$id };
     localStorage.setItem(STORAGE_SESSION, JSON.stringify(session));
+    
     await startApp();
 
   } catch (err) { 
     console.error(err);
-    flash('خطای اتصال: ' + err.message, 'error'); 
+    flash('خطا: ' + (err.message || 'ایمیل یا رمز عبور اشتباه است'), 'error'); 
   } finally {
-    // در هر شرایطی (موفق یا ناموفق) دکمه رو آزاد کن
     $('authSubmit').disabled = false;
     $('authSubmit').textContent = 'ورود / ثبت‌نام';
   }
 });
 
-function logout(){
+async function logout(){
+  try { await account.deleteSession('current'); } catch(e) {}
   localStorage.removeItem(STORAGE_SESSION);
   session=null; data=emptyData(); switchPanel('auth');
   $('pomoBox')?.classList.add('hidden');
@@ -1332,7 +1332,7 @@ $('logoutBtn').addEventListener('click',async()=>{ if(await customConfirm('آی�
 $('logoutBtn2')?.addEventListener('click',async()=>{ if(await customConfirm('آیا از حساب کاربری خود خارج می‌شوید؟'))logout(); });
 
 async function startApp(){
-  data=await loadData(session.email);
+  data=await loadData(session.userId, session.email);
   if (!data.settings) data.settings = emptyData().settings;
   if (!data.achievements) data.achievements = [];
   if (!Array.isArray(data.customQuotes)) data.customQuotes = [];
@@ -2862,12 +2862,7 @@ window.addEventListener('pagehide', () => {
       if (session) {
         localStorage.setItem(STORAGE_CACHE_PREFIX + session.email, JSON.stringify(data));
         clearTimeout(saveTimer);
-        fetch(`${API_URL}/data/${encodeURIComponent(session.email)}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.token}` },
-          body: JSON.stringify({ data }),
-          keepalive: true
-        }).catch(() => {});
+        // Appwrite save is handled by the standard saveData, but for pagehide we just do local cache.
       }
     } catch (e) {}
   }
@@ -3441,15 +3436,29 @@ function executeJarvisCommand(cmd) {
 
 (async function init() {
   applySettings(); initDatepickers();
-  const stored = localStorage.getItem(STORAGE_SESSION);
-  if (stored) { 
-    try { 
-      session = JSON.parse(stored); 
-      await startApp(); 
-    } catch (err) { 
-      localStorage.removeItem(STORAGE_SESSION); session = null; switchPanel('auth'); 
-    } 
-  } else switchPanel('auth');
+  
+  try {
+    // چک کردن اینکه آیا کاربر از قبل لاگین هست یا نه
+    const user = await account.get();
+    session = { email: user.email, name: user.name || user.email.split('@')[0], userId: user.$id };
+    localStorage.setItem(STORAGE_SESSION, JSON.stringify(session));
+    await startApp();
+  } catch (err) {
+    // اگر خطای 401 بود یعنی کاربر لاگین نیست
+    const stored = localStorage.getItem(STORAGE_SESSION);
+    if (stored && err.code !== 401) {
+       try {
+           session = JSON.parse(stored);
+           await startApp();
+       } catch(e) {
+           switchPanel('auth');
+       }
+    } else {
+       localStorage.removeItem(STORAGE_SESSION);
+       session = null; 
+       switchPanel('auth');
+    }
+  }
 })();
 
 })();
