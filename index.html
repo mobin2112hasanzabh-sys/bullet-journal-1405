@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="manifest" href="./manifest.json">
-<link rel="apple-touch-icon" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -82,7 +82,7 @@ body{background:var(--cream);color:var(--text);font-family:Vazirmatn,Tahoma,sans
 body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:22px 22px;opacity:.7}
 button,input,select,textarea{font:inherit;font-family:inherit}
 option { background: var(--paper); color: var(--text); }
-button{cursor:pointer;border:0;border-radius:12px;padding:10px 15px;background:var(--accent);color:white;font-weight:700;transition:transform .15s,filter .15s,box-shadow .2s; will-change: transform;}
+button{cursor:pointer;border:0;border-radius:12px;padding:10px 15px;background:var(--accent);color:white;font-weight:700;transition:filter .15s,box-shadow .2s;}
 button:hover{filter:brightness(.95); box-shadow:var(--shadow);}
 button:active{transform:scale(0.96) !important; box-shadow:none}
 button:disabled{opacity:.6;cursor:not-allowed;transform:none}
@@ -341,8 +341,8 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent-light);bo
 #fabMain.active { background: var(--dark); transform: rotate(45deg); }
 #fabOptions { display: none; flex-direction: column; gap: 10px; align-items: flex-end; }
 #fabOptions.active { display: flex; animation: fadeSlideIn 0.3s ease-out; }
-body.mode-3d .panel, body.mode-3d .stat, body.mode-3d .goal-card, body.mode-3d .week-day, body.mode-3d .item, body.mode-3d .notebook-card { transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease; transform: translateZ(0); backface-visibility: visible; }
-body.mode-3d .panel:hover, body.mode-3d .stat:hover, body.mode-3d .goal-card:hover, body.mode-3d .week-day:hover, body.mode-3d .item:hover, body.mode-3d .notebook-card:hover { transform: translateY(-3px); box-shadow: var(--shadow2); }
+body.mode-3d .panel, body.mode-3d .stat, body.mode-3d .goal-card, body.mode-3d .week-day, body.mode-3d .item, body.mode-3d .notebook-card { transition: box-shadow 0.22s ease, border-color 0.22s ease; transform: none; backface-visibility: visible; }
+body.mode-3d .panel:hover, body.mode-3d .stat:hover, body.mode-3d .goal-card:hover, body.mode-3d .week-day:hover, body.mode-3d .item:hover, body.mode-3d .notebook-card:hover { transform: none; box-shadow: var(--shadow2); }
 body.mode-3d .tab:not(.hidden) { animation: fadeSlideIn .18s ease-out; }
 body.mode-3d button, body.mode-3d a, body.mode-3d input, body.mode-3d select, body.mode-3d textarea, body.mode-3d [data-event-type], body.mode-3d [data-toggle-wt], body.mode-3d [data-toggle-wt-today], body.mode-3d .theme-toggle { transform: none !important; filter: none; backface-visibility: visible; pointer-events: auto; }
 body.mode-3d button:hover, body.mode-3d button:focus-visible, body.mode-3d button:active, body.mode-3d .theme-toggle:hover, body.mode-3d .theme-toggle:focus-visible, body.mode-3d .theme-toggle:active { transform: none !important; }
@@ -1150,7 +1150,8 @@ const loadData=async(email)=>{
 let saveTimer=null;
 const saveData=()=>{
   if(!session)return;
-  localStorage.setItem(STORAGE_CACHE_PREFIX+session.email,JSON.stringify(data));
+  try { localStorage.setItem(STORAGE_CACHE_PREFIX+session.email,JSON.stringify(data)); }
+  catch (storageError) { console.warn('Local cache could not be updated:', storageError); }
   clearTimeout(saveTimer);
   saveTimer=setTimeout(async()=>{
     try{
@@ -1271,6 +1272,8 @@ async function startApp(){
   applySettings();
   pomoObj.remaining = (Number(data.settings?.timerDuration) || 25) * 60;
   pomoObj.elapsedSeconds = 0;
+  // پنل تایمر فقط با اقدام کاربر باز می‌شود؛ وضعیت مخفی اولیه حفظ می‌شود.
+  $('pomoBox')?.classList.add('hidden');
   updatePomoDisplay();
   updateLiveFocusDashboard();
   ['moodDate','finDate','mgDue'].forEach(id=>{if($(id))setPersianDateValue(id, dateISO());});
@@ -2856,9 +2859,9 @@ $('colorSwatches')?.addEventListener('click', e => { const sw = e.target.closest
 $('initialAssetsInput')?.addEventListener('change', e => { data.settings.initialAssets = Number(e.target.value) || 0; saveData(); renderFinance(); renderDashboard(); flash('سرمایه ذخیره شد'); });
 $('btnEnableNotifications')?.addEventListener('click', async () => { if (!('Notification' in window)) { flash('مرورگر شما از نوتیفیکیشن پشتیبانی نمی‌کند', 'error'); return; } const perm = await Notification.requestPermission(); if (perm === 'granted') { flash('نوتیفیکیشن فعال شد ✓'); new Notification('بولت ژورنال من', { body: 'نوتیفیکیشن‌ها با موفقیت فعال شدند.' }); } else flash('اجازه نوتیفیکیشن داده نشد', 'error'); });
 
-$('exportBtn').addEventListener('click', () => { const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `bj-backup-${dateISO()}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 500); flash('پشتیبان دانلود شد'); });
+$('exportBtn').addEventListener('click', () => { const backup = { app: 'bullet-journal', schemaVersion: 1, exportedAt: new Date().toISOString(), data }; const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `bj-backup-${dateISO()}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 500); flash('پشتیبان دانلود شد'); });
 $('importBtn').addEventListener('click', () => $('importFile').click());
-$('importFile').addEventListener('change', async e => { const file = e.target.files[0]; if (!file) return; try { const imported = JSON.parse(await file.text()); if (await customConfirm('داده‌های فعلی با فایل پشتیبان جایگزین می‌شود. مطمئنی؟')) { data = { ...emptyData(), ...imported }; if (!data.settings) data.settings = emptyData().settings; if (!data.achievements) data.achievements = []; if (!data.monthlyProgressSnapshots) data.monthlyProgressSnapshots = {}; if (!Array.isArray(data.customQuotes)) data.customQuotes = []; if (!Array.isArray(data.savedQuotes)) data.savedQuotes = []; data.settings = { ...emptyData().settings, ...(data.settings || {}) }; saveData(); applySettings(); renderAll(); flash('بازیابی انجام شد'); } } catch (err) { flash('فایل نامعتبر است', 'error'); } e.target.value = ''; });
+$('importFile').addEventListener('change', async e => { const file = e.target.files[0]; if (!file) return; try { const raw = await file.text(); if (raw.length > 10 * 1024 * 1024) throw new Error('حجم فایل پشتیبان بیش از ۱۰ مگابایت است.'); const parsed = JSON.parse(raw); const imported = parsed && parsed.app === 'bullet-journal' && parsed.data ? parsed.data : parsed; if (!imported || typeof imported !== 'object' || Array.isArray(imported)) throw new Error('ساختار فایل پشتیبان معتبر نیست.'); if (await customConfirm('داده‌های فعلی با فایل پشتیبان جایگزین می‌شود. مطمئنی؟')) { data = { ...emptyData(), ...imported }; if (!data.settings) data.settings = emptyData().settings; if (!data.achievements) data.achievements = []; if (!data.monthlyProgressSnapshots) data.monthlyProgressSnapshots = {}; if (!Array.isArray(data.customQuotes)) data.customQuotes = []; if (!Array.isArray(data.savedQuotes)) data.savedQuotes = []; data.settings = { ...emptyData().settings, ...(data.settings || {}) }; saveData(); applySettings(); renderAll(); flash('بازیابی انجام شد'); } } catch (err) { flash('فایل نامعتبر است', 'error'); } e.target.value = ''; });
 $('clearDataBtn').addEventListener('click', async () => { if (await customConfirm('همهٔ داده‌ها پاک می‌شود. مطمئنی؟')) { const initial = data.settings?.initialAssets || 0; data = emptyData(); data.settings.initialAssets = initial; saveData(); applySettings(); renderAll(); flash('پاک شد'); } });
 
 function buildPrintReport() {
@@ -2881,6 +2884,7 @@ $('fabOptions')?.addEventListener('click', e => {
   else if (action === 'habit') { document.querySelector('[data-tab="habits"]').click(); setTimeout(() => $('habitName')?.focus(), 150); }
   else if (action === 'finance') { document.querySelector('[data-tab="finance"]').click(); setTimeout(() => $('finDesc')?.focus(), 150); }
   else if (action === 'mood') { document.querySelector('[data-tab="mood"]').click(); }
+  else if (action === 'focus') { $('pomoBox')?.classList.remove('hidden'); updatePomoDisplay(); updateLiveFocusDashboard(); }
   else if (action === 'note') { document.querySelector('[data-tab="today"]').click(); setTimeout(() => $('morningNote')?.focus(), 150); }
 });
 document.addEventListener('click', e => { if (fabOpen && !e.target.closest('#fabContainer')) { fabOpen = false; $('fabMain')?.classList.remove('active'); $('fabOptions')?.classList.remove('active'); } });
@@ -3273,6 +3277,14 @@ function executeJarvisCommand(cmd) {
 })();
 
 })();
+</script>
+<script>
+// ثبت Service Worker برای نصب‌پذیری و بارگذاری پوسته سایت در حالت آفلاین
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(err => console.warn('Service Worker registration failed:', err));
+  });
+}
 </script>
 </body>
 </html>

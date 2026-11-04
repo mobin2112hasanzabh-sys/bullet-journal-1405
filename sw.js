@@ -1,53 +1,79 @@
-const CACHE_NAME = 'bj-cache-v4'; // نسخه رو تغییر دادم تا کش قدیمی پاک بشه
-const urlsToCache = [
-  './',
-  './index.html',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png',
-  'https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap',
-  'https://code.jquery.com/jquery-3.6.0.min.js',
-  'https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css',
-  'https://cdn.jsdelivr.net/npm/persian-date@1.1.0/dist/persian-date.min.js',
-  'https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js'
-];
+const CACHE_VERSION = 'bullet-journal-shell-v1';
+const SHELL_FILES = ['./', './index.html', './manifest.json', './icons/icon-192.png', './icons/icon-512.png'];
 
 self.addEventListener('install', event => {
-  self.skipWaiting(); // مجبور کردن سرویس ورکر به فعال شدن فوری
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return Promise.all(
-        urlsToCache.map(url => {
-          return cache.add(url).catch(err => {
-            console.warn('Failed to cache:', url, err);
-          });
-        })
-      );
-    })
-  );
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_VERSION);
+    await cache.addAll(SHELL_FILES);
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName); // پاک کردن کش‌های قدیمی
-          }
-        })
-      );
-    }).then(() => self.clients.claim())
-  );
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys.filter(key => key.startsWith('bullet-journal-') && key !== CACHE_VERSION).map(key => caches.delete(key)));
+    await self.clients.claim();
+  })());
 });
 
 self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET' || event.request.url.includes('workers.dev')) {
+  const request = event.request;
+  if (request.method !== 'GET') return;
+  const url = new URL(request.url);
+
+  // درخواست‌های ورود، ثبت‌نام و اطلاعات کاربر هرگز cache نمی‌شوند.
+  if (url.hostname === 'bj-api.mobin2112hasanzabh.workers.dev' || url.pathname.includes('/data/')) return;
+
+  // برای صفحه اصلی: شبکه در اولویت، نسخه cache شده در زمان قطع اینترنت.
+  if (request.mode === 'navigate') {
+    event.respondWith((async () => {
+      try {
+        const response = await fetch(request);
+        if (response && response.ok) {
+          const cache = await caches.open(CACHE_VERSION);
+          cache.put('./index.html', response.clone());
+        }
+        return response;
+      } catch (_) {
+        return (await caches.match('./index.html')) || (await caches.match('./'));
+      }
+    })());
     return;
   }
-  event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
-    })
-  );
+
+  // فایل‌های ثابت: cache-first و ذخیره پاسخ موفق برای مراجعه بعدی.
+  if (url.origin === self.location.origin) {
+    event.respondWith((async () => {
+      const cached = await caches.match(request);
+      if (cached) return cached;
+      try {
+        const response = await fetch(request);
+        if (response && (response.ok || response.type === 'opaque')) {
+          const cache = await caches.open(CACHE_VERSION);
+          cache.put(request, response.clone());
+        }
+        return response;
+      } catch (error) {
+        return new Response('این بخش در حالت آفلاین در دسترس نیست.', {status: 503, headers: {'Content-Type': 'text/plain; charset=utf-8'}});
+      }
+    })());
+    return;
+  }
+
+  // کتابخانه‌ها و فونت‌های CDN پس از اولین بارگذاری موفق برای استفاده بعدی cache می‌شوند.
+  if (['fonts.googleapis.com', 'fonts.gstatic.com', 'code.jquery.com', 'cdn.jsdelivr.net'].includes(url.hostname)) {
+    event.respondWith((async () => {
+      const cache = await caches.open(CACHE_VERSION);
+      const cached = await cache.match(request);
+      if (cached) return cached;
+      try {
+        const response = await fetch(request);
+        if (response && (response.ok || response.type === 'opaque')) cache.put(request, response.clone());
+        return response;
+      } catch (_) {
+        return cached || new Response('', {status: 503});
+      }
+    })());
+  }
 });
