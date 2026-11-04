@@ -1357,7 +1357,24 @@ function getRoutinesForDay(isoDate) {
     const rEnd = new Date(r.endDate + 'T23:59:59');
     const current = new Date(isoDate + 'T12:00:00');
     return dayMatches && current >= rStart && current <= rEnd;
-  }).sort((a,b) => a.startTime.localeCompare(b.startTime));
+  }).sort((a,b) => String(a.startTime || '').localeCompare(String(b.startTime || '')));
+}
+
+// وضعیت یک برنامه تکرارشونده در یک تاریخ مشخص؛ با پشتیبانی از داده‌های قدیمی eventId.
+function getRoutineLogForDay(routineId, isoDate) {
+  return (data.routineLogs || []).find(x =>
+    (String(x.routineId ?? x.eventId) === String(routineId)) && x.date === isoDate
+  );
+}
+function getRoutineDoneForDay(routineId, isoDate) {
+  return getRoutineLogForDay(routineId, isoDate)?.status === 'done';
+}
+function getScheduledStatsForDay(isoDate) {
+  const tasks = (data.weeklyTasks || []).filter(t => t.date === isoDate);
+  const routines = getRoutinesForDay(isoDate);
+  const doneTasks = tasks.filter(t => !!(t.done || t.eventStatus === 'done')).length;
+  const doneRoutines = routines.filter(r => getRoutineDoneForDay(r.id, isoDate)).length;
+  return { total: tasks.length + routines.length, done: doneTasks + doneRoutines, tasks, routines };
 }
 
 function getCurrentQuotePool() {
@@ -1556,20 +1573,15 @@ function monthlyScheduledProgress(key){
   const {start,end}=jalaliMonthBounds(key);
   const planned=[];
   (data.weeklyTasks||[]).forEach(t=>{if(t.date>=start&&t.date<=end)planned.push({type:'task',id:t.id,date:t.date,done:!!(t.done||t.eventStatus==='done')});});
-  (data.routines||[]).forEach(r=>{
-    if(!r.startDate||!r.endDate)return;
-    const from=r.startDate>start?r.startDate:start; const to=r.endDate<end?r.endDate:end;
-    if(from>to)return;
-    const d=new Date(from+'T12:00:00'), last=new Date(to+'T12:00:00');
-    while(d<=last){
-      if(d.getDay()===Number(r.dayOfWeek)){
-        const iso=dateISO(d);
-        const log=(data.routineLogs||[]).find(x=>String(x.routineId)===String(r.id)&&x.date===iso);
-        planned.push({type:'routine',id:r.id,date:iso,done:log?.status==='done'});
-      }
-      d.setDate(d.getDate()+1);
-    }
-  });
+  // برنامه‌های تکرارشونده را دقیقاً با همان قاعده‌ای می‌شماریم که در نمای روزانه دیده می‌شوند.
+  const d=new Date(start+'T12:00:00'), last=new Date(end+'T12:00:00');
+  while(d<=last){
+    const iso=dateISO(d);
+    getRoutinesForDay(iso).forEach(r=>planned.push({
+      type:'routine', id:r.id, date:iso, done:getRoutineDoneForDay(r.id, iso)
+    }));
+    d.setDate(d.getDate()+1);
+  }
   const total=planned.length, done=planned.filter(x=>x.done).length;
   return {key,start,end,total,done,percent:total?Math.round(done/total*100):0};
 }
@@ -1672,8 +1684,8 @@ function renderTodayPlan(){
   const today = dateISO();
   const list = data.weeklyTasks.filter(t => t.date === today);
   const todayRoutines = getRoutinesForDay(today);
-  const doneTasksCount = list.filter(t => t.done).length;
-  $('todayPlanCount').textContent = list.length ? `${fa(doneTasksCount)} / ${fa(list.length)}` : '—';
+  const todayStats = getScheduledStatsForDay(today);
+  $('todayPlanCount').textContent = todayStats.total ? `${fa(todayStats.done)} / ${fa(todayStats.total)}` : '—';
   const el = $('todayPlanTasks'); if (!el) return;
   let html = '';
   if (todayRoutines.length) {
@@ -1732,12 +1744,12 @@ function renderToday(){
   $('highlightToday').value = note?.highlight || ''; $('gratitudeToday').value = note?.gratitude || '';
   const focusSeconds = getPomodoroSecondsForDate(today);
   const todayWeekly = data.weeklyTasks.filter(t => t.date === today);
-  const doneWeekly = todayWeekly.filter(t => t.done).length;
+  const todayScheduledStats = getScheduledStatsForDay(today);
   const weeklySum = todayWeekly.reduce((a,t) => a + (Number(t.value) || 0), 0);
   $('todayStats').innerHTML = `
     <div class="stat"><div class="label">عادت انجام‌شده</div><div class="number">${fa(doneH)}</div></div>
     <div class="stat"><div class="label">زمان تمرکز</div><div class="number" id="todayFocusCount" style="font-size:21px;direction:ltr;text-align:right;white-space:nowrap;">${formatFocusDuration(focusSeconds)}</div><small style="font-size:10px;color:var(--muted);">ساعت : دقیقه : ثانیه</small></div>
-    <div class="stat"><div class="label">برنامه‌ریزی امروز</div><div class="number">${fa(doneWeekly)}/${fa(todayWeekly.length)}</div></div>
+    <div class="stat"><div class="label">برنامه‌ریزی امروز</div><div class="number">${fa(todayScheduledStats.done)}/${fa(todayScheduledStats.total)}</div></div>
     <div class="stat"><div class="label">مجموع اجرا شده</div><div class="number">${fa(weeklySum)}</div></div>`;
   updateLiveFocusDashboard();
 }
@@ -1822,8 +1834,15 @@ function renderWeeklyTasks(){
   const days = getWeekDays(weeklyOffset);
   $('wtWeekRange').textContent = `${toFaDate(dateISO(days[0]))} — ${toFaDate(dateISO(days[6]))}`;
   const weekTasks = data.weeklyTasks.filter(t => { const d = new Date(t.date + 'T12:00:00'); return d >= days[0] && d <= days[6]; });
-  const doneCount = weekTasks.filter(t => t.done).length;
-  $('weeklyTasksProgress').textContent = weekTasks.length ? `${fa(doneCount)} / ${fa(weekTasks.length)} انجام‌شده` : '—';
+  let weekTotal = weekTasks.length;
+  let weekDone = weekTasks.filter(t => !!(t.done || t.eventStatus === 'done')).length;
+  days.forEach(day => {
+    const iso = dateISO(day);
+    const routines = getRoutinesForDay(iso);
+    weekTotal += routines.length;
+    weekDone += routines.filter(r => getRoutineDoneForDay(r.id, iso)).length;
+  });
+  $('weeklyTasksProgress').textContent = weekTotal ? `${fa(weekDone)} / ${fa(weekTotal)} انجام‌شده` : '—';
   $('weekColumns').innerHTML = days.map((d, i) => {
     const iso = dateISO(d); const isToday = iso === dateISO();
     const dayTasks = data.weeklyTasks.filter(t => t.date === iso);
