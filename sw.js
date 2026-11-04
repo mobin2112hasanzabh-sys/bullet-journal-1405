@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'bullet-journal-shell-v6';
+const CACHE_VERSION = 'bullet-journal-shell-v10';
 const SHELL_FILES = ['./', './index.html', './manifest.json', './icons/icon-192.png', './icons/icon-512.png'];
 
 self.addEventListener('install', event => {
