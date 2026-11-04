@@ -20,7 +20,7 @@
 <script src="./libs/persian-datepicker.min.js"></script>
 
 <!-- کتابخانه Appwrite -->
-<script src="https://cdn.jsdelivr.net/npm/appwrite@13.0.1"></script>
+<script src="./libs/appwrite.js"></script>
 
 <style>
 /* فونت وزیرمتن لوکال */
@@ -1159,10 +1159,30 @@ const emptyData=()=>({
 
 const loadData=async(userId, email)=>{
   try{
-    // گرفتن اطلاعات از Appwrite
-    const res = await databases.listDocuments('main_db', 'journals', [Query.equal('userId', userId)]);
-    if (res.documents.length > 0) {
-      const parsed = JSON.parse(res.documents[0].data);
+    const cachedDocId = localStorage.getItem(`docId_${userId}`);
+    let parsed = null;
+
+    if (cachedDocId) {
+      // دانلود مستقیم و پرسرعت داکیومنت
+      try {
+        const doc = await databases.getDocument('main_db', 'journals', cachedDocId);
+        parsed = JSON.parse(doc.data);
+      } catch (e) {
+        console.warn("Doc ID cached but not found, falling back to search...");
+      }
+    }
+
+    if (!parsed) {
+      // اگر آیدی نبود، جستجو کن
+      const res = await databases.listDocuments('main_db', 'journals', [Query.equal('userId', userId)]);
+      if (res.documents.length > 0) {
+        const doc = res.documents[0];
+        localStorage.setItem(`docId_${userId}`, doc.$id);
+        parsed = JSON.parse(doc.data);
+      }
+    }
+
+    if (parsed) {
       localStorage.setItem(STORAGE_CACHE_PREFIX+email,JSON.stringify(parsed));
       return {...emptyData(), ...parsed};
     }
@@ -1188,20 +1208,38 @@ const saveData=()=>{
 
   saveTimer=setTimeout(async()=>{
     try{
-      // چک کردن اینکه آیا کاربر قبلا داکیومنت داشته یا نه
-      const res = await databases.listDocuments('main_db', 'journals', [Query.equal('userId', session.userId)]);
+      const cachedDocId = localStorage.getItem(`docId_${session.userId}`);
       
-      if (res.documents.length > 0) {
-        // اگر داشته، آپدیت کن
-        await databases.updateDocument('main_db', 'journals', res.documents[0].$id, {
-          data: JSON.stringify(data)
-        });
+      if (cachedDocId) {
+        // اگر آیدی داکیومنت رو داریم، مستقیم آپدیت کن (سریع‌ترین راه)
+        try {
+          await databases.updateDocument('main_db', 'journals', cachedDocId, {
+            data: JSON.stringify(data)
+          });
+        } catch (err) {
+          // اگر داکیومنت پاک شده بود، از نو بساز
+          const newDoc = await databases.createDocument('main_db', 'journals', ID.unique(), {
+            userId: session.userId,
+            data: JSON.stringify(data)
+          });
+          localStorage.setItem(`docId_${session.userId}`, newDoc.$id);
+        }
       } else {
-        // اگر نداشته، بساز
-        await databases.createDocument('main_db', 'journals', ID.unique(), {
-          userId: session.userId,
-          data: JSON.stringify(data)
-        });
+        // اگر آیدی نداشتیم، بگرد و بساز
+        const res = await databases.listDocuments('main_db', 'journals', [Query.equal('userId', session.userId)]);
+        if (res.documents.length > 0) {
+          const doc = res.documents[0];
+          localStorage.setItem(`docId_${session.userId}`, doc.$id);
+          await databases.updateDocument('main_db', 'journals', doc.$id, {
+            data: JSON.stringify(data)
+          });
+        } else {
+          const newDoc = await databases.createDocument('main_db', 'journals', ID.unique(), {
+            userId: session.userId,
+            data: JSON.stringify(data)
+          });
+          localStorage.setItem(`docId_${session.userId}`, newDoc.$id);
+        }
       }
 
       if (syncEl) { syncEl.className = 'sync-badge saved'; syncEl.textContent = '☁️ ذخیره شد'; }
@@ -1359,7 +1397,24 @@ async function startApp(){
   if($('wgDue')) setPersianDateValue('wgDue', getWeekStartStr(0));
   if($('rtStartDate')) setPersianDateValue('rtStartDate', dateISO());
   if($('rtEndDate')) { const nm = new Date(); nm.setMonth(nm.getMonth() + 1); setPersianDateValue('rtEndDate', dateISO(nm)); }
-  switchPanel('app'); renderAll(); startLiveClock(); initDatepickers(); checkAchievements(); initExtras();
+    switchPanel('app'); 
+  startLiveClock(); 
+  initDatepickers(); 
+  initExtras();
+  
+  // لود کردن اولیه فقط برای تب امروز (بسیار سریع‌تر)
+  $('todayBigDate').textContent=todayFaLong(); 
+  $('todayLabel').textContent=todayFaLong();
+  renderQuote(); 
+  renderToday(); 
+  renderTimeline();
+  
+  // بقیه بخش‌ها را با تاخیر کمی در پس‌زمینه لود می‌کنیم تا ترد اصلی بلاک نشود
+  setTimeout(() => {
+    renderDashboard();
+    renderHabits();
+    checkAchievements();
+  }, 500);
 }
 
 function getWeekStart(offset=0){
