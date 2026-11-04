@@ -2204,8 +2204,14 @@ function renderMonthlyFinance(){
     const sav = data.finance.filter(f => f.month === m && f.type === 'پس‌انداز').reduce((a,f) => a + Number(f.amount || 0), 0);
     const unspent = data.finance.filter(f => f.month === m && f.type === 'خرج نکرده (صرفه‌جویی)').reduce((a,f) => a + Number(f.amount || 0), 0);
     
+    // تبدیل تاریخ میلادی به شمسی
+    let faMonth = m;
+    try { 
+      faMonth = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { year: 'numeric', month: 'long' }).format(new Date(m + '-01T12:00:00')); 
+    } catch(e){}
+    
     return `<tr>
-      <td style="padding:10px;border-bottom:1px solid var(--line)">${m}</td>
+      <td style="padding:10px;border-bottom:1px solid var(--line)">${faMonth}</td>
       <td style="padding:10px;border-bottom:1px solid var(--line)" class="money-pos">${fa(inc)}</td>
       <td style="padding:10px;border-bottom:1px solid var(--line)" class="money-neg">${fa(exp)}</td>
       <td style="padding:10px;border-bottom:1px solid var(--line)" style="color:var(--blue);font-weight:bold;">${fa(sav)}</td>
