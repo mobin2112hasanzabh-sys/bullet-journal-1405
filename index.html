@@ -1250,27 +1250,64 @@ function switchPanel(w){
   show('logoutBtn',w==='app'); show('userBadge',w==='app');
 }
 
-$('authForm').addEventListener('submit',async e=>{
+$('authForm').addEventListener('submit', async e => {
   e.preventDefault();
-  $('authMessage').classList.add('hidden'); $('authSubmit').disabled=true;
-  const email=$('email').value.trim().toLowerCase(); const pw=$('password').value;
-  if(!email||!pw){$('authSubmit').disabled=false;return;}
-  try{
-    let res=await fetch(API_URL+'/login',{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email,password:pw}) });
-    let json=await res.json();
-    if(res.status===404){
-      res=await fetch(API_URL+'/signup',{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email,password:pw}) });
-      json=await res.json();
-      if(!res.ok){ flash(json.error||'خطا در ساخت حساب', 'error'); $('authSubmit').disabled=false; return; }
+  if ($('authSubmit').disabled) return; // جلوگیری از کلیک چندباره
+  
+  $('authMessage').classList.add('hidden'); 
+  $('authSubmit').disabled = true;
+  $('authSubmit').textContent = 'در حال اتصال...';
+
+  const email = $('email').value.trim().toLowerCase(); 
+  const pw = $('password').value;
+  if (!email || !pw) { 
+    $('authSubmit').disabled = false; 
+    $('authSubmit').textContent = 'ورود / ثبت‌نام'; 
+    return; 
+  }
+
+  try {
+    let res = await fetch(API_URL + '/login', { 
+      method: 'POST', 
+      headers: { 'Content-Type': 'application/json' }, 
+      body: JSON.stringify({ email, password: pw }) 
+    });
+    let json = await res.json();
+
+    if (res.status === 404) {
+      // اگر کاربر وجود نداشت، ثبت‌نام کن
+      res = await fetch(API_URL + '/signup', { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' }, 
+        body: JSON.stringify({ email, password: pw }) 
+      });
+      json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'خطا در ساخت حساب');
       flash('حساب ساخته شد! خوش آمدی 🌿');
-    } else if(!res.ok){
-      flash(json.error||'خطا در ورود', 'error'); $('authSubmit').disabled=false; return;
+    } else if (!res.ok) {
+      // اگر خطای رمز یا سرور بود
+      throw new Error(json.error || 'ایمیل یا رمز عبور اشتباه است');
     }
+
+    // 🚨 بررسی اینکه آیا سرور واقعا اطلاعات رو فرستاده یا نه
+    if (!json || !json.email || !json.token) {
+      console.error("پاسخ سرور ناقص است:", json);
+      throw new Error(json.error || 'پاسخ نامعتبر از سرور. لطفا بعدا تلاش کنید.');
+    }
+
+    // اگر همه چیز اوکی بود، لاگین کن
     session = { email: json.email, name: json.email.split('@')[0], token: json.token };
     localStorage.setItem(STORAGE_SESSION, JSON.stringify(session));
     await startApp();
-  }catch(err){ flash('خطای اتصال: '+err.message, 'error'); }
-  $('authSubmit').disabled=false;
+
+  } catch (err) { 
+    console.error(err);
+    flash('خطای اتصال: ' + err.message, 'error'); 
+  } finally {
+    // در هر شرایطی (موفق یا ناموفق) دکمه رو آزاد کن
+    $('authSubmit').disabled = false;
+    $('authSubmit').textContent = 'ورود / ثبت‌نام';
+  }
 });
 
 function logout(){
