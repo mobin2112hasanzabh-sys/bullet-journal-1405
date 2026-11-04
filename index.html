@@ -2333,7 +2333,7 @@ function openUniversalEditor(type, id, date) {
   const cfg = NoteTypes[type]; if (!cfg) return;
   let rec = null;
   if (type === 'finance') { rec = data.finance.find(f => String(f.id) === String(id)); if (!rec) return; }
-  else if (type === 'daily') { rec = data.daily.find(d => d.date === date); if (!rec) { rec = { date, morning:'', evening:'', highlight:'', gratitude:'' }; data.daily.push(rec); } }
+  else if (type === 'daily') { rec = data.daily.find(d => d.date === date); if (!rec) { rec = { date, morning:'', evening:'', highlight:'', gratitude:'' }; } }
   else if (type === 'habit') { rec = data.logs.find(l => String(l.habit_id)===String(id) && l.date===date); if (!rec) { rec = { habit_id:id, date, status:'', note:'' }; data.logs.push(rec); } }
   else if (type === 'task') { rec = data.weeklyTasks.find(t => String(t.id)===String(id)); if (!rec) return; rec._title = rec.title; }
   else if (type === 'routine') { rec = (data.routineLogs||[]).find(l => (String(l.routineId)===String(id) || String(l.eventId)===String(id)) && l.date===date); if (!rec) { rec = { routineId:id, date, status:'', note:'' }; data.routineLogs = data.routineLogs||[]; data.routineLogs.push(rec); } const r = data.routines.find(x => String(x.id)===String(id)); rec._title = r?.title || ''; }
@@ -2348,8 +2348,14 @@ $('ueSaveBtn').addEventListener('click', () => {
   if (!currentEdit) return;
   const { type, rec } = currentEdit; const cfg = NoteTypes[type];
   cfg.fields.forEach(f => { const el = $(`ue_field_${f.key}`); if (!el) return; if (f.type === 'number') rec[f.key] = Number(el.value) || 0; else rec[f.key] = el.value.trim ? el.value.trim() : el.value; });
+  
   if (type === 'finance') { rec.month = rec.date.slice(0, 7); }
   else if (type === 'task') { if (rec.eventStatus === 'done') rec.done = true; if (rec.eventStatus === 'not_done') rec.done = false; }
+  else if (type === 'daily') {
+      const existingIndex = data.daily.findIndex(d => d.date === currentEdit.date);
+      if (existingIndex === -1) data.daily.push(rec);
+  }
+
   delete rec._title; saveData();
   renderNotebook(); renderToday(); renderHabits(); renderWeeklyTasks(); renderTodayPlan(); renderTimeline(); renderDashboard(); renderFinance();
   closeUniversalEditor(); flash('ذخیره شد ✓');
@@ -2912,7 +2918,14 @@ document.addEventListener('keydown', e => {
   if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); $('globalSearchBtn')?.click(); }
   if ((e.ctrlKey || e.metaKey) && e.key === 'n') { e.preventDefault(); document.querySelector('[data-tab="planner"]')?.click(); document.querySelector('[data-sub="weekly-tasks"]')?.click(); setTimeout(() => $('wtTitle')?.focus(), 150); }
   if ((e.ctrlKey || e.metaKey) && e.key === 'h') { e.preventDefault(); document.querySelector('[data-tab="habits"]')?.click(); setTimeout(() => $('habitName')?.focus(), 150); }
-  if (e.key === 'Escape') { document.querySelectorAll('.modal-overlay:not(.hidden)').forEach(el => el.classList.add('hidden')); if (fabOpen) { fabOpen = false; $('fabMain')?.classList.remove('active'); $('fabOptions')?.classList.remove('active'); } }
+  if (e.key === 'Escape') { 
+      if(!$('uiDialog').classList.contains('hidden')) {
+          $('uiDialogCancel').click(); 
+      }
+      currentEdit = null;
+      document.querySelectorAll('.modal-overlay:not(.hidden)').forEach(el => el.classList.add('hidden')); 
+      if (fabOpen) { fabOpen = false; $('fabMain')?.classList.remove('active'); $('fabOptions')?.classList.remove('active'); } 
+  }
 });
 
 const voiceSupported = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
@@ -3102,6 +3115,7 @@ function resetJarvisUI() {
   jarvisLiveText.textContent = 'در حال گوش دادن...';
   jarvisStatus.textContent = 'برای شروع، روی میکروفون کلیک کنید.';
   jarvisActions.classList.add('hidden');
+  $('jarvisConfirmBtn').classList.add('hidden');
   jarvisParsedInfo.classList.add('hidden');
   jarvisLastCommand = null;
   jarvisFinalTranscript = '';
@@ -3175,7 +3189,7 @@ function analyzeJarvisCommand(text) {
 
   if (t.includes('هدف ماهانه') || t.includes('ماهانه')) {
     const titleMatch = t.match(/(?:هدف ماهانه|ماهانه)\s+(.+?)(?:\s+برای|\s+به مقدار|\s+با مقدار)/);
-    const amountMatch = t.match(/(?:برای|به مقدار|با مقدار)\s+(\d+)/);
+    const amountMatch = t.match(/(\d+)\s*(?:ساعت|دقیقه|بار|صفحه|کتاب|جلسه|کیلومتر)/) || t.match(/(\d+)/);
     const unitMatch = t.match(/(ساعت|دقیقه|بار|صفحه|کتاب|جلسه|کیلومتر)/);
     
     const title = titleMatch ? titleMatch[1].trim() : 'هدف ماهانه صوتی';
@@ -3186,13 +3200,14 @@ function analyzeJarvisCommand(text) {
     jarvisParsedInfo.innerHTML = `🎯 <strong>هدف ماهانه شناسایی شد:</strong><br>عنوان: ${title}<br>مقدار: ${fa(target)} ${unit}`;
     jarvisParsedInfo.classList.remove('hidden');
     jarvisActions.classList.remove('hidden');
+    $('jarvisConfirmBtn').classList.remove('hidden');
     jarvisStatus.textContent = 'اگر درست است، تایید کنید.';
     return;
   }
 
   if (t.includes('هدف هفتگی') || t.includes('هفتگی')) {
     const titleMatch = t.match(/(?:هدف هفتگی|هفتگی)\s+(.+?)(?:\s+برای|\s+به مقدار|\s+با مقدار)/);
-    const amountMatch = t.match(/(?:برای|به مقدار|با مقدار)\s+(\d+)/);
+    const amountMatch = t.match(/(\d+)\s*(?:ساعت|دقیقه|بار|صفحه|کتاب|جلسه|کیلومتر)/) || t.match(/(\d+)/);
     const unitMatch = t.match(/(ساعت|دقیقه|بار|صفحه|کتاب|جلسه|کیلومتر)/);
     
     const title = titleMatch ? titleMatch[1].trim() : 'هدف هفتگی صوتی';
@@ -3203,6 +3218,7 @@ function analyzeJarvisCommand(text) {
     jarvisParsedInfo.innerHTML = `🗓️ <strong>هدف هفتگی شناسایی شد:</strong><br>عنوان: ${title}<br>مقدار: ${fa(target)} ${unit}`;
     jarvisParsedInfo.classList.remove('hidden');
     jarvisActions.classList.remove('hidden');
+    $('jarvisConfirmBtn').classList.remove('hidden');
     jarvisStatus.textContent = 'اگر درست است، تایید کنید.';
     return;
   }
@@ -3222,6 +3238,7 @@ function analyzeJarvisCommand(text) {
     jarvisParsedInfo.innerHTML = `📋 <strong>تسک شناسایی شد:</strong><br>عنوان: ${title}<br>روز: ${dayName} (${toFaDate(targetDate)})`;
     jarvisParsedInfo.classList.remove('hidden');
     jarvisActions.classList.remove('hidden');
+    $('jarvisConfirmBtn').classList.remove('hidden');
     jarvisStatus.textContent = 'اگر درست است، تایید کنید.';
     return;
   }
@@ -3234,6 +3251,7 @@ function analyzeJarvisCommand(text) {
       jarvisParsedInfo.innerHTML = `💰 <strong>تراکنش مالی شناسایی شد:</strong><br>نوع: ${isIncome ? 'درآمد' : 'هزینه'}<br>مبلغ: ${fa(amount)} تومان`;
       jarvisParsedInfo.classList.remove('hidden');
       jarvisActions.classList.remove('hidden');
+      $('jarvisConfirmBtn').classList.remove('hidden');
       jarvisStatus.textContent = 'اگر درست است، تایید کنید.';
       return;
     }
@@ -3241,8 +3259,7 @@ function analyzeJarvisCommand(text) {
 
   jarvisStatus.textContent = 'متوجه نشدم! لطفاً از کلمات کلیدی (هدف ماهانه، هدف هفتگی، تسک، هزینه) استفاده کنید.';
   jarvisActions.classList.remove('hidden');
-  $('jarvisConfirmBtn').classList.add('hidden'); 
-  setTimeout(() => $('jarvisConfirmBtn').classList.remove('hidden'), 100); 
+  $('jarvisConfirmBtn').classList.add('hidden');
 }
 
 function executeJarvisCommand(cmd) {
