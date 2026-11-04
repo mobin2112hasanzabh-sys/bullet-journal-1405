@@ -6,21 +6,24 @@
 <meta name="theme-color" content="#4b3526">
 <title>بولت ژورنال من | ۱۴۰۵</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%234b3526%22/><text x=%2250%22 y=%2272%22 font-size=%2260%22 text-anchor=%22middle%22 fill=%22%23f7f1e7%22>📓</text></svg>">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="manifest" href="./manifest.json">
 <link rel="apple-touch-icon" href="./icons/icon-192.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="بولت ژورنال">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">
-<script src="https://cdn.jsdelivr.net/npm/persian-date@1.1.0/dist/persian-date.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
+
+<!-- فایل‌های لوکال (بدون نیاز به اینترنت) -->
+<link rel="stylesheet" href="./libs/persian-datepicker.min.css">
+<script src="./libs/jquery.min.js"></script>
+<script src="./libs/persian-date.min.js"></script>
+<script src="./libs/persian-datepicker.min.js"></script>
 
 <style>
+/* فونت وزیرمتن لوکال */
+@font-face { font-family: 'Vazirmatn'; src: url('./fonts/Vazirmatn-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Vazirmatn'; src: url('./fonts/Vazirmatn-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+
 :root {
   --cream: #f7f1e7; --cream2: #eee3d2; --cream3: #e5d8bf;
   --brown: #76543a; --dark: #4b3526;
@@ -170,6 +173,10 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent-light);bo
 .theme-toggle::after{content:"☀️";position:absolute;top:2px;right:2px;width:22px;height:22px;border-radius:50%;background:var(--white);display:grid;place-items:center;font-size:12px;transition:all .3s cubic-bezier(0.175, 0.885, 0.32, 1.275)}
 [data-theme="dark"] .theme-toggle::after{content:"🌙";transform:translateX(-24px)}
 [data-theme="dark"] .theme-toggle{background:var(--brown)}
+.sync-badge { font-size: 11px; padding: 4px 8px; border-radius: 99px; background: var(--cream2); color: var(--muted); font-weight: 600; transition: all 0.3s; cursor: default; }
+.sync-badge.saving { background: var(--goldbg); color: var(--gold); animation: pulseTimer 1.5s infinite; }
+.sync-badge.saved { background: var(--greenbg); color: var(--green); }
+.sync-badge.error { background: var(--redbg); color: var(--red); cursor: pointer; }
 .user-badge{display:flex;align-items:center;gap:8px;background:var(--cream2);padding:6px 12px;border-radius:99px;font-size:12px;font-weight:600;cursor:pointer;}
 .user-badge .avatar{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--brown));color:white;display:grid;place-items:center;font-size:11px;font-weight:800}
 .goal-card{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:18px;position:relative;transition:all .25s ease;overflow:hidden}
@@ -437,6 +444,7 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
   <header class="top">
     <div class="brand"><div class="logo">✦</div><div><h1>بولت ژورنال من</h1><p>نسخهٔ زنده · ۱۴۰۵</p></div></div>
     <div class="top-actions">
+      <div id="syncStatus" class="sync-badge" title="وضعیت همگام‌سازی">☁️ در حال اتصال...</div>
       <button id="jarvisBtn" class="ghost small" style="font-size: 18px; padding: 6px 10px; color: var(--accent); border-color: var(--accent);" title="دستیار صوتی (جارویس)">🎙️</button>
       <button id="globalSearchBtn" class="ghost small" style="font-size: 18px; padding: 6px 10px;">🔍</button>
       <div class="user-badge hidden" id="userBadge" onclick="document.querySelector('[data-tab=profile]').click()"><div class="avatar" id="userAvatar"></div><span id="userName"></span></div>
@@ -555,6 +563,8 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
         </div>
         <div class="ai-body" id="aiInsightText">در حال تحلیل داده‌ها...</div>
       </div>
+
+      <div class="panel" id="dashboardNowWidget" style="background: var(--goldbg); border-color: var(--gold);"></div>
 
       <div class="grid" id="dashboardStats"></div>
       <div class="panel monthly-progress-panel">
@@ -851,6 +861,7 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
         </div>
         <div class="settings-section">
           <h3>🗑️ پاک‌سازی</h3>
+          <button id="archiveOldTasksBtn" class="secondary" style="margin-bottom:10px;">📦 آرشیو تسک‌های انجام‌شده قدیمی</button>
           <button id="clearDataBtn" class="danger">پاک کردن همهٔ داده‌ها</button>
         </div>
         <div class="settings-section">
@@ -965,6 +976,11 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
     <div style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 15px; min-height: 80px; text-align: right; margin-bottom: 15px; border: 1px dashed #5b7a99;">
       <div style="font-size: 12px; color: #6fa8c4; margin-bottom: 5px;">شما گفتید:</div>
       <div id="jarvisLiveText" style="font-size: 15px; color: #fff; font-weight: bold; line-height: 1.6;">در حال گوش دادن...</div>
+    </div>
+
+    <div id="jarvisFallbackContainer" class="hidden" style="margin-bottom:15px;">
+      <textarea id="jarvisFallbackText" style="width:100%; padding:10px; border-radius:10px; border:1px solid #5b7a99; background:rgba(255,255,255,0.1); color:#fff; min-height:60px;" placeholder="مرورگر شما از میکروفون پشتیبانی نمی‌کند. دستور خود را اینجا تایپ کنید..."></textarea>
+      <button id="jarvisFallbackSubmit" class="small" style="background:#5b7a99; margin-top:10px;">تحلیل متن</button>
     </div>
 
     <div id="jarvisParsedInfo" class="hidden" style="background: rgba(164, 196, 122, 0.1); border: 1px solid #a4c47a; border-radius: 12px; padding: 15px; text-align: right; margin-bottom: 15px; font-size: 13px; color: #a4c47a;">
@@ -1119,8 +1135,8 @@ const API_URL='https://bj-api.mobin2112hasanzabh.workers.dev';
 const STORAGE_SESSION='bj_session_v6';
 const STORAGE_CACHE_PREFIX='bj_cache_v6_';
 
-const emptyData=()=>({
-  habits:[], logs:[], monthlyGoals:[], weeklyGoals:[], weeklyTasks:[],
+const emptyData=()=>({ 
+  archive: [], habits:[], logs:[], monthlyGoals:[], weeklyGoals:[], weeklyTasks:[],
   finance:[], mood:[], daily:[], pomodoro:[], routines:[], routineLogs:[],
   achievements: [], monthlyProgressSnapshots: {}, customQuotes: [], savedQuotes: [], quoteHistory: [],
   settings: {
@@ -1152,15 +1168,24 @@ const saveData=()=>{
   if(!session)return;
   try { localStorage.setItem(STORAGE_CACHE_PREFIX+session.email,JSON.stringify(data)); }
   catch (storageError) { console.warn('Local cache could not be updated:', storageError); }
+  
   clearTimeout(saveTimer);
+  const syncEl = $('syncStatus');
+  if (syncEl) { syncEl.className = 'sync-badge saving'; syncEl.textContent = '☁️ در حال ذخیره...'; }
+
   saveTimer=setTimeout(async()=>{
     try{
-      await fetch(`${API_URL}/data/${encodeURIComponent(session.email)}`,{
+      const res = await fetch(`${API_URL}/data/${encodeURIComponent(session.email)}`,{
         method:'PUT',
         headers:{ 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.token}` },
         body:JSON.stringify({data})
       });
-    }catch(e){}
+      if (!res.ok) throw new Error('Server error');
+      if (syncEl) { syncEl.className = 'sync-badge saved'; syncEl.textContent = '☁️ ذخیره شد'; }
+      setTimeout(() => { if (syncEl && syncEl.classList.contains('saved')) { syncEl.className = 'sync-badge'; syncEl.textContent = '☁️'; } }, 3000);
+    }catch(e){
+      if (syncEl) { syncEl.className = 'sync-badge error'; syncEl.textContent = '☁️ خطای اتصال! (تلاش مجدد)'; }
+    }
   },800);
 };
 
@@ -1263,16 +1288,21 @@ async function startApp(){
   if (!data.achievements) data.achievements = [];
   if (!Array.isArray(data.customQuotes)) data.customQuotes = [];
   if (!Array.isArray(data.savedQuotes)) data.savedQuotes = [];
+  if (!Array.isArray(data.archive)) data.archive = [];
+  
   $('userName').textContent=session.name;
   $('userAvatar').textContent=(session.name||'?').charAt(0).toUpperCase();
   $('profileName').textContent=session.name;
   $('profileEmail').textContent=session.email;
   $('profileAvatar').textContent=(session.name||'?').charAt(0).toUpperCase();
   $('initialAssetsInput').value = data.settings?.initialAssets || 0;
+  
+  const syncEl = $('syncStatus');
+  if (syncEl) { syncEl.className = 'sync-badge'; syncEl.textContent = '☁️ متصل'; }
+
   applySettings();
   pomoObj.remaining = (Number(data.settings?.timerDuration) || 25) * 60;
   pomoObj.elapsedSeconds = 0;
-  // پنل تایمر فقط با اقدام کاربر باز می‌شود؛ وضعیت مخفی اولیه حفظ می‌شود.
   $('pomoBox')?.classList.add('hidden');
   updatePomoDisplay();
   updateLiveFocusDashboard();
@@ -1360,7 +1390,6 @@ function getRoutinesForDay(isoDate) {
   }).sort((a,b) => String(a.startTime || '').localeCompare(String(b.startTime || '')));
 }
 
-// وضعیت یک برنامه تکرارشونده در یک تاریخ مشخص؛ با پشتیبانی از داده‌های قدیمی eventId.
 function getRoutineLogForDay(routineId, isoDate) {
   return (data.routineLogs || []).find(x =>
     (String(x.routineId ?? x.eventId) === String(routineId)) && x.date === isoDate
@@ -1514,24 +1543,44 @@ function renderTimeline() {
   const now = new Date(); const currentTotalMinutes = (now.getHours() * 60) + now.getMinutes() + (now.getSeconds()/60);
   html += `<div class="current-time-line" style="top: ${currentTotalMinutes}px;"><div class="current-time-dot"></div></div>`;
   container.innerHTML = html;
+
+  let events = [];
   getRoutinesForDay(today).forEach(r => {
     const startP = r.startTime.split(':'), endP = r.endTime.split(':');
-    const startM = (parseInt(startP[0]) * 60) + parseInt(startP[1]); const endM = (parseInt(endP[0]) * 60) + parseInt(endP[1]);
-    const top = startM, height = Math.max(endM - startM, 20);
-    const el = document.createElement('div'); el.className = 'timeline-event routine';
-    el.style.top = `${top}px`; el.style.height = `${height}px`; el.dataset.eventType = 'routine'; el.dataset.eventId = r.id; el.dataset.eventDate = today;
-    el.innerHTML = `<span>⏰ ${r.startTime} - ${r.endTime}</span><br><strong>${safe(r.title)}</strong>`;
-    container.appendChild(el);
+    events.push({ type: 'routine', id: r.id, title: r.title, startM: (parseInt(startP[0]) * 60) + parseInt(startP[1]), endM: (parseInt(endP[0]) * 60) + parseInt(endP[1]), startTime: r.startTime, endTime: r.endTime });
   });
   data.weeklyTasks.filter(t => t.date === today && t.startTime && t.endTime).forEach(t => {
     const startP = t.startTime.split(':'), endP = t.endTime.split(':');
-    const startM = (parseInt(startP[0]) * 60) + parseInt(startP[1]); const endM = (parseInt(endP[0]) * 60) + parseInt(endP[1]);
-    const top = startM, height = Math.max(endM - startM, 20);
-    const el = document.createElement('div'); el.className = 'timeline-event task';
-    el.style.top = `${top}px`; el.style.height = `${height}px`; el.dataset.eventType = 'task'; el.dataset.eventId = t.id; el.dataset.eventDate = today;
-    el.innerHTML = `<span>✓ ${t.startTime} - ${t.endTime}</span><br><strong>${safe(t.title)}</strong>`;
+    events.push({ type: 'task', id: t.id, title: t.title, startM: (parseInt(startP[0]) * 60) + parseInt(startP[1]), endM: (parseInt(endP[0]) * 60) + parseInt(endP[1]), startTime: t.startTime, endTime: t.endTime });
+  });
+
+  events.sort((a,b) => a.startM - b.startM);
+  let lanes = []; 
+  events.forEach(ev => {
+    let placed = false;
+    for (let i = 0; i < lanes.length; i++) {
+      if (!lanes[i].some(e => (ev.startM < e.endM && ev.endM > e.startM))) {
+        lanes[i].push(ev); ev.lane = i; placed = true; break;
+      }
+    }
+    if (!placed) { lanes.push([ev]); ev.lane = lanes.length - 1; }
+  });
+
+  const totalLanes = Math.max(1, lanes.length);
+  const laneWidth = 100 / totalLanes;
+
+  events.forEach(ev => {
+    const top = ev.startM, height = Math.max(ev.endM - ev.startM, 20);
+    const el = document.createElement('div'); el.className = `timeline-event ${ev.type}`;
+    el.style.top = `${top}px`; el.style.height = `${height}px`;
+    el.style.width = `calc(${laneWidth}% - 20px)`;
+    el.style.right = `calc(${ev.lane * laneWidth}% + 10px)`;
+    
+    el.dataset.eventType = ev.type; el.dataset.eventId = ev.id; el.dataset.eventDate = today;
+    el.innerHTML = `<span>${ev.type === 'routine' ? '⏰' : '✓'} ${ev.startTime} - ${ev.endTime}</span><br><strong>${safe(ev.title)}</strong>`;
     container.appendChild(el);
   });
+  
   container.scrollTop = Math.max(currentTotalMinutes - 100, 0);
 }
 
@@ -1573,7 +1622,6 @@ function monthlyScheduledProgress(key){
   const {start,end}=jalaliMonthBounds(key);
   const planned=[];
   (data.weeklyTasks||[]).forEach(t=>{if(t.date>=start&&t.date<=end)planned.push({type:'task',id:t.id,date:t.date,done:!!(t.done||t.eventStatus==='done')});});
-  // برنامه‌های تکرارشونده را دقیقاً با همان قاعده‌ای می‌شماریم که در نمای روزانه دیده می‌شوند.
   const d=new Date(start+'T12:00:00'), last=new Date(end+'T12:00:00');
   while(d<=last){
     const iso=dateISO(d);
@@ -1644,6 +1692,26 @@ function renderDashboard(){
     <div class="stat"><span class="icon">💎</span><div class="label">موجودی نقدی</div><div class="number" style="font-size:20px; color:var(--green);">${fa(currentAssets)}</div></div>
     <div class="stat"><span class="icon">🏦</span><div class="label">کل پس‌انداز</div><div class="number" style="font-size:20px; color:var(--blue);">${fa(totalSavings)}</div></div>
     <div class="stat"><span class="icon">⏱️</span><div class="label">زمان تمرکز این ماه</div><div class="number" id="dashboardFocusCount" style="font-size:21px;direction:ltr;text-align:right;white-space:nowrap;">${formatFocusDuration(focusSeconds)}</div><small style="font-size:10px;color:var(--muted);">مجموع روزهای ماه شمسی جاری · ساعت : دقیقه : ثانیه</small></div>`;
+
+  const todayStr = dateISO();
+  const pendingTasks = data.weeklyTasks.filter(t => t.date === todayStr && !t.done && !t.eventStatus);
+  const pendingRoutines = getRoutinesForDay(todayStr).filter(r => getRoutineLogForDay(r.id, todayStr)?.status !== 'done');
+  
+  let nowHtml = `<h3 style="margin-bottom:12px; color:var(--dark);">🎯 همین حالا چه کاری انجام بدم؟</h3>`;
+  if (pendingTasks.length === 0 && pendingRoutines.length === 0) {
+    nowHtml += `<p class="muted">آفرین! همه کارهای امروز انجام شده‌اند. 🎉</p>`;
+  } else {
+    nowHtml += `<div style="display:flex; flex-direction:column; gap:8px;">`;
+    pendingRoutines.slice(0, 3).forEach(r => {
+      nowHtml += `<div style="display:flex; justify-content:space-between; align-items:center; background:var(--white); padding:10px; border-radius:8px; border:1px solid var(--line);"><span>⏰ ${r.startTime} - ${r.endTime} | ${safe(r.title)}</span><button class="small secondary" data-event-type="routine" data-event-id="${r.id}" data-event-date="${todayStr}">مشاهده</button></div>`;
+    });
+    pendingTasks.slice(0, 3).forEach(t => {
+      nowHtml += `<div style="display:flex; justify-content:space-between; align-items:center; background:var(--white); padding:10px; border-radius:8px; border:1px solid var(--line);"><span>✓ ${safe(t.title)}</span><button class="small secondary" data-start-timer-title="${safe(t.title)}" data-start-timer-id="${t.id}">⏱️ شروع</button></div>`;
+    });
+    nowHtml += `</div>`;
+  }
+  if ($('dashboardNowWidget')) $('dashboardNowWidget').innerHTML = nowHtml;
+
   generateAIInsight(); renderMonthlyProgress(); renderMoodLine(); renderExpenseDonut(); renderMonthlyFinance(); renderHabitHeatmap();
   updateLiveFocusDashboard();
 }
@@ -2783,47 +2851,32 @@ $('globalSearchInput')?.addEventListener('input', e => {
 });
 
 const ACHIEVEMENTS_LIST = [
-  // ==================== 📈 شروع و پایه‌گذاری ====================
   { id: 'start_1', category: 'شروع و پایه‌گذاری', icon: '🌱', title: 'نخستین قدم', desc: 'اولین عادت خود را بسازید.', check: () => data.habits.length >= 1, progress: () => ({ current: data.habits.length, target: 1 }) },
   { id: 'start_2', category: 'شروع و پایه‌گذاری', icon: '🎯', title: 'برنامه‌ریز', desc: 'اولین هدف ماهانه خود را ثبت کنید.', check: () => data.monthlyGoals.length >= 1, progress: () => ({ current: data.monthlyGoals.length, target: 1 }) },
   { id: 'start_3', category: 'شروع و پایه‌گذاری', icon: '📝', title: 'روزنوشت', desc: 'اولین یادداشت روزانه خود را بنویسید.', check: () => data.daily.some(n => (n.morning||'')+(n.evening||'')+(n.highlight||'')+(n.gratitude||'')), progress: () => ({ current: data.daily.some(n => (n.morning||'')+(n.evening||'')+(n.highlight||'')+(n.gratitude||'')) ? 1 : 0, target: 1 }) },
-
-  // ==================== 🔥 قهرمان عادت‌ها ====================
   { id: 'habit_3', category: 'قهرمان عادت‌ها', icon: '🔥', title: 'آتش‌نشان', desc: '۳ روز پشت سر هم یک عادت', check: () => data.habits.some(h => calcStreak(h.id) >= 3), progress: () => ({ current: Math.max(0, ...data.habits.map(h => calcStreak(h.id))), target: 3 }) },
   { id: 'habit_7', category: 'قهرمان عادت‌ها', icon: '🌟', title: 'استریک طلایی', desc: '۷ روز پشت سر هم یک عادت', check: () => data.habits.some(h => calcStreak(h.id) >= 7), progress: () => ({ current: Math.max(0, ...data.habits.map(h => calcStreak(h.id))), target: 7 }) },
   { id: 'habit_30', category: 'قهرمان عادت‌ها', icon: '💎', title: 'الماس', desc: '۳۰ روز پشت سر هم یک عادت', check: () => data.habits.some(h => calcStreak(h.id) >= 30), progress: () => ({ current: Math.max(0, ...data.habits.map(h => calcStreak(h.id))), target: 30 }) },
   { id: 'habit_100', category: 'قهرمان عادت‌ها', icon: '🏅', title: 'افسانه‌ای', desc: '۱۰۰ روز پشت سر هم یک عادت', check: () => data.habits.some(h => calcStreak(h.id) >= 100), progress: () => ({ current: Math.max(0, ...data.habits.map(h => calcStreak(h.id))), target: 100 }) },
   { id: 'habit_5_total', category: 'قهرمان عادت‌ها', icon: '🏋️', title: 'چندکاره', desc: '۵ عادت همزمان در برنامه داشته باشید.', check: () => data.habits.length >= 5, progress: () => ({ current: data.habits.length, target: 5 }) },
-
-  // ==================== 🎯 شکارچی اهداف ====================
   { id: 'goal_1', category: 'شکارچی اهداف', icon: '🎯', title: 'هدف‌شناس', desc: 'اولین هدف ماهانه تکمیل شده', check: () => data.monthlyGoals.filter(g => g.done).length >= 1, progress: () => ({ current: data.monthlyGoals.filter(g => g.done).length, target: 1 }) },
   { id: 'goal_5', category: 'شکارچی اهداف', icon: '🚀', title: 'پیشرو', desc: '۵ هدف ماهانه تکمیل شده', check: () => data.monthlyGoals.filter(g => g.done).length >= 5, progress: () => ({ current: data.monthlyGoals.filter(g => g.done).length, target: 5 }) },
   { id: 'goal_10', category: 'شکارچی اهداف', icon: '👑', title: 'فاتح', desc: '۱۰ هدف ماهانه تکمیل شده', check: () => data.monthlyGoals.filter(g => g.done).length >= 10, progress: () => ({ current: data.monthlyGoals.filter(g => g.done).length, target: 10 }) },
-
-  // ==================== 💰 امپراتوری مالی ====================
   { id: 'fin_5', category: 'امپراتوری مالی', icon: '💰', title: 'پس‌اندازکننده', desc: '۵ تراکنش پس‌انداز', check: () => data.finance.filter(f => f.type === 'پس‌انداز').length >= 5, progress: () => ({ current: data.finance.filter(f => f.type === 'پس‌انداز').length, target: 5 }) },
   { id: 'fin_1', category: 'امپراتوری مالی', icon: '🛡️', title: 'مدیر بودجه', desc: 'بدون خرج اضافی در طول ثبت‌ها', check: () => data.finance.length > 0 && data.finance.filter(f => f.type === 'خرج اضافی').length === 0, progress: () => ({ current: data.finance.length > 0 ? 1 : 0, target: 1 }) },
   { id: 'fin_log_10', category: 'امپراتوری مالی', icon: '📊', title: 'حسابدار', desc: '۱۰ تراکنش مالی ثبت کنید.', check: () => data.finance.length >= 10, progress: () => ({ current: data.finance.length, target: 10 }) },
   { id: 'fin_save_1m', category: 'امپراتوری مالی', icon: '💎', title: 'سرمایه‌گذار', desc: 'مجموع پس‌انداز شما به ۱ میلیون تومان برسد.', check: () => calculateTotalSavings() >= 1000000, progress: () => ({ current: calculateTotalSavings(), target: 1000000 }) },
-
-  // ==================== ⏱️ استاد تمرکز (بر اساس دقیقه) ====================
   { id: 'pomo_min_1', category: 'استاد تمرکز', icon: '⏱️', title: 'شروع تمرکز', desc: 'حداقل ۱ دقیقه تمرکز کنید.', check: () => (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0) >= 1, progress: () => ({ current: (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 1 }) },
   { id: 'pomo_min_25', category: 'استاد تمرکز', icon: '🧠', title: 'یک پومودورو', desc: 'به مدت ۲۵ دقیقه تمرکز کنید.', check: () => (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0) >= 25, progress: () => ({ current: (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 25 }) },
   { id: 'pomo_min_60', category: 'استاد تمرکز', icon: '🎧', title: 'یک ساعت تمرکز', desc: 'به مدت ۶۰ دقیقه تمرکز کنید.', check: () => (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0) >= 60, progress: () => ({ current: (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 60 }) },
   { id: 'pomo_min_180', category: 'استاد تمرکز', icon: '📚', title: 'تمرکز عمیق', desc: 'به مدت ۳ ساعت تمرکز کنید.', check: () => (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0) >= 180, progress: () => ({ current: (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 180 }) },
   { id: 'pomo_min_600', category: 'استاد تمرکز', icon: '🕰️', title: 'غرق در کار', desc: 'به مدت ۱۰ ساعت تمرکز کنید.', check: () => (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0) >= 600, progress: () => ({ current: (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 600 }) },
   { id: 'pomo_min_1500', category: 'استاد تمرکز', icon: '👑', title: 'استاد مطلق', desc: 'به مدت ۲۵ ساعت تمرکز کنید.', check: () => (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0) >= 1500, progress: () => ({ current: (data.pomodoro || []).reduce((a,p) => a + (Number(p.minutes) || 0), 0), target: 1500 }) },
-
-  // ==================== ✍️ نویسنده خلاق ====================
   { id: 'note_30', category: 'نویسنده خلاق', icon: '✍️', title: 'نویسنده', desc: '۳۰ یادداشت ثبت شده', check: () => data.daily.filter(n => (n.morning||'')+(n.evening||'')+(n.highlight||'')+(n.gratitude||'')).length >= 30, progress: () => ({ current: data.daily.filter(n => (n.morning||'')+(n.evening||'')+(n.highlight||'')+(n.gratitude||'')).length, target: 30 }) },
   { id: 'note_100', category: 'نویسنده خلاق', icon: '📚', title: 'مورخ', desc: '۱۰۰ روز پیاپی یادداشت', check: () => { let streak = 0, d = new Date(); for (let i = 0; i < 100; i++) { const iso = dateISO(d); const note = data.daily.find(n => n.date === iso); if (note && ((note.morning||'') + (note.evening||'') + (note.highlight||'') + (note.gratitude||'')).trim()) streak++; else break; d.setDate(d.getDate() - 1); } return streak >= 100; }, progress: () => { let streak = 0, d = new Date(); for (let i = 0; i < 100; i++) { const iso = dateISO(d); const note = data.daily.find(n => n.date === iso); if (note && ((note.morning||'') + (note.evening||'') + (note.highlight||'') + (note.gratitude||'')).trim()) streak++; else break; d.setDate(d.getDate() - 1); } return { current: streak, target: 100 }; } },
   { id: 'note_streak_7', category: 'نویسنده خلاق', icon: '📖', title: 'عادت‌نویس', desc: '۷ روز پیاپی یادداشت بنویسید.', check: () => { let streak = 0, d = new Date(); for (let i = 0; i < 7; i++) { const iso = dateISO(d); const note = data.daily.find(n => n.date === iso); if (note && ((note.morning||'') + (note.evening||'') + (note.highlight||'') + (note.gratitude||'')).trim()) streak++; else break; d.setDate(d.getDate() - 1); } return streak >= 7; }, progress: () => { let streak = 0, d = new Date(); for (let i = 0; i < 7; i++) { const iso = dateISO(d); const note = data.daily.find(n => n.date === iso); if (note && ((note.morning||'') + (note.evening||'') + (note.highlight||'') + (note.gratitude||'')).trim()) streak++; else break; d.setDate(d.getDate() - 1); } return { current: streak, target: 7 }; } },
-
-  // ==================== 😊 رهرو احساسات ====================
   { id: 'mood_7', category: 'رهرو احساسات', icon: '😊', title: 'خودآگاه', desc: '۷ روز خلق‌وخوی خود را ثبت کنید.', check: () => data.mood.length >= 7, progress: () => ({ current: data.mood.length, target: 7 }) },
   { id: 'mood_30', category: 'رهرو احساسات', icon: '🧘', title: 'درون‌نگر', desc: '۳۰ روز خلق‌وخو ثبت شده', check: () => data.mood.length >= 30, progress: () => ({ current: data.mood.length, target: 30 }) },
-
-  // ==================== 🎮 ویژگی‌های سیستم ====================
   { id: 'sys_dark', category: 'ویژگی‌های سیستم', icon: '🌙', title: 'شب‌زنده‌دار', desc: 'از حالت تاریک استفاده کنید.', check: () => data.settings.themeMode === 'dark' || data.settings.themeMode === 'auto', progress: () => ({ current: (data.settings.themeMode === 'dark' || data.settings.themeMode === 'auto') ? 1 : 0, target: 1 }) },
   { id: 'sys_3d', category: 'ویژگی‌های سیستم', icon: '🎭', title: 'بعد سوم', desc: 'حالت سه‌بعدی را فعال کنید.', check: () => data.settings.enable3D === true, progress: () => ({ current: data.settings.enable3D === true ? 1 : 0, target: 1 }) }
 ];
@@ -2888,6 +2941,22 @@ $('exportBtn').addEventListener('click', () => { const backup = { app: 'bullet-j
 $('importBtn').addEventListener('click', () => $('importFile').click());
 $('importFile').addEventListener('change', async e => { const file = e.target.files[0]; if (!file) return; try { const raw = await file.text(); if (raw.length > 10 * 1024 * 1024) throw new Error('حجم فایل پشتیبان بیش از ۱۰ مگابایت است.'); const parsed = JSON.parse(raw); const imported = parsed && parsed.app === 'bullet-journal' && parsed.data ? parsed.data : parsed; if (!imported || typeof imported !== 'object' || Array.isArray(imported)) throw new Error('ساختار فایل پشتیبان معتبر نیست.'); if (await customConfirm('داده‌های فعلی با فایل پشتیبان جایگزین می‌شود. مطمئنی؟')) { data = { ...emptyData(), ...imported }; if (!data.settings) data.settings = emptyData().settings; if (!data.achievements) data.achievements = []; if (!data.monthlyProgressSnapshots) data.monthlyProgressSnapshots = {}; if (!Array.isArray(data.customQuotes)) data.customQuotes = []; if (!Array.isArray(data.savedQuotes)) data.savedQuotes = []; data.settings = { ...emptyData().settings, ...(data.settings || {}) }; saveData(); applySettings(); renderAll(); flash('بازیابی انجام شد'); } } catch (err) { flash('فایل نامعتبر است', 'error'); } e.target.value = ''; });
 $('clearDataBtn').addEventListener('click', async () => { if (await customConfirm('همهٔ داده‌ها پاک می‌شود. مطمئنی؟')) { const initial = data.settings?.initialAssets || 0; data = emptyData(); data.settings.initialAssets = initial; saveData(); applySettings(); renderAll(); flash('پاک شد'); } });
+$('archiveOldTasksBtn')?.addEventListener('click', async () => {
+  if (!await customConfirm('تسک‌های انجام‌شده‌ای که بیش از ۳۰ روز از آن‌ها گذشته به آرشیو منتقل می‌شوند. ادامه می‌دهید؟')) return;
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - 30);
+  const cutoffIso = dateISO(cutoffDate);
+  let archivedCount = 0;
+  const remainingTasks = [];
+  data.weeklyTasks.forEach(t => {
+    if (t.date < cutoffIso && (t.done || t.eventStatus === 'done')) {
+      data.archive.push({ ...t, archivedAt: dateISO() });
+      archivedCount++;
+    } else { remainingTasks.push(t); }
+  });
+  data.weeklyTasks = remainingTasks;
+  saveData(); renderAll(); flash(`${fa(archivedCount)} تسک به آرشیو منتقل شد. ✅`);
+});
 
 function buildPrintReport() {
   const today = dateISO(); const days = getWeekDays(0); const todayRoutines = getRoutinesForDay(today); const todayTasks = data.weeklyTasks.filter(t => t.date === today); let html = '';
@@ -3022,9 +3091,9 @@ document.addEventListener('click', async e => {
     openEventModal(evtEl.dataset.eventType, evtEl.dataset.eventId, eventDate); return;
   }
   const th = t.closest('[data-toggle-habit]');
-  if (th) { const hid = th.dataset.toggleHabit; const today = dateISO(); const idx = data.logs.findIndex(l => String(l.habit_id) === String(hid) && l.date === today); if (idx >= 0 && data.logs[idx].status === 'done') data.logs.splice(idx, 1); else { const log = { habit_id: hid, date: today, status: 'done', note: data.logs[idx]?.note || '' }; if (idx >= 0) data.logs[idx] = log; else data.logs.push(log); } saveData(); renderHabits(); renderToday(); renderDashboard(); checkAchievements(); return; }
+  if (th) { const hid = th.dataset.toggleHabit; const today = dateISO(); const idx = data.logs.findIndex(l => String(l.habit_id) === String(hid) && l.date === today); if (idx >= 0 && data.logs[idx].status === 'done') data.logs.splice(idx, 1); else { const log = { habit_id: hid, date: today, status: 'done', note: data.logs[idx]?.note || '' }; if (idx >= 0) data.logs[idx] = log; else data.logs.push(log); } saveData(); renderHabits(); renderToday(); if($('tab-dashboard').classList.contains('hidden') === false) renderDashboard(); checkAchievements(); return; }
   const twt = t.closest('[data-toggle-wt], [data-toggle-wt-today]');
-  if (twt) { const id = twt.dataset.toggleWt || twt.dataset.toggleWtToday; const task = data.weeklyTasks.find(x => String(x.id) === String(id)); if (task) { task.done = !task.done; saveData(); renderWeeklyTasks(); renderTodayPlan(); renderDashboard(); checkAchievements(); } return; }
+  if (twt) { const id = twt.dataset.toggleWt || twt.dataset.toggleWtToday; const task = data.weeklyTasks.find(x => String(x.id) === String(id)); if (task) { task.done = !task.done; saveData(); renderWeeklyTasks(); renderTodayPlan(); if($('tab-dashboard').classList.contains('hidden') === false) renderDashboard(); checkAchievements(); } return; }
   const delHabit = t.closest('[data-del="habits"]');
   if (delHabit) { if (!(await customConfirm('این عادت پاک شود؟'))) return; data.habits = data.habits.filter(h => String(h.id) !== String(delHabit.dataset.id)); data.logs = data.logs.filter(l => String(l.habit_id) !== String(delHabit.dataset.id)); saveData(); renderAll(); flash('حذف شد'); return; }
   const delFin = t.closest('[data-del="finance"]');
@@ -3051,7 +3120,7 @@ document.addEventListener('click', async e => {
 
 document.addEventListener('input', e => {
   const v = e.target.closest('[data-value-wt], [data-value-wt-today]');
-  if (v) { const id = v.dataset.valueWt || v.dataset.valueWtToday; const task = data.weeklyTasks.find(x => String(x.id) === String(id)); if (task) { task.value = Number(v.value) || 0; saveData(); renderDashboard(); } }
+  if (v) { const id = v.dataset.valueWt || v.dataset.valueWtToday; const task = data.weeklyTasks.find(x => String(x.id) === String(id)); if (task) { task.value = Number(v.value) || 0; saveData(); if($('tab-dashboard').classList.contains('hidden') === false) renderDashboard(); } }
 });
 
 document.addEventListener('change', e => {
@@ -3059,7 +3128,11 @@ document.addEventListener('change', e => {
   const hid = s.dataset.habitStatus; const status = s.value; const today = dateISO();
   const idx = data.logs.findIndex(l => String(l.habit_id) === String(hid) && l.date === today);
   if (!status) { if (idx >= 0) data.logs.splice(idx, 1); } else { const log = { habit_id: hid, date: today, status, note: data.logs[idx]?.note || '' }; if (idx >= 0) data.logs[idx] = log; else data.logs.push(log); }
-  saveData(); renderHabits(); renderToday(); renderDashboard(); checkAchievements();
+  saveData(); 
+  renderHabits(); 
+  renderToday(); 
+  if($('tab-dashboard').classList.contains('hidden') === false) renderDashboard(); 
+  checkAchievements();
 });
 
 // ==================== دستیار صوتی هوشمند (Jarvis v3) ====================
@@ -3077,12 +3150,26 @@ let jarvisSilenceTimer = null;
 let jarvisFinalTranscript = '';
 
 jarvisBtn?.addEventListener('click', () => {
-  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-    customAlert('مرورگر شما از دستیار صوتی پشتیبانی نمی‌کند. لطفاً از کروم استفاده کنید.', 'خطا');
-    return;
-  }
+  const hasSpeech = ('webkitSpeechRecognition' in window) || ('SpeechRecognition' in window);
   jarvisModal.classList.remove('hidden');
   resetJarvisUI();
+  
+  if (!hasSpeech) {
+    $('jarvisFallbackContainer').classList.remove('hidden');
+    jarvisOrb.classList.add('hidden');
+    jarvisStatus.textContent = 'لطفاً دستور خود را تایپ کنید.';
+  } else {
+    $('jarvisFallbackContainer').classList.add('hidden');
+    jarvisOrb.classList.remove('hidden');
+  }
+});
+
+$('jarvisFallbackSubmit')?.addEventListener('click', () => {
+  const text = $('jarvisFallbackText').value.trim();
+  if (text) {
+    jarvisFinalTranscript = text;
+    analyzeJarvisCommand(text);
+  }
 });
 
 $('jarvisCloseBtn')?.addEventListener('click', () => {
@@ -3101,7 +3188,7 @@ jarvisOrb?.addEventListener('click', () => {
 
 $('jarvisRetryBtn')?.addEventListener('click', () => {
   resetJarvisUI();
-  startJarvisListening();
+  if (('webkitSpeechRecognition' in window) || ('SpeechRecognition' in window)) startJarvisListening();
 });
 
 $('jarvisConfirmBtn')?.addEventListener('click', () => {
@@ -3178,8 +3265,12 @@ function parseJarvisNumber(text) {
   let multiplier = 1;
   if (num.includes('هزار')) multiplier = 1000;
   if (num.includes('میلیون')) multiplier = 1000000;
-  const match = num.match(/\d+/);
-  if (match) return parseInt(match[0]) * multiplier;
+  const match = num.match(/(\d+)/);
+  if (match) {
+      let val = parseInt(match[1]) * multiplier;
+      if ((num.includes('تومن') || num.includes('تومان')) && val < 1000) val *= 1000; 
+      return val;
+  }
   return 0;
 }
 
@@ -3243,7 +3334,7 @@ function analyzeJarvisCommand(text) {
     return;
   }
 
-  if (t.includes('هزینه') || t.includes('خرج') || t.includes('درآمد') || t.includes('دخل')) {
+  if (t.includes('هزینه') || t.includes('خرج') || t.includes('خرید') || t.includes('درآمد') || t.includes('دخل')) {
     const amount = parseJarvisNumber(t);
     if (amount > 0) {
       const isIncome = t.includes('درآمد') || t.includes('دخل');
