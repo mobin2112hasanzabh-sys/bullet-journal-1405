@@ -1174,17 +1174,29 @@ const saveData=()=>{
   if (syncEl) { syncEl.className = 'sync-badge saving'; syncEl.textContent = '☁️ در حال ذخیره...'; }
 
   saveTimer=setTimeout(async()=>{
+    // ساخت کنترلر برای جلوگیری از هنگ کردن
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000); // ۸ ثانیه فرصت
+
     try{
       const res = await fetch(`${API_URL}/data/${encodeURIComponent(session.email)}`,{
         method:'PUT',
-        headers:{ 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.token}` },
-        body:JSON.stringify({data})
+        headers:{ 
+          'Content-Type': 'application/json', 
+          'Authorization': `Bearer ${session.token}` 
+        },
+        body:JSON.stringify({data}),
+        signal: controller.signal
       });
+      
+      clearTimeout(timeoutId);
+
       if (!res.ok) throw new Error('Server error');
+      
       if (syncEl) { syncEl.className = 'sync-badge saved'; syncEl.textContent = '☁️ ذخیره شد'; }
       setTimeout(() => { if (syncEl && syncEl.classList.contains('saved')) { syncEl.className = 'sync-badge'; syncEl.textContent = '☁️'; } }, 3000);
     }catch(e){
-      if (syncEl) { syncEl.className = 'sync-badge error'; syncEl.textContent = '☁️ خطای اتصال! (تلاش مجدد)'; }
+      if (syncEl) { syncEl.className = 'sync-badge error'; syncEl.textContent = '☁️ خطای اتصال!'; }
     }
   },800);
 };
