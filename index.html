@@ -19,7 +19,7 @@
 <script src="./libs/persian-date.min.js"></script>
 <script src="./libs/persian-datepicker.min.js"></script>
 
-<!-- کتابخانه Appwrite -->
+<!-- کتابخانه Appwrite لوکال (بسیار سریع) -->
 <script src="./libs/appwrite.js"></script>
 
 <style>
@@ -473,6 +473,7 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
       <button data-tab="notebook">📝 یادداشت‌ها</button>
       <button data-tab="dashboard">📊 داشبورد</button>
       <button data-tab="planner">🎯 برنامه‌ریزی</button>
+      <button data-tab="reminders">📅 مناسبت‌ها</button>
       <button data-tab="habits">🔥 عادت‌ها</button>
       <button data-tab="finance">💰 مالی</button>
       <button data-tab="mood">😊 خلق‌وخو</button>
@@ -498,6 +499,8 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
           <button class="quote-action-btn" id="quoteShareBtn" title="اشتراک">📤 اشتراک</button>
         </div>
       </div>
+
+      <div id="todayRemindersWidget"></div>
 
       <div class="panel">
         <div class="sectionhead" style="margin-bottom:0; align-items:center;">
@@ -643,9 +646,10 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
         </div>
         <div class="panel" style="box-shadow:none"><h3>افزودن</h3>
           <form id="weeklyTaskForm" class="weekly-task-grid">
-            <div class="field"><label>عنوان</label><input id="wtTitle" required maxlength="180" placeholder="مثلاً ۱۰ لغت جدید"></div>
+            <div class="field"><label>عنوان کار</label><input id="wtTitle" required maxlength="180" placeholder="مثلاً ۱۰ لغت جدید"></div>
             <div class="field"><label>روز</label><select id="wtDay"><option>شنبه</option><option>یکشنبه</option><option>دوشنبه</option><option>سه‌شنبه</option><option>چهارشنبه</option><option>پنجشنبه</option><option>جمعه</option></select></div>
-            <div class="field"><label>هدف هفتگی</label><select id="wtGoal" required><option value="">— انتخاب کن —</option></select></div>
+            <div class="field"><label>۱. هدف ماهانه</label><select id="wtMonthlyGoalFilter" style="border-color: var(--accent);"><option value="">— انتخاب هدف ماهانه —</option></select></div>
+            <div class="field"><label>۲. هدف هفتگی</label><select id="wtGoal" required><option value="">— ابتدا هدف ماهانه را انتخاب کنید —</option></select></div>
             <div class="field" style="flex-direction:row; align-items:center; gap:5px; margin-bottom:5px;"><input type="checkbox" id="wtHasTime" style="width:auto;transform:scale(1.5);margin-left:5px;cursor:pointer;"> <label for="wtHasTime" style="cursor:pointer">⏰ زمان مشخص دارد</label></div>
             <div class="field hidden" id="wtTimeFields" style="flex-direction:row; gap:5px;"><input id="wtStartTime" type="text" class="time-input" placeholder="15:30" maxlength="5"><input id="wtEndTime" type="text" class="time-input" placeholder="17:30" maxlength="5"></div>
             <button type="submit">افزودن</button>
@@ -669,6 +673,21 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
         </div>
         <div id="routineList" class="list"></div>
       </div>
+    </section>
+
+    <section id="tab-reminders" class="tab hidden">
+      <div class="sectionhead"><div><h2>📅 مناسبت‌ها و یادآورها</h2><p class="muted">تولدها، سالگردها و پروژه‌ها را اینجا ثبت کنید تا از قبل به شما اطلاع دهیم.</p></div></div>
+      
+      <div class="panel" style="box-shadow:none">
+        <h3>افزودن مناسبت جدید</h3>
+        <form id="reminderForm" class="formgrid">
+          <div class="field"><label>عنوان</label><input id="rmTitle" required placeholder="مثلاً: تولد سارا"></div>
+          <div class="field"><label>تاریخ دقیق</label><div class="date-input-wrapper"><input id="rmDate" type="text" class="persian-date" required placeholder="انتخاب تاریخ" inputmode="none" autocomplete="off"><span class="date-icon">📅</span></div></div>
+          <div class="field"><label>چند روز قبل یادآوری شود؟</label><select id="rmDays"><option value="1">۱ روز قبل</option><option value="3">۳ روز قبل</option><option value="7" selected>۱ هفته قبل</option><option value="14">۲ هفته قبل</option><option value="30">۱ ماه قبل</option></select></div>
+          <button type="submit">افزودن</button>
+        </form>
+      </div>
+      <div id="reminderList" class="list"></div>
     </section>
 
     <section id="tab-habits" class="tab hidden">
@@ -1019,8 +1038,8 @@ const labels={priority:{urgent_important:'فوری و مهم',important:'مهم'
 // ==================== تنظیمات Appwrite ====================
 const { Client, Account, Databases, ID, Query } = Appwrite;
 const client = new Client()
-    .setEndpoint('https://fra.cloud.appwrite.io/v1') // آدرس Endpoint شما
-    .setProject('6aeb38b4000e5130ed67'); // Project ID شما
+    .setEndpoint('https://fra.cloud.appwrite.io/v1')
+    .setProject('6aeb38b4000e5130ed67');
 
 const account = new Account(client);
 const databases = new Databases(client);
@@ -1150,6 +1169,7 @@ const emptyData=()=>({
   archive: [], habits:[], logs:[], monthlyGoals:[], weeklyGoals:[], weeklyTasks:[],
   finance:[], mood:[], daily:[], pomodoro:[], routines:[], routineLogs:[],
   achievements: [], monthlyProgressSnapshots: {}, customQuotes: [], savedQuotes: [], quoteHistory: [],
+  reminders: [],
   settings: {
     initialAssets: 0, themeMode: 'light', accentColor: 'olive', fontSize: '16px',
     timerDuration: 25, timerSound: 'beep', reminderNote: '21:00',
@@ -1157,13 +1177,13 @@ const emptyData=()=>({
   }
 });
 
+// ==================== سیستم آپدیت دیتا ====================
 const loadData=async(userId, email)=>{
   try{
     const cachedDocId = localStorage.getItem(`docId_${userId}`);
     let parsed = null;
 
     if (cachedDocId) {
-      // دانلود مستقیم و پرسرعت داکیومنت
       try {
         const doc = await databases.getDocument('main_db', 'journals', cachedDocId);
         parsed = JSON.parse(doc.data);
@@ -1173,7 +1193,6 @@ const loadData=async(userId, email)=>{
     }
 
     if (!parsed) {
-      // اگر آیدی نبود، جستجو کن
       const res = await databases.listDocuments('main_db', 'journals', [Query.equal('userId', userId)]);
       if (res.documents.length > 0) {
         const doc = res.documents[0];
@@ -1211,32 +1230,23 @@ const saveData=()=>{
       const cachedDocId = localStorage.getItem(`docId_${session.userId}`);
       
       if (cachedDocId) {
-        // اگر آیدی داکیومنت رو داریم، مستقیم آپدیت کن (سریع‌ترین راه)
         try {
-          await databases.updateDocument('main_db', 'journals', cachedDocId, {
-            data: JSON.stringify(data)
-          });
+          await databases.updateDocument('main_db', 'journals', cachedDocId, { data: JSON.stringify(data) });
         } catch (err) {
-          // اگر داکیومنت پاک شده بود، از نو بساز
           const newDoc = await databases.createDocument('main_db', 'journals', ID.unique(), {
-            userId: session.userId,
-            data: JSON.stringify(data)
+            userId: session.userId, data: JSON.stringify(data)
           });
           localStorage.setItem(`docId_${session.userId}`, newDoc.$id);
         }
       } else {
-        // اگر آیدی نداشتیم، بگرد و بساز
         const res = await databases.listDocuments('main_db', 'journals', [Query.equal('userId', session.userId)]);
         if (res.documents.length > 0) {
           const doc = res.documents[0];
           localStorage.setItem(`docId_${session.userId}`, doc.$id);
-          await databases.updateDocument('main_db', 'journals', doc.$id, {
-            data: JSON.stringify(data)
-          });
+          await databases.updateDocument('main_db', 'journals', doc.$id, { data: JSON.stringify(data) });
         } else {
           const newDoc = await databases.createDocument('main_db', 'journals', ID.unique(), {
-            userId: session.userId,
-            data: JSON.stringify(data)
+            userId: session.userId, data: JSON.stringify(data)
           });
           localStorage.setItem(`docId_${session.userId}`, newDoc.$id);
         }
@@ -1330,10 +1340,8 @@ $('authForm').addEventListener('submit', async e => {
 
   try {
     try {
-      // تلاش برای ورود
       await account.createEmailSession(email, pw);
     } catch (loginErr) {
-      // اگر کاربر نبود (خطای 401)، ثبت‌نام می‌کنیم
       if (loginErr.code === 401) {
         await account.create(ID.unique(), email, pw);
         await account.createEmailSession(email, pw);
@@ -1343,7 +1351,6 @@ $('authForm').addEventListener('submit', async e => {
       }
     }
 
-    // گرفتن اطلاعات کاربر پس از ورود
     const user = await account.get();
     session = { email: user.email, name: user.name || user.email.split('@')[0], userId: user.$id };
     localStorage.setItem(STORAGE_SESSION, JSON.stringify(session));
@@ -1376,6 +1383,7 @@ async function startApp(){
   if (!Array.isArray(data.customQuotes)) data.customQuotes = [];
   if (!Array.isArray(data.savedQuotes)) data.savedQuotes = [];
   if (!Array.isArray(data.archive)) data.archive = [];
+  if (!Array.isArray(data.reminders)) data.reminders = [];
   
   $('userName').textContent=session.name;
   $('userAvatar').textContent=(session.name||'?').charAt(0).toUpperCase();
@@ -1393,11 +1401,12 @@ async function startApp(){
   $('pomoBox')?.classList.add('hidden');
   updatePomoDisplay();
   updateLiveFocusDashboard();
-  ['moodDate','finDate','mgDue'].forEach(id=>{if($(id))setPersianDateValue(id, dateISO());});
+  ['moodDate','finDate','mgDue','rmDate'].forEach(id=>{if($(id))setPersianDateValue(id, dateISO());});
   if($('wgDue')) setPersianDateValue('wgDue', getWeekStartStr(0));
   if($('rtStartDate')) setPersianDateValue('rtStartDate', dateISO());
   if($('rtEndDate')) { const nm = new Date(); nm.setMonth(nm.getMonth() + 1); setPersianDateValue('rtEndDate', dateISO(nm)); }
-    switchPanel('app'); 
+  
+  switchPanel('app'); 
   startLiveClock(); 
   initDatepickers(); 
   initExtras();
@@ -1407,12 +1416,14 @@ async function startApp(){
   $('todayLabel').textContent=todayFaLong();
   renderQuote(); 
   renderToday(); 
+  renderTodayReminders();
   renderTimeline();
   
   // بقیه بخش‌ها را با تاخیر کمی در پس‌زمینه لود می‌کنیم تا ترد اصلی بلاک نشود
   setTimeout(() => {
     renderDashboard();
     renderHabits();
+    renderReminders();
     checkAchievements();
   }, 500);
 }
@@ -1627,6 +1638,7 @@ function renderAll(){
   renderQuote(); renderCustomQuotes(); refreshSelectors(); renderDashboard(); renderToday();
   renderNotebook(); renderMonthlyGoals(); renderWeeklyGoals(); renderWeeklyTasks(); renderHabits();
   renderFinance(); renderMood(); renderRoutines(); renderTimeline(); renderAchievements();
+  renderReminders(); renderTodayReminders();
 }
 
 let clockInterval = null;
@@ -1695,17 +1707,44 @@ function refreshSelectors(){
     mgSel.innerHTML='<option value="">— انتخاب کن —</option>'+opts.map(g=>`<option value="${g.id}">${safe(g.title)}</option>`).join('');
     if(cur && opts.some(g=>String(g.id)===String(cur))) mgSel.value=cur;
   }
-  const wgSel=$('wtGoal');
-  if(wgSel){
-    const cur=wgSel.value; const opts=data.weeklyGoals.filter(g=>!g.done);
-    wgSel.innerHTML='<option value="">— انتخاب کن —</option>'+opts.map(g=>{
-      const parent=data.monthlyGoals.find(m=>String(m.id)===String(g.monthlyGoalId));
-      const label=parent?`${g.title} (${parent.title})`:g.title;
-      return `<option value="${g.id}">${safe(label)}</option>`;
-    }).join('');
-    if(cur && opts.some(g=>String(g.id)===String(cur))) wgSel.value=cur;
+  
+  const wtMgFilter = $('wtMonthlyGoalFilter');
+  if (wtMgFilter) {
+    const cur = wtMgFilter.value;
+    const opts = data.monthlyGoals.filter(g => !g.done);
+    wtMgFilter.innerHTML = '<option value="">— انتخاب هدف ماهانه —</option>' + opts.map(g => `<option value="${g.id}">${safe(g.title)}</option>`).join('');
+    if (cur && opts.some(g => String(g.id) === String(cur))) wtMgFilter.value = cur;
   }
+  
+  filterWeeklyGoalsByMonthly();
 }
+
+function filterWeeklyGoalsByMonthly() {
+  const wtMgFilter = $('wtMonthlyGoalFilter');
+  const wgSel = $('wtGoal');
+  if (!wtMgFilter || !wgSel) return;
+
+  const selectedMgId = wtMgFilter.value;
+  const curWg = wgSel.value;
+  
+  let opts = data.weeklyGoals.filter(g => !g.done);
+  if (selectedMgId) {
+    opts = opts.filter(g => String(g.monthlyGoalId) === String(selectedMgId));
+  } else {
+    wgSel.innerHTML = '<option value="">— ابتدا هدف ماهانه را انتخاب کنید —</option>';
+    return;
+  }
+
+  wgSel.innerHTML = '<option value="">— انتخاب هدف هفتگی —</option>' + opts.map(g => {
+    const parent = data.monthlyGoals.find(m => String(m.id) === String(g.monthlyGoalId));
+    const label = parent ? `${g.title} (${parent.title})` : g.title;
+    return `<option value="${g.id}">${safe(label)}</option>`;
+  }).join('');
+
+  if (curWg && opts.some(g => String(g.id) === String(curWg))) wgSel.value = curWg;
+}
+
+$('wtMonthlyGoalFilter')?.addEventListener('change', filterWeeklyGoalsByMonthly);
 
 function jalaliParts(iso){
   const d=new Date(iso+'T12:00:00'); const parts=new Intl.DateTimeFormat('en-US-u-ca-persian',{year:'numeric',month:'numeric',day:'numeric'}).formatToParts(d);
@@ -2204,11 +2243,8 @@ function renderMonthlyFinance(){
     const sav = data.finance.filter(f => f.month === m && f.type === 'پس‌انداز').reduce((a,f) => a + Number(f.amount || 0), 0);
     const unspent = data.finance.filter(f => f.month === m && f.type === 'خرج نکرده (صرفه‌جویی)').reduce((a,f) => a + Number(f.amount || 0), 0);
     
-    // تبدیل تاریخ میلادی به شمسی
     let faMonth = m;
-    try { 
-      faMonth = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { year: 'numeric', month: 'long' }).format(new Date(m + '-01T12:00:00')); 
-    } catch(e){}
+    try { faMonth = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { year: 'numeric', month: 'long' }).format(new Date(m + '-01T12:00:00')); } catch(e){}
     
     return `<tr>
       <td style="padding:10px;border-bottom:1px solid var(--line)">${faMonth}</td>
@@ -2564,7 +2600,8 @@ document.querySelectorAll('.nav button[data-tab]').forEach(btn => {
     const tab = btn.dataset.tab; document.querySelectorAll('.tab').forEach(t => t.classList.add('hidden'));
     const target = $('tab-' + tab); if (target) target.classList.remove('hidden');
     if (tab === 'dashboard') renderDashboard(); if (tab === 'habits') renderHabitHeatmap(); if (tab === 'notebook') renderNotebook();
-    if (tab === 'today') { renderToday(); renderTimeline(); } if (tab === 'finance') { renderFinance(); renderMonthlyFinance(); renderExpenseDonut(); } if (tab === 'achievements') checkAchievements();
+    if (tab === 'today') { renderToday(); renderTimeline(); renderTodayReminders(); } if (tab === 'finance') { renderFinance(); renderMonthlyFinance(); renderExpenseDonut(); } if (tab === 'achievements') checkAchievements();
+    if (tab === 'reminders') renderReminders();
   });
 });
 
@@ -2601,7 +2638,7 @@ $('weeklyTaskForm').addEventListener('submit', e => {
   e.preventDefault();
   const dayIdx = weekDayNames.indexOf($('wtDay').value); const days = getWeekDays(weeklyOffset); const hasTime = $('wtHasTime').checked;
   const task = { id: nid(), title: $('wtTitle').value.trim(), day: $('wtDay').value, date: dateISO(days[dayIdx >= 0 ? dayIdx : 0]), weeklyGoalId: $('wtGoal').value, startTime: hasTime ? ($('wtStartTime').value.trim() || '') : '', endTime: hasTime ? ($('wtEndTime').value.trim() || '') : '', value: 0, done: false, note: '' };
-  if (!task.title || !task.weeklyGoalId) return;
+  if (!task.title || !task.weeklyGoalId) { flash('لطفاً هدف هفتگی را انتخاب کنید', 'error'); return; }
   data.weeklyTasks.push(task); saveData(); renderWeeklyTasks(); renderTodayPlan(); renderTimeline(); renderDashboard();
   e.target.reset(); $('wtTimeFields')?.classList.add('hidden'); flash('کار هفتگی اضافه شد');
 });
@@ -2923,7 +2960,6 @@ window.addEventListener('pagehide', () => {
       if (session) {
         localStorage.setItem(STORAGE_CACHE_PREFIX + session.email, JSON.stringify(data));
         clearTimeout(saveTimer);
-        // Appwrite save is handled by the standard saveData, but for pagehide we just do local cache.
       }
     } catch (e) {}
   }
@@ -2953,6 +2989,94 @@ $('globalSearchInput')?.addEventListener('input', e => {
   if (!results.length) { resEl.innerHTML = '<p class="muted" style="text-align:center; padding:20px;">نتیجه‌ای یافت نشد.</p>'; return; }
   resEl.innerHTML = results.map((r, i) => `<div class="search-result-item" data-search-idx="${i}"><div class="search-result-title">${r.icon} ${r.title}</div><div class="search-result-meta"><span class="status blue">${r.type}</span>${r.date ? `<span>${toFaDate(r.date)}</span>` : ''}</div><div class="search-result-snippet">${r.snippet}</div></div>`).join('');
   resEl.querySelectorAll('.search-result-item').forEach(el => { el.addEventListener('click', () => { const idx = parseInt(el.dataset.searchIdx, 10); $('searchModal').classList.add('hidden'); results[idx].action(); }); });
+});
+
+// ==================== سیستم یادآورها و مناسبت‌ها ====================
+function renderReminders() {
+  const el = $('reminderList'); if (!el) return;
+  if (!data.reminders || data.reminders.length === 0) {
+    el.innerHTML = '<p class="muted" style="text-align:center;padding:20px">هنوز مناسبتی ثبت نکرده‌اید.</p>';
+    return;
+  }
+  
+  const today = new Date(); today.setHours(0,0,0,0);
+  const sorted = [...data.reminders].sort((a,b) => new Date(a.date) - new Date(b.date));
+  
+  el.innerHTML = sorted.map(r => {
+    const rDate = new Date(r.date + 'T12:00:00');
+    const diffDays = Math.ceil((rDate - today) / (1000 * 60 * 60 * 24));
+    let statusHtml = '';
+    if (diffDays < 0) statusHtml = `<span class="status late">گذشته (${fa(-diffDays)} روز پیش)</span>`;
+    else if (diffDays === 0) statusHtml = `<span class="status gold" style="animation:pulseTimer 2s infinite">امروز!</span>`;
+    else if (diffDays <= r.remindDaysBefore) statusHtml = `<span class="status blue">${fa(diffDays)} روز مانده</span>`;
+    else statusHtml = `<span class="status">${fa(diffDays)} روز مانده</span>`;
+
+    return `<article class="item">
+      <div class="item-main">
+        <div class="item-title">🎉 ${safe(r.title)}</div>
+        <div class="item-meta">
+          <span>📅 ${toFaDate(r.date)}</span>
+          <span>⏰ یادآوری از ${fa(r.remindDaysBefore)} روز قبل</span>
+          ${statusHtml}
+        </div>
+      </div>
+      <div class="item-actions">
+        <button class="danger small" data-del-reminder="${r.id}">×</button>
+      </div>
+    </article>`;
+  }).join('');
+}
+
+function renderTodayReminders() {
+  const widget = $('todayRemindersWidget'); if (!widget) return;
+  if (!data.reminders || data.reminders.length === 0) { widget.innerHTML = ''; return; }
+  
+  const today = new Date(); today.setHours(0,0,0,0);
+  const activeReminders = data.reminders.filter(r => {
+    const rDate = new Date(r.date + 'T12:00:00');
+    const diffDays = Math.ceil((rDate - today) / (1000 * 60 * 60 * 24));
+    return diffDays >= 0 && diffDays <= r.remindDaysBefore;
+  });
+
+  if (activeReminders.length === 0) { widget.innerHTML = ''; return; }
+
+  widget.innerHTML = `<div class="panel" style="background:linear-gradient(135deg, var(--goldbg), var(--white)); border-color:var(--gold);">
+    <h3 style="color:var(--brown); display:flex; align-items:center; gap:8px;">🔔 یادآورهای مهم</h3>
+    <div style="display:flex; flex-direction:column; gap:10px; margin-top:12px;">
+      ${activeReminders.map(r => {
+        const diff = Math.ceil((new Date(r.date + 'T12:00:00') - today) / 86400000);
+        return `<div style="display:flex; justify-content:space-between; background:var(--white); padding:10px 15px; border-radius:10px; border-right:4px solid var(--gold);">
+          <div><strong>${safe(r.title)}</strong><div class="muted" style="font-size:11px;">تاریخ: ${toFaDate(r.date)}</div></div>
+          <div style="color:var(--red); font-weight:800; font-size:13px;">${diff === 0 ? 'همین امروز!' : `${fa(diff)} روز مانده`}</div>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>`;
+}
+
+$('reminderForm')?.addEventListener('submit', e => {
+  e.preventDefault();
+  const title = $('rmTitle').value.trim();
+  const date = getPersianDateValue('rmDate');
+  const remindDaysBefore = Number($('rmDays').value);
+  
+  if (!title || !date) { flash('عنوان و تاریخ الزامی است', 'error'); return; }
+  
+  if (!data.reminders) data.reminders = [];
+  data.reminders.push({ id: nid(), title, date, remindDaysBefore });
+  saveData(); renderReminders(); renderTodayReminders();
+  e.target.reset(); setPersianDateValue('rmDate', dateISO());
+  flash('مناسبت با موفقیت ثبت شد 🎉');
+});
+
+document.addEventListener('click', async e => {
+  const delBtn = e.target.closest('[data-del-reminder]');
+  if (delBtn) {
+    if (await customConfirm('این مناسبت حذف شود؟')) {
+      data.reminders = data.reminders.filter(r => String(r.id) !== String(delBtn.dataset.delReminder));
+      saveData(); renderReminders(); renderTodayReminders(); flash('حذف شد');
+    }
+  }
 });
 
 const ACHIEVEMENTS_LIST = [
@@ -3044,7 +3168,7 @@ $('btnEnableNotifications')?.addEventListener('click', async () => { if (!('Noti
 
 $('exportBtn').addEventListener('click', () => { const backup = { app: 'bullet-journal', schemaVersion: 1, exportedAt: new Date().toISOString(), data }; const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `bj-backup-${dateISO()}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 500); flash('پشتیبان دانلود شد'); });
 $('importBtn').addEventListener('click', () => $('importFile').click());
-$('importFile').addEventListener('change', async e => { const file = e.target.files[0]; if (!file) return; try { const raw = await file.text(); if (raw.length > 10 * 1024 * 1024) throw new Error('حجم فایل پشتیبان بیش از ۱۰ مگابایت است.'); const parsed = JSON.parse(raw); const imported = parsed && parsed.app === 'bullet-journal' && parsed.data ? parsed.data : parsed; if (!imported || typeof imported !== 'object' || Array.isArray(imported)) throw new Error('ساختار فایل پشتیبان معتبر نیست.'); if (await customConfirm('داده‌های فعلی با فایل پشتیبان جایگزین می‌شود. مطمئنی؟')) { data = { ...emptyData(), ...imported }; if (!data.settings) data.settings = emptyData().settings; if (!data.achievements) data.achievements = []; if (!data.monthlyProgressSnapshots) data.monthlyProgressSnapshots = {}; if (!Array.isArray(data.customQuotes)) data.customQuotes = []; if (!Array.isArray(data.savedQuotes)) data.savedQuotes = []; data.settings = { ...emptyData().settings, ...(data.settings || {}) }; saveData(); applySettings(); renderAll(); flash('بازیابی انجام شد'); } } catch (err) { flash('فایل نامعتبر است', 'error'); } e.target.value = ''; });
+$('importFile').addEventListener('change', async e => { const file = e.target.files[0]; if (!file) return; try { const raw = await file.text(); if (raw.length > 10 * 1024 * 1024) throw new Error('حجم فایل پشتیبان بیش از ۱۰ مگابایت است.'); const parsed = JSON.parse(raw); const imported = parsed && parsed.app === 'bullet-journal' && parsed.data ? parsed.data : parsed; if (!imported || typeof imported !== 'object' || Array.isArray(imported)) throw new Error('ساختار فایل پشتیبان معتبر نیست.'); if (await customConfirm('داده‌های فعلی با فایل پشتیبان جایگزین می‌شود. مطمئنی؟')) { data = { ...emptyData(), ...imported }; if (!data.settings) data.settings = emptyData().settings; if (!data.achievements) data.achievements = []; if (!data.monthlyProgressSnapshots) data.monthlyProgressSnapshots = {}; if (!Array.isArray(data.customQuotes)) data.customQuotes = []; if (!Array.isArray(data.savedQuotes)) data.savedQuotes = []; if (!Array.isArray(data.reminders)) data.reminders = []; data.settings = { ...emptyData().settings, ...(data.settings || {}) }; saveData(); applySettings(); renderAll(); flash('بازیابی انجام شد'); } } catch (err) { flash('فایل نامعتبر است', 'error'); } e.target.value = ''; });
 $('clearDataBtn').addEventListener('click', async () => { if (await customConfirm('همهٔ داده‌ها پاک می‌شود. مطمئنی؟')) { const initial = data.settings?.initialAssets || 0; data = emptyData(); data.settings.initialAssets = initial; saveData(); applySettings(); renderAll(); flash('پاک شد'); } });
 $('archiveOldTasksBtn')?.addEventListener('click', async () => {
   if (!await customConfirm('تسک‌های انجام‌شده‌ای که بیش از ۳۰ روز از آن‌ها گذشته به آرشیو منتقل می‌شوند. ادامه می‌دهید؟')) return;
@@ -3499,13 +3623,11 @@ function executeJarvisCommand(cmd) {
   applySettings(); initDatepickers();
   
   try {
-    // چک کردن اینکه آیا کاربر از قبل لاگین هست یا نه
     const user = await account.get();
     session = { email: user.email, name: user.name || user.email.split('@')[0], userId: user.$id };
     localStorage.setItem(STORAGE_SESSION, JSON.stringify(session));
     await startApp();
   } catch (err) {
-    // اگر خطای 401 بود یعنی کاربر لاگین نیست
     const stored = localStorage.getItem(STORAGE_SESSION);
     if (stored && err.code !== 401) {
        try {
