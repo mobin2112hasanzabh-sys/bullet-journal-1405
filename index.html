@@ -1292,6 +1292,8 @@ const BJ_SCHEMA_VERSION = 2;
 const BJ_BACKUP_PREFIX = 'bj_safety_backup_v1_';
 const bjClone = value => JSON.parse(JSON.stringify(value));
 const bjIsNotFound = err => Number(err?.code) === 404 || /not.?found|document.*exist/i.test(String(err?.message || ''));
+const BJ_CONFLICT_CODE = 'BJ_SYNC_CONFLICT';
+let bjCloudSyncState = { userId: null, docId: null, updatedAt: null, loadedFromCloud: false };
 
 // مهاجرت افزایشی: کلیدهای ناشناخته و داده‌های قبلی حفظ می‌شوند.
 const migrateBulletJournalData = input => {
@@ -1330,6 +1332,7 @@ const loadData=async(userId, email)=>{
       try {
         const doc = await databases.getDocument('main_db', 'journals', cachedDocId);
         parsed = JSON.parse(doc.data);
+        bjCloudSyncState = { userId, docId: doc.$id, updatedAt: doc.$updatedAt || null, loadedFromCloud: true };
       } catch (err) {
         // فقط شناسه نامعتبر را نادیده می‌گیریم؛ خطای شبکه/مجوز نباید به ساخت سند تازه منجر شود.
         if (bjIsNotFound(err)) localStorage.removeItem(`docId_${userId}`);
@@ -1342,8 +1345,10 @@ const loadData=async(userId, email)=>{
         const doc = res.documents[0];
         localStorage.setItem(`docId_${userId}`, doc.$id);
         parsed = JSON.parse(doc.data);
+        bjCloudSyncState = { userId, docId: doc.$id, updatedAt: doc.$updatedAt || null, loadedFromCloud: true };
       }
     }
+    if (!parsed) bjCloudSyncState = { userId, docId: null, updatedAt: null, loadedFromCloud: true };
     if (parsed) {
       const migrated = migrateBulletJournalData(parsed);
       bjSaveLocalSafetyCopy(userId, email, migrated);
@@ -1351,6 +1356,7 @@ const loadData=async(userId, email)=>{
     }
   } catch (err) {
     cloudReadError = err;
+    bjCloudSyncState = { userId, docId: null, updatedAt: null, loadedFromCloud: false };
     console.error('خطا در دریافت داده از فضای ابری؛ تلاش برای بازیابی کش:', err);
   }
   try {
@@ -1380,14 +1386,27 @@ const saveData=()=>{
     saveQueue = saveQueue.then(async()=>{
       // از ارسال اطلاعات نشست دیگری که بعداً وارد شده جلوگیری می‌شود.
       if (!session || session.userId !== activeSession.userId) return;
+      // داده‌ای که فقط از کش آفلاین آمده، تا بارگذاری موفق از ابر اجازه بازنویسی سند ابری ندارد.
+      if (!bjCloudSyncState.loadedFromCloud || bjCloudSyncState.userId !== activeSession.userId) {
+        if (syncEl) { syncEl.className = 'sync-badge error'; syncEl.textContent = '☁️ فقط محلی ذخیره شد؛ برای همگام‌سازی اتصال را بررسی و صفحه را دوباره بارگذاری کن'; }
+        return;
+      }
       const payload = bjClone(snapshot);
       payload._meta = { ...(payload._meta || {}), schemaVersion: BJ_SCHEMA_VERSION, revision: thisRevision, updatedAt: new Date().toISOString() };
       const serialized = JSON.stringify(payload);
       try {
-        let docId = localStorage.getItem(`docId_${activeSession.userId}`);
+        let docId = bjCloudSyncState.docId || localStorage.getItem(`docId_${activeSession.userId}`);
         if (docId) {
           try {
-            await databases.updateDocument('main_db', 'journals', docId, { data: serialized });
+            // کنترل خوش‌بینانه تعارض: اگر سند از زمان بارگذاری در دستگاه دیگری تغییر کرده باشد، بازنویسی نمی‌کنیم.
+            const latest = await databases.getDocument('main_db', 'journals', docId);
+            const baseline = bjCloudSyncState.updatedAt;
+            if (baseline && latest.$updatedAt && latest.$updatedAt !== baseline) {
+              const conflict = new Error('اطلاعات ابری پس از بارگذاری این دستگاه تغییر کرده است. برای جلوگیری از حذف تغییرات جدیدتر، ذخیره متوقف شد.');
+              conflict.code = BJ_CONFLICT_CODE; throw conflict;
+            }
+            const updated = await databases.updateDocument('main_db', 'journals', docId, { data: serialized });
+            bjCloudSyncState = { ...bjCloudSyncState, updatedAt: updated.$updatedAt || latest.$updatedAt || baseline }; 
           } catch (err) {
             if (!bjIsNotFound(err)) throw err;
             localStorage.removeItem(`docId_${activeSession.userId}`);
@@ -1398,12 +1417,13 @@ const saveData=()=>{
           const res = await databases.listDocuments('main_db', 'journals', [Query.equal('userId', activeSession.userId)]);
           if (res.documents.length > 0) {
             // سند موجود را به‌روزرسانی می‌کنیم؛ در خطای شبکه/مجوز سند دوم نمی‌سازیم.
-            docId = res.documents[0].$id;
-            localStorage.setItem(`docId_${activeSession.userId}`, docId);
-            await databases.updateDocument('main_db', 'journals', docId, { data: serialized });
+            // سندی که بعد از بارگذاری ایجاد شده را خودکار بازنویسی نمی‌کنیم.
+            const conflict = new Error('در فضای ابری سندی ایجاد شده است که هنگام بارگذاری این دستگاه وجود نداشت. صفحه را دوباره بارگذاری کن.');
+            conflict.code = BJ_CONFLICT_CODE; throw conflict;
           } else {
             const created = await databases.createDocument('main_db', 'journals', ID.unique(), { userId: activeSession.userId, data: serialized });
             localStorage.setItem(`docId_${activeSession.userId}`, created.$id);
+            bjCloudSyncState = { userId: activeSession.userId, docId: created.$id, updatedAt: created.$updatedAt || null, loadedFromCloud: true };
           }
         }
         if (syncEl && session?.userId === activeSession.userId && thisRevision === saveRevision) {
@@ -1411,7 +1431,10 @@ const saveData=()=>{
         }
       } catch(err) {
         console.error('Save error (local safety copy retained):', err);
-        if (syncEl && session?.userId === activeSession.userId) { syncEl.className = 'sync-badge error'; syncEl.textContent = '☁️ خطای همگام‌سازی؛ نسخه محلی محفوظ است'; }
+        if (syncEl && session?.userId === activeSession.userId) {
+          syncEl.className = 'sync-badge error';
+          syncEl.textContent = err?.code === BJ_CONFLICT_CODE ? '⚠️ تعارض اطلاعات؛ تغییرات محلی محفوظ است، صفحه را دوباره بارگذاری کن' : '☁️ خطای همگام‌سازی؛ نسخه محلی محفوظ است';
+        }
       }
     }).catch(err => console.error('Save queue error:', err));
   }, 1000);
