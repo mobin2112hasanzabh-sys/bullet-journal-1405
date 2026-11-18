@@ -756,10 +756,13 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
       <div data-fin-panel="waste" class="hidden"><div class="panel"><h3>گزارش خرج‌های اضافی</h3><div class="fin-waste-total"><span>مجموع خرج اضافی این ماه</span><strong id="finWasteTotal">۰ تومان</strong></div><p class="muted">این جدول فقط خریدها و هزینه‌هایی را نشان می‌دهد که می‌توانستی از آن‌ها صرف‌نظر کنی. این مبالغ قبلاً از حساب کسر شده‌اند و در محاسبه موجودی دوباره کسر نمی‌شوند.</p><div id="finWasteList" class="list"></div></div></div>
       <div data-fin-panel="budgets" class="hidden"><div class="panel"><h3>تعیین بودجه ماهانه</h3><form id="budgetForm" class="formgrid2"><div class="field"><label>دسته هزینه</label><select id="budgetCategory"></select></div><div class="field"><label>سقف بودجه (تومان)</label><input id="budgetAmount" type="text" inputmode="numeric" dir="ltr" class="fin-money-input" data-fin-money-input="true" min="1" required></div><button type="submit">ذخیره بودجه ماه جاری</button></form></div><div class="panel"><h3>وضعیت بودجه‌های این ماه</h3><div id="finBudgetsList" class="grid2"></div></div></div>
       <div data-fin-panel="categories" class="hidden"><div class="panel"><h3>ساخت دسته‌بندی حرفه‌ای</h3><form id="categoryForm" class="formgrid2"><div class="field"><label>نام دسته</label><input id="categoryName" required placeholder="مثلاً نگهداری حیوان خانگی"></div><div class="field"><label>نوع دسته</label><select id="categoryType"><option value="expense">هزینه</option><option value="income">درآمد</option></select></div><div class="field"><label>جایگاه دسته‌بندی</label><select id="categoryParent"><option value="">دسته اصلی مستقل</option></select></div><p class="fin-category-help">برای ساخت دسته اصلی، گزینه «دسته اصلی مستقل» را انتخاب کن. برای ساخت زیر‌دسته، دسته اصلی والد را انتخاب کن؛ مثلاً خوراک ← سوپرمارکت.</p><div class="field"><label>آیکون (ایموجی)</label><input id="categoryIcon" maxlength="8" placeholder="📁"></div><div class="field"><label>رنگ</label><input id="categoryColor" type="color" value="#78845b"></div><button type="submit">افزودن دسته</button></form></div><div class="panel"><h3>ساختار دسته‌بندی‌ها</h3><p class="muted">دسته‌های اصلی و زیر‌دسته‌ها جدا و درختی نمایش داده می‌شوند. هر زیر‌دسته به یک دسته اصلی از همان نوع درآمد/هزینه متصل است.</p><div id="finCategoriesList" class="fin-category-list"></div></div></div>
-      <div data-fin-panel="commitments" class="hidden"><div class="panel"><h3>ثبت بدهی، طلب یا وام</h3><form id="commitmentForm" class="formgrid2"><div class="field"><label>نوع</label><select id="commitType"><option value="debt">بدهی</option><option value="receivable">طلب</option><option value="loan">وام</option></select></div><div class="field"><label>عنوان</label><input id="commitTitle" required placeholder="مثلاً وام یا قرض"></div><div class="field"><label>طرف حساب</label><input id="commitPerson" placeholder="نام شخص یا بانک"></div><div class="field"><label>مبلغ اصل (تومان)</label><input id="commitPrincipal" type="text" inputmode="numeric" dir="ltr" class="fin-money-input" data-fin-money-input="true" min="1" required></div><div class="field"><label>حساب مرتبط برای پرداخت/وصول</label><select id="commitAccount"></select></div><div class="field"><label>سررسید / اولین قسط</label><div class="date-input-wrapper"><input id="commitDue" type="text" class="persian-date" placeholder="انتخاب تاریخ" inputmode="none"></div></div>
+      <div data-fin-panel="commitments" class="hidden"><div class="panel"><h3>ثبت بدهی، طلب یا وام</h3><form id="commitmentForm" class="formgrid2"><div class="field"><label>نوع</label><select id="commitType"><option value="debt">بدهی</option><option value="receivable">طلب</option><option value="loan">وام</option></select></div><div class="field"><label>عنوان</label><input id="commitTitle" required placeholder="مثلاً وام یا قرض"></div><div class="field"><label>طرف حساب</label><input id="commitPerson" placeholder="نام شخص یا بانک"></div><div class="field"><label>مبلغ اصل (تومان)</label><input id="commitPrincipal" type="text" inputmode="numeric" dir="ltr" class="fin-money-input" data-fin-money-input="true" min="1" required></div><div class="field hidden" id="commitAccountWrap"><label>حسابی که اثر مالی در آن ثبت می‌شود</label><select id="commitAccount"></select></div><div class="field"><label>سررسید / اولین قسط</label><div class="date-input-wrapper"><input id="commitDue" type="text" class="persian-date" placeholder="انتخاب تاریخ" inputmode="none"></div></div>
           <div id="commitLoanFields" class="fin-loan-fields hidden"><div class="field"><label>درصد سود</label><input id="commitRate" type="number" min="0" step="0.01" value="0"></div><div class="field"><label>کارمزد (مبلغ ثابت)</label><input id="commitFee" type="text" inputmode="numeric" dir="ltr" class="fin-money-input" data-fin-money-input="true" min="0" value="0"></div><div class="field"><label>تعداد اقساط</label><input id="commitInstallments" type="number" min="1" value="12"></div><p class="muted">محاسبه ساده: اصل وام + (اصل × درصد سود) + کارمزد. برای قراردادهایی با روش محاسبه بانکی متفاوت، مبلغ کل بازپرداخت را پس از ثبت با شرایط واقعی تطبیق بده.</p></div>
-          <div class="field" id="commitDepositWrap"><label class="fin-check"><input id="commitDeposit" type="checkbox" checked> مبلغ دریافتی هنگام ثبت به این حساب واریز شود</label></div><div class="field hidden" id="commitOutflowWrap"><label class="fin-check"><input id="commitOutflow" type="checkbox" checked> مبلغ طلب هنگام ثبت از این حساب پرداخت شود</label></div><div class="field fin-wide"><label>توضیحات</label><input id="commitDescription" placeholder="یادداشت اختیاری"></div><button type="submit">ثبت بدهی / طلب</button></form></div><div class="panel"><h3>فهرست بدهی‌ها و طلب‌ها</h3><div id="finCommitmentsList" class="grid2"></div></div></div>
-      <div data-fin-panel="analytics" class="hidden"><div id="finAnalytics" class="grid2"></div></div>
+          <div class="field" id="commitDepositWrap"><label class="fin-check"><input id="commitDeposit" type="checkbox"> چون پول را قرض گرفته‌ام، مبلغ دریافتی هنگام ثبت به موجودی حساب اضافه شود</label></div><div class="field hidden" id="commitOutflowWrap"><label class="fin-check"><input id="commitOutflow" type="checkbox"> چون پول را به طرف پرداخت کرده‌ام، مبلغ طلب هنگام ثبت از موجودی حساب کم شود</label></div><div class="field fin-wide"><label>توضیحات</label><input id="commitDescription" placeholder="یادداشت اختیاری"></div><button type="submit">ثبت بدهی / طلب</button></form></div><div class="panel"><h3>فهرست بدهی‌ها و طلب‌ها</h3><div id="finCommitmentsList" class="grid2"></div></div></div>
+      <div data-fin-panel="analytics" class="hidden">
+        <div class="panel"><h3>📄 گزارش مالی با بازه دلخواه</h3><p class="muted">بازه زمانی را انتخاب کن تا خلاصه حساب‌ها، تراکنش‌ها، بدهی و طلب و نمودارهای مالی در گزارش آماده چاپ و ذخیره PDF قرار بگیرند.</p><div class="formgrid2"><div class="field"><label for="finReportStartDate">از تاریخ</label><input id="finReportStartDate" type="text" class="persian-date" placeholder="تاریخ شروع" inputmode="none" autocomplete="off"></div><div class="field"><label for="finReportEndDate">تا تاریخ</label><input id="finReportEndDate" type="text" class="persian-date" placeholder="تاریخ پایان" inputmode="none" autocomplete="off"></div><button type="button" id="finExportPdfBtn">خروجی گزارش PDF</button></div><p class="muted" style="font-size:11px">پس از باز شدن پنجره چاپ، مقصد را «Save as PDF / ذخیره به‌صورت PDF» انتخاب کن.</p></div>
+        <div id="finAnalytics" class="grid2"></div>
+      </div>
       <div data-fin-panel="recurring" class="hidden"><div class="panel"><h3>تعریف تراکنش تکرارشونده</h3><form id="recurringForm" class="formgrid2"><div class="field"><label>عنوان</label><input id="recurringTitle" required></div><div class="field"><label>مبلغ</label><input id="recurringAmount" type="text" inputmode="numeric" dir="ltr" class="fin-money-input" data-fin-money-input="true" min="1" required></div><div class="field"><label>نوع</label><select id="recurringType"><option>هزینه</option><option>درآمد</option></select></div><div class="field"><label>روز ماه</label><input id="recurringDay" type="number" min="1" max="31" value="1"></div><div class="field"><label>دسته</label><select id="recurringCategory"></select></div><div class="field"><label>حساب</label><select id="recurringAccount"></select></div><button type="submit">ذخیره الگو</button></form><p class="muted">الگوها برای یادآوری و ثبت سریع نگهداری می‌شوند؛ ثبت خودکار بدون تأیید انجام نمی‌شود.</p></div><div class="panel"><h3>الگوهای ثبت‌شده</h3><div id="finRecurringList" class="list"></div></div></div>
     </section>
 
@@ -1040,7 +1043,7 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
       <div class="field"><label for="finCommitEditTitle">عنوان</label><input id="finCommitEditTitle" required maxlength="180"></div>
       <div class="field"><label for="finCommitEditPerson">طرف حساب / بانک</label><input id="finCommitEditPerson" maxlength="160"></div>
       <div class="field"><label for="finCommitEditPrincipal">مبلغ اصل (تومان)</label><input id="finCommitEditPrincipal" type="text" inputmode="numeric" dir="ltr" class="fin-money-input" data-fin-money-input="true" min="1" step="1" required></div>
-      <div class="field"><label for="finCommitEditAccount">حساب مرتبط</label><select id="finCommitEditAccount" required></select></div>
+      <div class="field hidden" id="finCommitEditAccountWrap"><label for="finCommitEditAccount">حساب مربوط به اثر مالی</label><select id="finCommitEditAccount"></select></div><div class="field" style="grid-column:1/-1"><label class="fin-check"><input id="finCommitEditCashImpact" type="checkbox"> اثر اولیه این بدهی/طلب در موجودی حساب ثبت شود</label><p class="muted" style="margin:5px 0 0">این گزینه را فقط وقتی فعال کن که واقعاً پول وارد حساب شده یا از حساب پرداخت شده باشد؛ معامله کالا یا انجام کار به‌تنهایی موجودی را تغییر نمی‌دهد.</p></div>
       <div class="field"><label for="finCommitEditCreated">تاریخ ثبت</label><input id="finCommitEditCreated" type="text" class="persian-date" placeholder="انتخاب تاریخ" inputmode="none" autocomplete="off"></div>
       <div class="field"><label for="finCommitEditDue">سررسید / اولین قسط</label><input id="finCommitEditDue" type="text" class="persian-date" placeholder="انتخاب تاریخ" inputmode="none" autocomplete="off"></div>
       <div class="field"><label for="finCommitEditTotal">مبلغ کل تعهد / بازپرداخت (تومان)</label><input id="finCommitEditTotal" type="text" inputmode="numeric" dir="ltr" class="fin-money-input" data-fin-money-input="true" min="1" step="1" required></div>
@@ -1063,6 +1066,35 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
         <button type="button" id="finCommitmentEditCancel" class="secondary">انصراف</button>
         <button type="submit">ذخیره همه تغییرات</button>
       </div>
+    </form>
+  </div>
+</div>
+
+<div id="finTxEditModal" class="modal-overlay hidden fin-edit-modal">
+  <div class="modal-content">
+    <div class="modal-header"><div><h3>ویرایش کامل تراکنش</h3><p id="finTxEditHint" class="muted" style="margin:4px 0 0;font-size:11px">همه اطلاعات تراکنش را اصلاح کن.</p></div><button type="button" id="finTxEditClose" class="ghost small">×</button></div>
+    <form id="finTxEditForm" class="formgrid2">
+      <input type="hidden" id="finTxEditId">
+      <div class="field"><label for="finTxEditDate">تاریخ</label><input id="finTxEditDate" type="text" class="persian-date" placeholder="انتخاب تاریخ" inputmode="none" autocomplete="off"></div>
+      <div class="field" id="finTxEditTypeWrap"><label for="finTxEditType">نوع تراکنش</label><select id="finTxEditType"><option>درآمد</option><option>هزینه</option><option>خرج اضافی</option><option>پس‌انداز</option><option>خرج نکرده (صرفه‌جویی)</option><option>پرداخت بدهی</option><option>پرداخت قسط</option><option>وصول طلب</option><option>دریافت وام</option><option>دریافت بدهی</option></select></div>
+      <div class="field" id="finTxEditCategoryWrap"><label for="finTxEditCategory">دسته‌بندی</label><select id="finTxEditCategory"></select></div>
+      <div class="field"><label for="finTxEditAccount">حساب</label><select id="finTxEditAccount" required></select></div>
+      <div class="field"><label for="finTxEditDescription">شرح</label><input id="finTxEditDescription" maxlength="180"></div>
+      <div class="field"><label for="finTxEditAmount">مبلغ (تومان)</label><input id="finTxEditAmount" type="text" inputmode="numeric" dir="ltr" class="fin-money-input" data-fin-money-input="true" required></div>
+      <div class="fin-edit-actions"><button type="button" id="finTxEditCancel" class="secondary">انصراف</button><button type="submit">ذخیره تغییرات</button></div>
+    </form>
+  </div>
+</div>
+
+<div id="finPaymentModal" class="modal-overlay hidden fin-edit-modal">
+  <div class="modal-content" style="max-width:560px">
+    <div class="modal-header"><div><h3 id="finPaymentTitle">ثبت پرداخت / وصول</h3><p class="muted" style="margin:4px 0 0;font-size:11px">حسابی را انتخاب کن که پول واقعاً از آن پرداخت یا به آن دریافت می‌شود.</p></div><button type="button" id="finPaymentClose" class="ghost small">×</button></div>
+    <form id="finPaymentForm" class="formgrid2">
+      <input type="hidden" id="finPayCommitmentId">
+      <div class="field"><label for="finPayAmount">مبلغ</label><input id="finPayAmount" type="text" inputmode="numeric" dir="ltr" class="fin-money-input" data-fin-money-input="true" required></div>
+      <div class="field"><label for="finPayAccount">حساب</label><select id="finPayAccount" required></select></div>
+      <div class="field"><label for="finPayDate">تاریخ عملیات</label><input id="finPayDate" type="text" class="persian-date" placeholder="انتخاب تاریخ" inputmode="none" autocomplete="off"></div>
+      <div class="fin-edit-actions"><button type="button" id="finPaymentCancel" class="secondary">انصراف</button><button type="submit">ثبت عملیات</button></div>
     </form>
   </div>
 </div>
@@ -2229,6 +2261,57 @@ function renderRoutines(){
       </div>
     </article>`;
   }).join('');
+}
+
+
+function finSvgLineChart(points,title,color='#78845b'){
+ const W=720,H=220,L=48,R=18,T=25,B=42,vals=points.map(p=>p.value),min=Math.min(0,...vals),max=Math.max(1,...vals),range=max-min||1;
+ const x=i=>L+(points.length<=1?(W-L-R)/2:i*(W-L-R)/(points.length-1)),y=v=>T+(H-T-B)-(v-min)/range*(H-T-B);
+ const grid=[0,1,2,3,4].map(i=>{const val=min+range*i/4,yy=y(val);return `<line x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}" stroke="#dddddd" stroke-dasharray="4 4"/><text x="${L-8}" y="${yy+4}" text-anchor="end" font-size="10" fill="#555">${fa(val)}</text>`;}).join('');
+ const poly=points.map((p,i)=>`${x(i)},${y(p.value)}`).join(' ');
+ return `<section class="report-chart"><h3>${safe(title)}</h3><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${safe(title)}">${grid}<polyline points="${poly}" fill="none" stroke="${color}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>${points.map((p,i)=>`<circle cx="${x(i)}" cy="${y(p.value)}" r="5" fill="${color}"/><text x="${x(i)}" y="${H-14}" text-anchor="middle" font-size="10" fill="#555">${safe(p.label)}</text>`).join('')}</svg></section>`;
+}
+function finMakeBarChart(rows,title){
+ const max=Math.max(1,...rows.map(r=>r.value));
+ return `<section class="report-chart"><h3>${safe(title)}</h3>${rows.map(r=>`<div class="report-bar-row"><div><span>${safe(r.label)}</span><strong>${finMoney(r.value)}</strong></div><div class="report-track"><span style="width:${Math.max(0,Math.min(100,r.value/max*100))}%"></span></div></div>`).join('')||'<p>داده‌ای برای این نمودار وجود ندارد.</p>'}</section>`;
+}
+function finExportPdfReport(){
+ const start=getPersianDateValue('finReportStartDate'),end=getPersianDateValue('finReportEndDate');
+ if(!start||!end||start>end){flash('تاریخ شروع و پایان را به‌درستی انتخاب کن.','error');return;}
+ const txs=[...data.finance].filter(t=>t.date>=start&&t.date<=end).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+ const sum=fn=>txs.reduce((s,t)=>s+(fn(t)?Number(t.amount)||0:0),0);
+ const income=sum(t=>['درآمد','دریافت وام','دریافت بدهی','وصول طلب'].includes(t.type));
+ const outflow=sum(t=>['هزینه','خرج اضافی','پرداخت بدهی','پرداخت قسط'].includes(t.type));
+ const waste=sum(t=>t.type==='خرج اضافی'),neutral=sum(t=>['پس‌انداز','خرج نکرده (صرفه‌جویی)'].includes(t.type));
+ const monthly={};txs.forEach(t=>{const k=finMonth(t.date);if(!monthly[k])monthly[k]={label:finMonthLabel(k),income:0,outflow:0,net:0};if(['درآمد','دریافت وام','دریافت بدهی','وصول طلب'].includes(t.type))monthly[k].income+=Number(t.amount)||0;if(['هزینه','خرج اضافی','پرداخت بدهی','پرداخت قسط'].includes(t.type))monthly[k].outflow+=Number(t.amount)||0;});
+ Object.values(monthly).forEach(m=>m.net=m.income-m.outflow);
+ const monthlyRows=Object.entries(monthly).sort((a,b)=>a[0].localeCompare(b[0])).map(([k,v])=>({label:v.label.slice(0,8),value:v.net}));
+ const categoryMap={};txs.filter(t=>['هزینه','خرج اضافی'].includes(t.type)).forEach(t=>{const c=finCategory(t.categoryId),name=c?.name||t.category||'سایر';categoryMap[name]=(categoryMap[name]||0)+(Number(t.amount)||0);});
+ const categoryRows=Object.entries(categoryMap).sort((a,b)=>b[1]-a[1]).slice(0,12).map(([label,value])=>({label,value}));
+ const transfers=data.financeTransfers.filter(t=>t.date>=start&&t.date<=end).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+ const transferTotal=transfers.reduce((s,t)=>s+(Number(t.amount)||0),0);
+ const currentDebt=data.financeCommitments.filter(c=>c.type!=='receivable'&&c.status!=='cancelled');
+ const currentReceivable=data.financeCommitments.filter(c=>c.type==='receivable'&&c.status!=='cancelled');
+ const debtTotal=currentDebt.reduce((s,c)=>s+(Number(c.remainingAmount)||0),0),receivableTotal=currentReceivable.reduce((s,c)=>s+(Number(c.remainingAmount)||0),0);
+ const accounts=data.financeAccounts.map(a=>{let balance=a.isPrimary?(Number(data.settings?.initialAssets)||0):(Number(a.openingBalance)||0);data.finance.filter(t=>t.date<=end&&String(t.accountId||finDefaultAccount()?.id)===String(a.id)).forEach(t=>balance+=finTxImpact(t));data.financeTransfers.filter(t=>t.date<=end).forEach(t=>{if(String(t.fromAccountId)===String(a.id))balance-=Number(t.amount)||0;if(String(t.toAccountId)===String(a.id))balance+=Number(t.amount)||0;});return {name:a.name,balance};});
+ const txRows=txs.map(t=>`<tr><td>${toFaDate(t.date)}</td><td>${safe(t.type)}</td><td>${safe(t.description||'—')}</td><td>${safe(finCategory(t.categoryId)?.name||t.category||'—')}</td><td>${safe(finAccount(t.accountId)?.name||'—')}</td><td class="number">${finMoney(t.amount)}</td></tr>`).join('');
+ const obligationRows=[...currentDebt.map(c=>({...c,label:c.type==='loan'?'وام':'بدهی'})),...currentReceivable.map(c=>({...c,label:'طلب'}))].map(c=>`<tr><td>${safe(c.label)}</td><td>${safe(c.title)}</td><td>${safe(c.person||'—')}</td><td>${finMoney(c.totalAmount)}</td><td>${finMoney(c.remainingAmount)}</td><td>${safe(c.status==='settled'?'تسویه‌شده':c.status==='cancelled'?'لغوشده':'در جریان')}</td></tr>`).join('');
+ const accountRows=accounts.map(a=>`<tr><td>${safe(a.name)}</td><td class="number">${finMoney(a.balance)}</td></tr>`).join('');
+ const transferRows=transfers.map(t=>`<tr><td>${toFaDate(t.date)}</td><td>${safe(finAccount(t.fromAccountId)?.name||'—')}</td><td>${safe(finAccount(t.toAccountId)?.name||'—')}</td><td>${safe(t.description||'انتقال داخلی')}</td><td class="number">${finMoney(t.amount)}</td></tr>`).join('');
+ const lineChart=finSvgLineChart(monthlyRows,'خالص جریان نقدی ماهانه در بازه انتخاب‌شده','#567d9a');
+ const obligationChart=finMakeBarChart([{label:'بدهی و وام باقی‌مانده',value:debtTotal},{label:'طلب وصول‌نشده',value:receivableTotal}],'مقایسه تعهدات باز در زمان تهیه گزارش');
+ const printHtml=`<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><title>گزارش مالی ${toFaDate(start)} تا ${toFaDate(end)}</title><style>
+ @page{size:A4;margin:14mm}*{box-sizing:border-box}body{font-family:Tahoma,Arial,sans-serif;color:#263126;background:#fff;line-height:1.8;font-size:11px;margin:0}h1{font-size:23px;margin:0 0 5px}h2{font-size:16px;border-bottom:2px solid #78845b;padding-bottom:6px;margin:24px 0 10px}h3{font-size:13px;margin:0 0 10px}.muted{color:#667064}.head{border-bottom:4px solid #78845b;padding-bottom:14px;margin-bottom:18px}.range{font-size:13px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:15px 0}.stat{border:1px solid #d8dfd3;border-radius:9px;padding:10px;background:#fafbf8}.stat span{display:block;color:#687364;font-size:10px}.stat strong{font-size:15px;display:block;margin-top:3px}.report-chart{border:1px solid #d8dfd3;border-radius:9px;padding:12px;margin:12px 0;break-inside:avoid}.report-chart svg{width:100%;height:auto}.report-bar-row{margin:8px 0}.report-bar-row>div:first-child{display:flex;justify-content:space-between;gap:12px}.report-track{height:9px;background:#edf0e9;border-radius:9px;overflow:hidden}.report-track span{display:block;height:100%;background:#78845b;border-radius:9px}.charts{display:grid;grid-template-columns:1fr 1fr;gap:10px}table{width:100%;border-collapse:collapse;margin:8px 0 16px;font-size:10px}th,td{border:1px solid #dfe4dc;padding:7px;text-align:right}th{background:#eef1ea}.number{white-space:nowrap;font-variant-numeric:tabular-nums}.empty{padding:15px;border:1px dashed #cbd3c5;border-radius:8px;color:#687364}.foot{margin-top:20px;padding-top:9px;border-top:1px solid #ddd;color:#667064;font-size:9px}@media print{.no-print{display:none}tr{break-inside:avoid}.report-chart{break-inside:avoid}}
+ </style></head><body><header class="head"><h1>گزارش جامع مالی</h1><div class="range">از ${toFaDate(start)} تا ${toFaDate(end)}</div><div class="muted">تاریخ تهیه گزارش: ${toFaDate(dateISO())} · واحد مبالغ: تومان</div></header>
+ <div class="stats"><div class="stat"><span>کل درآمد و دریافتی‌ها در بازه</span><strong>${finMoney(income)}</strong></div><div class="stat"><span>کل هزینه و پرداختی‌ها در بازه</span><strong>${finMoney(outflow)}</strong></div><div class="stat"><span>خالص جریان نقدی بازه</span><strong>${finMoney(income-outflow)}</strong></div><div class="stat"><span>خرج‌های اضافی در بازه</span><strong>${finMoney(waste)}</strong></div><div class="stat"><span>پس‌انداز / صرفه‌جویی آماری خنثی</span><strong>${finMoney(neutral)}</strong></div><div class="stat"><span>تعداد تراکنش‌ها</span><strong>${fa(txs.length)}</strong></div><div class="stat"><span>مجموع انتقال بین حساب‌ها</span><strong>${finMoney(transferTotal)}</strong></div><div class="stat"><span>مانده فعلی بدهی و وام</span><strong>${finMoney(debtTotal)}</strong></div><div class="stat"><span>مانده فعلی طلب‌ها</span><strong>${finMoney(receivableTotal)}</strong></div><div class="stat"><span>خالص دارایی حساب‌ها تا پایان بازه</span><strong>${finMoney(accounts.reduce((s,a)=>s+a.balance,0))}</strong></div></div>
+ <h2>نمودارها و تحلیل</h2><div class="charts">${lineChart}${finMakeBarChart(categoryRows,'هزینه‌ها به تفکیک دسته در بازه')}${obligationChart}</div>
+ <h2>موجودی حساب‌ها تا پایان بازه</h2>${accountRows?`<table><thead><tr><th>حساب</th><th>موجودی محاسبه‌شده</th></tr></thead><tbody>${accountRows}</tbody></table>`:'<div class="empty">حسابی ثبت نشده است.</div>'}
+ <h2>انتقال‌های بین حساب‌ها در بازه</h2>${transferRows?`<table><thead><tr><th>تاریخ</th><th>از حساب</th><th>به حساب</th><th>شرح</th><th>مبلغ</th></tr></thead><tbody>${transferRows}</tbody></table>`:'<div class="empty">در این بازه انتقالی ثبت نشده است.</div>'}
+ <h2>وضعیت بدهی‌ها، وام‌ها و طلب‌ها</h2><p class="muted">این جدول مانده فعلی موارد ثبت‌شده را در زمان تهیه گزارش نشان می‌دهد؛ پرداخت‌ها و وصول‌های انجام‌شده در بازه در جدول تراکنش‌ها آمده‌اند.</p>${obligationRows?`<table><thead><tr><th>نوع</th><th>عنوان</th><th>طرف حساب</th><th>مبلغ کل</th><th>مانده</th><th>وضعیت</th></tr></thead><tbody>${obligationRows}</tbody></table>`:'<div class="empty">موردی در فهرست بدهی و طلب وجود ندارد.</div>'}
+ <h2>فهرست کامل تراکنش‌های بازه</h2>${txRows?`<table><thead><tr><th>تاریخ</th><th>نوع</th><th>شرح</th><th>دسته</th><th>حساب</th><th>مبلغ</th></tr></thead><tbody>${txRows}</tbody></table>`:'<div class="empty">در بازه انتخاب‌شده تراکنشی ثبت نشده است.</div>'}
+ <div class="foot">گزارش تولیدشده از داده‌های مالی همین بولت ژورنال. پس‌انداز و صرفه‌جویی آماری اثر مستقیمی بر موجودی حساب ندارند. مانده حساب‌ها با تراکنش‌ها و انتقال‌های ثبت‌شده تا تاریخ پایان محاسبه شده است.</div><script>window.onload=()=>{setTimeout(()=>window.print(),450)};<\/script></body></html>`;
+ const w=window.open('','_blank');if(!w){flash('پنجره گزارش توسط مرورگر مسدود شد؛ اجازه بازشدن پنجره برای این سایت را فعال کن.','error');return;}
+ w.document.open();w.document.write(printHtml);w.document.close();
 }
 
 function renderFinance(){
@@ -3811,11 +3894,11 @@ function finRenderAccounts(){const el=$('finAccountsList');if(!el)return;el.inne
 function finRenderTransactions(){
  const el=$('financeList');if(!el)return;const type=$('finFilterType')?.value||'all',cat=$('finFilterCategory')?.value||'all',month=$('finFilterMonth')?.value||'all',q=($('finSearch')?.value||'').trim().toLowerCase();
  const txs=[...data.finance].filter(t=>(type==='all'||t.type===type)&&(cat==='all'||String(t.categoryId||'')===cat)&&(month==='all'||finMonth(t.date)===month)&&(!q||`${t.description||''} ${t.category||''} ${t.type||''}`.toLowerCase().includes(q))).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
- el.innerHTML=txs.map(t=>{const a=finAccount(t.accountId||finDefaultAccount()?.id),c=finCategory(t.categoryId);const positive=['درآمد','وصول طلب','دریافت وام'].includes(t.type);const neutral=['پس‌انداز','خرج نکرده (صرفه‌جویی)'].includes(t.type);return `<article class="item"><div class="item-main"><div class="item-title">${safe(c?.icon||'💳')} ${safe(t.description||t.category||t.type)}</div><div class="item-meta"><span>${toFaDate(t.date)}</span><span class="status ${positive?'done':neutral?'blue':'late'}">${safe(t.type)}</span><span>${safe(c?.name||t.category||'بدون دسته')}</span><span>${safe(a?.name||'حساب حذف‌شده')}</span><strong class="${positive?'money-pos':neutral?'':'money-neg'}">${finMoney(t.amount)}</strong></div></div><div class="item-actions"><button class="ghost small" data-fin-edit-tx="${t.id}">✏️</button><button class="danger small" data-fin-delete-tx="${t.id}">×</button></div></article>`;}).join('')||'<p class="muted">تراکنشی مطابق فیلترها پیدا نشد.</p>';
+ el.innerHTML=txs.map(t=>{const a=finAccount(t.accountId||finDefaultAccount()?.id),c=finCategory(t.categoryId);const positive=['درآمد','وصول طلب','دریافت وام','دریافت بدهی'].includes(t.type);const neutral=['پس‌انداز','خرج نکرده (صرفه‌جویی)'].includes(t.type);return `<article class="item"><div class="item-main"><div class="item-title">${safe(c?.icon||'💳')} ${safe(t.description||t.category||t.type)}</div><div class="item-meta"><span>${toFaDate(t.date)}</span><span class="status ${positive?'done':neutral?'blue':'late'}">${safe(t.type)}</span><span>${safe(c?.name||t.category||'بدون دسته')}</span><span>${safe(a?.name||'حساب حذف‌شده')}</span><strong class="${positive?'money-pos':neutral?'':'money-neg'}">${finMoney(t.amount)}</strong></div></div><div class="item-actions"><button class="ghost small" data-fin-edit-tx="${t.id}">✏️</button><button class="danger small" data-fin-delete-tx="${t.id}">×</button></div></article>`;}).join('')||'<p class="muted">تراکنشی مطابق فیلترها پیدا نشد.</p>';
  const months=[...new Set(data.finance.map(t=>finMonth(t.date)))].sort().reverse();const msel=$('finFilterMonth');if(msel){const old=msel.value;msel.innerHTML='<option value="all">همه ماه‌ها</option>'+months.map(m=>`<option value="${m}">${finMonthLabel(m)}</option>`).join('');msel.value=months.includes(old)?old:'all';}
  const csel=$('finFilterCategory');if(csel){const old=csel.value;csel.innerHTML='<option value="all">همه دسته‌ها</option>'+data.financeCategories.map(c=>`<option value="${c.id}">${safe(c.name)}</option>`).join('');csel.value=old||'all';}
 }
-function finRenderWaste(){const el=$('finWasteList');if(!el)return;const m=finMonth();const rows=[...data.finance].filter(t=>t.type==='خرج اضافی').sort((a,b)=>String(b.date).localeCompare(String(a.date)));const total=rows.filter(t=>finMonth(t.date)===m).reduce((s,t)=>s+(Number(t.amount)||0),0);$('finWasteTotal').textContent=finMoney(total);el.innerHTML=rows.map(t=>`<article class="item"><div class="item-main"><div class="item-title">🔥 ${safe(t.description||'خرج اضافی')}</div><div class="item-meta"><span>${toFaDate(t.date)}</span><span>${safe(finCategory(t.categoryId)?.name||t.category||'سایر')}</span><strong class="money-neg">${finMoney(t.amount)}</strong></div></div><button class="ghost small" data-fin-edit-tx="${t.id}">ویرایش</button></article>`).join('')||'<p class="muted">هنوز خرج اضافی ثبت نشده است.</p>';}
+function finRenderWaste(){const el=$('finWasteList');if(!el)return;const m=finMonth();const rows=[...data.finance].filter(t=>t.type==='خرج اضافی').sort((a,b)=>String(b.date).localeCompare(String(a.date)));const total=rows.filter(t=>finMonth(t.date)===m).reduce((s,t)=>s+(Number(t.amount)||0),0);$('finWasteTotal').textContent=finMoney(total);el.innerHTML=rows.map(t=>`<article class="item"><div class="item-main"><div class="item-title">🔥 ${safe(t.description||'خرج اضافی')}</div><div class="item-meta"><span>${toFaDate(t.date)}</span><span>${safe(finCategory(t.categoryId)?.name||t.category||'سایر')}</span><strong class="money-neg">${finMoney(t.amount)}</strong></div></div><div class="item-actions"><button class="ghost small" data-fin-edit-tx="${t.id}">ویرایش</button><button class="danger small" data-fin-delete-tx="${t.id}">حذف</button></div></article>`).join('')||'<p class="muted">هنوز خرج اضافی ثبت نشده است.</p>';}
 function finRenderBudgets(){const el=$('finBudgetsList');if(!el)return;const m=finMonth();const list=data.financeBudgets.filter(b=>b.month===m);el.innerHTML=list.map(b=>{const spent=data.finance.filter(t=>t.month===m&&(t.type==='هزینه'||t.type==='خرج اضافی')&&(String(t.categoryId)===String(b.categoryId)||String(finCategory(t.categoryId)?.parentId)===String(b.categoryId))).reduce((s,t)=>s+(Number(t.amount)||0),0);const pct=b.amount?Math.round(spent/b.amount*100):0;const c=finCategory(b.categoryId);return `<article class="fin-card"><div class="fin-card-head"><div><strong>${safe(c?.icon||'📊')} ${safe(c?.name||'دسته حذف‌شده')}</strong><div class="muted">مصرف‌شده ${finMoney(spent)} از ${finMoney(b.amount)}</div></div><strong class="${pct>=100?'money-neg':pct>=80?'fin-warning':'money-pos'}">${fa(pct)}٪</strong></div><div class="progress"><span style="width:${Math.min(100,pct)}%;background:${pct>=100?'var(--red)':pct>=80?'var(--gold)':'var(--accent)'}"></span></div><div class="fin-actions"><span class="muted">${pct>=100?'از سقف بودجه عبور کرده‌ای':pct>=80?'به ۸۰٪ بودجه رسیده‌ای':'بودجه در محدوده مجاز است'}</span><button class="danger small" data-fin-delete-budget="${b.id}">حذف</button></div></article>`;}).join('')||'<p class="muted">برای این ماه بودجه‌ای تعیین نشده است.</p>';}
 function finRenderCategories(){
  const el=$('finCategoriesList');if(!el)return;
@@ -3837,9 +3920,10 @@ function finRenderCommitments(){
  el.innerHTML=data.financeCommitments.map(c=>{
    const total=Number(c.totalAmount)||0,rem=Number(c.remainingAmount)||0,paid=Math.max(0,total-rem),pct=total?Math.max(0,Math.min(100,Math.round(paid/total*100))):0;
    const isRec=c.type==='receivable',typeLabel=isRec?'طلب':c.type==='loan'?'وام':'بدهی';
+   const hasCashEffect=!!(c.cashImpact||c.openingTransactionId||data.finance.some(t=>String(t.linkedCommitmentId)===String(c.id)&&t.commitmentOpening));
    const statusLabel=c.status==='settled'?'تسویه‌شده':c.status==='cancelled'?'لغوشده':rem<=0?'تسویه‌شده':'در جریان';
    return `<article class="fin-card">
-     <div class="fin-card-head"><div><strong>${typeLabel} · ${safe(c.title)}</strong><div class="muted">${safe(c.person||'طرف حساب مشخص نشده')} · ${safe(finAccount(c.accountId)?.name||'حساب نامشخص')}</div></div><strong class="${isRec?'money-pos':'money-neg'}">${finMoney(rem)} مانده</strong></div>
+     <div class="fin-card-head"><div><strong>${typeLabel} · ${safe(c.title)}</strong><div class="muted">${safe(c.person||'طرف حساب مشخص نشده')} · ${hasCashEffect?safe(finAccount(c.accountId)?.name||'حساب نامشخص'):'بدون اثر اولیه بر موجودی'}</div></div><strong class="${isRec?'money-pos':'money-neg'}">${finMoney(rem)} مانده</strong></div>
      <div class="fin-meta-grid"><span>مبلغ اصل: ${finMoney(c.principal)}</span><span>مبلغ کل: ${finMoney(total)}</span><span>تاریخ ثبت: ${c.createdAt?toFaDate(c.createdAt):'—'}</span><span>سررسید: ${c.dueDate?toFaDate(c.dueDate):'—'}</span>${c.type==='loan'?`<span>سود: ${fa(c.interestRate||0)}٪</span><span>کارمزد: ${finMoney(c.feeAmount||0)}</span><span>قسط: ${finMoney(c.installmentAmount||0)}</span><span>اقساط: ${fa(c.paidInstallments||0)} از ${fa(c.installments||0)}</span>`:''}${c.description?`<span style="grid-column:1/-1">توضیحات: ${safe(c.description)}</span>`:''}<span>وضعیت: ${statusLabel}</span></div>
      <div class="progress"><span style="width:${pct}%"></span></div>
      <div class="fin-actions"><span class="muted">${fa(pct)}٪ تسویه‌شده</span>${rem>0&&c.status!=='cancelled'?`<button class="small" data-fin-pay-commitment="${safe(c.id)}">${isRec?'ثبت وصول طلب':c.type==='loan'?'ثبت پرداخت قسط':'ثبت پرداخت بدهی'}</button>`:''}<button class="ghost small" data-fin-edit-commitment="${safe(c.id)}">ویرایش کامل</button><button class="danger small" data-fin-delete-commitment="${safe(c.id)}">حذف</button></div>
@@ -3847,10 +3931,29 @@ function finRenderCommitments(){
  }).join('')||'<p class="muted">هنوز بدهی یا طلبی ثبت نشده است.</p>';
 }
 function finRenderAnalytics(){
- const el=$('finAnalytics');if(!el)return;const m=finMonth();const cats={};data.finance.filter(t=>finMonth(t.date)===m&&(t.type==='هزینه'||t.type==='خرج اضافی')).forEach(t=>{const c=finCategory(t.categoryId);const name=c?.name||t.category||'سایر';cats[name]=(cats[name]||0)+(Number(t.amount)||0);});const rows=Object.entries(cats).sort((a,b)=>b[1]-a[1]);const total=rows.reduce((s,r)=>s+r[1],0);const colors=['#78845b','#b58e42','#76543a','#5b7a99','#b95042','#4b8a8a','#886b9b','#c47b3b'];let offset=0;const circumference=2*Math.PI*58;const rings=rows.map(([name,value],i)=>{const len=total?value/total*circumference:0;const circle=`<circle cx="85" cy="85" r="58" fill="none" stroke="${colors[i%colors.length]}" stroke-width="24" stroke-dasharray="${len} ${circumference-len}" stroke-dashoffset="${-offset}" transform="rotate(-90 85 85)"/>`;offset+=len;return circle;}).join('');
- const monthKeys=[...new Set(data.finance.map(t=>finMonth(t.date)))].sort().slice(-6);let running=0;const trend=monthKeys.map(k=>{const inc=finSum(t=>finMonth(t.date)===k&&t.type==='درآمد');const exp=finSum(t=>finMonth(t.date)===k&&['هزینه','خرج اضافی','پرداخت بدهی','پرداخت قسط'].includes(t.type));running+=inc-exp;return {key:k,label:finMonthLabel(k),balance:running,inc,exp};});const vals=trend.map(t=>t.balance);const min=Math.min(0,...vals),max=Math.max(1,...vals),range=max-min||1;const pts=trend.map((t,i)=>`${trend.length===1?150:35+i*(230/(trend.length-1))},${165-((t.balance-min)/range)*125}`).join(' ');const xLabels=trend.map((t,i)=>`<text x="${trend.length===1?150:35+i*(230/(trend.length-1))}" y="190" text-anchor="middle" font-size="9" fill="currentColor">${safe(t.label.slice(0,7))}</text>`).join('');
- el.innerHTML=`<div class="fin-card"><h3>سهم دسته‌های هزینه — ${finMonthLabel(m)}</h3><div class="fin-chart-layout"><svg viewBox="0 0 170 170" role="img" aria-label="نمودار دایره‌ای هزینه‌ها">${rings||'<circle cx="85" cy="85" r="58" fill="none" stroke="var(--line)" stroke-width="24"/>'}<text x="85" y="82" text-anchor="middle" font-size="11" fill="currentColor">جمع هزینه</text><text x="85" y="99" text-anchor="middle" font-size="10" font-weight="bold" fill="currentColor">${fa(total)}</text></svg><div class="legend">${rows.map(([n,v],i)=>`<div><span class="dot" style="background:${colors[i%colors.length]}"></span><span>${safe(n)} — ${finMoney(v)}</span></div>`).join('')||'<p class="muted">هزینه‌ای ثبت نشده است.</p>'}</div></div></div><div class="fin-card"><h3>روند موجودی تجمعی (۶ ماه اخیر)</h3><svg viewBox="0 0 300 205" class="svg-chart" role="img" aria-label="نمودار خطی روند موجودی"><line x1="25" y1="165" x2="275" y2="165" stroke="var(--line)"/><line x1="25" y1="35" x2="25" y2="165" stroke="var(--line)"/><polyline points="${pts}" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${trend.map((t,i)=>`<circle cx="${trend.length===1?150:35+i*(230/(trend.length-1))}" cy="${165-((t.balance-min)/range)*125}" r="4" fill="var(--gold)"/>`).join('')}${xLabels}</svg><p class="muted">روند بر اساس درآمد منهای هزینه‌ها و پرداخت بدهی/قسط محاسبه شده است.</p></div><div class="fin-card"><h3>ریز هزینه‌ها</h3><div class="fin-bars">${rows.map(([n,v],i)=>`<div><div class="fin-bar-label"><span>${safe(n)}</span><strong>${finMoney(v)}</strong></div><div class="progress"><span style="width:${total?v/total*100:0}%;background:${colors[i%colors.length]}"></span></div></div>`).join('')||'<p class="muted">هنوز هزینه‌ای ثبت نشده است.</p>'}</div></div><div class="fin-card"><h3>مقایسه ماهانه</h3>${trend.map(t=>`<div class="fin-trend-row"><strong>${safe(t.label)}</strong><span class="money-pos">+ ${finMoney(t.inc)}</span><span class="money-neg">− ${finMoney(t.exp)}</span><span>خالص تجمعی: ${finMoney(t.balance)}</span></div>`).join('')||'<p class="muted">برای نمایش روند، تراکنش ثبت کن.</p>'}</div>`;
+ const el=$('finAnalytics');if(!el)return;const m=finMonth();
+ const colors=['#78845b','#b58e42','#76543a','#5b7a99','#b95042','#4b8a8a','#886b9b','#c47b3b','#6b8e23','#8a6d9f'];
+ const categoryTotals={};data.finance.filter(t=>finMonth(t.date)===m&&['هزینه','خرج اضافی'].includes(t.type)).forEach(t=>{const c=finCategory(t.categoryId),name=c?.name||t.category||'سایر';categoryTotals[name]=(categoryTotals[name]||0)+(Number(t.amount)||0);});
+ const rows=Object.entries(categoryTotals).sort((a,b)=>b[1]-a[1]);const total=rows.reduce((sum,row)=>sum+row[1],0);let offset=0;const circumference=2*Math.PI*58;
+ const rings=rows.map(([name,value],i)=>{const len=total?value/total*circumference:0;const circle=`<circle cx="85" cy="85" r="58" fill="none" stroke="${colors[i%colors.length]}" stroke-width="24" stroke-dasharray="${len} ${circumference-len}" stroke-dashoffset="${-offset}" transform="rotate(-90 85 85)"/>`;offset+=len;return circle;}).join('');
+ const monthKeys=[...new Set(data.finance.map(t=>finMonth(t.date)))].sort().slice(-6);let running=0;
+ const trend=monthKeys.map(k=>{const inc=finSum(t=>finMonth(t.date)===k&&['درآمد','دریافت وام','دریافت بدهی','وصول طلب'].includes(t.type));const exp=finSum(t=>finMonth(t.date)===k&&['هزینه','خرج اضافی','پرداخت بدهی','پرداخت قسط'].includes(t.type));running+=inc-exp;return {key:k,label:finMonthLabel(k),balance:running,inc,exp,net:inc-exp};});
+ const maxFlow=Math.max(1,...trend.flatMap(t=>[t.inc,t.exp]));
+ const barSvg=`<svg viewBox="0 0 360 220" class="svg-chart" role="img" aria-label="مقایسه درآمد و خروجی ماهانه">${[0,1,2,3].map(i=>`<line x1="38" y1="${20+i*47}" x2="345" y2="${20+i*47}" stroke="var(--line)" stroke-dasharray="3 4"/>`).join('')}${trend.map((t,i)=>{const x=51+i*(trend.length>1?286/(trend.length-1):0),h1=t.inc/maxFlow*140,h2=t.exp/maxFlow*140;return `<rect x="${x-13}" y="${165-h1}" width="11" height="${h1}" rx="3" fill="#4a9b72"><title>درآمد ${safe(t.label)}: ${finMoney(t.inc)}</title></rect><rect x="${x+1}" y="${165-h2}" width="11" height="${h2}" rx="3" fill="#bd6257"><title>هزینه ${safe(t.label)}: ${finMoney(t.exp)}</title></rect><text x="${x}" y="187" text-anchor="middle" font-size="9" fill="currentColor">${safe(t.label.slice(0,7))}</text>`;}).join('')}</svg>`;
+ const catsBars=rows.slice(0,8).map(([name,value],i)=>`<div><div class="fin-bar-label"><span>${safe(name)}</span><strong>${finMoney(value)}</strong></div><div class="progress"><span style="width:${total?value/total*100:0}%;background:${colors[i%colors.length]}"></span></div></div>`).join('');
+ const balanceRows=data.financeAccounts.map(a=>({name:a.name,balance:finAccountBalance(a.id)}));const totalCash=balanceRows.reduce((s,a)=>s+a.balance,0);const accountBars=balanceRows.map((a,i)=>`<div><div class="fin-bar-label"><span>${safe(a.name)}</span><strong>${finMoney(a.balance)}</strong></div><div class="progress"><span style="width:${totalCash?Math.max(0,a.balance/Math.max(1,totalCash))*100:0}%;background:${colors[i%colors.length]}"></span></div></div>`).join('');
+ const debt=data.financeCommitments.filter(c=>c.type!=='receivable'&&c.status!=='cancelled').reduce((s,c)=>s+(Number(c.remainingAmount)||0),0);
+ const rec=data.financeCommitments.filter(c=>c.type==='receivable'&&c.status!=='cancelled').reduce((s,c)=>s+(Number(c.remainingAmount)||0),0);
+ const liabilityBar=`<div class="fin-bar-label"><span>بدهی و وام باقی‌مانده</span><strong>${finMoney(debt)}</strong></div><div class="progress"><span style="width:${Math.max(debt,rec)?debt/Math.max(debt,rec)*100:0}%;background:#bd6257"></span></div><div class="fin-bar-label" style="margin-top:12px"><span>طلب وصول‌نشده</span><strong>${finMoney(rec)}</strong></div><div class="progress"><span style="width:${Math.max(debt,rec)?rec/Math.max(debt,rec)*100:0}%;background:#4a9b72"></span></div>`;
+ const trendLines=trend.map(t=>`<div class="fin-trend-row"><strong>${safe(t.label)}</strong><span class="money-pos">+ ${finMoney(t.inc)}</span><span class="money-neg">− ${finMoney(t.exp)}</span><span>خالص: ${finMoney(t.net)}</span></div>`).join('');
+ el.innerHTML=`<div class="fin-card"><h3>سهم دسته‌های هزینه — ${finMonthLabel(m)}</h3><div class="fin-chart-layout"><svg viewBox="0 0 170 170" role="img" aria-label="نمودار دایره‌ای هزینه‌ها">${rings||'<circle cx="85" cy="85" r="58" fill="none" stroke="var(--line)" stroke-width="24"/>'}<text x="85" y="82" text-anchor="middle" font-size="11" fill="currentColor">جمع هزینه</text><text x="85" y="99" text-anchor="middle" font-size="10" font-weight="bold" fill="currentColor">${fa(total)}</text></svg><div class="legend">${rows.map(([n,v],i)=>`<div><span class="dot" style="background:${colors[i%colors.length]}"></span><span>${safe(n)} — ${finMoney(v)}</span></div>`).join('')||'<p class="muted">هزینه‌ای ثبت نشده است.</p>'}</div></div></div>
+ <div class="fin-card"><h3>مقایسه درآمد و خروجی — ۶ ماه اخیر</h3><div class="fin-chart-layout" style="display:block">${barSvg}<div class="legend"><div><span class="dot" style="background:#4a9b72"></span>درآمد و دریافتی</div><div><span class="dot" style="background:#bd6257"></span>هزینه و پرداختی</div></div></div></div>
+ <div class="fin-card"><h3>ریز هزینه‌ها در ماه جاری</h3><div class="fin-bars">${catsBars||'<p class="muted">هنوز هزینه‌ای ثبت نشده است.</p>'}</div></div>
+ <div class="fin-card"><h3>موجودی به تفکیک حساب</h3><div class="fin-bars">${accountBars||'<p class="muted">حسابی ثبت نشده است.</p>'}</div></div>
+ <div class="fin-card"><h3>مقایسه بدهی و طلب باز</h3>${liabilityBar}<p class="muted">این نمودار مانده فعلی تعهدات ثبت‌شده را نشان می‌دهد؛ مستقل از بازه نمودارهای تراکنش.</p></div>
+ <div class="fin-card"><h3>مقایسه ماهانه جریان نقدی</h3>${trendLines||'<p class="muted">برای نمایش روند، تراکنش ثبت کن.</p>'}</div>`;
 }
+
 function renderFinance(){
  ensureFinanceData();finRefreshSelects();finRenderSummary();finRenderAccounts();finRenderTransactions();finRenderWaste();finRenderBudgets();finRenderCategories();finRenderCommitments();finRenderAnalytics();
  finShowCommitFields();
@@ -3860,21 +3963,112 @@ function renderFinance(){
 function finAddTransaction({date,type,categoryId,description,amount,accountId,linkedCommitmentId=null}){
  const c=finCategory(categoryId);const tx={id:nid(),date,month:finMonth(date),type,categoryId:categoryId||'',category:c?.name||'سایر',description:description||'',amount:Number(amount)||0,accountId:accountId||finDefaultAccount()?.id,linkedCommitmentId};data.finance.unshift(tx);return tx;
 }
-function finEditTransaction(id){const t=data.finance.find(x=>String(x.id)===String(id));if(!t)return;const desc=prompt('شرح تراکنش:',t.description||'');if(desc===null)return;const amount=prompt('مبلغ:',finFormatMoneyValue(t.amount));if(amount===null)return;const parsedAmount=finParseMoney(amount);if(!Number.isFinite(parsedAmount)||parsedAmount<=0){flash('مبلغ معتبر نیست','error');return;}t.description=desc.trim();t.amount=parsedAmount;saveData();renderFinance();renderDashboard();}
-function finCreateCommitment(){
- const type=$('commitType').value,title=$('commitTitle').value.trim(),person=$('commitPerson').value.trim(),principal=finParseMoney($('commitPrincipal').value),rate=Number($('commitRate').value)||0,fee=finParseMoney($('commitFee').value),installments=Number($('commitInstallments').value)||0,accountId=$('commitAccount').value,dueDate=getPersianDateValue('commitDue');
- if(!title||principal<=0||!accountId){flash('عنوان، مبلغ و حساب الزامی است','error');return;}
- const interest=type==='loan'?principal*rate/100:0,total=principal+interest+fee,installment=installments>0?total/installments:0;
- const c={id:nid(),type,title,person,principal,interestRate:rate,feeAmount:fee,totalAmount:total,remainingAmount:total,installmentAmount:installment,installments,paidInstallments:0,accountId,dueDate,status:'active',createdAt:dateISO(),description:$('commitDescription').value.trim()};
- data.financeCommitments.unshift(c);
- let openingTx=null;
- if((type==='loan'||type==='debt')&&$('commitDeposit').checked){openingTx=finAddTransaction({date:dateISO(),type:type==='loan'?'دریافت وام':'دریافت بدهی',categoryId:'',description:`${type==='loan'?'دریافت وام':'دریافت بدهی'}: ${title}`,amount:principal,accountId,linkedCommitmentId:c.id});}
- else if(type==='receivable'&&$('commitOutflow').checked){openingTx=finAddTransaction({date:dateISO(),type:'هزینه',categoryId:'',description:`پرداخت طلب: ${title}`,amount:principal,accountId,linkedCommitmentId:c.id});}
- if(openingTx){openingTx.commitmentOpening=true;c.openingTransactionId=openingTx.id;}
- saveData();renderFinance();renderDashboard();$('commitmentForm').reset();setPersianDateValue('commitDue',dateISO());finShowCommitFields();flash('مورد بدهی/طلب ثبت شد');
+let finTxEditorLinkedMode='';
+function finEditTransaction(id){
+ const t=data.finance.find(x=>String(x.id)===String(id));if(!t)return;
+ const linked=!!t.linkedCommitmentId,linkedCommit=linked?data.financeCommitments.find(x=>String(x.id)===String(t.linkedCommitmentId)):null,mode=linked?((t.commitmentOpening||(linkedCommit&&finFindCommitmentOpeningTransaction(linkedCommit)?.id===t.id))?'opening':'payment'):'';
+ $('finTxEditId').value=t.id;setPersianDateValue('finTxEditDate',t.date||dateISO());
+ $('finTxEditType').value=t.type||'هزینه';const txIsIncome=['درآمد','وصول طلب','دریافت وام','دریافت بدهی'].includes(t.type),txHasCategory=txIsIncome||['هزینه','خرج اضافی','پرداخت بدهی','پرداخت قسط'].includes(t.type);$('finTxEditCategory').innerHTML=finCategoryOptions(txIsIncome?'income':'expense',t.categoryId||'');$('finTxEditCategoryWrap').classList.toggle('hidden',!txHasCategory);
+ $('finTxEditAccount').innerHTML=data.financeAccounts.map(a=>`<option value="${safe(a.id)}">${safe(a.name)}</option>`).join('');$('finTxEditAccount').value=String(t.accountId||finDefaultAccount()?.id||'');
+ $('finTxEditDescription').value=t.description||'';$('finTxEditAmount').value=finFormatMoneyValue(t.amount);
+ finTxEditorLinkedMode=mode;
+ $('finTxEditType').disabled=linked;$('finTxEditTypeWrap').classList.toggle('hidden',linked);$('finTxEditCategoryWrap').classList.toggle('hidden',linked);
+ $('finTxEditHint').textContent=mode==='opening'?'این تراکنش، اثر اولیه یک بدهی/طلب است؛ تغییر مبلغ، حساب یا تاریخ، مشخصات همان بدهی/طلب را نیز هماهنگ می‌کند.':mode==='payment'?'این تراکنش، پرداخت یا وصول مرتبط است؛ ویرایش یا حذف آن، مانده بدهی/طلب و اقساط را نیز اصلاح می‌کند.':'تغییرات مستقیماً روی تراکنش و موجودی حساب اثر می‌گذارد.';
+ $('finTxEditModal').classList.remove('hidden');initDatepickers();finFormatAllMoneyInputs();
 }
-function finPayCommitment(id){const c=data.financeCommitments.find(x=>String(x.id)===String(id));if(!c)return;const amountText=prompt(c.type==='receivable'?'مبلغ وصول‌شده:':'مبلغ پرداختی:',finFormatMoneyValue(c.installmentAmount||c.remainingAmount));if(amountText===null)return;const amount=finParseMoney(amountText);if(!Number.isFinite(amount)||amount<=0||amount>c.remainingAmount){flash('مبلغ واردشده معتبر نیست','error');return;}const accountId=c.accountId;finAddTransaction({date:dateISO(),type:c.type==='receivable'?'وصول طلب':c.type==='loan'?'پرداخت قسط':'پرداخت بدهی',categoryId:'',description:`${c.type==='receivable'?'وصول طلب':c.type==='loan'?'پرداخت قسط وام':'پرداخت بدهی'}: ${c.title}`,amount,accountId,linkedCommitmentId:c.id});c.remainingAmount=Math.max(0,c.remainingAmount-amount);if(c.type==='loan'&&c.installmentAmount>0)c.paidInstallments=Math.min(c.installments||999,(c.paidInstallments||0)+Math.floor((amount+0.001)/c.installmentAmount));if(c.remainingAmount===0)c.status='settled';saveData();renderFinance();renderDashboard();flash('پرداخت/وصول ثبت شد');}
-function finShowCommitFields(){const loan=$('commitType')?.value==='loan';$('commitLoanFields')?.classList.toggle('hidden',!loan);$('commitDepositWrap')?.classList.toggle('hidden',$('commitType')?.value==='receivable');$('commitOutflowWrap')?.classList.toggle('hidden',$('commitType')?.value!=='receivable');}
+function finCloseTransactionEditor(){$('finTxEditModal')?.classList.add('hidden');finTxEditorLinkedMode='';$('finTxEditType').disabled=false;}
+function finSaveTransactionEdit(e){
+ e.preventDefault();const t=data.finance.find(x=>String(x.id)===String($('finTxEditId').value));if(!t)return;
+ const amount=finParseMoney($('finTxEditAmount').value),date=getPersianDateValue('finTxEditDate'),accountId=$('finTxEditAccount').value,description=$('finTxEditDescription').value.trim();
+ if(!date||amount<=0||!accountId){flash('تاریخ، حساب و مبلغ معتبر الزامی است.','error');return;}
+ const oldAmount=Number(t.amount)||0;
+ if(finTxEditorLinkedMode==='opening'){
+   const c=data.financeCommitments.find(x=>String(x.id)===String(t.linkedCommitmentId));
+   if(c){
+     const paidBefore=Math.max(0,(Number(c.totalAmount)||0)-(Number(c.remainingAmount)||0));
+     c.principal=amount;c.accountId=accountId;c.createdAt=date;c.cashImpact=true;
+     if(c.type==='loan'){
+       c.totalAmount=Math.max(1,Math.round(amount+(amount*(Number(c.interestRate)||0)/100)+(Number(c.feeAmount)||0)));
+       if(c.installments>0)c.installmentAmount=Math.round(c.totalAmount/c.installments);
+     }else c.totalAmount=amount;
+     c.remainingAmount=Math.max(0,c.totalAmount-paidBefore);
+     c.status=c.remainingAmount===0?'settled':'active';
+     c.updatedAt=dateISO();
+   }
+   t.amount=amount;t.date=date;t.month=finMonth(date);t.accountId=accountId;t.description=description;t.type=t.type;
+ }else if(finTxEditorLinkedMode==='payment'){
+   const c=data.financeCommitments.find(x=>String(x.id)===String(t.linkedCommitmentId));
+   if(c){
+     const maxAllowed=(Number(c.remainingAmount)||0)+oldAmount;
+     if(amount>maxAllowed){flash(`مبلغ عملیات نمی‌تواند از ${finMoney(maxAllowed)} بیشتر باشد.`,`error`);return;}
+     c.remainingAmount=Math.max(0,maxAllowed-amount);
+     if(c.type==='loan'&&c.installmentAmount>0)c.paidInstallments=Math.max(0,Math.min(c.installments||999,Math.floor(((Number(c.totalAmount)||0)-c.remainingAmount+0.001)/c.installmentAmount)));
+     t.installmentsCredited=Number(c.paidInstallments)||0;c.status=c.remainingAmount===0?'settled':'active';c.updatedAt=dateISO();
+   }
+   t.amount=amount;t.date=date;t.month=finMonth(date);t.accountId=accountId;t.description=description;
+ }else{
+   const type=$('finTxEditType').value,categoryId=$('finTxEditCategory').value,cat=finCategory(categoryId);
+   t.type=type;t.categoryId=categoryId;t.category=cat?.name||'سایر';t.amount=amount;t.date=date;t.month=finMonth(date);t.accountId=accountId;t.description=description;
+ }
+ saveData();finCloseTransactionEditor();renderFinance();renderMonthlyFinance();renderExpenseDonut();renderDashboard();flash('تراکنش و اثر مالی مرتبط با آن به‌روزرسانی شد.');
+}
+function finDeleteTransactionAndReverse(id){
+ const t=data.finance.find(x=>String(x.id)===String(id));if(!t)return;
+ if(t.linkedCommitmentId){
+   const c=data.financeCommitments.find(x=>String(x.id)===String(t.linkedCommitmentId));
+   if(c&&(t.commitmentOpening||finFindCommitmentOpeningTransaction(c)?.id===t.id)){c.cashImpact=false;c.openingTransactionId=null;c.accountId=null;}
+   else if(c){
+     const amount=Number(t.amount)||0;c.remainingAmount=Math.min(Number(c.totalAmount)||0,(Number(c.remainingAmount)||0)+amount);
+     if(c.type==='loan'&&c.installmentAmount>0)c.paidInstallments=Math.max(0,Math.min(c.installments||999,Math.floor(((Number(c.totalAmount)||0)-c.remainingAmount+0.001)/c.installmentAmount)));
+     c.status=c.remainingAmount===0?'settled':'active';c.updatedAt=dateISO();
+   }
+ }
+ data.finance=data.finance.filter(x=>String(x.id)!==String(id));
+}
+function finCreateCommitment(){
+ const type=$('commitType').value,title=$('commitTitle').value.trim(),person=$('commitPerson').value.trim(),principal=finParseMoney($('commitPrincipal').value),rate=Number($('commitRate').value)||0,fee=finParseMoney($('commitFee').value),installments=Number($('commitInstallments').value)||0;
+ const wantsCash=type==='receivable'?$('commitOutflow').checked:$('commitDeposit').checked;
+ const accountId=wantsCash?$('commitAccount').value:'';
+ const dueDate=getPersianDateValue('commitDue');
+ if(!title||principal<=0||(wantsCash&&!accountId)){flash('عنوان، مبلغ و در صورت فعال‌بودن اثر مالی، حساب را مشخص کن.','error');return;}
+ const applicableFee=type==='loan'?fee:0,interest=type==='loan'?principal*rate/100:0,total=principal+interest+applicableFee,installment=installments>0?total/installments:0;
+ const c={id:nid(),type,title,person,principal,interestRate:rate,feeAmount:applicableFee,totalAmount:total,remainingAmount:total,installmentAmount:installment,installments,paidInstallments:0,accountId:accountId||null,cashImpact:!!wantsCash,dueDate,status:'active',createdAt:dateISO(),description:$('commitDescription').value.trim()};
+ data.financeCommitments.unshift(c);
+ if(wantsCash){
+   const tx=finAddTransaction({date:c.createdAt,type:type==='loan'?'دریافت وام':type==='debt'?'دریافت بدهی':'هزینه',categoryId:'',description:type==='receivable'?`پرداخت طلب: ${title}`:`${type==='loan'?'دریافت وام':'دریافت بدهی'}: ${title}`,amount:principal,accountId,linkedCommitmentId:c.id});
+   tx.commitmentOpening=true;c.openingTransactionId=tx.id;
+ }
+ saveData();renderFinance();renderDashboard();$('commitmentForm').reset();setPersianDateValue('commitDue',dateISO());finShowCommitFields();finRefreshSelects();flash('مورد بدهی/طلب ثبت شد؛ اثر روی موجودی فقط طبق تیک انتخابی اعمال شد.');
+}
+function finOpenPaymentModal(id){
+ const c=data.financeCommitments.find(x=>String(x.id)===String(id));if(!c)return;
+ $('finPayCommitmentId').value=c.id;$('finPaymentTitle').textContent=c.type==='receivable'?'ثبت وصول طلب':c.type==='loan'?'ثبت پرداخت قسط وام':'ثبت پرداخت بدهی';
+ $('finPayAmount').value=finFormatMoneyValue(c.installmentAmount||c.remainingAmount);
+ $('finPayAccount').innerHTML=finAccountOptions(c.accountId||finDefaultAccount()?.id);
+ setPersianDateValue('finPayDate',dateISO());$('finPaymentModal').classList.remove('hidden');finFormatAllMoneyInputs();initDatepickers();
+}
+function finClosePaymentModal(){$('finPaymentModal')?.classList.add('hidden');}
+function finPayCommitmentSubmit(e){
+ e.preventDefault();const c=data.financeCommitments.find(x=>String(x.id)===String($('finPayCommitmentId').value));if(!c)return;
+ const amount=finParseMoney($('finPayAmount').value),accountId=$('finPayAccount').value,date=getPersianDateValue('finPayDate')||dateISO();
+ if(!Number.isFinite(amount)||amount<=0||amount>Number(c.remainingAmount)||!accountId){flash('مبلغ، حساب یا مانده قابل پرداخت معتبر نیست.','error');return;}
+ const type=c.type==='receivable'?'وصول طلب':c.type==='loan'?'پرداخت قسط':'پرداخت بدهی';
+ const tx=finAddTransaction({date,type,categoryId:'',description:`${c.type==='receivable'?'وصول طلب':c.type==='loan'?'پرداخت قسط وام':'پرداخت بدهی'}: ${c.title}`,amount,accountId,linkedCommitmentId:c.id});
+ c.remainingAmount=Math.max(0,Number(c.remainingAmount)-amount);
+ if(c.type==='loan'&&c.installmentAmount>0)c.paidInstallments=Math.min(c.installments||999,Math.floor(((Number(c.totalAmount)||0)-c.remainingAmount+0.001)/c.installmentAmount));
+ tx.installmentsCredited=c.type==='loan'?Math.max(0,(Number(c.paidInstallments)||0)):0;
+ if(c.remainingAmount===0)c.status='settled';else if(c.status==='settled')c.status='active';
+ saveData();finClosePaymentModal();renderFinance();renderDashboard();flash('پرداخت / وصول ثبت شد و به تراکنش مرتبط شد.');
+}
+function finShowCommitFields(){
+ const type=$('commitType')?.value||'debt',loan=type==='loan',isRec=type==='receivable';
+ $('commitLoanFields')?.classList.toggle('hidden',!loan);
+ $('commitDepositWrap')?.classList.toggle('hidden',isRec);
+ $('commitOutflowWrap')?.classList.toggle('hidden',!isRec);
+ const wantsCash=isRec?!!$('commitOutflow')?.checked:!!$('commitDeposit')?.checked;
+ $('commitAccountWrap')?.classList.toggle('hidden',!wantsCash);
+ if($('commitAccount'))$('commitAccount').required=wantsCash;
+}
 
 function finShowCommitEditFields(){
  const loan=$('finCommitEditType')?.value==='loan';
@@ -3890,7 +4084,11 @@ function finOpenCommitmentEditor(id){
  $v('finCommitEditRemaining',Number(c.remainingAmount)||0);$v('finCommitEditStatus',c.status||((Number(c.remainingAmount)||0)<=0?'settled':'active'));
  $v('finCommitEditDescription',c.description||'');
  const account=$('finCommitEditAccount');
- if(account){account.innerHTML=data.financeAccounts.map(a=>`<option value="${safe(a.id)}">${safe(a.name)}${a.active===false?' (غیرفعال)':''}</option>`).join('');account.value=String(c.accountId||'');}
+ if(account){account.innerHTML=data.financeAccounts.map(a=>`<option value="${safe(a.id)}">${safe(a.name)}${a.active===false?' (غیرفعال)':''}</option>`).join('');account.value=String(c.accountId||finDefaultAccount()?.id||'');}
+ const oldOpening=finFindCommitmentOpeningTransaction(c);
+ $('finCommitEditCashImpact').checked=!!(c.cashImpact===true||oldOpening);
+ $('finCommitEditAccountWrap').classList.toggle('hidden',!$('finCommitEditCashImpact').checked);
+ if(account)account.required=$('finCommitEditCashImpact').checked;
  $('finCommitmentEditTitle').textContent=`ویرایش ${c.type==='loan'?'وام':c.type==='receivable'?'طلب':'بدهی'}`;
  $('finCommitmentEditModal').classList.remove('hidden');
  initDatepickers();
@@ -3915,47 +4113,53 @@ function finFindCommitmentOpeningTransaction(c){
  if(tx){tx.commitmentOpening=true;c.openingTransactionId=tx.id;}
  return tx||null;
 }
-function finSyncCommitmentOpeningTransaction(c){
+function finSyncCommitmentOpeningTransaction(c,wantImpact){
  const tx=finFindCommitmentOpeningTransaction(c);
- if(tx){
-   tx.type=c.type==='loan'?'دریافت وام':c.type==='debt'?'دریافت بدهی':'هزینه';
-   tx.amount=Number(c.principal)||0;tx.accountId=c.accountId;
-   tx.description=c.type==='loan'?`دریافت وام: ${c.title}`:c.type==='debt'?`دریافت بدهی: ${c.title}`:`پرداخت طلب: ${c.title}`;
-   if(c.createdAt){tx.date=c.createdAt;tx.month=finMonth(c.createdAt);}
-   tx.linkedCommitmentId=c.id;tx.commitmentOpening=true;
+ if(!wantImpact){
+   if(tx)data.finance=data.finance.filter(t=>String(t.id)!==String(tx.id));
+   c.openingTransactionId=null;c.cashImpact=false;c.accountId=null;return;
  }
- // Re-label linked payments if the user changes the obligation type.
- data.finance.filter(t=>String(t.linkedCommitmentId)===String(c.id)&&!t.commitmentOpening&&String(t.id)!==String(c.openingTransactionId||'' )).forEach(t=>{
-   if(['پرداخت قسط','پرداخت بدهی','وصول طلب'].includes(t.type))t.type=c.type==='receivable'?'وصول طلب':c.type==='loan'?'پرداخت قسط':'پرداخت بدهی';
- });
+ if(!c.accountId)c.accountId=finDefaultAccount()?.id||null;
+ if(!c.accountId){flash('برای ثبت اثر مالی باید یک حساب انتخاب شود.','error');return;}
+ const txType=c.type==='loan'?'دریافت وام':c.type==='debt'?'دریافت بدهی':'هزینه';
+ const description=c.type==='loan'?`دریافت وام: ${c.title}`:c.type==='debt'?`دریافت بدهی: ${c.title}`:`پرداخت طلب: ${c.title}`;
+ let opening=tx;
+ if(!opening){opening=finAddTransaction({date:c.createdAt||dateISO(),type:txType,categoryId:'',description,amount:c.principal,accountId:c.accountId,linkedCommitmentId:c.id});}
+ Object.assign(opening,{type:txType,amount:Number(c.principal)||0,accountId:c.accountId,description,date:c.createdAt||opening.date,month:finMonth(c.createdAt||opening.date),linkedCommitmentId:c.id,commitmentOpening:true});
+ c.openingTransactionId=opening.id;c.cashImpact=true;
 }
 function finSaveCommitmentEdit(e){
  e.preventDefault();
  const c=data.financeCommitments.find(x=>String(x.id)===String($('finCommitmentEditId').value));if(!c)return;
- const title=$('finCommitEditTitle').value.trim(),type=$('finCommitEditType').value,accountId=$('finCommitEditAccount').value;
+ const title=$('finCommitEditTitle').value.trim(),type=$('finCommitEditType').value,wantsCash=$('finCommitEditCashImpact').checked,accountId=wantsCash?$('finCommitEditAccount').value:'';
  const principal=finParseMoney($('finCommitEditPrincipal').value),total=finParseMoney($('finCommitEditTotal').value),remaining=finParseMoney($('finCommitEditRemaining').value);
  const rate=Number($('finCommitEditRate').value)||0,fee=finParseMoney($('finCommitEditFee').value);
  const installments=Math.max(0,Math.floor(Number($('finCommitEditInstallments').value)||0)),paidInstallments=Math.max(0,Math.floor(Number($('finCommitEditPaidInstallments').value)||0));
  const installmentAmount=finParseMoney($('finCommitEditInstallmentAmount').value);
  const createdAt=getPersianDateValue('finCommitEditCreated')||c.createdAt||dateISO(),dueDate=getPersianDateValue('finCommitEditDue');
- if(!title||!accountId||!Number.isFinite(principal)||principal<=0||!Number.isFinite(total)||total<=0||!Number.isFinite(remaining)||remaining<0||remaining>total){flash('عنوان، حساب و مبالغ را بررسی کن؛ مانده نمی‌تواند از مبلغ کل بیشتر باشد.','error');return;}
+ if(!title||!Number.isFinite(principal)||principal<=0||!Number.isFinite(total)||total<=0||!Number.isFinite(remaining)||remaining<0||remaining>total||(wantsCash&&!accountId)){flash('عنوان و مبالغ را بررسی کن؛ در صورت فعال بودن اثر مالی حساب هم باید انتخاب شود.','error');return;}
  if(type==='loan'&&(!installments||installmentAmount<0||paidInstallments>installments)){flash('تعداد اقساط یا تعداد اقساط پرداخت‌شده معتبر نیست.','error');return;}
- const oldType=c.type;
- Object.assign(c,{type,title,person:$('finCommitEditPerson').value.trim(),principal,interestRate:rate,feeAmount:fee,totalAmount:total,remainingAmount:remaining,installmentAmount,installments,paidInstallments,accountId,createdAt,dueDate,status:remaining===0?'settled':$('finCommitEditStatus').value,description:$('finCommitEditDescription').value.trim(),updatedAt:dateISO()});
+ Object.assign(c,{type,title,person:$('finCommitEditPerson').value.trim(),principal,interestRate:rate,feeAmount:fee,totalAmount:total,remainingAmount:remaining,installmentAmount,installments,paidInstallments,accountId:accountId||c.accountId||null,createdAt,dueDate,status:remaining===0?'settled':$('finCommitEditStatus').value,description:$('finCommitEditDescription').value.trim(),updatedAt:dateISO()});
  if(c.status==='settled'&&remaining>0)c.status='active';
- finSyncCommitmentOpeningTransaction(c);
- saveData();finCloseCommitmentEditor();renderFinance();renderDashboard();flash('همه مشخصات با موفقیت ویرایش شد');
+ finSyncCommitmentOpeningTransaction(c,wantsCash);
+ saveData();finCloseCommitmentEditor();renderFinance();renderDashboard();flash('همه مشخصات و وضعیت اثر مالی با موفقیت ویرایش شد');
 }
 
 finInitMoneyInputs();
+if($('finReportStartDate')&&!$('finReportStartDate').value){const d=new Date();d.setDate(d.getDate()-30);setPersianDateValue('finReportStartDate',dateISO(d));}
+if($('finReportEndDate')&&!$('finReportEndDate').value)setPersianDateValue('finReportEndDate',dateISO());
+$('finExportPdfBtn')?.addEventListener('click',finExportPdfReport);
 
 // Capture submit before the legacy transaction handler, while preserving its form ID.
 $('financeForm')?.addEventListener('submit',e=>{e.preventDefault();e.stopImmediatePropagation();ensureFinanceData();const date=getPersianDateValue('finDate'),amount=finParseMoney($('finAmount').value),type=$('finType').value,categoryId=$('finCategory').value,accountId=$('finAccount').value;if(!date||!Number.isFinite(amount)||amount<=0){flash('تاریخ و مبلغ معتبر الزامی است','error');return;}finAddTransaction({date,type,categoryId,description:$('finDesc').value.trim(),amount,accountId});saveData();renderFinance();renderMonthlyFinance();renderExpenseDonut();renderDashboard();e.target.reset();setPersianDateValue('finDate',dateISO());finRefreshSelects();flash('تراکنش ثبت شد');},true);
 $('finType')?.addEventListener('change',()=>finRefreshSelects());
-$('commitType')?.addEventListener('change',finShowCommitFields);
+$('commitType')?.addEventListener('change',()=>{if($('commitDeposit'))$('commitDeposit').checked=false;if($('commitOutflow'))$('commitOutflow').checked=false;finShowCommitFields();});$('commitDeposit')?.addEventListener('change',finShowCommitFields);$('commitOutflow')?.addEventListener('change',finShowCommitFields);$('finCommitEditCashImpact')?.addEventListener('change',()=>{$('finCommitEditAccountWrap')?.classList.toggle('hidden',!$('finCommitEditCashImpact').checked);if($('finCommitEditAccount'))$('finCommitEditAccount').required=$('finCommitEditCashImpact').checked;});
 $('commitmentForm')?.addEventListener('submit',e=>{e.preventDefault();finCreateCommitment();});
 
 $('finCommitmentEditForm')?.addEventListener('submit',finSaveCommitmentEdit);
+$('finTxEditType')?.addEventListener('change',()=>{const type=$('finTxEditType').value,inc=['درآمد','وصول طلب','دریافت وام','دریافت بدهی'].includes(type),exp=['هزینه','خرج اضافی','پرداخت بدهی','پرداخت قسط'].includes(type);$('finTxEditCategoryWrap')?.classList.toggle('hidden',!inc&&!exp);if(inc||exp)$('finTxEditCategory').innerHTML=finCategoryOptions(inc?'income':'expense');});
+$('finTxEditForm')?.addEventListener('submit',finSaveTransactionEdit);$('finTxEditClose')?.addEventListener('click',finCloseTransactionEditor);$('finTxEditCancel')?.addEventListener('click',finCloseTransactionEditor);$('finTxEditModal')?.addEventListener('click',e=>{if(e.target.id==='finTxEditModal')finCloseTransactionEditor();});
+$('finPaymentForm')?.addEventListener('submit',finPayCommitmentSubmit);$('finPaymentClose')?.addEventListener('click',finClosePaymentModal);$('finPaymentCancel')?.addEventListener('click',finClosePaymentModal);$('finPaymentModal')?.addEventListener('click',e=>{if(e.target.id==='finPaymentModal')finClosePaymentModal();});
 $('finCommitmentEditType')?.addEventListener('change',finShowCommitEditFields);
 $('finCommitEditRecalculate')?.addEventListener('click',finRecalculateEditedLoan);
 $('finCommitmentEditClose')?.addEventListener('click',finCloseCommitmentEditor);
@@ -3979,9 +4183,9 @@ $('recurringForm')?.addEventListener('submit',e=>{e.preventDefault();const title
 $('finSearch')?.addEventListener('input',finRenderTransactions);['finFilterType','finFilterCategory','finFilterMonth'].forEach(id=>$(id)?.addEventListener('change',finRenderTransactions));
 document.querySelectorAll('[data-fin-tab]').forEach(b=>b.addEventListener('click',()=>finTab(b.dataset.finTab)));
 document.addEventListener('click',async e=>{const b=e.target.closest('[data-fin-action], [data-fin-delete-tx], [data-fin-edit-tx], [data-fin-pay-commitment], [data-fin-delete-budget], [data-fin-delete-account], [data-fin-edit-account], [data-fin-edit-category], [data-fin-delete-category], [data-fin-edit-commitment], [data-fin-delete-commitment], [data-fin-delete-recurring], [data-fin-post-recurring], [data-fin-delete-transfer]');if(!b)return;
- if(b.dataset.finDeleteTx){if(await customConfirm('این تراکنش حذف شود؟')){data.finance=data.finance.filter(t=>String(t.id)!==b.dataset.finDeleteTx);saveData();renderFinance();renderDashboard();}return;}
+ if(b.dataset.finDeleteTx){const t=data.finance.find(x=>String(x.id)===String(b.dataset.finDeleteTx));const msg=t?.linkedCommitmentId?'این تراکنش حذف شود؟ اثر مرتبط آن هم برمی‌گردد؛ در صورت حذف پرداخت، مانده بدهی/طلب و تعداد اقساط اصلاح می‌شود.':'این تراکنش و اثر آن بر موجودی حساب حذف شود؟';if(await customConfirm(msg)){finDeleteTransactionAndReverse(b.dataset.finDeleteTx);saveData();renderFinance();renderDashboard();}return;}
  if(b.dataset.finEditTx){finEditTransaction(b.dataset.finEditTx);return;}
- if(b.dataset.finPayCommitment){finPayCommitment(b.dataset.finPayCommitment);return;}
+ if(b.dataset.finPayCommitment){finOpenPaymentModal(b.dataset.finPayCommitment);return;}
  if(b.dataset.finDeleteBudget){data.financeBudgets=data.financeBudgets.filter(x=>x.id!==b.dataset.finDeleteBudget);saveData();renderFinance();return;}
  if(b.dataset.finDeleteAccount){const id=b.dataset.finDeleteAccount;if(data.financeAccounts.length<=1){flash('حداقل یک حساب باید باقی بماند','error');return;}if(data.finance.some(t=>String(t.accountId||finDefaultAccount()?.id)===String(id))||data.financeCommitments.some(c=>String(c.accountId)===String(id))){flash('این حساب به تراکنش یا بدهی/طلب متصل است؛ ابتدا موارد مرتبط را منتقل کن.','error');return;}if(await customConfirm('این حساب حذف شود؟')){data.financeAccounts=data.financeAccounts.filter(a=>a.id!==id);saveData();renderFinance();}return;}
  if(b.dataset.finEditAccount){const a=finAccount(b.dataset.finEditAccount);if(!a)return;const name=prompt('نام حساب:',a.name);if(name===null)return;const opening=prompt('موجودی آغازین:',finFormatMoneyValue(a.openingBalance||0));if(opening===null||!Number.isFinite(finParseMoney(opening)))return;a.name=name.trim()||a.name;a.openingBalance=finParseMoney(opening);saveData();renderFinance();return;}
