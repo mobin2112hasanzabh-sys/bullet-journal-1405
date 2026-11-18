@@ -2818,6 +2818,14 @@ document.querySelectorAll('.nav button[data-tab]').forEach(btn => {
     const tab = btn.dataset.tab; document.querySelectorAll('.tab').forEach(t => t.classList.add('hidden'));
     const target = $('tab-' + tab); if (target) target.classList.remove('hidden');
     if (tab === 'dashboard') renderDashboard(); if (tab === 'habits') renderHabitHeatmap(); if (tab === 'notebook') renderNotebook();
+    // هر بار ورود به برنامه‌ریزی، داده‌های ذخیره‌شده را از نو در رابط نمایش بده.
+    if (tab === 'planner') {
+      refreshSelectors();
+      renderMonthlyGoals();
+      renderWeeklyGoals();
+      renderWeeklyTasks();
+      renderRoutines();
+    }
     if (tab === 'today') { renderToday(); renderTimeline(); renderTodayReminders(); } if (tab === 'finance') { renderFinance(); renderMonthlyFinance(); renderExpenseDonut(); } if (tab === 'achievements') checkAchievements();
     if (tab === 'reminders') renderReminders();
   });
@@ -2827,6 +2835,11 @@ document.querySelectorAll('.subnav button[data-sub]').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.subnav button[data-sub]').forEach(b => b.classList.remove('active')); btn.classList.add('active');
     document.querySelectorAll('.subtab').forEach(t => t.classList.add('hidden')); const sub = $('sub-' + btn.dataset.sub); if (sub) sub.classList.remove('hidden');
+    // هنگام جابه‌جایی بین زیربخش‌ها نیز فهرست مربوط را تازه‌سازی کن.
+    if (btn.dataset.sub === 'monthly') renderMonthlyGoals();
+    else if (btn.dataset.sub === 'weekly-goals') { refreshSelectors(); renderWeeklyGoals(); }
+    else if (btn.dataset.sub === 'weekly-tasks') { refreshSelectors(); renderWeeklyTasks(); }
+    else if (btn.dataset.sub === 'routines') renderRoutines();
   });
 });
 
