@@ -466,6 +466,28 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
 
 
 .fin-money-input{direction:ltr!important;text-align:left;font-variant-numeric:tabular-nums;letter-spacing:.02em;}
+
+/* Planner + local intelligence upgrade */
+.ai-advisor-panel .ai-body{display:grid;gap:10px}
+.ai-insight-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.ai-insight{border:1px solid rgba(217,184,102,.28);background:rgba(255,255,255,.07);border-radius:12px;padding:11px;min-width:0}
+.ai-insight strong{display:block;margin-bottom:5px;color:var(--gold)}
+.ai-insight p{margin:0;font-size:12px;line-height:1.9}
+.ai-insight .ai-action{margin-top:8px}
+.ai-meta{font-size:10px;opacity:.75;margin-top:10px;line-height:1.8}
+.task-meta-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
+.task-meta-chip{font-size:10px;padding:2px 7px;border-radius:999px;background:var(--cream2);color:var(--text)}
+.task-meta-chip.priority-urgent{background:var(--redbg);color:var(--red)}
+.task-meta-chip.priority-important{background:var(--goldbg);color:var(--brown)}
+.task-meta-chip.priority-low{opacity:.75}
+.habit-mini-stats{font-size:10px;color:var(--muted);margin-top:4px}
+.manual-note-card{border-right:4px solid var(--accent)}
+.manual-note-card.is-pinned{border-color:var(--gold);background:linear-gradient(120deg,var(--goldbg),var(--paper))}
+.manual-note-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.manual-note-tags span{font-size:10px;padding:2px 7px;border-radius:999px;background:var(--cream2)}
+.reminder-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.reminder-controls .muted{font-size:11px}
+@media(max-width:650px){.ai-insight-grid{grid-template-columns:1fr}.planner-advanced-fields{grid-template-columns:1fr!important}}
 </style>
 </head>
 <body>
@@ -573,6 +595,18 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
           <div class="field"><label>📅 فیلتر زمانی</label><select id="notebookFilter"><option value="all">همه</option><option value="7">۷ روز اخیر</option><option value="30">۳۰ روز اخیر</option><option value="this_month">این ماه</option></select></div>
         </div>
       </div>
+      <div class="panel" style="box-shadow:none;margin-bottom:14px">
+        <h3 id="manualNoteFormTitle">➕ یادداشت مستقل جدید</h3>
+        <form id="manualNoteForm" class="formgrid2">
+          <input id="manualNoteId" type="hidden">
+          <div class="field"><label>عنوان</label><input id="manualNoteTitle" maxlength="140" required placeholder="عنوان یادداشت"></div>
+          <div class="field"><label>دسته‌بندی</label><select id="manualNoteCategory"><option>ایده</option><option>دانشگاه</option><option>برنامه‌نویسی</option><option>زبان</option><option>شخصی</option><option>پروژه</option><option>متفرقه</option></select></div>
+          <div class="field" style="grid-column:1/-1"><label>متن یادداشت</label><textarea id="manualNoteBody" rows="4" required placeholder="هر چیزی که می‌خواهی ثبت کنی..."></textarea></div>
+          <div class="field"><label>برچسب‌ها (با ویرگول جدا کن)</label><input id="manualNoteTags" placeholder="مثلاً ایده، مهم، بعداً"></div>
+          <div class="field" style="display:flex;align-items:center;gap:8px"><label><input id="manualNotePinned" type="checkbox"> سنجاق‌کردن یادداشت</label></div>
+          <button type="submit" id="manualNoteSubmit">ذخیره یادداشت</button><button type="button" id="manualNoteCancel" class="secondary hidden">انصراف از ویرایش</button>
+        </form>
+      </div>
       <div id="notebookList"></div>
     </section>
 
@@ -589,8 +623,8 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
         <div class="ai-header">
           <div class="ai-avatar">🤖</div>
           <div>
-            <h3 style="margin:0; color:var(--gold); font-size:16px;">دستیار هوشمند شما</h3>
-            <span style="font-size:11px; color:var(--muted);">تحلیل لحظه‌ای داده‌های شما</span>
+            <h3 style="margin:0; color:var(--gold); font-size:16px;">تحلیل‌گر هوشمند محلی</h3>
+            <span style="font-size:11px; color:var(--muted);">تحلیل توضیح‌پذیر بر اساس داده‌های همین دستگاه و حساب شما</span>
           </div>
         </div>
         <div class="ai-body" id="aiInsightText">در حال تحلیل داده‌ها...</div>
@@ -668,7 +702,7 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
         <div class="sectionhead"><div><h2>📋 کارهای هفتگی</h2><p class="muted">مقدار اجرا رو روی هر کار دستی وارد کن.</p></div><span class="pill" id="weeklyTasksProgress">—</span></div>
         <div class="week-toolbar">
           <div class="week-nav"><button id="wtPrev">‹ هفتهٔ قبل</button><span class="week-range" id="wtWeekRange"></span><button id="wtNext">هفتهٔ بعد ›</button></div>
-          <button id="wtToday" class="secondary">📅 این هفته</button>
+          <div style="display:flex;gap:7px;flex-wrap:wrap"><button id="wtToday" class="secondary">📅 این هفته</button><button id="carryOverTasksBtn" class="secondary">↪ انتقال کارهای انجام‌نشده به هفته بعد</button></div>
         </div>
         <div class="panel" style="box-shadow:none"><h3>افزودن</h3>
           <form id="weeklyTaskForm" class="weekly-task-grid">
@@ -678,6 +712,8 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
             <div class="field"><label>۲. هدف هفتگی</label><select id="wtGoal" required><option value="">— ابتدا هدف ماهانه را انتخاب کنید —</option></select></div>
             <div class="field" style="flex-direction:row; align-items:center; gap:5px; margin-bottom:5px;"><input type="checkbox" id="wtHasTime" style="width:auto;transform:scale(1.5);margin-left:5px;cursor:pointer;"> <label for="wtHasTime" style="cursor:pointer">⏰ زمان مشخص دارد</label></div>
             <div class="field hidden" id="wtTimeFields" style="flex-direction:row; gap:5px;"><input id="wtStartTime" type="text" class="time-input" placeholder="15:30" maxlength="5"><input id="wtEndTime" type="text" class="time-input" placeholder="17:30" maxlength="5"></div>
+            <div class="field"><label>اولویت کار</label><select id="wtPriority"><option value="urgent_important">فوری و مهم</option><option value="important">مهم</option><option value="normal" selected>عادی</option><option value="low">کم‌اهمیت</option></select></div>
+            <div class="field"><label>زمان تخمینی (دقیقه)</label><input id="wtEstimate" type="number" min="0" max="1440" step="5" placeholder="مثلاً ۴۵"></div>
             <button type="submit">افزودن</button>
           </form>
         </div>
@@ -710,15 +746,25 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
           <div class="field"><label>عنوان</label><input id="rmTitle" required placeholder="مثلاً: تولد سارا"></div>
           <div class="field"><label>تاریخ دقیق</label><div class="date-input-wrapper"><input id="rmDate" type="text" class="persian-date" required placeholder="انتخاب تاریخ" inputmode="none" autocomplete="off"><span class="date-icon">📅</span></div></div>
           <div class="field"><label>چند روز قبل یادآوری شود؟</label><select id="rmDays"><option value="1">۱ روز قبل</option><option value="3">۳ روز قبل</option><option value="7" selected>۱ هفته قبل</option><option value="14">۲ هفته قبل</option><option value="30">۱ ماه قبل</option></select></div>
+          <div class="field"><label>تکرار</label><select id="rmRepeat"><option value="none">بدون تکرار</option><option value="weekly">هر هفته</option><option value="monthly">هر ماه شمسی</option><option value="yearly">هر سال شمسی</option></select></div>
+          <div class="field"><label>ساعت اعلان</label><input id="rmTime" type="time" value="09:00"></div>
           <button type="submit">افزودن</button>
         </form>
       </div>
+      <div class="reminder-controls"><button type="button" id="enableReminderNotifications" class="secondary">🔔 فعال‌سازی اعلان مرورگر</button><span class="muted" id="reminderPermissionStatus">اعلان زمان‌دار هنگام باز بودن سایت بررسی می‌شود.</span></div>
       <div id="reminderList" class="list"></div>
     </section>
 
     <section id="tab-habits" class="tab hidden">
       <div class="sectionhead"><div><h2>🔥 ردیاب عادت‌ها</h2></div></div>
-      <form id="habitForm" class="formgrid2"><div class="field"><label>نام عادت</label><input id="habitName" required maxlength="120"></div><button type="submit">افزودن</button></form>
+      <form id="habitForm" class="formgrid2">
+        <div class="field"><label>نام عادت</label><input id="habitName" required maxlength="120" placeholder="مثلاً ورزش یا مطالعه"></div>
+        <div class="field"><label>هدف هفتگی (بار)</label><input id="habitWeeklyTarget" type="number" min="1" max="7" value="7"></div>
+        <div class="field" style="grid-column:1/-1"><label>روزهای فعال</label><div style="display:flex;gap:10px;flex-wrap:wrap">
+          <label><input type="checkbox" data-habit-day value="0" checked> شنبه</label><label><input type="checkbox" data-habit-day value="1" checked> یکشنبه</label><label><input type="checkbox" data-habit-day value="2" checked> دوشنبه</label><label><input type="checkbox" data-habit-day value="3" checked> سه‌شنبه</label><label><input type="checkbox" data-habit-day value="4" checked> چهارشنبه</label><label><input type="checkbox" data-habit-day value="5" checked> پنجشنبه</label><label><input type="checkbox" data-habit-day value="6" checked> جمعه</label>
+        </div><small class="muted">اگر روزی را غیرفعال کنی، در محاسبه استمرار و پایبندی جزو روزهای مورد انتظار نیست.</small></div>
+        <button type="submit">افزودن عادت</button>
+      </form>
       <div id="habitList" class="grid2" style="margin-top:16px"></div>
       <div class="panel" style="margin-top:20px"><h3>📈 نمودار عادت‌ها (۱۲ هفته اخیر)</h3><div id="habitHeatmapTab"></div></div>
     </section>
@@ -784,6 +830,7 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
         <div class="field"><label>انرژی (۱-۵)</label><input id="moodEnergy" type="number" min="1" max="5"></div>
         <div class="field"><label>خواب (۱-۵)</label><input id="moodSleep" type="number" min="1" max="5"></div>
         <div class="field"><label>استرس (۱-۵)</label><input id="moodStress" type="number" min="1" max="5"></div>
+        <div class="field" style="grid-column:1/-1"><label>یادداشت اختیاری</label><textarea id="moodNote" rows="2" maxlength="500" placeholder="چه چیزی روی حال امروزت اثر گذاشت؟"></textarea></div>
         <button type="submit">ثبت</button>
       </form>
       <div class="grid" id="moodStatsGrid" style="margin-bottom:20px;"></div>
@@ -980,6 +1027,20 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
   </div>
 </div>
 
+<div id="habitEditModal" class="modal-overlay hidden">
+  <div class="modal-content" style="max-width:620px">
+    <div class="sectionhead"><h3 style="margin:0">⚙️ تنظیمات عادت</h3><button type="button" class="ghost" id="habitEditClose">×</button></div>
+    <form id="habitEditForm" class="formgrid2">
+      <input id="habitEditId" type="hidden">
+      <div class="field"><label>نام عادت</label><input id="habitEditName" maxlength="120" required></div>
+      <div class="field"><label>هدف هفتگی (بار)</label><input id="habitEditWeeklyTarget" type="number" min="1" max="7" required></div>
+      <div class="field" style="grid-column:1/-1"><label>روزهای فعال</label><div style="display:flex;gap:10px;flex-wrap:wrap">
+        <label><input type="checkbox" data-habit-edit-day value="0"> شنبه</label><label><input type="checkbox" data-habit-edit-day value="1"> یکشنبه</label><label><input type="checkbox" data-habit-edit-day value="2"> دوشنبه</label><label><input type="checkbox" data-habit-edit-day value="3"> سه‌شنبه</label><label><input type="checkbox" data-habit-edit-day value="4"> چهارشنبه</label><label><input type="checkbox" data-habit-edit-day value="5"> پنجشنبه</label><label><input type="checkbox" data-habit-edit-day value="6"> جمعه</label>
+      </div></div>
+      <div style="grid-column:1/-1;display:flex;gap:8px;justify-content:flex-end"><button type="button" class="secondary" id="habitEditCancel">انصراف</button><button type="submit">ذخیره تنظیمات</button></div>
+    </form>
+  </div>
+</div>
 <div id="habitNoteModal" class="modal-overlay hidden">
   <div class="modal-content">
     <div class="modal-header"><h3 id="modalTitle">جزئیات روز</h3><button id="modalClose" class="ghost small">×</button></div>
@@ -1276,10 +1337,10 @@ const setPersianDateValue = (id, isoDate) => {
 };
 
 const emptyData=()=>({ 
-  archive: [], habits:[], logs:[], monthlyGoals:[], weeklyGoals:[], weeklyTasks:[],
+  archive: [], taskHistory:[], manualNotes:[], habits:[], logs:[], monthlyGoals:[], weeklyGoals:[], weeklyTasks:[],
   finance:[], mood:[], daily:[], pomodoro:[], routines:[], routineLogs:[],
   achievements: [], monthlyProgressSnapshots: {}, customQuotes: [], savedQuotes: [], quoteHistory: [],
-  reminders: [],
+  reminders: [], reminderNotificationLog: [],
   settings: {
     initialAssets: 0, themeMode: 'light', accentColor: 'olive', fontSize: '16px',
     timerDuration: 25, timerSound: 'beep', reminderNote: '21:00',
@@ -1301,7 +1362,7 @@ const migrateBulletJournalData = input => {
   migrated.settings = { ...base.settings, ...(incoming.settings && typeof incoming.settings === 'object' ? incoming.settings : {}) };
   migrated._meta = { ...(incoming._meta && typeof incoming._meta === 'object' ? incoming._meta : {}), schemaVersion: BJ_SCHEMA_VERSION };
   // ساختارهای آرایه‌ای موجود فقط در صورت خراب یا غایب بودن اصلاح می‌شوند؛ محتوای معتبر دست‌نخورده می‌ماند.
-  ['archive','habits','logs','monthlyGoals','weeklyGoals','weeklyTasks','finance','mood','daily','pomodoro','routines','routineLogs','achievements','customQuotes','savedQuotes','quoteHistory','reminders','financeAccounts','financeCategories','financeBudgets','financeCommitments','financeTransfers','financeRecurring'].forEach(key => {
+  ['archive','taskHistory','manualNotes','habits','logs','monthlyGoals','weeklyGoals','weeklyTasks','finance','mood','daily','pomodoro','routines','routineLogs','achievements','customQuotes','savedQuotes','quoteHistory','reminders','reminderNotificationLog','financeAccounts','financeCategories','financeBudgets','financeCommitments','financeTransfers','financeRecurring'].forEach(key => {
     if (!Array.isArray(migrated[key]) && key in base) migrated[key] = [];
   });
   if (!migrated.monthlyProgressSnapshots || typeof migrated.monthlyProgressSnapshots !== 'object' || Array.isArray(migrated.monthlyProgressSnapshots)) migrated.monthlyProgressSnapshots = {};
@@ -1565,6 +1626,9 @@ async function startApp(){
   if (!Array.isArray(data.savedQuotes)) data.savedQuotes = [];
   if (!Array.isArray(data.archive)) data.archive = [];
   if (!Array.isArray(data.reminders)) data.reminders = [];
+  if (!Array.isArray(data.manualNotes)) data.manualNotes=[];
+  if (!Array.isArray(data.taskHistory)) data.taskHistory=[];
+  if (!Array.isArray(data.reminderNotificationLog)) data.reminderNotificationLog=[];
   
   $('userName').textContent=session.name;
   $('userAvatar').textContent=(session.name||'?').charAt(0).toUpperCase();
@@ -1587,6 +1651,7 @@ async function startApp(){
   updatePomoDisplay();
   updateLiveFocusDashboard();
   ['moodDate','finDate','mgDue','rmDate'].forEach(id=>{if($(id))setPersianDateValue(id, dateISO());});
+  if($('rmTime')&&!$('rmTime').value)$('rmTime').value='09:00';
   if($('wgDue')) setPersianDateValue('wgDue', getWeekStartStr(0));
   if($('rtStartDate')) setPersianDateValue('rtStartDate', dateISO());
   if($('rtEndDate')) { const nm = new Date(); nm.setMonth(nm.getMonth() + 1); setPersianDateValue('rtEndDate', dateISO(nm)); }
@@ -1603,6 +1668,7 @@ async function startApp(){
   renderToday(); 
   renderTodayReminders();
   renderTimeline();
+  checkScheduledReminders(false);
   
   // بقیه بخش‌ها را با تاخیر کمی در پس‌زمینه لود می‌کنیم تا ترد اصلی بلاک نشود
   setTimeout(() => {
@@ -1625,25 +1691,21 @@ function getWeekDays(offset=0){
 }
 const weekDayNames=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
 
+function allPlannerTasks(){return [...(data.weeklyTasks||[]),...(data.archive||[]),...(data.taskHistory||[])];}
+function weekBoundsForIso(iso){const d=new Date(iso+'T12:00:00');const shift=(d.getDay()+1)%7;d.setDate(d.getDate()-shift);const start=dateISO(d);d.setDate(d.getDate()+6);return {start,end:dateISO(d)};}
 function weeklyGoalSum(wgId){
-  const sId=String(wgId);
-  return data.weeklyTasks.filter(t=>String(t.weeklyGoalId)===sId).reduce((a,t)=>a+(Number(t.value)||0),0);
+  const wg=data.weeklyGoals.find(g=>String(g.id)===String(wgId));if(!wg)return 0;
+  const anchor=wg.due_date||wg.created||dateISO();const {start,end}=weekBoundsForIso(anchor);
+  return allPlannerTasks().filter(t=>String(t.weeklyGoalId)===String(wgId)&&t.date>=start&&t.date<=end).reduce((a,t)=>a+(Number(t.value)||0),0);
 }
-function weeklyGoalProgress(wgId){
-  const wg=data.weeklyGoals.find(g=>String(g.id)===String(wgId));
-  if(!wg||!wg.target||wg.target<=0)return 0;
-  return Math.min(100,Math.round(weeklyGoalSum(wgId)/wg.target*100));
-}
+function weeklyGoalProgress(wgId){const wg=data.weeklyGoals.find(g=>String(g.id)===String(wgId));if(!wg||!wg.target||wg.target<=0)return 0;return Math.min(100,Math.round(weeklyGoalSum(wgId)/wg.target*100));}
+function monthlyGoalBounds(goal){const key=goal.monthKey||jalaliMonthKey(goal.created||goal.due_date||dateISO());return {key,...jalaliMonthBounds(key)};}
 function monthlyGoalSum(mgId){
-  const sId=String(mgId);
-  const childIds=data.weeklyGoals.filter(w=>String(w.monthlyGoalId)===sId).map(w=>String(w.id));
-  return data.weeklyTasks.filter(t=>childIds.includes(String(t.weeklyGoalId))).reduce((a,t)=>a+(Number(t.value)||0),0);
+  const mg=data.monthlyGoals.find(g=>String(g.id)===String(mgId));if(!mg)return 0;
+  const {start,end}=monthlyGoalBounds(mg);const childIds=data.weeklyGoals.filter(w=>String(w.monthlyGoalId)===String(mgId)).map(w=>String(w.id));
+  return allPlannerTasks().filter(t=>childIds.includes(String(t.weeklyGoalId))&&t.date>=start&&t.date<=end).reduce((a,t)=>a+(Number(t.value)||0),0);
 }
-function monthlyGoalProgress(mgId){
-  const mg=data.monthlyGoals.find(g=>String(g.id)===String(mgId));
-  if(!mg||!mg.target||mg.target<=0)return 0;
-  return Math.min(100,Math.round(monthlyGoalSum(mgId)/mg.target*100));
-}
+function monthlyGoalProgress(mgId){const mg=data.monthlyGoals.find(g=>String(g.id)===String(mgId));if(!mg||!mg.target||mg.target<=0)return 0;return Math.min(100,Math.round(monthlyGoalSum(mgId)/mg.target*100));}
 
 function calculateCurrentAssets() {
   let assets = Number(data.settings?.initialAssets) || 0;
@@ -1663,18 +1725,26 @@ function calculateTotalSavings() {
   return savings;
 }
 
+function habitWeekdayIndex(iso){return (new Date(iso+'T12:00:00').getDay()+1)%7;}
+function habitIsScheduled(habit,iso){const days=Array.isArray(habit?.activeDays)?habit.activeDays.map(Number):[0,1,2,3,4,5,6];return days.includes(habitWeekdayIndex(iso));}
 function calcStreak(hid){
-  let s = 0; const d = new Date();
-  for (let i = 0; i < 365; i++) {
-    const iso = dateISO(d);
-    const log = data.logs.find(l => String(l.habit_id) === String(hid) && l.date === iso);
-    if (log?.status === 'done') { s++; d.setDate(d.getDate() - 1); }
-    else if (i === 0) { d.setDate(d.getDate() - 1); }
-    else break;
+  const habit=data.habits.find(h=>String(h.id)===String(hid));if(!habit)return 0;
+  let streak=0,d=new Date();
+  for(let i=0;i<730;i++){
+    const iso=dateISO(d),log=data.logs.find(l=>String(l.habit_id)===String(hid)&&l.date===iso);
+    if(!habitIsScheduled(habit,iso)){d.setDate(d.getDate()-1);continue;}
+    if(i===0&&!log){d.setDate(d.getDate()-1);continue;}
+    if(log?.status==='rest'){d.setDate(d.getDate()-1);continue;}
+    if(log?.status==='done'){streak++;d.setDate(d.getDate()-1);continue;}
+    break;
   }
-  return s;
+  return streak;
 }
+function habitAdherence(habit,days=7){const today=new Date();let expected=0,done=0,rest=0;for(let i=0;i<days;i++){const d=new Date(today);d.setDate(today.getDate()-i);const iso=dateISO(d);if(!habitIsScheduled(habit,iso))continue;const log=data.logs.find(l=>String(l.habit_id)===String(habit.id)&&l.date===iso);if(iso===dateISO()&&!log)continue;if(log?.status==='rest'){rest++;continue;}expected++;if(log?.status==='done')done++;}return {expected,done,rest,percent:expected?Math.round(done/expected*100):0};}
+function habitWeeklyProgress(habit,days=7){const dates=[];for(let i=0;i<days;i++){const d=new Date();d.setDate(d.getDate()-i);dates.push(dateISO(d));}const done=data.logs.filter(l=>String(l.habit_id)===String(habit.id)&&dates.includes(l.date)&&l.status==='done'&&habitIsScheduled(habit,l.date)).length;const activeCount=(Array.isArray(habit.activeDays)?habit.activeDays.length:7)||7;const target=Math.max(1,Math.min(activeCount,7,Number(habit.weeklyTarget)||7));return {done,target,percent:Math.min(100,Math.round(done/target*100))};}
 
+function timeRangesOverlap(startA,endA,startB,endB){return !!(startA&&endA&&startB&&endB&&startA<endB&&endA>startB);}
+function routineHasConflict(candidate,excludeId=null){return (data.routines||[]).find(r=>String(r.id)!==String(excludeId??'')&&String(r.dayOfWeek)===String(candidate.dayOfWeek)&&candidate.startDate<=r.endDate&&r.startDate<=candidate.endDate&&timeRangesOverlap(candidate.startTime,candidate.endTime,r.startTime,r.endTime));}
 function getRoutinesForDay(isoDate) {
   if (!data.routines) return [];
   const parts = isoDate.split('-');
@@ -1949,7 +2019,8 @@ function jalaliMonthBounds(key){
 function monthlyScheduledProgress(key){
   const {start,end}=jalaliMonthBounds(key);
   const planned=[];
-  (data.weeklyTasks||[]).forEach(t=>{if(t.date>=start&&t.date<=end)planned.push({type:'task',id:t.id,date:t.date,done:!!(t.done||t.eventStatus==='done')});});
+  const seenTaskDates=new Set();
+  allPlannerTasks().forEach(t=>{const k=String(t.id)+'_'+String(t.date);if(!seenTaskDates.has(k)&&t.date>=start&&t.date<=end){seenTaskDates.add(k);planned.push({type:'task',id:t.id,date:t.date,done:!!(t.done||t.eventStatus==='done')});}});
   const d=new Date(start+'T12:00:00'), last=new Date(end+'T12:00:00');
   while(d<=last){
     const iso=dateISO(d);
@@ -1994,7 +2065,8 @@ function renderMonthlyProgress(){
   const months=getRecentJalaliMonths(12);
   const values=months.map(k=>{
     const live=monthlyScheduledProgress(k); const snap=data.monthlyProgressSnapshots?.[k];
-    return {...live,percent:live.total?live.percent:(snap?.percent??0)};
+    const isCurrent=k===jalaliMonthKey(dateISO());
+    return isCurrent?live:(snap||live);
   });
   const chart=$('monthlyProgressChart');if(!chart)return;
   const W=760,H=230,L=38,R=18,T=18,B=48,plotW=W-L-R,plotH=H-T-B;
@@ -2022,7 +2094,7 @@ function renderDashboard(){
     <div class="stat"><span class="icon">⏱️</span><div class="label">زمان تمرکز این ماه</div><div class="number" id="dashboardFocusCount" style="font-size:21px;direction:ltr;text-align:right;white-space:nowrap;">${formatFocusDuration(focusSeconds)}</div><small style="font-size:10px;color:var(--muted);">مجموع روزهای ماه شمسی جاری · ساعت : دقیقه : ثانیه</small></div>`;
 
   const todayStr = dateISO();
-  const pendingTasks = data.weeklyTasks.filter(t => t.date === todayStr && !t.done && !t.eventStatus);
+  const priorityOrder={urgent_important:0,important:1,normal:2,low:3};const pendingTasks = data.weeklyTasks.filter(t => t.date === todayStr && !(t.done||t.eventStatus==='done')).sort((a,b)=>(priorityOrder[a.priority]??2)-(priorityOrder[b.priority]??2)||String(a.startTime||'99:99').localeCompare(String(b.startTime||'99:99')));
   const pendingRoutines = getRoutinesForDay(todayStr).filter(r => getRoutineLogForDay(r.id, todayStr)?.status !== 'done');
   
   let nowHtml = `<h3 style="margin-bottom:12px; color:var(--dark);">🎯 همین حالا چه کاری انجام بدم؟</h3>`;
@@ -2044,41 +2116,48 @@ function renderDashboard(){
   updateLiveFocusDashboard();
 }
 
-function generateAIInsight() {
-  const el = $('aiInsightText'); if (!el) return;
-  const last7Days = [];
-  for (let i = 0; i < 7; i++) { const d = new Date(); d.setDate(d.getDate() - i); last7Days.push(dateISO(d)); }
-  const recentMoods = data.mood.filter(m => last7Days.includes(m.date));
-  const avgStress = recentMoods.length ? (recentMoods.reduce((a,m) => a + (Number(m.stress) || 0), 0) / recentMoods.length).toFixed(1) : 0;
-  const avgSleep = recentMoods.length ? (recentMoods.reduce((a,m) => a + (Number(m.sleep) || 0), 0) / recentMoods.length).toFixed(1) : 0;
-  const today = dateISO();
-  const todayFocus = data.pomodoro.filter(p => p.date === today).reduce((a,p) => a + (Number(p.minutes) || 0), 0);
-  const thisMonth = finMonth(today);
-  const extraExpenses = data.finance.filter(f => finMonth(f.date) === thisMonth && f.type === 'خرج اضافی').reduce((a,f) => a + Number(f.amount), 0);
-  let message = '';
-
-  if (avgStress >= 3.5 && avgSleep <= 2.5) {
-    message = `سلام! متوجه شدم در چند روز اخیر <strong>استرس شما بالا</strong> بوده و <strong>خواب کافی</strong> نداشتید. پیشنهاد می‌کنم امشب یک جلسه تمرکز کوتاه (۱۰ دقیقه) برای آرامش ذهن انجام بدید و کمی زودتر بخوابید. سلامت روان شما اولویت اوله! 🌿 <span class="tag">پیشنهاد ویژه</span>`;
-  } else if (todayFocus >= 50) {
-    message = `عالی بود! امروز بیش از <strong>${fa(todayFocus)} دقیقه</strong> تمرکز عمیق داشتید. مغز شما در حال رشد و یادگیریه. فقط یادتون باشه بین جلسات تمرکز، حتماً استراحت کنید تا انرژی‌تون تحلیل نره. 🧠🔥`;
-  } else if (extraExpenses > 0 && extraExpenses > (calculateCurrentAssets() * 0.1)) {
-    message = `هشدار مالی! این ماه <strong>${fa(extraExpenses)} تومان</strong> خرج اضافی ثبت کردید. این یعنی حدود ۱۰٪ از موجودی نقدی شما. سعی کنید برای روزهای آینده یک بودجه‌ی سفت‌وسخت برای خریدهای غیرضروری تعیین کنید. 💰🛡️`;
-  } else if (data.habits.length > 0) {
-    const todayHabits = data.habits.filter(h => data.logs.some(l => String(l.habit_id) === String(h.id) && l.date === today && l.status === 'done')).length;
-    if (todayHabits === 0) {
-      message = `امروز هنوز هیچ عادتی رو تیک نزدی! شروع کردن سخت‌ترین بخشه. فقط یکی از عادت‌های آسون‌ترت رو انتخاب کن و انجامش بده تا حس و حال امروزت عوض بشه. من بهت ایمان دارم! 💪🔥`;
-    } else {
-      message = `شما امروز تا این لحظه <strong>${fa(todayHabits)} عادت</strong> رو با موفقیت انجام دادید. عالیه! با همین روند پیش برید تا در پایان ماه یک آدم کاملاً متفاوت بشید. ✨`;
-    }
-  } else {
-    message = `همه چیز آرومه! داده‌های شما در حال ثبت شدن هستن. هر چه بیشتر از بخش‌های مختلف برنامه (مثل خلق‌وخو، عادت‌ها و مالی) استفاده کنید، من می‌تونم تحلیل‌های دقیق‌تر و شخصی‌سازی شده‌تری براتون ارائه بدم. 🌱`;
-  }
-  el.innerHTML = message;
+function generateAIInsight(){
+  const el=$('aiInsightText');if(!el)return;
+  const today=dateISO(),week=weekBoundsForIso(today),last7=[];
+  for(let i=6;i>=0;i--){const d=new Date(today+'T12:00:00');d.setDate(d.getDate()-i);last7.push(dateISO(d));}
+  const currentWeekTasks=(data.weeklyTasks||[]).filter(t=>t.date>=week.start&&t.date<=week.end);
+  const overdue=(data.weeklyTasks||[]).filter(t=>t.date<today&&!t.done&&t.eventStatus!=='done');
+  const todayPending=(data.weeklyTasks||[]).filter(t=>t.date===today&&!t.done&&t.eventStatus!=='done');
+  const weekDone=currentWeekTasks.filter(t=>t.done||t.eventStatus==='done').length;
+  const weekPct=currentWeekTasks.length?Math.round(weekDone/currentWeekTasks.length*100):null;
+  const habitExpected=[],habitCompleted=[];
+  (data.habits||[]).forEach(h=>last7.forEach(d=>{if(habitIsScheduled(h,d)){const log=(data.logs||[]).find(l=>String(l.habit_id)===String(h.id)&&l.date===d);if(d!==today||log){habitExpected.push({h,d,log});if(log?.status==='done')habitCompleted.push({h,d});}}}));
+  const habitPct=habitExpected.length?Math.round(habitCompleted.length/habitExpected.length*100):null;
+  const targetHabitDone=(data.habits||[]).reduce((sum,h)=>sum+habitWeeklyProgress(h,7).done,0);
+  const targetHabitTotal=(data.habits||[]).reduce((sum,h)=>sum+habitWeeklyProgress(h,7).target,0);
+  const focusSec=last7.reduce((sum,d)=>sum+getPomodoroSecondsForDate(d),0);
+  const currentTaskIds=new Set(currentWeekTasks.map(t=>String(t.id)));
+  const taskLinkedFocusSec=(data.pomodoro||[]).filter(p=>currentTaskIds.has(String(p.taskId))&&p.date>=week.start&&p.date<=week.end).reduce((sum,p)=>sum+pomodoroEntrySeconds(p),0);
+  const moods=(data.mood||[]).filter(m=>last7.includes(m.date));
+  const avg=field=>{const vals=moods.map(m=>Number(m[field])).filter(v=>Number.isFinite(v)&&v>0);return vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:null;};
+  const energy=avg('energy'),sleep=avg('sleep'),stress=avg('stress');
+  const upcomingGoals=(data.monthlyGoals||[]).filter(g=>!g.done&&g.due_date&&g.due_date>=today&&isoDayDiff(today,g.due_date)<=7);
+  const riskyGoals=upcomingGoals.map(g=>({goal:g,progress:monthlyGoalProgress(g.id)})).filter(x=>x.progress<50);
+  const cards=[];
+  if(overdue.length){const top=[...overdue].sort((a,b)=>({urgent_important:0,important:1,normal:2,low:3}[a.priority]??2)-({urgent_important:0,important:1,normal:2,low:3}[b.priority]??2))[0];cards.push({rank:100,title:'اول از عقب‌افتادگی‌ها شروع کن',body:`${fa(overdue.length)} کار از موعدشان گذشته است. پیشنهاد می‌کنم ابتدا «${safe(top.title)}» را تعیین تکلیف کنی: انجام، انتقال به هفته بعد یا حذف آگاهانه.`,action:'planner',actionLabel:'بازکردن برنامه‌ریزی'});}
+  if(todayPending.length){const prioritized=[...todayPending].sort((a,b)=>({urgent_important:0,important:1,normal:2,low:3}[a.priority]??2)-({urgent_important:0,important:1,normal:2,low:3}[b.priority]??2))[0];cards.push({rank:90,title:'قدم بعدی امروز',body:`از ${fa(todayPending.length)} کار باقی‌مانده، «${safe(prioritized.title)}» بالاترین اولویت ثبت‌شده را دارد. فقط ۲۵ تا ۴۰ دقیقه برای شروع آن کنار بگذار.`,action:'planner',actionLabel:'دیدن کارهای امروز'});}
+  const urgentCount=currentWeekTasks.filter(t=>t.priority==='urgent_important'&&!(t.done||t.eventStatus==='done')).length;if(urgentCount>=2)cards.push({rank:93,title:'تراکم کارهای فوری',body:`${fa(urgentCount)} کار با اولویت «فوری و مهم» هنوز در برنامه این هفته باز است. همه را هم‌زمان شروع نکن؛ مهم‌ترین مورد را انتخاب کن و برای بقیه زمان مشخص تعیین کن.`,action:'planner',actionLabel:'مرتب‌سازی کارها'});
+  if(weekPct!==null&&currentWeekTasks.length){cards.push({rank:weekPct<55?88:47,title:'پیشرفت برنامه هفتگی',body:`${fa(weekDone)} کار از ${fa(currentWeekTasks.length)} کار این هفته تکمیل شده است (${fa(weekPct)}٪). ${weekPct>=80?'بخش عمده برنامه جلو رفته؛ کارهای باقی‌مانده را واقع‌بینانه جمع‌بندی کن.':weekPct>=50?'برای کارهای باقی‌مانده، یک بازه مشخص در تقویم قرار بده.':'احتمالاً برنامه سنگین بوده؛ کارهای کم‌اولویت را بازبینی و حجم هفته را متعادل کن.'}`,action:'planner',actionLabel:'مرور برنامه هفتگی'});}
+  const estimatedMinutes=currentWeekTasks.reduce((sum,t)=>sum+(Number(t.estimatedMinutes)||0),0);if(estimatedMinutes>0&&taskLinkedFocusSec>=300){const focusMinutes=Math.round(taskLinkedFocusSec/60),ratio=Math.round(focusMinutes/estimatedMinutes*100);cards.push({rank:ratio<35?76:42,title:'مقایسه برآورد و تمرکزِ متصل به کار',body:`برای کارهای این هفته ${fa(estimatedMinutes)} دقیقه زمان تخمین زده‌ای و ${fa(focusMinutes)} دقیقه تمرکز مستقیماً به همین کارها متصل شده است. این مقایسه به دقیق‌ترشدن برآوردهای آینده کمک می‌کند.`,action:'focus',actionLabel:'بررسی زمان تمرکز'});}
+  if(targetHabitTotal>0){const pct=Math.min(100,Math.round(targetHabitDone/targetHabitTotal*100));cards.push({rank:pct<40?82:44,title:'عملکرد هدف هفتگی عادت‌ها',body:`در مجموع ${fa(targetHabitDone)} بار از ${fa(targetHabitTotal)} بار هدف‌گذاری‌شده انجام شده است (${fa(pct)}٪). ${pct>=80?'به هدف هفتگی نزدیک یا از آن عبور کرده‌ای؛ استمرار را حفظ کن.':pct>=50?'برای عادت‌های مهم، یادآور یا زمان ثابت تعیین کن.':'هدف‌ها را واقع‌بینانه‌تر کن یا تعداد عادت‌های هم‌زمان را کاهش بده.'}`,action:'habits',actionLabel:'بررسی هدف عادت‌ها'});}
+  if(habitPct!==null&&habitExpected.length>=3){cards.push({rank:70,title:'روند عادت‌ها در ۷ روز اخیر',body:`پایبندی ثبت‌شده ${fa(habitPct)}٪ است (${fa(habitCompleted.length)} از ${fa(habitExpected.length)} روز فعال). ${habitPct>=80?'روندت خوب و پایدار است؛ برنامه را بی‌دلیل سنگین‌تر نکن.':habitPct>=50?'یک عادت کلیدی را انتخاب کن و انجام آن را در زمان ثابتی از روز قرار بده.':'تعداد عادت‌های فعال را موقتاً کمتر کن تا استمرار دوباره شکل بگیرد.'}`,action:'habits',actionLabel:'بررسی عادت‌ها'});}
+  if(focusSec>=60){const minutes=Math.round(focusSec/60);cards.push({rank:60,title:'گزارش تمرکز هفتگی',body:`در ۷ روز اخیر ${fa(minutes)} دقیقه تمرکز ثبت شده است. ${minutes>=600?'حجم تمرکز بالاست؛ استراحت و بازیابی را هم در برنامه نگه دار.':'برای افزایش تدریجی، یک جلسه کوتاه دیگر به روزهای کم‌تمرکز اضافه کن.'}`,action:'focus',actionLabel:'نمایش تایمر'});}
+  if(stress!==null&&sleep!==null&&stress>=3.5&&sleep<=2.8){cards.push({rank:110,title:'اولویت با بازیابی انرژی',body:`میانگین استرس ${stress.toFixed(1)} و میانگین خواب ${sleep.toFixed(1)} از ۵ بوده است (${fa(moods.length)} ثبت). امروز حجم کار را سبک‌تر کن و یک بازه استراحت واقعی در نظر بگیر. این فقط یک الگوی ثبت‌شده است، نه تشخیص پزشکی.`,action:'mood',actionLabel:'مرور وضعیت روزانه'});}
+  if(riskyGoals.length){const risk=riskyGoals.sort((a,b)=>a.progress-b.progress)[0];cards.push({rank:102,title:'هدف نزدیک به موعد و کم‌پیشرفت',body:`هدف «${safe(risk.goal.title)}» تا ${fa(isoDayDiff(today,risk.goal.due_date))} روز دیگر موعد دارد و ${fa(risk.progress)}٪ پیشرفت ثبت شده است. یک خروجی کوچک و مشخص برای نزدیک‌ترین قدم تعیین کن یا موعد را واقع‌بینانه بازبینی کن.`,action:'goals',actionLabel:'بازبینی هدف ماهانه'});}
+  if(upcomingGoals.length){cards.push({rank:80,title:'موعد نزدیک هدف ماهانه',body:`${fa(upcomingGoals.length)} هدف ماهانه در ۷ روز آینده موعد دارند. برای هرکدام فقط یک اقدام مشخص و قابل‌اندازه‌گیری تا موعد تعیین کن.`,action:'goals',actionLabel:'دیدن اهداف'});}
+  if(!cards.length){cards.push({rank:10,title:'برای تحلیل دقیق‌تر چند داده ثبت کن',body:'برای شروع، کارهای این هفته را ثبت کن، وضعیت عادت‌ها را مشخص کن و در چند روز آینده خلق‌وخو یا زمان تمرکز را ثبت کن. تحلیل فقط از داده‌های موجود استفاده می‌کند و برای داده‌های ثبت‌نشده نتیجه‌گیری نمی‌کند.',action:'planner',actionLabel:'شروع برنامه‌ریزی'});}
+  const meta=`تحلیل در ${new Intl.DateTimeFormat('fa-IR',{hour:'2-digit',minute:'2-digit'}).format(new Date())} · داده‌های بررسی‌شده: ${fa(currentWeekTasks.length)} کار هفته، ${fa(habitExpected.length)} روز فعال عادت، ${fa(moods.length)} ثبت خلق‌وخو · پردازش داخلی؛ بدون ارسال اطلاعات به سرویس هوش مصنوعی خارجی.`;
+  el.innerHTML=`<div class="ai-insight-grid">${cards.sort((a,b)=>b.rank-a.rank).slice(0,3).map((c,i)=>`<article class="ai-insight"><strong>${i===0?'⭐ ':''}${c.title}</strong><p>${c.body}</p><button type="button" class="small secondary ai-action" data-ai-action="${c.action}">${c.actionLabel}</button></article>`).join('')}</div><div class="ai-meta">${meta}<br>این تحلیل‌گر قانون‌محور و توضیح‌پذیر است؛ پیشنهادها بر اساس اطلاعات ثبت‌شده ساخته می‌شوند و ممکن است با داده‌های ناقص، محدود باشند.</div>`;
 }
 
 function renderTodayPlan(){
   const today = dateISO();
-  const list = data.weeklyTasks.filter(t => t.date === today);
+  const priorityOrder={urgent_important:0,important:1,normal:2,low:3};const list = data.weeklyTasks.filter(t => t.date === today).sort((a,b)=>(priorityOrder[a.priority]??2)-(priorityOrder[b.priority]??2)||String(a.startTime||'99:99').localeCompare(String(b.startTime||'99:99')));
   const todayRoutines = getRoutinesForDay(today);
   const todayStats = getScheduledStatsForDay(today);
   $('todayPlanCount').textContent = todayStats.total ? `${fa(todayStats.done)} / ${fa(todayStats.total)}` : '—';
@@ -2088,7 +2167,7 @@ function renderTodayPlan(){
     html += `<div style="margin-bottom:12px">${todayRoutines.map(r => `
       <div style="background:var(--bluebg);color:var(--blue);padding:8px 12px;border-radius:8px;margin-bottom:6px;font-size:13px;font-weight:600;cursor:pointer; display:flex; justify-content:space-between; align-items:center;" data-event-type="routine" data-event-id="${r.id}" data-event-date="${today}">
         <span>⏰ ${r.startTime} - ${r.endTime} | ${safe(r.title)}</span>
-        <button class="task-timer-btn" style="color:inherit; border-color:inherit;" data-start-timer-title="${safe(r.title)}" data-start-timer-id="${r.id}">⏱️ تمرکز</button>
+        <button class="task-timer-btn" style="color:inherit; border-color:inherit;" data-start-timer-title="${safe(r.title)}" data-start-timer-id="${r.id}" data-start-timer-type="routine" data-start-timer-date="${today}">⏱️ تمرکز</button>
       </div>`).join('')}</div>`;
   }
   if (list.length) {
@@ -2103,9 +2182,11 @@ function renderTodayPlan(){
           <div class="wt-body" ${t.startTime ? `style="cursor:pointer" data-event-type="task" data-event-id="${t.id}" data-event-date="${today}"` : ''}>
             <div class="wt-title">${safe(t.title)} ${t.startTime ? `<small style="color:var(--blue)">(${t.startTime})</small>` : ''}</div>
             ${goal ? `<div class="wt-tag">🎯 ${safe(goal.title.substring(0,25))}${parent ? ' • ' + safe(parent.title.substring(0,20)) : ''}</div>` : ''}
+            <div class="task-meta-row"><span class="task-meta-chip ${t.priority==='urgent_important'?'priority-urgent':t.priority==='important'?'priority-important':t.priority==='low'?'priority-low':''}">${safe(labels.priority[t.priority]||'عادی')}</span>${t.estimatedMinutes?`<span class="task-meta-chip">برآورد ${fa(t.estimatedMinutes)} دقیقه</span>`:''}</div>
             ${pomos > 0 ? `<div style="font-size:10px; color:var(--accent); margin-top:4px;">⏱️ ${fa(pomos)} دقیقه تمرکز</div>` : ''}
           </div>
           <div style="display:flex; flex-direction:column; gap:4px; align-items:flex-end;">
+            <button class="ghost small" data-universal-edit="task" data-edit-id="${t.id}" data-edit-date="${today}" title="ویرایش کار">✏️</button>
             <button class="task-timer-btn" data-start-timer-title="${safe(t.title)}" data-start-timer-id="${t.id}">⏱️</button>
             <button class="ghost small" data-del-wt-today="${t.id}" style="padding:2px 6px;font-size:10px">×</button>
           </div>
@@ -2152,7 +2233,7 @@ function renderToday(){
 
 function renderMonthlyGoals(){
   const monthName = new Intl.DateTimeFormat('fa-IR-u-ca-persian',{month:'long',year:'numeric'}).format(new Date());
-  $('monthlySubtitle').textContent = `ماه جاری: ${monthName}`;
+  $('monthlySubtitle').textContent = `ماه جاری: ${monthName} · هدف‌های هر ماه جداگانه محاسبه می‌شوند`;
   const total = data.monthlyGoals.length; const doneCount = data.monthlyGoals.filter(g => g.done).length;
   $('monthlyProgressPill').textContent = total ? `${fa(doneCount)} از ${fa(total)} تکمیل` : '—';
   const el = $('monthlyGoalsList');
@@ -2241,7 +2322,7 @@ function renderWeeklyTasks(){
   $('weeklyTasksProgress').textContent = weekTotal ? `${fa(weekDone)} / ${fa(weekTotal)} انجام‌شده` : '—';
   $('weekColumns').innerHTML = days.map((d, i) => {
     const iso = dateISO(d); const isToday = iso === dateISO();
-    const dayTasks = data.weeklyTasks.filter(t => t.date === iso);
+    const dayTasks = data.weeklyTasks.filter(t => t.date === iso).sort((a,b)=>{const at=a.startTime||'99:99',bt=b.startTime||'99:99';if(at!==bt)return at.localeCompare(bt);const order={urgent_important:0,important:1,normal:2,low:3};return (order[a.priority]??2)-(order[b.priority]??2);});
     const dayRoutines = getRoutinesForDay(iso);
     const daySum = dayTasks.reduce((a,t) => a + (Number(t.value) || 0), 0);
     return `<div class="week-day ${isToday ? 'today' : ''}">
@@ -2257,8 +2338,9 @@ function renderWeeklyTasks(){
             <div class="wt-body" ${isTimed ? `style="cursor:pointer;" data-event-type="task" data-event-id="${t.id}" data-event-date="${iso}"` : ''}>
               <div class="wt-title">${safe(t.title)} ${isTimed ? `<small style="color:var(--blue)">(${t.startTime})</small>` : ''}</div>
               ${goal ? `<div class="wt-tag">🎯 ${safe(goal.title.substring(0,20))}</div>` : '<div class="wt-tag" style="background:var(--redbg);color:var(--red)">⚠ بدون هدف</div>'}
+              <div class="task-meta-row"><span class="task-meta-chip ${t.priority==='urgent_important'?'priority-urgent':t.priority==='important'?'priority-important':t.priority==='low'?'priority-low':''}">${safe(labels.priority[t.priority]||'عادی')}</span>${t.estimatedMinutes?`<span class="task-meta-chip">برآورد ${fa(t.estimatedMinutes)} دقیقه</span>`:''}${(()=>{const sec=(data.pomodoro||[]).filter(p=>String(p.taskId)===String(t.id)).reduce((a,p)=>a+pomodoroEntrySeconds(p),0);return sec?`<span class="task-meta-chip">تمرکز ${formatFocusDuration(sec)}</span>`:''})()}</div>
             </div>
-            <div style="display:flex; flex-direction:column; gap:2px;"><button class="task-timer-btn" data-start-timer-title="${safe(t.title)}" data-start-timer-id="${t.id}" style="padding:0 3px; font-size:9px;">⏱️</button><button class="ghost small" data-del-wt="${t.id}" style="padding:2px 6px;font-size:10px">×</button></div>
+            <div style="display:flex; flex-direction:column; gap:2px;"><button class="ghost small" data-universal-edit="task" data-edit-id="${t.id}" data-edit-date="${iso}" title="ویرایش کار" style="padding:2px 6px;font-size:10px">✏️</button><button class="task-timer-btn" data-start-timer-title="${safe(t.title)}" data-start-timer-id="${t.id}" style="padding:0 3px; font-size:9px;">⏱️</button><button class="ghost small" data-del-wt="${t.id}" style="padding:2px 6px;font-size:10px">×</button></div>
           </div>
           <div class="wt-input-row"><input type="number" class="wt-input" min="0" step="0.25" value="${t.value || ''}" placeholder="0" data-value-wt="${t.id}"><span class="wt-unit">${safe(unit)}</span></div>
         </div>`;
@@ -2274,11 +2356,11 @@ function renderHabits(){
     ? data.habits.map(h => {
         const log = data.logs.find(l => String(l.habit_id) === String(h.id) && l.date === dateISO());
         const s = log?.status || '';
-        const streak = calcStreak(h.id);
+        const streak = calcStreak(h.id);const adherence=habitAdherence(h,7);const weekly=habitWeeklyProgress(h,7);
         return `<article class="habit" style="background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
-          <span style="font-weight:700">${safe(h.name)} ${streak > 0 ? `<span class="status gold">🔥 ${fa(streak)}</span>` : ''}</span>
+          <div><span style="font-weight:700">${safe(h.name)} ${streak > 0 ? `<span class="status gold">🔥 ${fa(streak)}</span>` : ''}</span><div class="habit-mini-stats">پایبندی روزهای فعال: ${adherence.expected?fa(adherence.percent)+'٪':'داده کافی نیست'} · ${fa(adherence.rest)} روز استراحت · هدف هفتگی ${fa(weekly.done)} از ${fa(weekly.target)} بار (${fa(weekly.percent)}٪)</div></div>
           <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-            <button class="ghost small" data-open-note="${h.id}" data-date="${dateISO()}">📝 یادداشت</button>
+            <button class="ghost small" data-edit-habit="${h.id}">⚙️ تنظیم</button><button class="ghost small" data-open-note="${h.id}" data-date="${dateISO()}">📝 یادداشت</button>
             <select data-habit-status="${h.id}" style="width:auto">
               <option value="" ${!s ? 'selected' : ''}>ثبت نشده</option>
               ${Object.entries(sl).map(([v,l]) => `<option value="${v}" ${s === v ? 'selected' : ''}>${l}</option>`).join('')}
@@ -2528,20 +2610,21 @@ function renderMood(){
   const moods = data.mood || [];
   
   let totalEnergy = 0, totalSleep = 0, totalStress = 0;
+  let countEnergy=0,countSleep=0,countStress=0;
   const moodCounts = { '😄 عالی': 0, '🙂 خوب': 0, '😐 معمولی': 0, '😔 پایین': 0, '😣 سخت': 0 };
   let validCount = 0;
 
   moods.forEach(m => {
-    if (m.energy) { totalEnergy += m.energy; }
-    if (m.sleep) { totalSleep += m.sleep; }
-    if (m.stress) { totalStress += m.stress; }
+    if (Number(m.energy)>0) { totalEnergy += Number(m.energy); countEnergy++; }
+    if (Number(m.sleep)>0) { totalSleep += Number(m.sleep); countSleep++; }
+    if (Number(m.stress)>0) { totalStress += Number(m.stress); countStress++; }
     if (m.mood && moodCounts[m.mood] !== undefined) { moodCounts[m.mood]++; }
     validCount++;
   });
 
-  const avgEnergy = validCount ? (totalEnergy / validCount).toFixed(1) : '0';
-  const avgSleep = validCount ? (totalSleep / validCount).toFixed(1) : '0';
-  const avgStress = validCount ? (totalStress / validCount).toFixed(1) : '0';
+  const avgEnergy = countEnergy ? (totalEnergy / countEnergy).toFixed(1) : '—';
+  const avgSleep = countSleep ? (totalSleep / countSleep).toFixed(1) : '—';
+  const avgStress = countStress ? (totalStress / countStress).toFixed(1) : '—';
 
   let dominantMood = '—';
   let maxCount = 0;
@@ -2625,6 +2708,7 @@ function renderMood(){
             <div style="font-size:12px; color:var(--muted); font-weight:600; margin-bottom:6px;">${toFaDate(m.date)}</div>
             <button class="danger small" data-del="mood" data-id="${m.id}" style="padding:4px 8px;">×</button>
           </div>
+          ${m.note ? `<div class="mood-history-note" style="grid-column:1/-1;margin-top:8px;padding:9px 11px;border-radius:10px;background:var(--paper);font-size:12px;line-height:1.8">📝 ${safe(m.note)}</div>` : ''}
         </article>`;
       }).join('')
     : '<p class="muted" style="text-align:center; padding:20px;">هنوز هیچ خلق‌وخویی ثبت نکرده‌اید.</p>';
@@ -2738,16 +2822,20 @@ function renderNotebook(){
   const habitNotes = data.logs.filter(l => l.note && l.note.trim() !== '').map(l => { const habit = data.habits.find(h => String(h.id) === String(l.habit_id)); return { type: 'habit', date: l.date, data: l, habitName: habit ? habit.name : 'عادت حذف‌شده' }; });
   const taskNotes = (data.weeklyTasks || []).filter(t => t.note && t.note.trim() !== '').map(t => ({ type: 'task', date: t.date, data: t, taskName: t.title }));
   const routineNotes = (data.routineLogs || []).filter(l => l.note && l.note.trim() !== '').map(l => { const rid = l.routineId ?? l.eventId; const r = data.routines.find(x => String(x.id) === String(rid)); return { type: 'routine', date: l.date, data: l, taskName: r ? r.title : 'برنامه حذف‌شده' }; });
-  let arr = [...dailyNotes, ...habitNotes, ...taskNotes, ...routineNotes].sort((a,b) => String(b.date).localeCompare(String(a.date)));
+  const manualNotes=(data.manualNotes||[]).map(n=>({type:'manual',date:n.date||dateISO(),data:n}));
+  const moodNotes=(data.mood||[]).filter(m=>(m.note||'').trim()).map(m=>({type:'mood',date:m.date,data:m}));
+  let arr = [...dailyNotes, ...habitNotes, ...taskNotes, ...routineNotes, ...manualNotes, ...moodNotes].sort((a,b) => Number(!!b.data?.pinned)-Number(!!a.data?.pinned)||String(b.date).localeCompare(String(a.date)));
   const localNoon = iso => new Date(iso + 'T12:00:00');
   if (filter === '7' || filter === '30') { const days = parseInt(filter, 10); const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - days); cutoff.setHours(0,0,0,0); arr = arr.filter(n => n.date && localNoon(n.date) >= cutoff); }
   if (filter === 'this_month') { const faMonth = d => new Intl.DateTimeFormat('fa-IR-u-ca-persian', { year:'numeric', month:'numeric' }).format(d); const nowFa = faMonth(new Date()); arr = arr.filter(n => n.date && faMonth(localNoon(n.date)) === nowFa); }
-  if (search) { arr = arr.filter(n => { if (n.type === 'daily') return ['morning','evening','highlight','gratitude'].some(k => String(n.data[k]||'').toLowerCase().includes(search)); if (n.type === 'habit') return String(n.data.note||'').toLowerCase().includes(search) || String(n.habitName||'').toLowerCase().includes(search); return String(n.data.note||'').toLowerCase().includes(search) || String(n.taskName||'').toLowerCase().includes(search); }); }
+  if (search) { arr = arr.filter(n => { if(n.type==='manual')return [n.data.title,n.data.body,n.data.category,(n.data.tags||[]).join(' ')].some(v=>String(v||'').toLowerCase().includes(search)); if (n.type === 'daily') return ['morning','evening','highlight','gratitude'].some(k => String(n.data[k]||'').toLowerCase().includes(search)); if (n.type === 'mood') return String(n.data.note||'').toLowerCase().includes(search)||String(n.data.mood||'').toLowerCase().includes(search); if (n.type === 'habit') return String(n.data.note||'').toLowerCase().includes(search) || String(n.habitName||'').toLowerCase().includes(search); return String(n.data.note||'').toLowerCase().includes(search) || String(n.taskName||'').toLowerCase().includes(search); }); }
   $('notebookCount').textContent = arr.length ? `${fa(arr.length)} یادداشت` : '—';
   if (!arr.length) { el.innerHTML = '<p class="muted" style="text-align:center;padding:30px">یادداشتی برای نمایش نیست.</p>'; return; }
   const actionsHtml = (type, id, date) => `<div style="display:flex;gap:6px"><button class="ghost small" data-universal-edit="${type}" data-edit-id="${id||''}" data-edit-date="${date}" title="ویرایش">✏️</button><button class="danger small" data-universal-del="${type}" data-edit-id="${id||''}" data-edit-date="${date}" title="حذف">🗑️</button></div>`;
   el.innerHTML = arr.map(n => {
     const isToday = n.date === dateISO();
+    if(n.type==='manual'){const ndata=n.data;return `<article class="panel notebook-card manual-note-card ${ndata.pinned?'is-pinned':''}"><div class="sectionhead" style="margin-bottom:8px"><div><h3 style="margin:0">${ndata.pinned?'📌 ': '📝 '}${safe(ndata.title)}</h3><div class="item-meta"><span>${safe(ndata.category||'متفرقه')}</span><span>${toFaDate(ndata.date)}</span></div></div><div class="item-actions"><button class="ghost small" data-edit-manual-note="${ndata.id}">✏️</button><button class="ghost small" data-pin-manual-note="${ndata.id}">${ndata.pinned?'برداشتن سنجاق':'📌 سنجاق'}</button><button class="danger small" data-del-manual-note="${ndata.id}">×</button></div></div><div class="notebook-text">${safe(ndata.body).replace(/\n/g,'<br>')}</div><div class="manual-note-tags">${(ndata.tags||[]).map(t=>`<span>#${safe(t)}</span>`).join('')}</div></article>`;}
+    if (n.type === 'mood') { return `<div class="panel notebook-card note-mood"><div class="sectionhead" style="margin-bottom:10px"><div><h3 style="margin:0">🧠 ثبت حال‌وهوای ${toFaDate(n.date)}</h3><div class="item-meta"><span>${safe(n.data.mood||'خلق‌وخو')}</span><span>انرژی ${fa(n.data.energy||0)} · خواب ${fa(n.data.sleep||0)} · استرس ${fa(n.data.stress||0)}</span></div></div>${actionsHtml('mood','',n.date)}</div><div class="notebook-text">${safe(n.data.note)}</div></div>`; }
     if (n.type === 'daily') { return `<div class="panel notebook-card note-daily" data-notebook-date="${n.date}"><div class="sectionhead" style="margin-bottom:10px"><div><h3 style="margin:0">📅 ${toFaDate(n.date)} ${isToday ? '<span class="status gold" style="font-size:10px">امروز</span>' : ''}</h3></div>${actionsHtml('daily', '', n.date)}</div><div class="grid2" style="gap:10px">${n.data.morning ? `<div class="notebook-section"><div class="notebook-label">🌅 صبح</div><div class="notebook-text">${safe(n.data.morning)}</div></div>` : ''}${n.data.evening ? `<div class="notebook-section"><div class="notebook-label">🌙 شب</div><div class="notebook-text">${safe(n.data.evening)}</div></div>` : ''}</div>${n.data.highlight ? `<div class="notebook-section" style="margin-top:10px"><div class="notebook-label">✨ بهترین اتفاق</div><div class="notebook-text">${safe(n.data.highlight)}</div></div>` : ''}${n.data.gratitude ? `<div class="notebook-section" style="margin-top:10px"><div class="notebook-label">🙏 شکرگزاری</div><div class="notebook-text">${safe(n.data.gratitude)}</div></div>` : ''}</div>`; }
     if (n.type === 'habit') { const st = n.data.status === 'done' ? 'done' : n.data.status === 'rest' ? 'gold' : 'late'; const lbl = n.data.status === 'done' ? 'انجام شد' : n.data.status === 'rest' ? 'استراحت' : 'انجام نشد'; return `<div class="panel notebook-card note-habit"><div class="sectionhead" style="margin-bottom:10px"><div><h3 style="margin:0">🔥 ${safe(n.habitName)} — ${toFaDate(n.date)}</h3></div><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><span class="status ${st}">${lbl}</span>${actionsHtml('habit', n.data.habit_id, n.date)}</div></div><div class="notebook-section"><div class="notebook-label">📝 یادداشت عادت</div><div class="notebook-text">${safe(n.data.note)}</div></div></div>`; }
     if (n.type === 'routine') { const st = n.data.status === 'done' ? 'done' : n.data.status === 'not_done' ? 'late' : ''; const lbl = n.data.status === 'done' ? 'انجام شد' : n.data.status === 'not_done' ? 'انجام نشد' : 'ثبت نشده'; return `<div class="panel notebook-card note-task" style="border-right-color:var(--blue)"><div class="sectionhead" style="margin-bottom:10px"><div><h3 style="margin:0">⏰ ${safe(n.taskName)} — ${toFaDate(n.date)}</h3></div><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><span class="status blue">برنامه</span>${st ? `<span class="status ${st}">${lbl}</span>` : ''}${actionsHtml('routine', n.data.routineId || n.data.eventId, n.date)}</div></div><div class="notebook-section"><div class="notebook-label">📝 یادداشت</div><div class="notebook-text">${safe(n.data.note)}</div></div></div>`; }
@@ -2768,8 +2856,9 @@ const NoteTypes = {
     ]
   },
   daily: { icon: '📅', title: rec => `یادداشت روز ${toFaDate(rec.date)}`, fields: [{ key:'morning', label:'🌅 صبح', type:'textarea', rows:3 },{ key:'evening', label:'🌙 شب', type:'textarea', rows:3 },{ key:'highlight', label:'✨ بهترین اتفاق', type:'text' },{ key:'gratitude', label:'🙏 شکرگزاری', type:'text' }] },
+  mood: { icon: '🧠', title: rec => `یادداشت خلق‌وخو ${toFaDate(rec.date)}`, fields: [{ key:'note', label:'یادداشت', type:'textarea', rows:4 }] },
   habit: { icon: '🔥', title: rec => `یادداشت عادت ${toFaDate(rec.date)}`, fields: [{ key:'status', label:'وضعیت', type:'select', options:[{ v:'', t:'ثبت نشده' },{ v:'done', t:'✅ انجام شد' },{ v:'not_done', t:'❌ انجام نشد' },{ v:'rest', t:'☕ استراحت' }]},{ key:'note', label:'📝 یادداشت', type:'textarea', rows:4 }] },
-  task: { icon: '📋', title: rec => `کار: ${rec._title || ''} — ${toFaDate(rec.date)}`, fields: [{ key:'title', label:'عنوان', type:'text' },{ key:'eventStatus', label:'وضعیت انجام', type:'select', options:[{ v:'', t:'ثبت نشده' },{ v:'done', t:'✅ انجام شد' },{ v:'not_done', t:'❌ انجام نشد' }]},{ key:'value', label:'مقدار', type:'number' },{ key:'startTime', label:'ساعت شروع', type:'text' },{ key:'endTime', label:'ساعت پایان', type:'text' },{ key:'note', label:'📝 یادداشت', type:'textarea', rows:4 }] },
+  task: { icon: '📋', title: rec => `کار: ${rec._title || ''} — ${toFaDate(rec.date)}`, fields: [{ key:'title', label:'عنوان', type:'text' },{ key:'weeklyGoalId', label:'هدف هفتگی', type:'select', options:[] },{ key:'priority', label:'اولویت', type:'select', options:[{v:'urgent_important',t:'فوری و مهم'},{v:'important',t:'مهم'},{v:'normal',t:'عادی'},{v:'low',t:'کم‌اهمیت'}]},{ key:'estimatedMinutes', label:'زمان تخمینی (دقیقه)', type:'number' },{ key:'eventStatus', label:'وضعیت انجام', type:'select', options:[{ v:'', t:'ثبت نشده' },{ v:'done', t:'✅ انجام شد' },{ v:'not_done', t:'❌ انجام نشد' }]},{ key:'value', label:'مقدار', type:'number' },{ key:'startTime', label:'ساعت شروع', type:'text' },{ key:'endTime', label:'ساعت پایان', type:'text' },{ key:'note', label:'📝 یادداشت', type:'textarea', rows:4 }] },
   routine: { icon: '⏰', title: rec => `برنامه: ${rec._title || ''} — ${toFaDate(rec.date)}`, fields: [{ key:'status', label:'وضعیت انجام', type:'select', options:[{ v:'', t:'ثبت نشده' },{ v:'done', t:'✅ انجام شد' },{ v:'not_done', t:'❌ انجام نشد' }]},{ key:'note', label:'📝 یادداشت', type:'textarea', rows:4 }] }
 };
 
@@ -2787,10 +2876,12 @@ function openUniversalEditor(type, id, date) {
   let rec = null;
   if (type === 'finance') { rec = data.finance.find(f => String(f.id) === String(id)); if (!rec) return; }
   else if (type === 'daily') { rec = data.daily.find(d => d.date === date); if (!rec) { rec = { date, morning:'', evening:'', highlight:'', gratitude:'' }; } }
+  else if (type === 'mood') { rec = data.mood.find(m => m.date === date); if (!rec) return; }
   else if (type === 'habit') { rec = data.logs.find(l => String(l.habit_id)===String(id) && l.date===date); if (!rec) { rec = { habit_id:id, date, status:'', note:'' }; data.logs.push(rec); } }
-  else if (type === 'task') { rec = data.weeklyTasks.find(t => String(t.id)===String(id)); if (!rec) return; rec._title = rec.title; }
+  else if (type === 'task') { rec = data.weeklyTasks.find(t => String(t.id)===String(id)); if (!rec) return; rec._title = rec.title; rec.priority=rec.priority||'normal';rec.estimatedMinutes=Number(rec.estimatedMinutes)||0; }
   else if (type === 'routine') { rec = (data.routineLogs||[]).find(l => (String(l.routineId)===String(id) || String(l.eventId)===String(id)) && l.date===date); if (!rec) { rec = { routineId:id, date, status:'', note:'' }; data.routineLogs = data.routineLogs||[]; data.routineLogs.push(rec); } const r = data.routines.find(x => String(x.id)===String(id)); rec._title = r?.title || ''; }
-  currentEdit = { type, id, date, rec }; $('ueTitle').textContent = `${cfg.icon} ${cfg.title(rec)}`; $('ueFields').innerHTML = cfg.fields.map(f => renderEditField(f, rec[f.key] || '')).join(''); $('universalEditModal').classList.remove('hidden');
+  const fields=type==='task'?cfg.fields.map(f=>f.key==='weeklyGoalId'?({...f,options:[{v:'',t:'بدون هدف'},...data.weeklyGoals.map(g=>({v:String(g.id),t:g.title}))]}):f):cfg.fields;
+  currentEdit = { type, id, date, rec }; $('ueTitle').textContent = `${cfg.icon} ${cfg.title(rec)}`; $('ueFields').innerHTML = fields.map(f => renderEditField(f, rec[f.key] ?? '')).join(''); $('universalEditModal').classList.remove('hidden');
 }
 
 const closeUniversalEditor = () => { $('universalEditModal').classList.add('hidden'); currentEdit = null; };
@@ -2803,14 +2894,14 @@ $('ueSaveBtn').addEventListener('click', () => {
   cfg.fields.forEach(f => { const el = $(`ue_field_${f.key}`); if (!el) return; if (f.type === 'number') rec[f.key] = Number(el.value) || 0; else rec[f.key] = el.value.trim ? el.value.trim() : el.value; });
   
   if (type === 'finance') { rec.month = finMonth(rec.date); }
-  else if (type === 'task') { if (rec.eventStatus === 'done') rec.done = true; if (rec.eventStatus === 'not_done') rec.done = false; }
+  else if (type === 'task') { const validTime=/^([01]\d|2[0-3]):[0-5]\d$/;if((rec.startTime||rec.endTime)&&(!validTime.test(rec.startTime||'')||!validTime.test(rec.endTime||'')||rec.endTime<=rec.startTime)){flash('ساعت پایان باید معتبر و بعد از ساعت شروع باشد.','error');return;}rec.estimatedMinutes=Math.max(0,Math.min(1440,Number(rec.estimatedMinutes)||0));if(!['urgent_important','important','normal','low'].includes(rec.priority))rec.priority='normal';if (rec.eventStatus === 'done') rec.done = true; if (rec.eventStatus === 'not_done') rec.done = false; }
   else if (type === 'daily') {
       const existingIndex = data.daily.findIndex(d => d.date === currentEdit.date);
       if (existingIndex === -1) data.daily.push(rec);
   }
 
   delete rec._title; saveData();
-  renderNotebook(); renderToday(); renderHabits(); renderWeeklyTasks(); renderTodayPlan(); renderTimeline(); renderDashboard(); renderFinance();
+  renderNotebook(); renderToday(); renderHabits(); renderWeeklyTasks(); renderTodayPlan(); renderTimeline(); renderDashboard(); renderFinance(); renderMood();
   closeUniversalEditor(); flash('ذخیره شد ✓');
 });
 
@@ -2818,9 +2909,10 @@ $('ueDeleteBtn').addEventListener('click', async () => {
   if (!currentEdit) return; const { type, id, date, rec } = currentEdit;
   if (type === 'daily') { if (!(await customConfirm(`یادداشت روز ${toFaDate(date)} پاک شود؟`))) return; data.daily = data.daily.filter(d => d.date !== date); }
   else if (type === 'habit') { if (!(await customConfirm('یادداشت این عادت در این روز پاک شود؟'))) return; data.logs = data.logs.filter(l => !(String(l.habit_id)===String(id) && l.date===date)); }
+  else if (type === 'mood') { if (!(await customConfirm('فقط یادداشت این ثبت خلق‌وخو پاک شود؟ اطلاعات امتیازها باقی می‌ماند.'))) return; rec.note=''; }
   else if (type === 'task') { const delNote = await customConfirm('فقط یادداشت و وضعیت این تسک پاک شود؟'); if (delNote) { rec.note = ''; rec.eventStatus = ''; rec.done = false; } else { const delAll = await customConfirm('کل تسک حذف شود؟'); if (!delAll) return; data.weeklyTasks = data.weeklyTasks.filter(t => String(t.id) !== String(id)); } }
   else if (type === 'routine') { if (!(await customConfirm('یادداشت این برنامه پاک شود؟'))) return; data.routineLogs = (data.routineLogs||[]).filter(l => !((String(l.routineId)===String(id) || String(l.eventId)===String(id)) && l.date===date)); }
-  saveData(); renderNotebook(); renderToday(); renderHabits(); renderWeeklyTasks(); renderTodayPlan(); renderTimeline(); renderDashboard(); closeUniversalEditor(); flash('حذف شد');
+  saveData(); renderNotebook(); renderToday(); renderHabits(); renderWeeklyTasks(); renderTodayPlan(); renderTimeline(); renderDashboard(); renderMood(); closeUniversalEditor(); flash('حذف شد');
 });
 
 window.selectMood = function(el, val) { document.querySelectorAll('#moodEmojiSelector .mood-emoji').forEach(e => e.classList.remove('active')); el.classList.add('active'); $('moodMood').value = val; };
@@ -2867,11 +2959,12 @@ document.querySelectorAll('[data-wgfilter]').forEach(btn => { btn.addEventListen
 $('wtPrev')?.addEventListener('click', () => { weeklyOffset--; renderWeeklyTasks(); });
 $('wtNext')?.addEventListener('click', () => { weeklyOffset++; renderWeeklyTasks(); });
 $('wtToday')?.addEventListener('click', () => { weeklyOffset = 0; renderWeeklyTasks(); });
+$('carryOverTasksBtn')?.addEventListener('click',async()=>{const days=getWeekDays(weeklyOffset),start=dateISO(days[0]),end=dateISO(days[6]),pending=data.weeklyTasks.filter(t=>t.date>=start&&t.date<=end&&!t.done&&t.eventStatus!=='done');if(!pending.length){flash('در این هفته کار انجام‌نشده‌ای برای انتقال وجود ندارد.');return;}if(!await customConfirm(`${fa(pending.length)} کار انجام‌نشده به هفته بعد منتقل شوند؟ نسخه قبلی در آرشیو تاریخچه باقی می‌ماند.`))return;const next=new Date(days[0]);next.setDate(next.getDate()+7);const nextStart=dateISO(next),goalMap=new Map();pending.forEach(t=>{const oldGoal=data.weeklyGoals.find(g=>String(g.id)===String(t.weeklyGoalId));let newGoalId=t.weeklyGoalId;if(oldGoal){const k=String(oldGoal.id);if(!goalMap.has(k)){const g={...oldGoal,id:nid(),title:oldGoal.title+' (ادامه)',due_date:nextStart,created:dateISO(),done:false};data.weeklyGoals.push(g);goalMap.set(k,g.id);}newGoalId=goalMap.get(k);}data.archive.push({...t,archivedAt:dateISO(),archiveReason:'rescheduled',rescheduledTo:null});const copy={...t,id:nid(),date:(()=>{const d=new Date(t.date+'T12:00:00');d.setDate(d.getDate()+7);return dateISO(d);})(),day:weekDayNames[(habitWeekdayIndex(t.date))],weeklyGoalId:newGoalId,value:0,done:false,eventStatus:'',note:t.note||'',carriedFromId:t.id};data.weeklyTasks.push(copy);const prior=data.archive[data.archive.length-1];prior.rescheduledTo=copy.id;});data.weeklyTasks=data.weeklyTasks.filter(t=>!(t.date>=start&&t.date<=end&&!t.done&&t.eventStatus!=='done'&&pending.some(p=>String(p.id)===String(t.id))));saveData();renderWeeklyTasks();renderWeeklyGoals();renderDashboard();flash(`${fa(pending.length)} کار به هفته بعد منتقل شد.`);});
 
 $('monthlyGoalForm').addEventListener('submit', e => {
   e.preventDefault();
-  const goal = { id: nid(), title: $('mgTitle').value.trim(), unit: $('mgUnit').value, target: Number($('mgTarget').value), priority: $('mgPriority').value, due_date: getPersianDateValue('mgDue'), description: $('mgDesc').value.trim(), done: false, created: dateISO() };
-  if (!goal.title || !goal.target) return;
+  const goal = { id: nid(), title: $('mgTitle').value.trim(), unit: $('mgUnit').value, target: Number($('mgTarget').value), priority: $('mgPriority').value, due_date: getPersianDateValue('mgDue'), monthKey: jalaliMonthKey(getPersianDateValue('mgDue')), description: $('mgDesc').value.trim(), done: false, created: dateISO() };
+  if (!goal.title || !Number.isFinite(goal.target) || goal.target<=0) { flash('عنوان و مقدار هدف باید معتبر باشند.','error'); return; }
   data.monthlyGoals.push(goal); saveData(); refreshSelectors(); renderMonthlyGoals(); renderDashboard();
   e.target.reset(); if ($('mgDue')) setPersianDateValue('mgDue', dateISO()); flash('هدف ماهانه اضافه شد');
 });
@@ -2879,7 +2972,7 @@ $('monthlyGoalForm').addEventListener('submit', e => {
 $('weeklyGoalForm').addEventListener('submit', e => {
   e.preventDefault();
   const goal = { id: nid(), title: $('wgTitle').value.trim(), monthlyGoalId: $('wgParent').value, target: Number($('wgTarget').value), due_date: getPersianDateValue('wgDue'), done: false, created: dateISO() };
-  if (!goal.title || !goal.target || !goal.monthlyGoalId) return;
+  if (!goal.title || !Number.isFinite(goal.target) || goal.target<=0 || !goal.monthlyGoalId) { flash('عنوان، هدف ماهانه و مقدار معتبر الزامی است.','error'); return; }
   data.weeklyGoals.push(goal); saveData(); refreshSelectors(); renderWeeklyGoals(); renderMonthlyGoals();
   e.target.reset(); if ($('wgDue')) setPersianDateValue('wgDue', getWeekStartStr(0)); flash('هدف هفتگی اضافه شد');
 });
@@ -2888,8 +2981,11 @@ $('wtHasTime')?.addEventListener('change', e => $('wtTimeFields')?.classList.tog
 $('weeklyTaskForm').addEventListener('submit', e => {
   e.preventDefault();
   const dayIdx = weekDayNames.indexOf($('wtDay').value); const days = getWeekDays(weeklyOffset); const hasTime = $('wtHasTime').checked;
-  const task = { id: nid(), title: $('wtTitle').value.trim(), day: $('wtDay').value, date: dateISO(days[dayIdx >= 0 ? dayIdx : 0]), weeklyGoalId: $('wtGoal').value, startTime: hasTime ? ($('wtStartTime').value.trim() || '') : '', endTime: hasTime ? ($('wtEndTime').value.trim() || '') : '', value: 0, done: false, note: '' };
-  if (!task.title || !task.weeklyGoalId) { flash('لطفاً هدف هفتگی را انتخاب کنید', 'error'); return; }
+  const taskDate=dateISO(days[dayIdx>=0?dayIdx:0]);const startTime=hasTime?($('wtStartTime').value.trim()||''):'';const endTime=hasTime?($('wtEndTime').value.trim()||''):'';
+  if(hasTime&&(!/^([01]\d|2[0-3]):[0-5]\d$/.test(startTime)||!/^([01]\d|2[0-3]):[0-5]\d$/.test(endTime)||endTime<=startTime)){flash('ساعت پایان باید معتبر و بعد از ساعت شروع باشد.','error');return;}
+  const estimate=Math.max(0,Math.min(1440,Number($('wtEstimate')?.value)||0));
+  const task = { id: nid(), title: $('wtTitle').value.trim(), day: $('wtDay').value, date: taskDate, weeklyGoalId: $('wtGoal').value, startTime, endTime, priority:$('wtPriority')?.value||'normal', estimatedMinutes:estimate, value: 0, done: false, note: '' };
+  if (!task.title || !task.weeklyGoalId) { flash('لطفاً عنوان و هدف هفتگی را انتخاب کنید', 'error'); return; }
   data.weeklyTasks.push(task); saveData(); renderWeeklyTasks(); renderTodayPlan(); renderTimeline(); renderDashboard();
   e.target.reset(); $('wtTimeFields')?.classList.add('hidden'); flash('کار هفتگی اضافه شد');
 });
@@ -2898,12 +2994,19 @@ $('routineForm').addEventListener('submit', e => {
   e.preventDefault();
   const r = { id: nid(), title: $('rtTitle').value.trim(), dayOfWeek: $('rtDay').value, startTime: $('rtStartTime').value.trim(), endTime: $('rtEndTime').value.trim(), startDate: getPersianDateValue('rtStartDate'), endDate: getPersianDateValue('rtEndDate') };
   if (!r.title || !r.startDate || !r.endDate || !r.startTime || !r.endTime) { flash('لطفاً همهٔ فیلدها را پر کن', 'error'); return; }
+  if(!/^([01]\d|2[0-3]):[0-5]\d$/.test(r.startTime)||!/^([01]\d|2[0-3]):[0-5]\d$/.test(r.endTime)||r.endTime<=r.startTime||r.endDate<r.startDate){flash('بازه تاریخ یا ساعت برنامه معتبر نیست؛ پایان باید بعد از شروع باشد.','error');return;}
+  const conflict=routineHasConflict(r);if(conflict){flash(`این برنامه با «${safe(conflict.title)}» در همان روز و بازه زمانی تداخل دارد.`,'error');return;}
   data.routines.push(r); saveData(); renderRoutines(); renderTodayPlan(); renderTimeline();
   e.target.reset(); if ($('rtStartDate')) setPersianDateValue('rtStartDate', dateISO()); if ($('rtEndDate')) { const nm = new Date(); nm.setMonth(nm.getMonth() + 1); setPersianDateValue('rtEndDate', dateISO(nm)); }
   flash('برنامه اضافه شد');
 });
 
-$('habitForm').addEventListener('submit', e => { e.preventDefault(); const name = $('habitName').value.trim(); if (!name) return; data.habits.push({ id: nid(), name }); saveData(); renderHabits(); renderToday(); renderDashboard(); e.target.reset(); flash('عادت اضافه شد'); });
+const closeHabitEdit=()=> $('habitEditModal')?.classList.add('hidden');
+$('habitEditClose')?.addEventListener('click',closeHabitEdit);$('habitEditCancel')?.addEventListener('click',closeHabitEdit);
+$('habitEditModal')?.addEventListener('click',e=>{if(e.target.id==='habitEditModal')closeHabitEdit();});
+$('habitEditForm')?.addEventListener('submit',e=>{e.preventDefault();const h=data.habits.find(x=>String(x.id)===String($('habitEditId').value));if(!h)return;const name=$('habitEditName').value.trim(),days=[...document.querySelectorAll('[data-habit-edit-day]:checked')].map(x=>Number(x.value)),target=Number($('habitEditWeeklyTarget').value);if(!name||!days.length||!Number.isInteger(target)||target<1||target>7||target>days.length){flash('نام، حداقل یک روز فعال و هدف هفتگی معتبر (حداکثر برابر روزهای فعال) الزامی است.','error');return;}h.name=name;h.activeDays=days;h.weeklyTarget=target;saveData();closeHabitEdit();renderHabits();renderToday();renderDashboard();renderNotebook();flash('تنظیمات عادت به‌روز شد.');});
+
+$('habitForm').addEventListener('submit', e => { e.preventDefault(); const name=$('habitName').value.trim();const activeDays=[...document.querySelectorAll('[data-habit-day]:checked')].map(x=>Number(x.value));const weeklyTarget=Math.max(1,Math.min(7,Number($('habitWeeklyTarget')?.value)||7));if(!name)return;if(!activeDays.length){flash('حداقل یک روز فعال برای عادت انتخاب کن.','error');return;}if(weeklyTarget>activeDays.length){flash('هدف هفتگی نمی‌تواند از تعداد روزهای فعال بیشتر باشد.','error');return;}data.habits.push({id:nid(),name,activeDays,weeklyTarget,created:dateISO()});saveData();renderHabits();renderToday();renderDashboard();e.target.reset();document.querySelectorAll('[data-habit-day]').forEach(x=>x.checked=true);if($('habitWeeklyTarget'))$('habitWeeklyTarget').value=7;flash('عادت اضافه شد'); });
 
 $('financeForm').addEventListener('submit', e => {
   e.preventDefault(); const date = getPersianDateValue('finDate'); const amount = finParseMoney($('finAmount').value); const quick=e.submitter?.id==='finSubmitQuick';
@@ -2916,9 +3019,9 @@ $('financeForm').addEventListener('submit', e => {
 
 $('moodForm').addEventListener('submit', e => {
   e.preventDefault(); const date = getPersianDateValue('moodDate'); if (!date) { flash('تاریخ الزامی است', 'error'); return; }
-  const rec = { id: nid(), date, mood: $('moodMood').value, energy: Number($('moodEnergy').value) || 0, sleep: Number($('moodSleep').value) || 0, stress: Number($('moodStress').value) || 0 };
+  const rec = { id: nid(), date, mood: $('moodMood').value, energy: Number($('moodEnergy').value) || 0, sleep: Number($('moodSleep').value) || 0, stress: Number($('moodStress').value) || 0, note: $('moodNote')?.value.trim() || '' };
   const idx = data.mood.findIndex(m => m.date === date); if (idx >= 0) data.mood[idx] = rec; else data.mood.unshift(rec);
-  saveData(); renderMood(); renderMoodLine(); e.target.reset();
+  saveData(); renderMood(); renderMoodLine(); renderNotebook(); e.target.reset();
   document.querySelectorAll('#moodEmojiSelector .mood-emoji').forEach((el, i) => el.classList.toggle('active', i === 2)); $('moodMood').value = '😐 معمولی';
   if ($('moodDate')) setPersianDateValue('moodDate', dateISO()); flash('خلق‌وخو ثبت شد');
 });
@@ -2931,6 +3034,10 @@ $('saveDailyBtn').addEventListener('click', () => {
 });
 
 $('notebookSearch')?.addEventListener('input', renderNotebook); $('notebookFilter')?.addEventListener('change', renderNotebook);
+function resetManualNoteForm(){if(!$('manualNoteForm'))return;$('manualNoteForm').reset();$('manualNoteId').value='';$('manualNoteFormTitle').textContent='➕ یادداشت مستقل جدید';$('manualNoteSubmit').textContent='ذخیره یادداشت';$('manualNoteCancel').classList.add('hidden');}
+$('manualNoteForm')?.addEventListener('submit',e=>{e.preventDefault();const id=$('manualNoteId').value,title=$('manualNoteTitle').value.trim(),body=$('manualNoteBody').value.trim();if(!title||!body){flash('عنوان و متن یادداشت الزامی است.','error');return;}const note={id:id||nid(),title,body,category:$('manualNoteCategory').value,tags:$('manualNoteTags').value.split(',').map(x=>x.trim()).filter(Boolean).slice(0,12),pinned:$('manualNotePinned').checked,date:id?(data.manualNotes.find(n=>String(n.id)===String(id))?.date||dateISO()):dateISO(),updatedAt:new Date().toISOString()};data.manualNotes=data.manualNotes||[];const idx=data.manualNotes.findIndex(n=>String(n.id)===String(note.id));if(idx>=0)data.manualNotes[idx]=note;else data.manualNotes.unshift(note);saveData();resetManualNoteForm();renderNotebook();flash('یادداشت ذخیره شد.');});
+$('manualNoteCancel')?.addEventListener('click',resetManualNoteForm);
+document.addEventListener('click',async e=>{const edit=e.target.closest('[data-edit-manual-note]');if(edit){const n=(data.manualNotes||[]).find(x=>String(x.id)===String(edit.dataset.editManualNote));if(!n)return;$('manualNoteId').value=n.id;$('manualNoteTitle').value=n.title||'';$('manualNoteBody').value=n.body||'';$('manualNoteCategory').value=n.category||'متفرقه';$('manualNoteTags').value=(n.tags||[]).join(', ');$('manualNotePinned').checked=!!n.pinned;$('manualNoteFormTitle').textContent='✏️ ویرایش یادداشت';$('manualNoteSubmit').textContent='ذخیره تغییرات';$('manualNoteCancel').classList.remove('hidden');$('manualNoteForm').scrollIntoView({behavior:'smooth',block:'center'});$('manualNoteTitle').focus();return;}const pin=e.target.closest('[data-pin-manual-note]');if(pin){const n=(data.manualNotes||[]).find(x=>String(x.id)===String(pin.dataset.pinManualNote));if(n){n.pinned=!n.pinned;saveData();renderNotebook();}return;}const del=e.target.closest('[data-del-manual-note]');if(del){if(await customConfirm('این یادداشت مستقل حذف شود؟')){data.manualNotes=(data.manualNotes||[]).filter(n=>String(n.id)!==String(del.dataset.delManualNote));saveData();renderNotebook();flash('یادداشت حذف شد.');}}});
 
 function openHabitModal(habitId, date) {
   const log = data.logs.find(l => String(l.habit_id) === String(habitId) && l.date === date); const habit = data.habits.find(h => String(h.id) === String(habitId));
@@ -2962,7 +3069,7 @@ $('eventModalSaveBtn').addEventListener('click', () => {
 $('eventStartTimerBtn').addEventListener('click', () => {
   const type = $('eventModalType').value; const id = $('eventModalId').value; let title = 'تمرکز';
   if (type === 'task') { const t = data.weeklyTasks.find(x => String(x.id) === String(id)); if (t) title = t.title; } else { const r = data.routines.find(x => String(x.id) === String(id)); if (r) title = r.title; }
-  closeEventModal(); startPomodoro(title, id);
+  const eventDate=$('eventModalDate').value;closeEventModal(); startPomodoro(title, id, type, eventDate);
 });
 
 function pomodoroEntrySeconds(entry) {
@@ -3007,7 +3114,8 @@ const pomoObj = {
   elapsedSeconds: 0,
   recordedMinutes: 0,
   startTimestamp: null,
-  sessionDate: null
+  sessionDate: null,
+  sessionStartedAt: null, currentTaskType: null, currentTaskDate: null, sessionSegments: [], activeSegmentStartedAt: null, lastLocalPersistAt: 0, lastCloudPersistAt: 0
 };
 
 function updatePomoDisplay() {
@@ -3051,34 +3159,60 @@ function updateLiveFocusDashboard() {
   if (badge) badge.textContent = `🧠 مجموع کل: ${formatFocusDuration(allTimeSeconds)}`;
 }
 
-function persistPomodoroProgress() {
+function finalizePomodoroActiveSegment(){
+  if(!pomoObj.activeSegmentStartedAt)return;
+  const completed=(pomoObj.sessionSegments||[]).reduce((sum,x)=>sum+(Number(x.seconds)||0),0);
+  const allowed=Math.max(0,Math.floor(pomoObj.elapsedSeconds)-completed);
+  const measured=Math.max(0,Math.floor((Date.now()-pomoObj.activeSegmentStartedAt)/1000));
+  const seconds=Math.min(allowed,measured);
+  if(seconds>0)pomoObj.sessionSegments.push({startMs:pomoObj.activeSegmentStartedAt,seconds});
+  pomoObj.activeSegmentStartedAt=null;
+}
+
+function persistPomodoroProgress(force=false) {
   if (!pomoObj.sessionId || pomoObj.elapsedSeconds <= 0) return;
-
-  let record = (data.pomodoro || []).find(p => p.id === pomoObj.sessionId);
-  if (!record) {
-    record = {
-      id: pomoObj.sessionId,
-      date: pomoObj.sessionDate || dateISO(),
-      seconds: 0,
-      minutes: 0,
-      taskId: pomoObj.currentTaskId || null
-    };
-    data.pomodoro.push(record);
+  const segments=[...(pomoObj.sessionSegments||[])];
+  if(pomoObj.running&&pomoObj.activeSegmentStartedAt){
+    const completed=segments.reduce((sum,x)=>sum+(Number(x.seconds)||0),0);
+    const allowed=Math.max(0,Math.floor(pomoObj.elapsedSeconds)-completed);
+    const measured=Math.max(0,Math.floor((Date.now()-pomoObj.activeSegmentStartedAt)/1000));
+    const seconds=Math.min(allowed,measured);
+    if(seconds>0)segments.push({startMs:pomoObj.activeSegmentStartedAt,seconds});
   }
-
-  record.seconds = Math.max(0, Math.floor(pomoObj.elapsedSeconds));
-  record.minutes = Math.floor(record.seconds / 60);
-  record.taskId = pomoObj.currentTaskId || record.taskId || null;
-  saveData();
+  const byDay=new Map();
+  segments.forEach(segment=>{
+    let remaining=Math.max(0,Math.floor(Number(segment.seconds)||0)),cursor=Number(segment.startMs)||0;
+    while(remaining>0&&cursor>0){
+      const dayIso=dateISO(new Date(cursor));
+      const nextDay=new Date(dayIso+'T00:00:00');nextDay.setDate(nextDay.getDate()+1);
+      const secondsToMidnight=Math.max(1,Math.floor((nextDay.getTime()-cursor)/1000));
+      const chunk=Math.min(remaining,secondsToMidnight);
+      byDay.set(dayIso,(byDay.get(dayIso)||0)+chunk);
+      remaining-=chunk;cursor+=chunk*1000;
+    }
+  });
+  byDay.forEach((seconds,dayIso)=>{
+    const id=`${pomoObj.sessionId}_${dayIso}`;
+    let record=(data.pomodoro||[]).find(p=>p.id===id);
+    if(!record){record={id,date:dayIso,seconds:0,minutes:0,taskId:pomoObj.currentTaskId||null,taskType:pomoObj.currentTaskType||'task',taskTitle:pomoObj.currentTaskTitle||''};data.pomodoro.push(record);}
+    record.seconds=seconds;record.minutes=Math.floor(seconds/60);
+    record.taskId=pomoObj.currentTaskId||record.taskId||null;record.taskType=pomoObj.currentTaskType||record.taskType||'task';record.taskTitle=pomoObj.currentTaskTitle||record.taskTitle||'';
+  });
+  const now=Date.now();
+  if(force||now-pomoObj.lastLocalPersistAt>=5000){
+    try{if(session)bjSaveLocalSafetyCopy(session.userId,session.email,bjClone(data));}catch(e){}
+    pomoObj.lastLocalPersistAt=now;
+  }
+  if(force||now-pomoObj.lastCloudPersistAt>=30000){saveData();pomoObj.lastCloudPersistAt=now;}
   updateLiveFocusDashboard();
 }
 
-function syncPomodoroClock(persist = true) {
+function syncPomodoroClock(persist = true, forcePersist = false) {
   if (!pomoObj.running || !pomoObj.startTimestamp) return;
   const totalSeconds = Math.max(1, (Number(data.settings?.timerDuration) || 25) * 60);
   pomoObj.elapsedSeconds = Math.min(totalSeconds, Math.max(0, Math.floor((Date.now() - pomoObj.startTimestamp) / 1000)));
   pomoObj.remaining = Math.max(0, totalSeconds - pomoObj.elapsedSeconds);
-  if (persist) persistPomodoroProgress();
+  if (persist) persistPomodoroProgress(forcePersist);
   updatePomoDisplay();
 }
 
@@ -3088,24 +3222,30 @@ function playTimerSound() {
 }
 
 function finishPomodoro() {
-  syncPomodoroClock(true);
+  syncPomodoroClock(true, true);
   clearInterval(pomoObj.interval);
   pomoObj.interval = null;
+  finalizePomodoroActiveSegment();
   pomoObj.running = false;
   pomoObj.remaining = 0;
-  persistPomodoroProgress();
+  persistPomodoroProgress(true);
   updatePomoDisplay();
   updateLiveFocusDashboard();
   playTimerSound();
 
   const taskId = pomoObj.currentTaskId;
   const taskTitle = pomoObj.currentTaskTitle;
+  const taskType = pomoObj.currentTaskType || 'task';
+  const taskDate = pomoObj.currentTaskDate || dateISO();
   if (taskId) {
-    customConfirm(`آیا کار «${taskTitle}» را انجام شده تیک بزنیم؟`, 'پایان تایمر').then(ok => {
-      if (ok) {
-        const task = data.weeklyTasks.find(x => String(x.id) === String(taskId));
-        if (task) { task.done = true; saveData(); renderWeeklyTasks(); renderTodayPlan(); renderDashboard(); }
+    customConfirm(`آیا «${taskTitle}» را انجام‌شده ثبت کنیم؟`, 'پایان تایمر').then(ok => {
+      if (!ok) return;
+      if(taskType==='routine'){
+        data.routineLogs=data.routineLogs||[];const idx=data.routineLogs.findIndex(l=>String(l.routineId??l.eventId)===String(taskId)&&l.date===taskDate);const entry={routineId:taskId,date:taskDate,status:'done',note:'تکمیل با تایمر تمرکز'};if(idx>=0)data.routineLogs[idx]=entry;else data.routineLogs.push(entry);
+      }else{
+        const task=data.weeklyTasks.find(x=>String(x.id)===String(taskId));if(task){task.done=true;task.eventStatus='done';}
       }
+      saveData();renderWeeklyTasks();renderTodayPlan();renderTimeline();renderNotebook();renderDashboard();
     });
   } else {
     customAlert(`🎉 تایمر ${(data.settings?.timerDuration || 25)} دقیقه‌ای تمام شد!`, 'پایان تایمر');
@@ -3113,8 +3253,12 @@ function finishPomodoro() {
 
   pomoObj.currentTaskTitle = null;
   pomoObj.currentTaskId = null;
+  pomoObj.currentTaskType = null;
+  pomoObj.currentTaskDate = null;
   pomoObj.startTimestamp = null;
+  pomoObj.sessionStartedAt = null;
   pomoObj.sessionDate = null;
+  pomoObj.sessionSegments = []; pomoObj.activeSegmentStartedAt = null;
   pomoObj.sessionId = null;
   setTimeout(() => {
     pomoObj.remaining = (data.settings?.timerDuration || 25) * 60;
@@ -3126,7 +3270,7 @@ function finishPomodoro() {
   }, 2000);
 }
 
-function startPomodoro(taskTitle = null, taskId = null) {
+function startPomodoro(taskTitle = null, taskId = null, taskType = 'task', taskDate = dateISO()) {
   $('pomoBox').classList.remove('hidden');
   if (pomoObj.running) return;
 
@@ -3135,14 +3279,20 @@ function startPomodoro(taskTitle = null, taskId = null) {
     pomoObj.elapsedSeconds = 0;
     pomoObj.recordedMinutes = 0;
     pomoObj.sessionDate = dateISO();
+    pomoObj.sessionStartedAt = Date.now();
+    pomoObj.sessionSegments = []; pomoObj.activeSegmentStartedAt = null;
+    pomoObj.lastLocalPersistAt = 0; pomoObj.lastCloudPersistAt = 0;
   }
 
   if (taskTitle) pomoObj.currentTaskTitle = taskTitle;
   if (taskId) pomoObj.currentTaskId = taskId;
-  if (!pomoObj.currentTaskTitle) { pomoObj.currentTaskTitle = null; pomoObj.currentTaskId = null; }
+  if (taskId) { pomoObj.currentTaskType = taskType || 'task'; pomoObj.currentTaskDate = taskDate || dateISO(); }
+  if (!pomoObj.currentTaskTitle) { pomoObj.currentTaskTitle = null; pomoObj.currentTaskId = null; pomoObj.currentTaskType = null; pomoObj.currentTaskDate = null; }
 
   pomoObj.running = true;
+  pomoObj.activeSegmentStartedAt = Date.now();
   pomoObj.startTimestamp = Date.now() - (pomoObj.elapsedSeconds * 1000);
+  if(!pomoObj.sessionStartedAt)pomoObj.sessionStartedAt=pomoObj.startTimestamp;
   updatePomoDisplay();
   updateLiveFocusDashboard();
 
@@ -3173,29 +3323,34 @@ $('pomoDurationInput')?.addEventListener('change', e => {
 
 $('pomoToggle').addEventListener('click', () => {
   if (pomoObj.running) {
-    syncPomodoroClock(true);
+    syncPomodoroClock(true, true);
     clearInterval(pomoObj.interval);
     pomoObj.interval = null;
+    finalizePomodoroActiveSegment();
     pomoObj.running = false;
+    persistPomodoroProgress(true);
     pomoObj.startTimestamp = null;
     updatePomoDisplay();
     updateLiveFocusDashboard();
     flash('تایمر متوقف شد. زمان تمرکز تا همین ثانیه ذخیره شد.');
   } else {
-    startPomodoro(pomoObj.currentTaskTitle, pomoObj.currentTaskId);
+    startPomodoro(pomoObj.currentTaskTitle, pomoObj.currentTaskId, pomoObj.currentTaskType||'task', pomoObj.currentTaskDate||dateISO());
   }
 });
 
 $('pomoClose').addEventListener('click', () => {
-  if (pomoObj.running) syncPomodoroClock(true);
+  if (pomoObj.running) { syncPomodoroClock(true, true); finalizePomodoroActiveSegment(); persistPomodoroProgress(true); }
+  else if(pomoObj.elapsedSeconds>0) persistPomodoroProgress(true);
   clearInterval(pomoObj.interval);
   pomoObj.interval = null;
   pomoObj.running = false;
   pomoObj.remaining = (data.settings?.timerDuration || 25) * 60;
   pomoObj.currentTaskTitle = null;
   pomoObj.currentTaskId = null;
+  pomoObj.currentTaskType = null; pomoObj.currentTaskDate = null;
   pomoObj.sessionId = null;
-  pomoObj.sessionDate = null;
+  pomoObj.sessionSegments = []; pomoObj.activeSegmentStartedAt = null;
+  pomoObj.sessionDate = null; pomoObj.sessionStartedAt = null;
   pomoObj.startTimestamp = null;
   pomoObj.elapsedSeconds = 0;
   pomoObj.recordedMinutes = 0;
@@ -3207,7 +3362,7 @@ $('pomoClose').addEventListener('click', () => {
 
 window.addEventListener('pagehide', () => {
   if (pomoObj.running) {
-    syncPomodoroClock(true);
+    syncPomodoroClock(true, true);
     try {
       if (session) {
         localStorage.setItem(STORAGE_CACHE_PREFIX + session.email, JSON.stringify(data));
@@ -3244,92 +3399,53 @@ $('globalSearchInput')?.addEventListener('input', e => {
 });
 
 // ==================== سیستم یادآورها و مناسبت‌ها ====================
-function renderReminders() {
-  const el = $('reminderList'); if (!el) return;
-  if (!data.reminders || data.reminders.length === 0) {
-    el.innerHTML = '<p class="muted" style="text-align:center;padding:20px">هنوز مناسبتی ثبت نکرده‌اید.</p>';
-    return;
+function isoDayDiff(fromIso,toIso){const a=new Date(fromIso+'T12:00:00'),b=new Date(toIso+'T12:00:00');return Math.round((b-a)/86400000);}
+function jalaliDateToIso(y,m,d){try{const g=new persianDate([y,m,d,12,0,0]).toCalendar('gregorian');return `${g.year()}-${String(g.month()).padStart(2,'0')}-${String(g.date()).padStart(2,'0')}`;}catch{return '';}}
+function jalaliClampedDateToIso(y,m,day){for(let d=Math.max(1,Math.min(31,Number(day)||1));d>=1;d--){const iso=jalaliDateToIso(y,m,d);if(iso){const p=jalaliParts(iso);if(p.year===y&&p.month===m&&p.day===d)return iso;}}return jalaliDateToIso(y,m,1);}
+function reminderOccurrence(reminder,baseIso=dateISO()){
+  const base=reminder.date||baseIso,repeat=reminder.repeat||'none';if(repeat==='none')return base;
+  const today=jalaliParts(baseIso),orig=jalaliParts(base);
+  if(repeat==='weekly'){
+    const baseDay=new Date(base+'T12:00:00').getDay();
+    const anchor=base>baseIso?base:baseIso;const candidate=new Date(anchor+'T12:00:00');
+    candidate.setDate(candidate.getDate()+((baseDay-candidate.getDay()+7)%7));
+    return dateISO(candidate);
   }
-  
-  const today = new Date(); today.setHours(0,0,0,0);
-  const sorted = [...data.reminders].sort((a,b) => new Date(a.date) - new Date(b.date));
-  
-  el.innerHTML = sorted.map(r => {
-    const rDate = new Date(r.date + 'T12:00:00');
-    const diffDays = Math.ceil((rDate - today) / (1000 * 60 * 60 * 24));
-    let statusHtml = '';
-    if (diffDays < 0) statusHtml = `<span class="status late">گذشته (${fa(-diffDays)} روز پیش)</span>`;
-    else if (diffDays === 0) statusHtml = `<span class="status gold" style="animation:pulseTimer 2s infinite">امروز!</span>`;
-    else if (diffDays <= r.remindDaysBefore) statusHtml = `<span class="status blue">${fa(diffDays)} روز مانده</span>`;
-    else statusHtml = `<span class="status">${fa(diffDays)} روز مانده</span>`;
-
-    return `<article class="item">
-      <div class="item-main">
-        <div class="item-title">🎉 ${safe(r.title)}</div>
-        <div class="item-meta">
-          <span>📅 ${toFaDate(r.date)}</span>
-          <span>⏰ یادآوری از ${fa(r.remindDaysBefore)} روز قبل</span>
-          ${statusHtml}
-        </div>
-      </div>
-      <div class="item-actions">
-        <button class="danger small" data-del-reminder="${r.id}">×</button>
-      </div>
-    </article>`;
+  if(repeat==='monthly'){
+    const anchor=base>baseIso?base:baseIso;const a=jalaliParts(anchor);let y=a.year,m=a.month;let candidate=jalaliClampedDateToIso(y,m,orig.day);if(candidate<anchor){m++;if(m>12){m=1;y++;}candidate=jalaliClampedDateToIso(y,m,orig.day);}return candidate;
+  }
+  if(repeat==='yearly'){
+    const anchor=base>baseIso?base:baseIso;let y=jalaliParts(anchor).year;let candidate=jalaliClampedDateToIso(y,orig.month,orig.day);if(candidate<anchor){y++;candidate=jalaliClampedDateToIso(y,orig.month,orig.day);}return candidate;
+  }
+  return base;
+}
+function reminderDaysRemaining(r,fromIso=dateISO()){return isoDayDiff(fromIso,reminderOccurrence(r,fromIso));}
+function renderReminders() {
+  const el=$('reminderList');if(!el)return;if(!data.reminders?.length){el.innerHTML='<p class="muted" style="text-align:center;padding:20px">هنوز مناسبتی ثبت نکرده‌اید.</p>';return;}
+  const sorted=[...data.reminders].sort((a,b)=>reminderOccurrence(a).localeCompare(reminderOccurrence(b)));
+  el.innerHTML=sorted.map(r=>{const next=reminderOccurrence(r),diff=reminderDaysRemaining(r),repeatLabel={none:'بدون تکرار',weekly:'هفتگی',monthly:'ماهانه',yearly:'سالانه'}[r.repeat||'none'];let status=diff===0?'<span class="status gold">امروز</span>':diff>0?`<span class="status blue">${fa(diff)} روز مانده</span>`:'<span class="status late">گذشته</span>';
+    return `<article class="item"><div class="item-main"><div class="item-title">🎉 ${safe(r.title)}</div><div class="item-meta"><span>📅 ${toFaDate(next)}</span><span>⏰ ساعت ${safe(r.time||'09:00')}</span><span>یادآوری از ${fa(r.remindDaysBefore||0)} روز قبل</span><span class="status">${repeatLabel}</span>${status}</div></div><div class="item-actions"><button class="danger small" data-del-reminder="${r.id}">×</button></div></article>`;
   }).join('');
 }
-
-function renderTodayReminders() {
-  const widget = $('todayRemindersWidget'); if (!widget) return;
-  if (!data.reminders || data.reminders.length === 0) { widget.innerHTML = ''; return; }
-  
-  const today = new Date(); today.setHours(0,0,0,0);
-  const activeReminders = data.reminders.filter(r => {
-    const rDate = new Date(r.date + 'T12:00:00');
-    const diffDays = Math.ceil((rDate - today) / (1000 * 60 * 60 * 24));
-    return diffDays >= 0 && diffDays <= r.remindDaysBefore;
-  });
-
-  if (activeReminders.length === 0) { widget.innerHTML = ''; return; }
-
-  widget.innerHTML = `<div class="panel" style="background:linear-gradient(135deg, var(--goldbg), var(--white)); border-color:var(--gold);">
-    <h3 style="color:var(--brown); display:flex; align-items:center; gap:8px;">🔔 یادآورهای مهم</h3>
-    <div style="display:flex; flex-direction:column; gap:10px; margin-top:12px;">
-      ${activeReminders.map(r => {
-        const diff = Math.ceil((new Date(r.date + 'T12:00:00') - today) / 86400000);
-        return `<div style="display:flex; justify-content:space-between; background:var(--white); padding:10px 15px; border-radius:10px; border-right:4px solid var(--gold);">
-          <div><strong>${safe(r.title)}</strong><div class="muted" style="font-size:11px;">تاریخ: ${toFaDate(r.date)}</div></div>
-          <div style="color:var(--red); font-weight:800; font-size:13px;">${diff === 0 ? 'همین امروز!' : `${fa(diff)} روز مانده`}</div>
-        </div>`;
-      }).join('')}
-    </div>
-  </div>`;
+function renderTodayReminders(){
+  const widget=$('todayRemindersWidget');if(!widget)return;if(!data.reminders?.length){widget.innerHTML='';return;}
+  const active=data.reminders.map(r=>({r,diff:reminderDaysRemaining(r)})).filter(x=>x.diff>=0&&x.diff<=Number(x.r.remindDaysBefore||0));
+  if(!active.length){widget.innerHTML='';return;}
+  widget.innerHTML=`<div class="panel" style="background:linear-gradient(135deg,var(--goldbg),var(--white));border-color:var(--gold)"><h3 style="color:var(--brown)">🔔 یادآورهای مهم</h3><div style="display:flex;flex-direction:column;gap:10px;margin-top:12px">${active.map(({r,diff})=>`<div style="display:flex;justify-content:space-between;gap:8px;background:var(--white);padding:10px 15px;border-radius:10px;border-right:4px solid var(--gold)"><div><strong>${safe(r.title)}</strong><div class="muted" style="font-size:11px">${toFaDate(reminderOccurrence(r))} · ساعت ${safe(r.time||'09:00')}</div></div><div style="color:var(--red);font-weight:800;font-size:13px">${diff===0?'همین امروز!':`${fa(diff)} روز مانده`}</div></div>`).join('')}</div></div>`;
 }
-
-$('reminderForm')?.addEventListener('submit', e => {
-  e.preventDefault();
-  const title = $('rmTitle').value.trim();
-  const date = getPersianDateValue('rmDate');
-  const remindDaysBefore = Number($('rmDays').value);
-  
-  if (!title || !date) { flash('عنوان و تاریخ الزامی است', 'error'); return; }
-  
-  if (!data.reminders) data.reminders = [];
-  data.reminders.push({ id: nid(), title, date, remindDaysBefore });
-  saveData(); renderReminders(); renderTodayReminders();
-  e.target.reset(); setPersianDateValue('rmDate', dateISO());
-  flash('مناسبت با موفقیت ثبت شد 🎉');
-});
-
-document.addEventListener('click', async e => {
-  const delBtn = e.target.closest('[data-del-reminder]');
-  if (delBtn) {
-    if (await customConfirm('این مناسبت حذف شود؟')) {
-      data.reminders = data.reminders.filter(r => String(r.id) !== String(delBtn.dataset.delReminder));
-      saveData(); renderReminders(); renderTodayReminders(); flash('حذف شد');
-    }
-  }
-});
+function updateReminderPermissionStatus(){const el=$('reminderPermissionStatus');if(!el)return;if(!('Notification'in window)){el.textContent='این مرورگر از اعلان سیستم پشتیبانی نمی‌کند.';return;}el.textContent=Notification.permission==='granted'?'اعلان مرورگر فعال است؛ فقط هنگام باز بودن سایت زمان‌بندی بررسی می‌شود.':Notification.permission==='denied'?'اجازه اعلان مسدود شده؛ از تنظیمات مرورگر آن را فعال کن.':'برای دریافت اعلان، اجازه مرورگر را فعال کن.';}
+$('enableReminderNotifications')?.addEventListener('click',async()=>{if(!('Notification'in window)){flash('این مرورگر اعلان سیستم را پشتیبانی نمی‌کند.','error');return;}const p=await Notification.requestPermission();updateReminderPermissionStatus();if(p==='granted')checkScheduledReminders(false);});
+function checkScheduledReminders(force=false){
+  if(!('Notification'in window)||Notification.permission!=='granted')return;
+  const now=new Date(),today=dateISO(now),hhmm=`${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  if(!data.reminderNotificationLog||!Array.isArray(data.reminderNotificationLog))data.reminderNotificationLog=[];
+  let changed=false;
+  (data.reminders||[]).forEach(r=>{const due=reminderOccurrence(r,today),diff=isoDayDiff(today,due),lead=Math.max(0,Number(r.remindDaysBefore)||0),time=r.time||'09:00';if(diff<0||diff>lead||(!force&&hhmm<time))return;const key=`${r.id}_${today}_${due}`;if(data.reminderNotificationLog.includes(key))return;try{new Notification(r.title,{body:diff===0?'موعد این مناسبت امروز است.':`${fa(diff)} روز تا موعد باقی مانده · ${toFaDate(due)}`,tag:key});data.reminderNotificationLog.push(key);changed=true;}catch(e){console.warn('Notification could not be shown',e);}});
+  if(changed){if(data.reminderNotificationLog.length>500)data.reminderNotificationLog=data.reminderNotificationLog.slice(-500);saveData();}
+}
+$('reminderForm')?.addEventListener('submit',e=>{e.preventDefault();const title=$('rmTitle').value.trim(),date=getPersianDateValue('rmDate'),remindDaysBefore=Number($('rmDays').value),repeat=$('rmRepeat')?.value||'none',time=$('rmTime')?.value||'09:00';if(!title||!date){flash('عنوان و تاریخ الزامی است','error');return;}data.reminders=data.reminders||[];data.reminders.push({id:nid(),title,date,remindDaysBefore,repeat,time,createdAt:new Date().toISOString()});saveData();renderReminders();renderTodayReminders();e.target.reset();setPersianDateValue('rmDate',dateISO());if($('rmTime'))$('rmTime').value='09:00';flash('مناسبت با موفقیت ثبت شد 🎉');});
+document.addEventListener('click',async e=>{const del=e.target.closest('[data-del-reminder]');if(del&&await customConfirm('این مناسبت حذف شود؟')){data.reminders=data.reminders.filter(r=>String(r.id)!==String(del.dataset.delReminder));saveData();renderReminders();renderTodayReminders();flash('حذف شد');}});
+updateReminderPermissionStatus();setInterval(()=>checkScheduledReminders(false),20000);setTimeout(()=>checkScheduledReminders(false),2500);
 
 const ACHIEVEMENTS_LIST = [
   { id: 'start_1', category: 'شروع و پایه‌گذاری', icon: '🌱', title: 'نخستین قدم', desc: 'اولین عادت خود را بسازید.', check: () => data.habits.length >= 1, progress: () => ({ current: data.habits.length, target: 1 }) },
@@ -3436,7 +3552,7 @@ $('archiveOldTasksBtn')?.addEventListener('click', async () => {
     } else { remainingTasks.push(t); }
   });
   data.weeklyTasks = remainingTasks;
-  saveData(); renderAll(); flash(`${fa(archivedCount)} تسک به آرشیو منتقل شد. ✅`);
+  saveData(); renderAll(); flash(`${fa(archivedCount)} تسک به آرشیو منتقل شد. آمار ماه‌های گذشته با داده‌های آرشیوشده حفظ می‌شود. ✅`);
 });
 
 function buildPrintReport() {
@@ -3497,13 +3613,14 @@ function addVoiceButton(textarea) {
     } catch (err) { flash('مرورگر شما از ثبت صوتی پشتیبانی نمی‌کند', 'error'); }
   });
 }
-function initVoiceInputs() { if (!voiceSupported) return; document.querySelectorAll('#morningNote, #eveningNote, #mgDesc, #modalNote, #eventModalNote, #finDesc').forEach(ta => { addVoiceButton(ta); }); }
+function initVoiceInputs() { if (!voiceSupported) return; document.querySelectorAll('#morningNote, #eveningNote, #mgDesc, #modalNote, #eventModalNote, #finDesc, #moodNote, #manualNoteBody').forEach(ta => { addVoiceButton(ta); }); }
 function initExtras() { setTimeout(initVoiceInputs, 500); if (data.settings?.fabEnabled === false) $('fabContainer')?.classList.add('hidden'); else $('fabContainer')?.classList.remove('hidden'); }
 
 document.addEventListener('click', async e => {
   const t = e.target;
+  const aiAction=t.closest('[data-ai-action]');if(aiAction){const a=aiAction.dataset.aiAction;if(a==='planner'||a==='goals'){document.querySelector('[data-tab=\"planner\"]')?.click();document.querySelector('[data-sub=\"'+(a==='goals'?'monthly':'weekly-tasks')+'\"]')?.click();}else if(a==='habits')document.querySelector('[data-tab=\"habits\"]')?.click();else if(a==='mood')document.querySelector('[data-tab=\"mood\"]')?.click();else if(a==='focus'){$('pomoBox')?.classList.remove('hidden');updatePomoDisplay();}return;}
   const timerBtn = t.closest('[data-start-timer-title]');
-  if (timerBtn) { e.stopPropagation(); startPomodoro(timerBtn.dataset.startTimerTitle, timerBtn.dataset.startTimerId); return; }
+  if (timerBtn) { e.stopPropagation(); startPomodoro(timerBtn.dataset.startTimerTitle, timerBtn.dataset.startTimerId, timerBtn.dataset.startTimerType||'task', timerBtn.dataset.startTimerDate||dateISO()); return; }
   const ue = t.closest('[data-universal-edit]');
   if (ue) { openUniversalEditor(ue.dataset.universalEdit, ue.dataset.editId || '', ue.dataset.editDate); return; }
   const ud = t.closest('[data-universal-del]');
@@ -3538,6 +3655,9 @@ document.addEventListener('click', async e => {
         data.routineLogs = (data.routineLogs || []).filter(l => !((String(l.routineId) === String(id) || String(l.eventId) === String(id)) && l.date === date));
         saveData(); renderNotebook(); renderTimeline(); renderDashboard(); flash('یادداشت حذف شد');
       }
+    } else if (type === 'mood') {
+      const entry = (data.mood||[]).find(m=>m.date===date);
+      if (entry && await customConfirm('فقط یادداشت این ثبت خلق‌وخو پاک شود؟ امتیازها باقی می‌مانند.')) { entry.note=''; saveData(); renderNotebook(); renderMood(); flash('یادداشت خلق‌وخو پاک شد'); }
     }
     return;
   }
@@ -3552,7 +3672,9 @@ document.addEventListener('click', async e => {
     if (startTime === false || !String(startTime).trim()) return;
     const endTime = await customPrompt('ساعت پایان (مثال: 17:30):', r.endTime, 'ویرایش برنامه');
     if (endTime === false || !String(endTime).trim()) return;
-    
+    const validRoutineTime=/^([01]\d|2[0-3]):[0-5]\d$/;
+    if(!validRoutineTime.test(String(startTime).trim())||!validRoutineTime.test(String(endTime).trim())||String(endTime).trim()<=String(startTime).trim()){flash('ساعت‌ها معتبر نیستند؛ پایان باید بعد از شروع باشد.','error');return;}
+    const candidate={...r,startTime:String(startTime).trim(),endTime:String(endTime).trim()};const conflict=routineHasConflict(candidate,id);if(conflict){flash(`این بازه با برنامه «${safe(conflict.title)}» تداخل دارد.`,'error');return;}
     r.title = String(title).trim();
     r.startTime = String(startTime).trim();
     r.endTime = String(endTime).trim();
@@ -3574,7 +3696,9 @@ document.addEventListener('click', async e => {
   const th = t.closest('[data-toggle-habit]');
   if (th) { const hid = th.dataset.toggleHabit; const today = dateISO(); const idx = data.logs.findIndex(l => String(l.habit_id) === String(hid) && l.date === today); if (idx >= 0 && data.logs[idx].status === 'done') data.logs.splice(idx, 1); else { const log = { habit_id: hid, date: today, status: 'done', note: data.logs[idx]?.note || '' }; if (idx >= 0) data.logs[idx] = log; else data.logs.push(log); } saveData(); renderHabits(); renderToday(); if($('tab-dashboard').classList.contains('hidden') === false) renderDashboard(); checkAchievements(); return; }
   const twt = t.closest('[data-toggle-wt], [data-toggle-wt-today]');
-  if (twt) { const id = twt.dataset.toggleWt || twt.dataset.toggleWtToday; const task = data.weeklyTasks.find(x => String(x.id) === String(id)); if (task) { task.done = !task.done; saveData(); renderWeeklyTasks(); renderTodayPlan(); if($('tab-dashboard').classList.contains('hidden') === false) renderDashboard(); checkAchievements(); } return; }
+  if (twt) { const id = twt.dataset.toggleWt || twt.dataset.toggleWtToday; const task = data.weeklyTasks.find(x => String(x.id) === String(id)); if (task) { task.done = !task.done; task.eventStatus=task.done?'done':''; saveData(); renderWeeklyTasks(); renderTodayPlan(); if($('tab-dashboard').classList.contains('hidden') === false) renderDashboard(); checkAchievements(); } return; }
+  const editHabit=t.closest('[data-edit-habit]');
+  if(editHabit){const h=data.habits.find(x=>String(x.id)===String(editHabit.dataset.editHabit));if(!h)return;$('habitEditId').value=h.id;$('habitEditName').value=h.name||'';$('habitEditWeeklyTarget').value=h.weeklyTarget||7;const active=Array.isArray(h.activeDays)?h.activeDays.map(Number):[0,1,2,3,4,5,6];document.querySelectorAll('[data-habit-edit-day]').forEach(x=>x.checked=active.includes(Number(x.value)));$('habitEditModal').classList.remove('hidden');return;}
   const delHabit = t.closest('[data-del="habits"]');
   if (delHabit) { if (!(await customConfirm('این عادت پاک شود؟'))) return; data.habits = data.habits.filter(h => String(h.id) !== String(delHabit.dataset.id)); data.logs = data.logs.filter(l => String(l.habit_id) !== String(delHabit.dataset.id)); saveData(); renderAll(); flash('حذف شد'); return; }
   const delFin = t.closest('[data-del="finance"]');
