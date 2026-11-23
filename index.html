@@ -740,9 +740,9 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
             <div class="field"><label>نوع تراکنش</label><select id="finType"><option>درآمد</option><option>هزینه</option><option>خرج اضافی</option><option>پس‌انداز</option><option>خرج نکرده (صرفه‌جویی)</option></select></div>
             <div class="field"><label>دسته‌بندی</label><select id="finCategory"></select></div>
             <div class="field"><label>حساب</label><select id="finAccount"></select></div>
-            <div class="field"><label>شرح</label><input id="finDesc" maxlength="180" placeholder="شرح تراکنش"></div>
+            <div class="field"><label>شرح</label><input id="finDesc" maxlength="180" placeholder="شرح تراکنش"><div id="finCategorySuggestion" class="muted" style="font-size:12px;margin-top:5px"></div></div>
             <div class="field"><label>مبلغ (تومان)</label><input id="finAmount" type="text" inputmode="numeric" dir="ltr" class="fin-money-input" data-fin-money-input="true" min="1" step="1" required placeholder="مثلاً ۲۵۰٬۰۰۰"></div>
-            <button type="submit">ثبت تراکنش</button>
+            <button type="submit" id="finSubmitNormal">ثبت تراکنش</button><button type="submit" class="secondary" id="finSubmitQuick">ثبت و ادامه</button>
           </form>
           <p class="muted" style="margin-top:10px">«خرج اضافی» از موجودی حساب کم می‌شود و جداگانه آمارگیری می‌شود. «پس‌انداز آماری» و «خرج نکرده» خنثی هستند و موجودی حساب را تغییر نمی‌دهند.</p>
         </div>
@@ -755,14 +755,14 @@ body.mode-3d .panel *, body.mode-3d .stat *, body.mode-3d .goal-card *, body.mod
         </div><div class="panel"><h3>حساب‌های من</h3><div id="finAccountsList" class="grid2"></div><h3 style="margin-top:20px">سوابق انتقال بین حساب‌ها</h3><div id="finTransfersList" class="list"></div></div>
       </div>
       <div data-fin-panel="waste" class="hidden"><div class="panel"><h3>گزارش خرج‌های اضافی</h3><div class="fin-waste-total"><span>مجموع خرج اضافی این ماه</span><strong id="finWasteTotal">۰ تومان</strong></div><p class="muted">این جدول فقط خریدها و هزینه‌هایی را نشان می‌دهد که می‌توانستی از آن‌ها صرف‌نظر کنی. این مبالغ قبلاً از حساب کسر شده‌اند و در محاسبه موجودی دوباره کسر نمی‌شوند.</p><div id="finWasteList" class="list"></div></div></div>
-      <div data-fin-panel="budgets" class="hidden"><div class="panel"><h3>تعیین بودجه ماهانه</h3><form id="budgetForm" class="formgrid2"><div class="field"><label>دسته هزینه</label><select id="budgetCategory"></select></div><div class="field"><label>سقف بودجه (تومان)</label><input id="budgetAmount" type="text" inputmode="numeric" dir="ltr" class="fin-money-input" data-fin-money-input="true" min="1" required></div><button type="submit">ذخیره بودجه ماه جاری</button></form></div><div class="panel"><h3>وضعیت بودجه‌های این ماه</h3><div id="finBudgetsList" class="grid2"></div></div></div>
+      <div data-fin-panel="budgets" class="hidden"><div class="panel"><h3>تعیین بودجه ماهانه یا هفتگی</h3><form id="budgetForm" class="formgrid2"><div class="field"><label>دوره بودجه</label><select id="finBudgetPeriod"><option value="monthly">ماهانه</option><option value="weekly">هفتگی (شنبه تا جمعه)</option></select></div><div class="field"><label>دسته هزینه</label><select id="budgetCategory"></select></div><div class="field"><label>سقف بودجه (تومان)</label><input id="budgetAmount" type="text" inputmode="numeric" dir="ltr" class="fin-money-input" data-fin-money-input="true" min="1" required></div><button type="submit">ذخیره بودجه این دوره</button></form></div><div class="panel"><h3>وضعیت بودجه‌های دوره جاری</h3><div id="finBudgetsList" class="grid2"></div></div></div>
       <div data-fin-panel="categories" class="hidden"><div class="panel"><h3>ساخت دسته‌بندی حرفه‌ای</h3><form id="categoryForm" class="formgrid2"><div class="field"><label>نام دسته</label><input id="categoryName" required placeholder="مثلاً نگهداری حیوان خانگی"></div><div class="field"><label>نوع دسته</label><select id="categoryType"><option value="expense">هزینه</option><option value="income">درآمد</option></select></div><div class="field"><label>جایگاه دسته‌بندی</label><select id="categoryParent"><option value="">دسته اصلی مستقل</option></select></div><p class="fin-category-help">برای ساخت دسته اصلی، گزینه «دسته اصلی مستقل» را انتخاب کن. برای ساخت زیر‌دسته، دسته اصلی والد را انتخاب کن؛ مثلاً خوراک ← سوپرمارکت.</p><div class="field"><label>آیکون (ایموجی)</label><input id="categoryIcon" maxlength="8" placeholder="📁"></div><div class="field"><label>رنگ</label><input id="categoryColor" type="color" value="#78845b"></div><button type="submit">افزودن دسته</button></form></div><div class="panel"><h3>ساختار دسته‌بندی‌ها</h3><p class="muted">دسته‌های اصلی و زیر‌دسته‌ها جدا و درختی نمایش داده می‌شوند. هر زیر‌دسته به یک دسته اصلی از همان نوع درآمد/هزینه متصل است.</p><div id="finCategoriesList" class="fin-category-list"></div></div></div>
       <div data-fin-panel="commitments" class="hidden"><div class="panel"><h3>ثبت بدهی، طلب یا وام</h3><form id="commitmentForm" class="formgrid2" autocomplete="off"><div class="field"><label>نوع</label><select id="commitType"><option value="debt">بدهی</option><option value="receivable">طلب</option><option value="loan">وام</option></select></div><div class="field"><label>عنوان</label><input id="commitTitle" required placeholder="مثلاً وام یا قرض"></div><div class="field"><label>طرف حساب</label><input id="commitPerson" placeholder="نام شخص یا بانک"></div><div class="field"><label>مبلغ اصل (تومان)</label><input id="commitPrincipal" type="text" inputmode="numeric" dir="ltr" class="fin-money-input" data-fin-money-input="true" min="1" required></div><div class="field hidden" id="commitAccountWrap"><label id="commitAccountLabel" for="commitAccount">حساب مربوط به اثر مالی</label><select id="commitAccount"></select></div><div class="field"><label>سررسید / اولین قسط</label><div class="date-input-wrapper"><input id="commitDue" type="text" class="persian-date" placeholder="انتخاب تاریخ" inputmode="none"></div></div>
           <div id="commitLoanFields" class="fin-loan-fields hidden"><div class="field"><label>درصد سود</label><input id="commitRate" type="number" min="0" step="0.01" value="0"></div><div class="field"><label>کارمزد (مبلغ ثابت)</label><input id="commitFee" type="text" inputmode="numeric" dir="ltr" class="fin-money-input" data-fin-money-input="true" min="0" value="0"></div><div class="field"><label>تعداد اقساط</label><input id="commitInstallments" type="number" min="1" value="12"></div><p class="muted">محاسبه ساده: اصل وام + (اصل × درصد سود) + کارمزد. برای قراردادهایی با روش محاسبه بانکی متفاوت، مبلغ کل بازپرداخت را پس از ثبت با شرایط واقعی تطبیق بده.</p></div>
-          <div class="field fin-impact-option" id="commitDepositWrap"><label class="fin-check"><input id="commitDeposit" type="checkbox" autocomplete="off"> پول قرض/وام را دریافت کرده‌ام؛ مبلغ هنگام ثبت به حساب انتخابی اضافه شود</label><p class="muted">فقط اگر واقعاً پول را دریافت کرده‌ای این تیک را بزن. ثبت بدهی بابت خرید کالا یا خدمات، به‌تنهایی موجودی را زیاد نمی‌کند.</p></div><div class="field fin-impact-option hidden" id="commitOutflowWrap"><label class="fin-check"><input id="commitOutflow" type="checkbox" autocomplete="off"> مبلغ این طلب را قبلاً پرداخت کرده‌ام؛ هنگام ثبت از حساب انتخابی کم شود</label><p class="muted">برای طلبِ ناشی از کار یا خدماتی که انجام داده‌ای و هنوز پولش را نگرفته‌ای، این تیک را نزن.</p></div><div class="field fin-wide"><label>توضیحات</label><input id="commitDescription" placeholder="یادداشت اختیاری"></div><button type="submit">ثبت بدهی / طلب</button></form></div><div class="panel"><h3>فهرست بدهی‌ها و طلب‌ها</h3><div id="finCommitmentsList" class="grid2"></div></div></div>
+          <div class="field fin-impact-option" id="commitDepositWrap"><label class="fin-check"><input id="commitDeposit" type="checkbox" autocomplete="off"> پول قرض/وام را دریافت کرده‌ام؛ مبلغ هنگام ثبت به حساب انتخابی اضافه شود</label><p class="muted">فقط اگر واقعاً پول را دریافت کرده‌ای این تیک را بزن. ثبت بدهی بابت خرید کالا یا خدمات، به‌تنهایی موجودی را زیاد نمی‌کند.</p></div><div class="field fin-impact-option hidden" id="commitOutflowWrap"><label class="fin-check"><input id="commitOutflow" type="checkbox" autocomplete="off"> مبلغ این طلب را قبلاً پرداخت کرده‌ام؛ هنگام ثبت از حساب انتخابی کم شود</label><p class="muted">برای طلبِ ناشی از کار یا خدماتی که انجام داده‌ای و هنوز پولش را نگرفته‌ای، این تیک را نزن.</p></div><div class="field fin-wide"><label>توضیحات</label><input id="commitDescription" placeholder="یادداشت اختیاری"></div><button type="submit">ثبت بدهی / طلب</button></form></div><div class="panel"><div class="sectionhead"><h3>فهرست بدهی‌ها، طلب‌ها و اقساط</h3><input id="finCommitSearch" placeholder="جستجو در عنوان، طرف حساب، شرح یا سررسید..." style="min-width:220px"></div><div id="finCommitmentsList" class="grid2"></div></div></div>
       <div data-fin-panel="analytics" class="hidden">
         <div class="panel"><h3>📄 خروجی گزارش مالی</h3><p class="muted">بازه زمانی را در بالای بخش مدیریت مالی انتخاب کن. این دکمه همان گزارش کامل را با نمودارها، جزئیات خرج‌های اضافی، بدهی‌ها، طلب‌ها و تمام تراکنش‌های بازه تهیه می‌کند.</p><button type="button" id="finExportPdfBtn">📄 خروجی گزارش مالی PDF</button><p class="muted" style="font-size:11px">در پنجره چاپ، مقصد را «Save as PDF / ذخیره به‌صورت PDF» انتخاب کن.</p></div>
-        <div id="finAnalytics" class="grid2"></div>
+        <div class="panel"><div class="sectionhead"><div><h3>📅 هزینه‌های روزانه در ماه</h3><p class="muted">مقایسه‌ی خرج هر روز از ماه انتخاب‌شده؛ بر اساس تاریخ شمسی تراکنش‌ها.</p></div><select id="finDailyMonth" aria-label="انتخاب ماه برای نمودار روزانه"></select></div><div id="finDailyChart"></div></div><div id="finAnalytics" class="grid2"></div>
       </div>
       <div data-fin-panel="recurring" class="hidden"><div class="panel"><h3>تعریف تراکنش تکرارشونده</h3><form id="recurringForm" class="formgrid2"><div class="field"><label>عنوان</label><input id="recurringTitle" required></div><div class="field"><label>مبلغ</label><input id="recurringAmount" type="text" inputmode="numeric" dir="ltr" class="fin-money-input" data-fin-money-input="true" min="1" required></div><div class="field"><label>نوع</label><select id="recurringType"><option>هزینه</option><option>درآمد</option></select></div><div class="field"><label>روز ماه</label><input id="recurringDay" type="number" min="1" max="31" value="1"></div><div class="field"><label>دسته</label><select id="recurringCategory"></select></div><div class="field"><label>حساب</label><select id="recurringAccount"></select></div><button type="submit">ذخیره الگو</button></form><p class="muted">الگوها برای یادآوری و ثبت سریع نگهداری می‌شوند؛ ثبت خودکار بدون تأیید انجام نمی‌شود.</p></div><div class="panel"><h3>الگوهای ثبت‌شده</h3><div id="finRecurringList" class="list"></div></div></div>
     </section>
@@ -1292,8 +1292,6 @@ const BJ_SCHEMA_VERSION = 2;
 const BJ_BACKUP_PREFIX = 'bj_safety_backup_v1_';
 const bjClone = value => JSON.parse(JSON.stringify(value));
 const bjIsNotFound = err => Number(err?.code) === 404 || /not.?found|document.*exist/i.test(String(err?.message || ''));
-const BJ_CONFLICT_CODE = 'BJ_SYNC_CONFLICT';
-let bjCloudSyncState = { userId: null, docId: null, updatedAt: null, loadedFromCloud: false };
 
 // مهاجرت افزایشی: کلیدهای ناشناخته و داده‌های قبلی حفظ می‌شوند.
 const migrateBulletJournalData = input => {
@@ -1323,16 +1321,24 @@ const bjSaveLocalSafetyCopy = (userId, email, payload) => {
   }
 };
 
+// وضعیت اطمینان از نسخه ابری؛ کش محلی به‌تنهایی مجوز نوشتن روی ابر نیست.
+let cloudSyncState = { userId: null, verified: false, docId: null, updatedAt: null, blockedReason: '' };
+const bjSetCloudSyncState = (userId, verified, docId = null, updatedAt = null, blockedReason = '') => {
+  cloudSyncState = { userId, verified, docId, updatedAt, blockedReason };
+};
+const bjCloudConflictError = () => new Error('اطلاعات ابری در دستگاه دیگری تغییر کرده است. برای جلوگیری از حذف تغییرات، همگام‌سازی متوقف شد؛ ابتدا از نسخه محلی خروجی پشتیبان بگیر و سپس صفحه را تازه‌سازی کن.');
+
 const loadData=async(userId, email)=>{
   let parsed = null;
   let cloudReadError = null;
+  bjSetCloudSyncState(userId, false, null, null, 'در حال بررسی فضای ابری');
   try {
     const cachedDocId = localStorage.getItem(`docId_${userId}`);
     if (cachedDocId) {
       try {
         const doc = await databases.getDocument('main_db', 'journals', cachedDocId);
         parsed = JSON.parse(doc.data);
-        bjCloudSyncState = { userId, docId: doc.$id, updatedAt: doc.$updatedAt || null, loadedFromCloud: true };
+        bjSetCloudSyncState(userId, true, doc.$id, doc.$updatedAt || null, '');
       } catch (err) {
         // فقط شناسه نامعتبر را نادیده می‌گیریم؛ خطای شبکه/مجوز نباید به ساخت سند تازه منجر شود.
         if (bjIsNotFound(err)) localStorage.removeItem(`docId_${userId}`);
@@ -1345,10 +1351,12 @@ const loadData=async(userId, email)=>{
         const doc = res.documents[0];
         localStorage.setItem(`docId_${userId}`, doc.$id);
         parsed = JSON.parse(doc.data);
-        bjCloudSyncState = { userId, docId: doc.$id, updatedAt: doc.$updatedAt || null, loadedFromCloud: true };
+        bjSetCloudSyncState(userId, true, doc.$id, doc.$updatedAt || null, '');
+      } else {
+        // فقط پاسخ موفق و خالی از ابر اجازه ساخت سند جدید را می‌دهد.
+        bjSetCloudSyncState(userId, true, null, null, '');
       }
     }
-    if (!parsed) bjCloudSyncState = { userId, docId: null, updatedAt: null, loadedFromCloud: true };
     if (parsed) {
       const migrated = migrateBulletJournalData(parsed);
       bjSaveLocalSafetyCopy(userId, email, migrated);
@@ -1356,7 +1364,7 @@ const loadData=async(userId, email)=>{
     }
   } catch (err) {
     cloudReadError = err;
-    bjCloudSyncState = { userId, docId: null, updatedAt: null, loadedFromCloud: false };
+    bjSetCloudSyncState(userId, false, null, null, 'خواندن ابر ناموفق بود؛ فقط نسخه محلی در دسترس است');
     console.error('خطا در دریافت داده از فضای ابری؛ تلاش برای بازیابی کش:', err);
   }
   try {
@@ -1386,55 +1394,49 @@ const saveData=()=>{
     saveQueue = saveQueue.then(async()=>{
       // از ارسال اطلاعات نشست دیگری که بعداً وارد شده جلوگیری می‌شود.
       if (!session || session.userId !== activeSession.userId) return;
-      // داده‌ای که فقط از کش آفلاین آمده، تا بارگذاری موفق از ابر اجازه بازنویسی سند ابری ندارد.
-      if (!bjCloudSyncState.loadedFromCloud || bjCloudSyncState.userId !== activeSession.userId) {
-        if (syncEl) { syncEl.className = 'sync-badge error'; syncEl.textContent = '☁️ فقط محلی ذخیره شد؛ برای همگام‌سازی اتصال را بررسی و صفحه را دوباره بارگذاری کن'; }
-        return;
-      }
       const payload = bjClone(snapshot);
       payload._meta = { ...(payload._meta || {}), schemaVersion: BJ_SCHEMA_VERSION, revision: thisRevision, updatedAt: new Date().toISOString() };
       const serialized = JSON.stringify(payload);
       try {
-        let docId = bjCloudSyncState.docId || localStorage.getItem(`docId_${activeSession.userId}`);
-        if (docId) {
-          try {
-            // کنترل خوش‌بینانه تعارض: اگر سند از زمان بارگذاری در دستگاه دیگری تغییر کرده باشد، بازنویسی نمی‌کنیم.
-            const latest = await databases.getDocument('main_db', 'journals', docId);
-            const baseline = bjCloudSyncState.updatedAt;
-            if (baseline && latest.$updatedAt && latest.$updatedAt !== baseline) {
-              const conflict = new Error('اطلاعات ابری پس از بارگذاری این دستگاه تغییر کرده است. برای جلوگیری از حذف تغییرات جدیدتر، ذخیره متوقف شد.');
-              conflict.code = BJ_CONFLICT_CODE; throw conflict;
-            }
-            const updated = await databases.updateDocument('main_db', 'journals', docId, { data: serialized });
-            bjCloudSyncState = { ...bjCloudSyncState, updatedAt: updated.$updatedAt || latest.$updatedAt || baseline }; 
-          } catch (err) {
-            if (!bjIsNotFound(err)) throw err;
-            localStorage.removeItem(`docId_${activeSession.userId}`);
-            docId = null;
-          }
+        // اگر داده از کش و بدون تأیید موفق ابر بارگذاری شده باشد، هرگز آن را روی ابر ننویس.
+        if (!cloudSyncState.verified || cloudSyncState.userId !== activeSession.userId) {
+          throw new Error('ابر هنوز تأیید نشده است؛ نسخه محلی نگهداری شد و نوشتن ابری متوقف ماند.');
         }
-        if (!docId) {
+        let docId = cloudSyncState.docId || localStorage.getItem(`docId_${activeSession.userId}`);
+        if (docId) {
+          // بررسی خوش‌بینانه تعارض: اگر سند پس از بارگذاری تغییر کرده باشد، ذخیره را متوقف می‌کنیم.
+          const latest = await databases.getDocument('main_db', 'journals', docId);
+          const latestUpdatedAt = latest.$updatedAt || null;
+          if (cloudSyncState.updatedAt && latestUpdatedAt && latestUpdatedAt !== cloudSyncState.updatedAt) {
+            bjSetCloudSyncState(activeSession.userId, false, docId, latestUpdatedAt, 'تعارض تغییرات بین دستگاه‌ها');
+            throw bjCloudConflictError();
+          }
+          const updated = await databases.updateDocument('main_db', 'journals', docId, { data: serialized });
+          bjSetCloudSyncState(activeSession.userId, true, docId, updated.$updatedAt || latestUpdatedAt, '');
+        } else {
+          // پیش از ساخت سند، دوباره بررسی می‌کنیم دستگاه دیگری سندی نساخته باشد.
           const res = await databases.listDocuments('main_db', 'journals', [Query.equal('userId', activeSession.userId)]);
           if (res.documents.length > 0) {
-            // سند موجود را به‌روزرسانی می‌کنیم؛ در خطای شبکه/مجوز سند دوم نمی‌سازیم.
-            // سندی که بعد از بارگذاری ایجاد شده را خودکار بازنویسی نمی‌کنیم.
-            const conflict = new Error('در فضای ابری سندی ایجاد شده است که هنگام بارگذاری این دستگاه وجود نداشت. صفحه را دوباره بارگذاری کن.');
-            conflict.code = BJ_CONFLICT_CODE; throw conflict;
-          } else {
-            const created = await databases.createDocument('main_db', 'journals', ID.unique(), { userId: activeSession.userId, data: serialized });
-            localStorage.setItem(`docId_${activeSession.userId}`, created.$id);
-            bjCloudSyncState = { userId: activeSession.userId, docId: created.$id, updatedAt: created.$updatedAt || null, loadedFromCloud: true };
+            const found = res.documents[0];
+            bjSetCloudSyncState(activeSession.userId, false, found.$id, found.$updatedAt || null, 'سند ابری در دستگاه دیگری ساخته شده است');
+            throw bjCloudConflictError();
           }
+          const created = await databases.createDocument('main_db', 'journals', ID.unique(), { userId: activeSession.userId, data: serialized });
+          docId = created.$id;
+          localStorage.setItem(`docId_${activeSession.userId}`, docId);
+          bjSetCloudSyncState(activeSession.userId, true, docId, created.$updatedAt || null, '');
         }
         if (syncEl && session?.userId === activeSession.userId && thisRevision === saveRevision) {
           syncEl.className = 'sync-badge saved'; syncEl.textContent = '☁️ ذخیره شد';
         }
       } catch(err) {
         console.error('Save error (local safety copy retained):', err);
+        const conflict = /تغییر کرده است|تعارض|سند ابری/.test(String(err?.message || ''));
         if (syncEl && session?.userId === activeSession.userId) {
           syncEl.className = 'sync-badge error';
-          syncEl.textContent = err?.code === BJ_CONFLICT_CODE ? '⚠️ تعارض اطلاعات؛ تغییرات محلی محفوظ است، صفحه را دوباره بارگذاری کن' : '☁️ خطای همگام‌سازی؛ نسخه محلی محفوظ است';
+          syncEl.textContent = conflict ? '⚠️ تعارض اطلاعات؛ نسخه محلی محفوظ است' : (!cloudSyncState.verified ? '☁️ فقط نسخه محلی؛ ابر تأیید نشده' : '☁️ خطای همگام‌سازی؛ نسخه محلی محفوظ است');
         }
+        if (conflict && session?.userId === activeSession.userId) flash('تغییرات دستگاه دیگر شناسایی شد؛ برای جلوگیری از بازنویسی، همگام‌سازی متوقف شد. ابتدا از اطلاعات این دستگاه خروجی پشتیبان بگیر.', 'error');
       }
     }).catch(err => console.error('Save queue error:', err));
   }, 1000);
@@ -1573,7 +1575,10 @@ async function startApp(){
   finFormatMoneyInput($('initialAssetsInput'), false);
   
   const syncEl = $('syncStatus');
-  if (syncEl) { syncEl.className = 'sync-badge'; syncEl.textContent = '☁️ متصل'; }
+  if (syncEl) {
+    if (cloudSyncState.verified) { syncEl.className = 'sync-badge'; syncEl.textContent = '☁️ اتصال ابری تأیید شد'; }
+    else { syncEl.className = 'sync-badge error'; syncEl.textContent = '⚠️ فقط نسخه محلی؛ ابر تأیید نشده'; }
+  }
 
   applySettings();
   pomoObj.remaining = (Number(data.settings?.timerDuration) || 25) * 60;
@@ -2048,8 +2053,8 @@ function generateAIInsight() {
   const avgSleep = recentMoods.length ? (recentMoods.reduce((a,m) => a + (Number(m.sleep) || 0), 0) / recentMoods.length).toFixed(1) : 0;
   const today = dateISO();
   const todayFocus = data.pomodoro.filter(p => p.date === today).reduce((a,p) => a + (Number(p.minutes) || 0), 0);
-  const thisMonth = today.slice(0, 7);
-  const extraExpenses = data.finance.filter(f => f.month === thisMonth && f.type === 'خرج اضافی').reduce((a,f) => a + Number(f.amount), 0);
+  const thisMonth = finMonth(today);
+  const extraExpenses = data.finance.filter(f => finMonth(f.date) === thisMonth && f.type === 'خرج اضافی').reduce((a,f) => a + Number(f.amount), 0);
   let message = '';
 
   if (avgStress >= 3.5 && avgSleep <= 2.5) {
@@ -2354,8 +2359,7 @@ function finExportPdfReport(){
  const outflow=sum(t=>['هزینه','خرج اضافی','پرداخت بدهی','پرداخت قسط'].includes(t.type));
  const waste=sum(t=>t.type==='خرج اضافی'),neutral=sum(t=>['پس‌انداز','خرج نکرده (صرفه‌جویی)'].includes(t.type));
  const monthly={};
- const rangeStart=new Date(`${start.slice(0,7)}-01T12:00:00`),rangeEnd=new Date(`${end.slice(0,7)}-01T12:00:00`);
- for(let d=new Date(rangeStart);d<=rangeEnd;d.setMonth(d.getMonth()+1)){const k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;monthly[k]={label:finMonthLabel(k),income:0,outflow:0,waste:0,wasteCount:0,net:0};}
+ let cursor=start;while(cursor<=end){const k=finMonth(cursor);monthly[k]={label:finMonthLabel(k),income:0,outflow:0,waste:0,wasteCount:0,net:0};const bounds=jalaliMonthBounds(k);if(bounds.end>=end)break;const next=new Date(bounds.end+'T12:00:00');next.setDate(next.getDate()+1);cursor=dateISO(next);}
  txs.forEach(t=>{const k=finMonth(t.date);if(!monthly[k])monthly[k]={label:finMonthLabel(k),income:0,outflow:0,waste:0,wasteCount:0,net:0};if(['درآمد','دریافت وام','دریافت بدهی','وصول طلب'].includes(t.type))monthly[k].income+=Number(t.amount)||0;if(['هزینه','خرج اضافی','پرداخت بدهی','پرداخت قسط'].includes(t.type))monthly[k].outflow+=Number(t.amount)||0;if(t.type==='خرج اضافی'){monthly[k].waste+=Number(t.amount)||0;monthly[k].wasteCount++;}});
  Object.values(monthly).forEach(m=>m.net=m.income-m.outflow);
  const monthlyEntries=Object.entries(monthly).sort((a,b)=>a[0].localeCompare(b[0]));
@@ -2395,6 +2399,20 @@ function finExportPdfReport(){
  const w=window.open('','_blank');if(!w){flash('پنجره گزارش توسط مرورگر مسدود شد؛ اجازه بازشدن پنجره برای این سایت را فعال کن.','error');return;}
  w.document.open();w.document.write(printHtml);w.document.close();
 }
+function finRenderDailyExpenses(){
+ const select=$('finDailyMonth'),el=$('finDailyChart');if(!select||!el)return;const current=finMonth(),keys=finMonthKeys(12);if(!keys.includes(current))keys.push(current);const old=select.value;select.innerHTML=keys.slice().reverse().map(k=>`<option value="${k}">${safe(finMonthLabel(k))}</option>`).join('');select.value=keys.includes(old)?old:current;
+ const key=select.value||current,{start,end}=jalaliMonthBounds(key);const days=[];const d=new Date(start+'T12:00:00');const last=new Date(end+'T12:00:00');while(d<=last){const iso=dateISO(d);const amount=data.finance.filter(t=>t.date===iso&&['هزینه','خرج اضافی','پرداخت بدهی','پرداخت قسط'].includes(t.type)).reduce((sum,t)=>sum+(Number(t.amount)||0),0);days.push({date:iso,day:jalaliParts(iso).day,amount});d.setDate(d.getDate()+1);}
+ const max=Math.max(1,...days.map(x=>x.amount));const barWidth=Math.max(8,Math.min(18,640/days.length-2));const bars=days.map((x,i)=>{const h=x.amount/max*120;const px=30+i*(640/days.length);return `<rect x="${px}" y="${145-h}" width="${barWidth}" height="${h}" rx="2" fill="var(--accent)"><title>${fa(x.day)} ${finMonthLabel(key)}: ${finMoney(x.amount)}</title></rect>`;}).join('');
+ const total=days.reduce((sum,x)=>sum+x.amount,0),maxDay=days.reduce((a,b)=>b.amount>a.amount?b:a,days[0]||{day:0,amount:0});
+ const rows=days.map(x=>`<tr><td>${fa(x.day)}</td><td>${toFaDate(x.date)}</td><td>${finMoney(x.amount)}</td></tr>`).join('');
+ el.innerHTML=`<div class="fin-hero-stats"><div><span>جمع هزینه‌های این ماه</span><strong>${finMoney(total)}</strong></div><div><span>میانگین خرج روزانه</span><strong>${finMoney(days.length?Math.round(total/days.length):0)}</strong></div><div><span>بیشترین خرج روزانه</span><strong>${fa(maxDay.day)} · ${finMoney(maxDay.amount)}</strong></div></div><div style="overflow-x:auto"><svg viewBox="0 0 700 190" class="svg-chart" role="img" aria-label="مقایسه هزینه روزانه در ماه شمسی">${[0,1,2,3].map(i=>`<line x1="25" y1="${25+i*40}" x2="685" y2="${25+i*40}" stroke="var(--line)" stroke-dasharray="3 4"/>`).join('')}${bars}${days.filter((x,i)=>i%3===0||i===days.length-1).map(x=>{const i=days.indexOf(x),px=30+i*(640/days.length);return `<text x="${px}" y="165" font-size="9" text-anchor="middle" fill="currentColor">${fa(x.day)}</text>`;}).join('')}</svg></div><div style="overflow-x:auto"><table class="fin-data-table"><thead><tr><th>روز</th><th>تاریخ</th><th>مجموع خرج</th></tr></thead><tbody>${rows||'<tr><td colspan="3">در این ماه هنوز هزینه‌ای ثبت نشده است.</td></tr>'}</tbody></table></div>`;
+}
+$('finDailyMonth')?.addEventListener('change',finRenderDailyExpenses);
+$('finCommitSearch')?.addEventListener('input',finRenderCommitments);
+let finSuggestedTransaction=null;
+$('finDesc')?.addEventListener('input',()=>{const q=($('finDesc').value||'').trim().toLocaleLowerCase('fa');const box=$('finCategorySuggestion');finSuggestedTransaction=null;if(!q||q.length<2){box.innerHTML='';return;}const match=data.finance.find(t=>(t.description||'').trim().toLocaleLowerCase('fa')===q&&t.categoryId);if(!match){box.innerHTML='';return;}finSuggestedTransaction=match;const cat=finCategory(match.categoryId),acc=finAccount(match.accountId);box.innerHTML=`پیشنهاد از ثبت قبلی: ${safe(cat?.name||'دسته قبلی')} · ${safe(acc?.name||'حساب قبلی')} <button type="button" class="ghost small" id="finApplySuggestion">اعمال</button>`;});
+$('finCategorySuggestion')?.addEventListener('click',e=>{if(e.target.id!=='finApplySuggestion'||!finSuggestedTransaction)return;const t=finSuggestedTransaction;$('finType').value=[...$('finType').options].some(o=>o.value===t.type)?t.type:(['درآمد','دریافت وام','دریافت بدهی','وصول طلب'].includes(t.type)?'درآمد':'هزینه');finRefreshSelects();if(t.categoryId)$('finCategory').value=String(t.categoryId);if(t.accountId)$('finAccount').value=String(t.accountId);flash('دسته و حساب پیشنهادی اعمال شد');});
+
 function renderFinance(){
   const currentAssets = calculateCurrentAssets();
   const totalSavings = calculateTotalSavings();
@@ -2475,38 +2493,17 @@ function renderFinance(){
 }
 
 function renderMonthlyFinance(){
-  const allMonths = [...new Set(data.finance.map(f => f.month).filter(Boolean))];
-  if (allMonths.length === 0) { $('monthlyFinance').innerHTML = '<p class="muted" style="text-align:center;padding:20px">هنوز تراکنشی برای نمایش نیست.</p>'; return; }
-  const months = allMonths.slice(-3);
-  
-  const rows = months.map(m => {
-    const inc = data.finance.filter(f => f.month === m && f.type === 'درآمد').reduce((a,f) => a + Number(f.amount || 0), 0);
-    const exp = data.finance.filter(f => f.month === m && (f.type === 'هزینه' || f.type === 'خرج اضافی')).reduce((a,f) => a + Number(f.amount || 0), 0);
-    const sav = data.finance.filter(f => f.month === m && f.type === 'پس‌انداز').reduce((a,f) => a + Number(f.amount || 0), 0);
-    const unspent = data.finance.filter(f => f.month === m && f.type === 'خرج نکرده (صرفه‌جویی)').reduce((a,f) => a + Number(f.amount || 0), 0);
-    
-    let faMonth = m;
-    try { faMonth = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { year: 'numeric', month: 'long' }).format(new Date(m + '-01T12:00:00')); } catch(e){}
-    
-    return `<tr>
-      <td style="padding:10px;border-bottom:1px solid var(--line)">${faMonth}</td>
-      <td style="padding:10px;border-bottom:1px solid var(--line)" class="money-pos">${fa(inc)}</td>
-      <td style="padding:10px;border-bottom:1px solid var(--line)" class="money-neg">${fa(exp)}</td>
-      <td style="padding:10px;border-bottom:1px solid var(--line)" style="color:var(--blue);font-weight:bold;">${fa(sav)}</td>
-      <td style="padding:10px;border-bottom:1px solid var(--line)" class="money-pos">${fa(unspent)}</td>
-    </tr>`;
+  const allMonths=[...new Set(data.finance.filter(f=>f.date).map(f=>finMonth(f.date)))].sort();
+  if(!allMonths.length){$('monthlyFinance').innerHTML='<p class="muted" style="text-align:center;padding:20px">هنوز تراکنشی برای نمایش نیست.</p>';return;}
+  const months=allMonths.slice(-3);
+  const rows=months.map(m=>{
+    const inc=data.finance.filter(f=>finMonth(f.date)===m&&f.type==='درآمد').reduce((a,f)=>a+Number(f.amount||0),0);
+    const exp=data.finance.filter(f=>finMonth(f.date)===m&&(f.type==='هزینه'||f.type==='خرج اضافی')).reduce((a,f)=>a+Number(f.amount||0),0);
+    const sav=data.finance.filter(f=>finMonth(f.date)===m&&f.type==='پس‌انداز').reduce((a,f)=>a+Number(f.amount||0),0);
+    const unspent=data.finance.filter(f=>finMonth(f.date)===m&&f.type==='خرج نکرده (صرفه‌جویی)').reduce((a,f)=>a+Number(f.amount||0),0);
+    return `<tr><td style="padding:10px;border-bottom:1px solid var(--line)">${safe(finMonthLabel(m))}</td><td style="padding:10px;border-bottom:1px solid var(--line)" class="money-pos">${fa(inc)}</td><td style="padding:10px;border-bottom:1px solid var(--line)" class="money-neg">${fa(exp)}</td><td style="padding:10px;border-bottom:1px solid var(--line);color:var(--blue);font-weight:bold">${fa(sav)}</td><td style="padding:10px;border-bottom:1px solid var(--line)" class="money-pos">${fa(unspent)}</td></tr>`;
   }).join('');
-  
-  $('monthlyFinance').innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:13px">
-    <thead><tr style="background:var(--cream2)">
-      <th style="padding:10px;text-align:right">ماه</th>
-      <th style="padding:10px;text-align:right">درآمد</th>
-      <th style="padding:10px;text-align:right">هزینه و اضافی</th>
-      <th style="padding:10px;text-align:right">پس‌انداز</th>
-      <th style="padding:10px;text-align:right">صرفه‌جویی</th>
-    </tr></thead>
-    <tbody>${rows}</tbody>
-  </table>`;
+  $('monthlyFinance').innerHTML=`<table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr style="background:var(--cream2)"><th style="padding:10px;text-align:right">ماه شمسی</th><th style="padding:10px;text-align:right">درآمد</th><th style="padding:10px;text-align:right">هزینه و اضافی</th><th style="padding:10px;text-align:right">پس‌انداز آماری</th><th style="padding:10px;text-align:right">صرفه‌جویی</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
 function renderExpenseDonut(){
@@ -2805,7 +2802,7 @@ $('ueSaveBtn').addEventListener('click', () => {
   const { type, rec } = currentEdit; const cfg = NoteTypes[type];
   cfg.fields.forEach(f => { const el = $(`ue_field_${f.key}`); if (!el) return; if (f.type === 'number') rec[f.key] = Number(el.value) || 0; else rec[f.key] = el.value.trim ? el.value.trim() : el.value; });
   
-  if (type === 'finance') { rec.month = rec.date.slice(0, 7); }
+  if (type === 'finance') { rec.month = finMonth(rec.date); }
   else if (type === 'task') { if (rec.eventStatus === 'done') rec.done = true; if (rec.eventStatus === 'not_done') rec.done = false; }
   else if (type === 'daily') {
       const existingIndex = data.daily.findIndex(d => d.date === currentEdit.date);
@@ -2909,11 +2906,12 @@ $('routineForm').addEventListener('submit', e => {
 $('habitForm').addEventListener('submit', e => { e.preventDefault(); const name = $('habitName').value.trim(); if (!name) return; data.habits.push({ id: nid(), name }); saveData(); renderHabits(); renderToday(); renderDashboard(); e.target.reset(); flash('عادت اضافه شد'); });
 
 $('financeForm').addEventListener('submit', e => {
-  e.preventDefault(); const date = getPersianDateValue('finDate'); const amount = finParseMoney($('finAmount').value);
+  e.preventDefault(); const date = getPersianDateValue('finDate'); const amount = finParseMoney($('finAmount').value); const quick=e.submitter?.id==='finSubmitQuick';
   if (!date || !amount) { flash('تاریخ و مبلغ الزامی است', 'error'); return; }
-  data.finance.unshift({ id: nid(), date, month: date.slice(0, 7), type: $('finType').value, category: $('finCategory').value, description: $('finDesc').value.trim(), amount });
+  const type=$('finType').value,categoryId=$('finCategory').value,category=finCategory(categoryId);data.finance.unshift({ id: nid(), date, month: finMonth(date), type, categoryId, category:category?.name||'سایر', description: $('finDesc').value.trim(), amount, accountId:$('finAccount')?.value||finDefaultAccount()?.id });
   saveData(); renderFinance(); renderMonthlyFinance(); renderExpenseDonut(); renderDashboard();
-  e.target.reset(); if ($('finDate')) setPersianDateValue('finDate', dateISO()); flash('تراکنش ثبت شد');
+  if(quick){$('finDesc').value='';$('finAmount').value='';$('finAmount').focus();finFormatAllMoneyInputs();}else{e.target.reset(); if ($('finDate')) setPersianDateValue('finDate', dateISO());finRefreshSelects();}
+  flash(quick?'تراکنش ثبت شد؛ آماده ثبت بعدی هستی':'تراکنش ثبت شد');
 });
 
 $('moodForm').addEventListener('submit', e => {
@@ -3908,7 +3906,7 @@ function ensureFinanceData(){
       children.forEach(child=>data.financeCategories.push({id:nid(),name:child,type,icon,color,parentId:id,system:true}));
     });
   }
-  data.finance.forEach(t=>{if(!t.accountId)t.accountId=data.financeAccounts.find(a=>a.isPrimary)?.id||data.financeAccounts[0]?.id;if(!t.categoryId&&t.category){const c=data.financeCategories.find(x=>x.name===t.category);if(c)t.categoryId=c.id;}if(!t.month&&t.date)t.month=finMonth(t.date);});
+  data.finance.forEach(t=>{if(!t.accountId)t.accountId=data.financeAccounts.find(a=>a.isPrimary)?.id||data.financeAccounts[0]?.id;if(!t.categoryId&&t.category){let c=data.financeCategories.find(x=>String(x.id)===String(t.category))||data.financeCategories.find(x=>x.name===t.category);if(c){t.categoryId=c.id;t.category=c.name;}}else if(t.categoryId){const c=finCategory(t.categoryId);if(c)t.category=c.name;}if(t.date)t.month=finMonth(t.date);});
 }
 function finMoney(n){return `${fa(Math.round(Number(n)||0))} تومان`;}
 // فرمت پولی: ارقام فارسی و جداکننده هزارگان، بدون تغییر مقدار عددی ذخیره‌شده.
@@ -3951,8 +3949,10 @@ document.addEventListener('input',e=>{if(e.target?.matches?.('[data-fin-money-in
 document.addEventListener('blur',e=>{if(e.target?.matches?.('[data-fin-money-input]'))finFormatMoneyInput(e.target,false);},true);
 document.addEventListener('reset',e=>{setTimeout(()=>e.target?.querySelectorAll?.('[data-fin-money-input]').forEach(el=>finFormatMoneyInput(el,false)),0);},true);
 
-function finMonth(date=dateISO()){return String(date||dateISO()).slice(0,7);}
-function finMonthLabel(m){try{return new Intl.DateTimeFormat('fa-IR-u-ca-persian',{year:'numeric',month:'long'}).format(new Date(m+'-15T12:00:00'));}catch(e){return m;}}
+function finMonth(date=dateISO()){try{return jalaliMonthKey(date||dateISO());}catch(e){return String(date||dateISO()).slice(0,7);}}
+function finMonthLabel(m){try{const b=jalaliMonthBounds(m);return new Intl.DateTimeFormat('fa-IR-u-ca-persian',{year:'numeric',month:'long'}).format(new Date(b.start+'T12:00:00'));}catch(e){return m;}}
+function finWeekBounds(date=dateISO()){const d=new Date(String(date)+'T12:00:00Z');const back=(d.getUTCDay()+1)%7;d.setUTCDate(d.getUTCDate()-back);const start=d.toISOString().slice(0,10);d.setUTCDate(d.getUTCDate()+6);return {start,end:d.toISOString().slice(0,10),key:start};}
+function finMonthKeys(count=12){const p=jalaliParts(dateISO()),out=[];for(let i=count-1;i>=0;i--){const total=p.year*12+(p.month-1)-i,y=Math.floor(total/12),m=total%12+1;out.push(`${y}-${String(m).padStart(2,'0')}`);}return out;}
 function finAccount(id){return data.financeAccounts.find(a=>String(a.id)===String(id));}
 function finCategory(id){return data.financeCategories.find(c=>String(c.id)===String(id));}
 function finDefaultAccount(){return data.financeAccounts.find(a=>a.active!==false)||data.financeAccounts[0];}
@@ -3980,7 +3980,7 @@ function calculateTotalSavings(){ensureFinanceData();return finSum(t=>t.type==='
 
 function finTab(name){document.querySelectorAll('[data-fin-tab]').forEach(b=>b.classList.toggle('active',b.dataset.finTab===name));document.querySelectorAll('[data-fin-panel]').forEach(p=>p.classList.toggle('hidden',p.dataset.finPanel!==name));}
 function finRenderSummary(){
- const m=finMonth();const income=finSum(t=>t.month===m&&t.type==='درآمد');const expense=finSum(t=>t.month===m&&(t.type==='هزینه'||t.type==='خرج اضافی'||t.type==='پرداخت بدهی'||t.type==='پرداخت قسط'));const waste=finSum(t=>t.month===m&&t.type==='خرج اضافی');const neutral=finSum(t=>t.month===m&&(t.type==='پس‌انداز'||t.type==='خرج نکرده (صرفه‌جویی)'));
+ const m=finMonth();const income=finSum(t=>finMonth(t.date)===m&&t.type==='درآمد');const expense=finSum(t=>finMonth(t.date)===m&&(t.type==='هزینه'||t.type==='خرج اضافی'||t.type==='پرداخت بدهی'||t.type==='پرداخت قسط'));const waste=finSum(t=>finMonth(t.date)===m&&t.type==='خرج اضافی');const neutral=finSum(t=>finMonth(t.date)===m&&(t.type==='پس‌انداز'||t.type==='خرج نکرده (صرفه‌جویی)'));
  $('currentAssetsDisplay').textContent=finMoney(finTotalBalance());$('totalSavingsDisplay').textContent=finMoney(neutral);
  $('finIncomeStat').textContent=finMoney(income);$('finExpenseStat').textContent=finMoney(expense);$('finWasteStat').textContent=finMoney(waste);$('finNetStat').textContent=finMoney(income-expense);
 }
@@ -3993,7 +3993,8 @@ function finRenderTransactions(){
  const csel=$('finFilterCategory');if(csel){const old=csel.value;csel.innerHTML='<option value="all">همه دسته‌ها</option>'+data.financeCategories.map(c=>`<option value="${c.id}">${safe(c.name)}</option>`).join('');csel.value=old||'all';}
 }
 function finRenderWaste(){const el=$('finWasteList');if(!el)return;const m=finMonth();const rows=[...data.finance].filter(t=>t.type==='خرج اضافی').sort((a,b)=>String(b.date).localeCompare(String(a.date)));const total=rows.filter(t=>finMonth(t.date)===m).reduce((s,t)=>s+(Number(t.amount)||0),0);$('finWasteTotal').textContent=finMoney(total);el.innerHTML=rows.map(t=>`<article class="item"><div class="item-main"><div class="item-title">🔥 ${safe(t.description||'خرج اضافی')}</div><div class="item-meta"><span>${toFaDate(t.date)}</span><span>${safe(finCategory(t.categoryId)?.name||t.category||'سایر')}</span><strong class="money-neg">${finMoney(t.amount)}</strong></div></div><div class="item-actions"><button class="ghost small" data-fin-edit-tx="${t.id}">ویرایش</button><button class="danger small" data-fin-delete-tx="${t.id}">حذف</button></div></article>`).join('')||'<p class="muted">هنوز خرج اضافی ثبت نشده است.</p>';}
-function finRenderBudgets(){const el=$('finBudgetsList');if(!el)return;const m=finMonth();const list=data.financeBudgets.filter(b=>b.month===m);el.innerHTML=list.map(b=>{const spent=data.finance.filter(t=>t.month===m&&(t.type==='هزینه'||t.type==='خرج اضافی')&&(String(t.categoryId)===String(b.categoryId)||String(finCategory(t.categoryId)?.parentId)===String(b.categoryId))).reduce((s,t)=>s+(Number(t.amount)||0),0);const pct=b.amount?Math.round(spent/b.amount*100):0;const c=finCategory(b.categoryId);return `<article class="fin-card"><div class="fin-card-head"><div><strong>${safe(c?.icon||'📊')} ${safe(c?.name||'دسته حذف‌شده')}</strong><div class="muted">مصرف‌شده ${finMoney(spent)} از ${finMoney(b.amount)}</div></div><strong class="${pct>=100?'money-neg':pct>=80?'fin-warning':'money-pos'}">${fa(pct)}٪</strong></div><div class="progress"><span style="width:${Math.min(100,pct)}%;background:${pct>=100?'var(--red)':pct>=80?'var(--gold)':'var(--accent)'}"></span></div><div class="fin-actions"><span class="muted">${pct>=100?'از سقف بودجه عبور کرده‌ای':pct>=80?'به ۸۰٪ بودجه رسیده‌ای':'بودجه در محدوده مجاز است'}</span><button class="danger small" data-fin-delete-budget="${b.id}">حذف</button></div></article>`;}).join('')||'<p class="muted">برای این ماه بودجه‌ای تعیین نشده است.</p>';}
+function finRenderBudgets(){const el=$('finBudgetsList');if(!el)return;const m=finMonth(),week=finWeekBounds(dateISO());const legacyGregorianMonth=dateISO().slice(0,7);const list=data.financeBudgets.filter(b=>(b.period||'monthly')==='monthly'?(b.month===m||b.month===legacyGregorianMonth):(b.periodKey||b.weekKey)===week.key);el.innerHTML=list.map(b=>{const period=b.period||'monthly',isWeek=period==='weekly',bounds=isWeek?week:jalaliMonthBounds(m);const spent=data.finance.filter(t=>t.date>=bounds.start&&t.date<=bounds.end&&(t.type==='هزینه'||t.type==='خرج اضافی')&&(String(t.categoryId)===String(b.categoryId)||String(finCategory(t.categoryId)?.parentId)===String(b.categoryId))).reduce((sum,t)=>sum+(Number(t.amount)||0),0);const pct=b.amount?Math.round(spent/b.amount*100):0,remaining=(Number(b.amount)||0)-spent,c=finCategory(b.categoryId);return `<article class="fin-card"><div class="fin-card-head"><div><strong>${safe(c?.icon||'📊')} ${safe(c?.name||'دسته حذف‌شده')} · ${isWeek?'بودجه هفتگی':'بودجه ماهانه'}</strong><div class="muted">مصرف‌شده ${finMoney(spent)} از ${finMoney(b.amount)}</div></div><strong class="${pct>=100?'money-neg':pct>=80?'fin-warning':'money-pos'}">${fa(pct)}٪</strong></div><div class="progress"><span style="width:${Math.min(100,pct)}%;background:${pct>=100?'var(--red)':pct>=80?'var(--gold)':'var(--accent)'}"></span></div><div class="fin-actions"><span class="muted">${remaining<0?`بیش از بودجه: ${finMoney(Math.abs(remaining))}`:`باقی‌مانده: ${finMoney(remaining)}`} · ${pct>=100?'از سقف بودجه عبور کرده‌ای':pct>=80?'هشدار: بیش از ۸۰٪ بودجه مصرف شده':'بودجه در محدوده مجاز است'}</span><button class="danger small" data-fin-delete-budget="${b.id}">حذف</button></div></article>`;}).join('')||'<p class="muted">برای دوره جاری بودجه‌ای تعیین نشده است.</p>';}
+
 function finRenderCategories(){
  const el=$('finCategoriesList');if(!el)return;
  const rows=data.financeCategories||[];
@@ -4010,8 +4011,8 @@ function finRenderCategories(){
  el.innerHTML=html+orphans||'<p class="muted">هنوز دسته‌بندی‌ای ثبت نشده است.</p>';
 }
 function finRenderCommitments(){
- const el=$('finCommitmentsList');if(!el)return;
- el.innerHTML=data.financeCommitments.map(c=>{
+ const el=$('finCommitmentsList');if(!el)return;const q=($('finCommitSearch')?.value||'').trim().toLowerCase();
+ el.innerHTML=data.financeCommitments.filter(c=>!q||`${c.title||''} ${c.person||''} ${c.description||''} ${c.type||''} ${c.dueDate||''} ${finAccount(c.accountId)?.name||''} ${c.installmentAmount||''}`.toLowerCase().includes(q)).map(c=>{
    const total=Number(c.totalAmount)||0,rem=Number(c.remainingAmount)||0,paid=Math.max(0,total-rem),pct=total?Math.max(0,Math.min(100,Math.round(paid/total*100))):0;
    const isRec=c.type==='receivable',typeLabel=isRec?'طلب':c.type==='loan'?'وام':'بدهی';
    const hasCashEffect=!!(c.cashImpact||c.openingTransactionId||data.finance.some(t=>String(t.linkedCommitmentId)===String(c.id)&&t.commitmentOpening));
@@ -4030,9 +4031,7 @@ function finRenderAnalytics(){
  const categoryTotals={};data.finance.filter(t=>finMonth(t.date)===m&&['هزینه','خرج اضافی'].includes(t.type)).forEach(t=>{const c=finCategory(t.categoryId),name=c?.name||t.category||'سایر';categoryTotals[name]=(categoryTotals[name]||0)+(Number(t.amount)||0);});
  const rows=Object.entries(categoryTotals).sort((a,b)=>b[1]-a[1]);const total=rows.reduce((sum,row)=>sum+row[1],0);let offset=0;const circumference=2*Math.PI*58;
  const rings=rows.map(([name,value],i)=>{const len=total?value/total*circumference:0;const circle=`<circle cx="85" cy="85" r="58" fill="none" stroke="${colors[i%colors.length]}" stroke-width="24" stroke-dasharray="${len} ${circumference-len}" stroke-dashoffset="${-offset}" transform="rotate(-90 85 85)"/>`;offset+=len;return circle;}).join('');
- const monthKeys=[];const nowMonth=new Date();
- for(let back=11;back>=0;back--){const d=new Date(nowMonth.getFullYear(),nowMonth.getMonth()-back,1);monthKeys.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`);} 
- if(!monthKeys.includes(m))monthKeys[monthKeys.length-1]=m;
+ const monthKeys=finMonthKeys(12); if(!monthKeys.includes(m))monthKeys[monthKeys.length-1]=m;
  const monthStats=monthKeys.map(k=>{
    const txs=data.finance.filter(t=>finMonth(t.date)===k);
    const inc=txs.filter(t=>['درآمد','دریافت وام','دریافت بدهی','وصول طلب'].includes(t.type)).reduce((a,t)=>a+(Number(t.amount)||0),0);
@@ -4066,7 +4065,7 @@ function finRenderAnalytics(){
  <div class="fin-card"><h3>مقایسه ماهانه جریان نقدی</h3>${trendLines||'<p class="muted">برای نمایش روند، تراکنش ثبت کن.</p>'}</div>`;
 }
 function renderFinance(){
- ensureFinanceData();finRefreshSelects();finRenderSummary();finRenderAccounts();finRenderTransactions();finRenderWaste();finRenderBudgets();finRenderCategories();finRenderCommitments();finRenderAnalytics();
+ ensureFinanceData();finRefreshSelects();finRenderSummary();finRenderAccounts();finRenderTransactions();finRenderWaste();finRenderBudgets();finRenderCategories();finRenderCommitments();finRenderAnalytics();finRenderDailyExpenses();
  finShowCommitFields();
  if($('finRecurringList'))$('finRecurringList').innerHTML=data.financeRecurring.map(r=>`<article class="fin-category-row"><span>${safe(r.title)}</span><span class="muted">${safe(r.type)} · ${finMoney(r.amount)} · روز ${fa(r.day||1)}</span><button class="small" data-fin-post-recurring="${r.id}">ثبت این ماه</button><button class="danger small" data-fin-delete-recurring="${r.id}">حذف</button></article>`).join('')||'<p class="muted">تراکنش تکراری تعریف نشده است.</p>';
  if($('finTransfersList'))$('finTransfersList').innerHTML=[...data.financeTransfers].sort((a,b)=>String(b.date).localeCompare(String(a.date))).map(t=>`<article class="item"><div class="item-main"><div class="item-title">${safe(finAccount(t.fromAccountId)?.name||'حساب')} ← ${safe(finAccount(t.toAccountId)?.name||'حساب')}</div><div class="item-meta"><span>${toFaDate(t.date)}</span><strong>${finMoney(t.amount)}</strong><span>${safe(t.description||'انتقال داخلی')}</span></div></div><button class="danger small" data-fin-delete-transfer="${t.id}">حذف</button></article>`).join('')||'<p class="muted">هنوز انتقالی ثبت نشده است.</p>';
@@ -4289,7 +4288,7 @@ if($('finReportEndDate')&&!$('finReportEndDate').value)setPersianDateValue('finR
 $('finExportPdfBtn')?.addEventListener('click',finExportPdfReport);$('finExportPdfTopBtn')?.addEventListener('click',finExportPdfReport);$('finExportPdfHeaderBtn')?.addEventListener('click',finExportPdfReport);
 
 // Capture submit before the legacy transaction handler, while preserving its form ID.
-$('financeForm')?.addEventListener('submit',e=>{e.preventDefault();e.stopImmediatePropagation();ensureFinanceData();const date=getPersianDateValue('finDate'),amount=finParseMoney($('finAmount').value),type=$('finType').value,categoryId=$('finCategory').value,accountId=$('finAccount').value;if(!date||!Number.isFinite(amount)||amount<=0){flash('تاریخ و مبلغ معتبر الزامی است','error');return;}finAddTransaction({date,type,categoryId,description:$('finDesc').value.trim(),amount,accountId});saveData();renderFinance();renderMonthlyFinance();renderExpenseDonut();renderDashboard();e.target.reset();setPersianDateValue('finDate',dateISO());finRefreshSelects();flash('تراکنش ثبت شد');},true);
+$('financeForm')?.addEventListener('submit',e=>{e.preventDefault();e.stopImmediatePropagation();ensureFinanceData();const date=getPersianDateValue('finDate'),amount=finParseMoney($('finAmount').value),type=$('finType').value,categoryId=$('finCategory').value,accountId=$('finAccount').value,quick=e.submitter?.id==='finSubmitQuick';if(!date||!Number.isFinite(amount)||amount<=0){flash('تاریخ و مبلغ معتبر الزامی است','error');return;}finAddTransaction({date,type,categoryId,description:$('finDesc').value.trim(),amount,accountId});saveData();renderFinance();renderMonthlyFinance();renderExpenseDonut();renderDashboard();if(quick){$('finDesc').value='';$('finAmount').value='';$('finAmount').focus();finFormatAllMoneyInputs();}else{e.target.reset();setPersianDateValue('finDate',dateISO());finRefreshSelects();}flash(quick?'تراکنش ثبت شد؛ آماده ثبت بعدی هستی':'تراکنش ثبت شد');},true);
 $('finType')?.addEventListener('change',()=>finRefreshSelects());
 $('commitType')?.addEventListener('change',()=>{if($('commitDeposit'))$('commitDeposit').checked=false;if($('commitOutflow'))$('commitOutflow').checked=false;finShowCommitFields();});$('commitDeposit')?.addEventListener('change',finShowCommitFields);$('commitOutflow')?.addEventListener('change',finShowCommitFields);$('finCommitEditCashImpact')?.addEventListener('change',finShowCommitEditFields);
 $('commitmentForm')?.addEventListener('submit',e=>{e.preventDefault();finCreateCommitment();});
@@ -4304,7 +4303,7 @@ $('finCommitmentEditClose')?.addEventListener('click',finCloseCommitmentEditor);
 $('finCommitmentEditCancel')?.addEventListener('click',finCloseCommitmentEditor);
 $('finCommitmentEditModal')?.addEventListener('click',e=>{if(e.target.id==='finCommitmentEditModal')finCloseCommitmentEditor();});
 
-$('budgetForm')?.addEventListener('submit',e=>{e.preventDefault();const amount=finParseMoney($('budgetAmount').value),categoryId=$('budgetCategory').value;if(!amount||!categoryId){flash('دسته و سقف بودجه الزامی است','error');return;}const month=finMonth();const old=data.financeBudgets.find(b=>b.month===month&&String(b.categoryId)===String(categoryId));if(old)old.amount=amount;else data.financeBudgets.push({id:nid(),month,categoryId,amount});saveData();renderFinance();e.target.reset();flash('بودجه ذخیره شد');});
+$('budgetForm')?.addEventListener('submit',e=>{e.preventDefault();const amount=finParseMoney($('budgetAmount').value),categoryId=$('budgetCategory').value,period=$('finBudgetPeriod')?.value||'monthly';if(!amount||!categoryId){flash('دسته و سقف بودجه الزامی است','error');return;}const month=finMonth(),week=finWeekBounds(dateISO()),periodKey=period==='weekly'?week.key:month;const old=data.financeBudgets.find(b=>(b.period||'monthly')===period&&((b.periodKey||b.month)===periodKey||(period==='monthly'&&b.month===dateISO().slice(0,7)))&&String(b.categoryId)===String(categoryId));if(old){old.amount=amount;old.month=month;old.periodKey=periodKey;old.period=period;}else data.financeBudgets.push({id:nid(),period,periodKey,month,categoryId,amount});saveData();renderFinance();e.target.reset();flash('بودجه این دوره ذخیره شد');});
 $('accountForm')?.addEventListener('submit',e=>{e.preventDefault();const name=$('accountName').value.trim(),opening=finParseMoney($('accountOpening').value);if(!name){flash('نام حساب را وارد کن','error');return;}data.financeAccounts.push({id:nid(),name,type:$('accountType').value,openingBalance:opening,active:true,createdAt:dateISO()});saveData();renderFinance();e.target.reset();flash('حساب اضافه شد');});
 $('transferForm')?.addEventListener('submit',e=>{e.preventDefault();const from=$('transferFrom').value,to=$('transferTo').value,amount=finParseMoney($('transferAmount').value);if(!from||!to||from===to||amount<=0){flash('حساب مبدا، مقصد و مبلغ را درست انتخاب کن','error');return;}data.financeTransfers.push({id:nid(),date:dateISO(),fromAccountId:from,toAccountId:to,amount,description:$('transferDescription').value.trim()});saveData();renderFinance();e.target.reset();finRefreshSelects();flash('انتقال بین حساب‌ها ثبت شد');});
 $('categoryType')?.addEventListener('change',()=>{if($('categoryParent'))$('categoryParent').value='';finRefreshSelects();});$('recurringType')?.addEventListener('change',finRefreshSelects);
